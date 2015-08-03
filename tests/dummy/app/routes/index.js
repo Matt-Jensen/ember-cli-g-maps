@@ -5,28 +5,21 @@ export default Ember.Route.extend({
     controller.setProperties({
       lat:  -12.043333,
       lng:  -77.028333,
-      zoom: 6,
+      zoom: 4,
       markers: Ember.A([
-        {
-          id: '1231darsa2',
-          lat:  -12.043333,
-          lng:  -77.028333,
-          title: 'One',
-          click: function(e) {
-            console.log(e);
-          }
-        },
-        {
-          id: '7643darsa2',
-          lat:  -12.5,
-          lng:  -77.5,
-          title: 'Two',
-          click: function(e) {
-            console.log(e);
-          }
-        }
+        {id: '1231darsa2', lat:  -12.043333, lng:  -77.028333, title: 'One', click: function(e) {console.log(e); } }, 
+        {id: '7643darsa2', lat:  -12.5, lng:  -77.5, title: 'Two', click: function(e) {console.log(e); } }
+      ]),
+      ploygons: Ember.A([
+        {}
       ])
     });
+
+    // window.setInterval(() => {
+    //   let lat = controller.get('lat')+ 0.5;
+    //   controller.set('lat', lat);
+    //   console.log(lat, 'upward');
+    // }, 1000);
   },
 
   actions: {
@@ -34,7 +27,7 @@ export default Ember.Route.extend({
       const controller = this.controller;
       let markers = controller.markers;
       const id = Ember.uuid()+'-strigified';
-
+      console.log(...arguments);
       markers.pushObject({
         id,
         lat:  e.latLng.A,
@@ -43,14 +36,13 @@ export default Ember.Route.extend({
         click: function(e) {
           const m_id = e.details.id;
 
+          // Remove marker
           for(let i = 0, l = markers.length; i < l; i++) {
             if(markers[i].id !== m_id) { continue; }
 
             markers.removeAt(i, 1);
             break;
           }
-
-          console.log(markers.length);
         },
         infoWindow: {
           content: '<p>Mark that down!</p>',
