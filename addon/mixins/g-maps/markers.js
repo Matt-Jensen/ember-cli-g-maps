@@ -1,15 +1,18 @@
 /* globals GMaps google */
 
-import Ember from 'ember';
+import Ember         from 'ember';
 import Configurables from 'ember-cli-g-maps/mixins/g-maps/configurables';
+import utils         from 'ember-cli-g-maps/utils/g-maps/markers';
 
-const { on, computed, observer, merge } = Ember;
+const { on, computed, observer, merge, uuid } = Ember;
 
 export default Ember.Mixin.create(Configurables, {
+  markers: Ember.A(),
 
   ///////////////////////////
   // Marker Configurables
   //////////////////////////
+
   _gmapMarkerProps: [
     'lat',
     'lng',
@@ -34,6 +37,7 @@ export default Ember.Mixin.create(Configurables, {
     'zIndex'
   ],
 
+
   _gmapMarkerEvents: [
     'animation_changed',
     'clickable_changed',
@@ -49,6 +53,7 @@ export default Ember.Mixin.create(Configurables, {
     'zindex_changed'
   ],
 
+
   validateMarkers: on('didInsertElement', function() {
     const markers = this.get('markers');
     if(markers && !Ember.isArray(markers)) {
@@ -56,53 +61,72 @@ export default Ember.Mixin.create(Configurables, {
     }
   }),
 
+
   destroyMarkers: on('willDestroyElement', function() {
     google.maps.event.clearListeners(this.get('map').map, 'closeclick');
   }),
 
-  _isMarkerRemoved: (id, markers) => { 
-    for(let i = 0, l = markers.length; i < l; i++ ) {
-      if(markers[i].id === id) { return false; }
-    }
-    return true;
-  },
 
-  _syncLength: null,
-  _syncMarkers: observer('isMapLoaded', 'markers.length', function() {
-    const map   = this.get('map');
+  _markerIds: computed.map('markers.@each.id', function(marker) { 
+    if( !marker.id ) { throw new Error('Marker items require an id'); }
+    return marker.id;
+  }),
+
+
+  _markersUpdated: computed('_markerIds', {
+    get() {
+      if(!this.get('map')){ return false; }
+      const _markerIds  = this.get('_markerIds');
+      const mapMarkers  = this.get('map').markers;
+
+      // Markers were updated
+      if(mapMarkers.length !== _markerIds.length) { return true; }
+
+      for(let i = 0, l = mapMarkers.length; i < l; i++) {
+
+        // Compare GMap marker id's to Model markers id's
+        if(_markerIds.indexOf(mapMarkers[i].id) === -1) {
+          return true; // Markers were updated
+        }
+      }
+
+      return false; // Markers not updated
+    }
+  }),
+
+
+  _syncMarkers: observer('isMapLoaded', 'markers.@each.id', function() {
     let markers = this.get('markers');
+    const map   = this.get('map');
 
-    // Test if markers should sync
-    if(!this.get('isMapLoaded')) { return; }
-    if(this.get('_syncLength') === markers.length) { return; }
-    this._prevLength = markers.length;
+    // If markers should sync
+    if(!this.get('isMapLoaded') || !this.get('_markersUpdated')) { return; }
 
-    // Convert markers to raw array
-    if( typeof markers.toArray === 'function' ) {
-      markers = markers.toArray();
-    }
-
-    // Remove (deleted) Markers
+    // Remove (deleted) Markers from GMap
     for(let i = 0, l = map.markers.length; i < l; i++) {
-      let m = map.markers[i];
-      if( !this._isMarkerRemoved(m.details.id, markers) ) { 
+      let m  = map.markers[i];
+      let id = m.details.id;
+
+      if(utils.isMarkerRemoved(id, markers) === false) { 
         continue;
       }
 
-      // close any open infoWindows
+      // close/remove any open marker infoWindows
       if(m.infoWindow) { 
         m.infoWindow.setMap(null);
         m.infoWindow = null;
       }
+
+      // Remove Marker
       m.setMap(null);
     }
 
-    const markerConfProps = this.getConfigParams('_gmapChildEvents', '_gmapMarkerProps', '_gmapMarkerEvents')
+    const markerConfProps = this.getConfigParams('_gmapChildEvents', '_gmapMarkerProps', '_gmapMarkerEvents');
 
-    // Add (unadded) Markers
+    // Add (unadded) Markers to GMap
     for(let i = 0, l = markers.length; i < l; i++) {
       let m = markers[i];
-      let id = m.details && m.details.id;
+      let id = m.id;
 
       if( id && map.hasMarker(id) ) { continue; }
 
@@ -110,9 +134,6 @@ export default Ember.Mixin.create(Configurables, {
 
       // Merge marker source data into marker.details
       config.details = merge(m, config.details || {});
-
-      // Ensure that marker id exists
-      config.details.id = config.details.id || `ember-cli-g-maps-${uuid()}`;
 
       // Add new marker to map
       const marker = map.addMarker(config);

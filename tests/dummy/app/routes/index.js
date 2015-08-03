@@ -26,8 +26,8 @@ export default Ember.Route.extend({
     onClick: function(e) {
       const controller = this.controller;
       let markers = controller.markers;
-      const id = Ember.uuid()+'-strigified';
-      console.log(...arguments);
+      const id = Ember.uuid()+'-ember-g-map-id';
+
       markers.pushObject({
         id,
         lat:  e.latLng.A,
