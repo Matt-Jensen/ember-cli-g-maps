@@ -1,10 +1,14 @@
-/* globals GMaps */
-import Ember from 'ember';
+/* globals GMaps google */
+import Ember       from 'ember';
+import extendMap   from 'ember-cli-g-maps/utils/g-maps/extend-map';
+import GMapMarkers from 'ember-cli-g-maps/mixins/g-maps/markers';
 
-const { on, merge, uuid } = Ember;
+const { on, merge, uuid, computed, observer } = Ember;
+const { later } = Ember.run;
 
-export default Ember.Component.extend({
+export default Ember.Component.extend(Ember.Evented, GMapMarkers, {
   map: null,
+  isMapLoaded: false,
   classNames: ['ember-cli-g-map'], 
 
   // Map Events
@@ -30,208 +34,171 @@ export default Ember.Component.extend({
     'zoom_changed'
   ],
 
-  actions: {
-    click: function() {
-      this.send('click', ...arguments);
-    },
-    bounds_changed: function() {
-      this.send('bounds_changed', ...arguments);
-    },
-    center_changed: function() {
-      this.send('center_changed', ...arguments);
-    },
-    dblclick: function() {
-      this.send('dblclick', ...arguments);
-    },
-    drag: function() {
-      this.send('drag', ...arguments);
-    },
-    dragend: function() {
-      this.send('dragend', ...arguments);
-    },
-    dragstart: function() {
-      this.send('dragstart', ...arguments);
-    },
-    heading_changed: function() {
-      this.send('heading_changed', ...arguments);
-    },
-    idle: function() {
-      this.send('idle', ...arguments);
-    },
-    maptypeid_changed: function() {
-      this.send('maptypeid_changed', ...arguments);
-    },
-    mousemove: function() {
-      this.send('mousemove', ...arguments);
-    },
-    mouseout: function() {
-      this.send('mouseout', ...arguments);
-    },
-    mouseover: function() {
-      this.send('mouseover', ...arguments);
-    },
-    projection_changed: function() {
-      this.send('projection_changed', ...arguments);
-    },
-    resize: function() {
-      this.send('resize', ...arguments);
-    },
-    rightclick: function() {
-      this.send('rightclick', ...arguments);
-    },
-    tilesloaded: function() {
-      this.send('tilesloaded', ...arguments);
-    },
-    tilt_changed: function() {
-      this.send('tilt_changed', ...arguments);
-    },
-    zoom_changed: function() {
-      this.send('zoom_changed', ...arguments);
-    }
-  },
+  happyPathGMapState: computed('lat', 'lng', 'zoom', function() {
+    const map    = this.get('map');
+    const bounds = map.map.getBounds();
 
-  insertMap: on('didInsertElement', function() {
+    return {
+      bounds: [
+        { lat: bounds.Da.j, lng: bounds.va.j },
+        { lat: bounds.Da.j, lng: bounds.va.A },
+        { lat: bounds.Da.A, lng: bounds.va.A },
+        { lat: bounds.Da.A, lng: bounds.va.j }
+      ]
+
+      // TODO:
+      // idle Promise
+      // tilesloaded Promise
+    };
+  }),
+
+  insertGMap: on('didInsertElement', function() {
     const events = this.get('_gmapEvents');
     const configProps = ['lat', 'lng', 'zoom'];
     let config = this.getProperties.apply(this, configProps);
     config.div = `#${this.element.id}`;
 
-    const map = new GMaps( config );
-    map.hasMarker = map.hasMarker || function(marker_id) {
-      const markers = this.markers;
-      for(let i = 0, l = markers.length; i < l; i++ ) {
-        if(markers[i].details.id === marker_id) {
-          return true;
-        }
-      }
-      return false;
-    };
+    const map = extendMap(new GMaps( config ));
     this.set('map', map);
 
     // Set GMap events
     for(let i = 0, l = events.length; i < l; i++ ) {
       if( !this.get(events[i]) ) { continue; }
-      GMaps.on(events[i], map.map, (e) => this.sendAction(events[i], e));
+      GMaps.on(events[i], map.map, (e) => this.send(events[i], e));
     }
 
-    this.addObserver('markers.@each', this, this._syncMarkers);
-    this._syncMarkers();
+    google.maps.event.addListenerOnce(map.map, 'idle', () => {
+      this.set('isMapLoaded', true);
+      this.trigger('ember-cli-g-map-loaded');
+      // TODO: Service promise resolving
+    });
   }),
 
-  destroyMap: on('willDestroyElement', function() {
+  destroyGMap: on('willDestroyElement', function destroyGMap() {
     const events = this.get('events');
     const map    = this.get('map');
 
-    // Set GMap events
+    // Remove GMap events
     for(let i = 0, l = events.length; i < l; i++ ) {
       if( !this.get(events[i]) ) { continue; }
-        GMaps.off(events[i], map.map);
-      }
+      GMaps.off(events[i], map.map);
+    }
   }),
 
-  // Common Child Events
-  _gmapChildEvents: [
-    'click',
-    'rightclick',
-    'dblclick',
-    'drag',
-    'dragend',
-    'dragstart',
-    'mousedown',
-    'mouseout',
-    'mouseover',
-    'mouseup'
-  ],
+  //////////////////////////////////
+  // Parent -> Child GMap Bindings
+  //////////////////////////////////
+  _syncCenter: observer('isMapLoaded', 'lat', 'lng', function() {
+    if(!this.get('isMapLoaded')) { return; }
+    const { map, lat, lng } = this.getProperties('map', 'lng', 'lat');
+    const { A, F } = map.getCenter();
+    const areCoordsEqual = this._areCoordsEqual;
 
-  ////////////
-  // Markers
-  ///////////
-  _gmapMarkerProps: [
-    'lat',
-    'lng',
-    'details',
-    'fences',
-    'outside',
-    'infoWindow',
-    'anchorPoint',
-    'animation',
-    'attribution',
-    'clickable',
-    'crossOnDrag',
-    'cursor',
-    'draggable',
-    'icon',
-    'opacity',
-    'optimized',
-    'place',
-    'shape',
-    'title',
-    'visible',
-    'zIndex'
-  ],
-
-  _gmapMarkerEvents: [
-    'animation_changed',
-    'clickable_changed',
-    'cursor_changed',
-    'draggable_changed',
-    'flat_changed',
-    'icon_changed',
-    'position_changed',
-    'shadow_changed',
-    'shape_changed',
-    'title_changed',
-    'visible_changed',
-    'zindex_changed'
-  ],
-  _isMarkerRemoved: (id, markers) => { 
-    for(let i = 0, l = markers.length; i < l; i++ ) {
-      if(markers[i].id === id) { return false; }
+    // If map is out of sync with app state
+    if(!areCoordsEqual(A, lat) || !areCoordsEqual(F, lng)) {
+      map.setCenter(lat, lng);
     }
-    return true;
-  },
-  _syncMarkers: function() {
-    const map   = this.get('map');
-    let markers = this.get('markers');
+  }),
 
-    if( !Ember.isArray(markers) ) {
-      throw new Error('g-maps componet expects markers to be an Array');
-    }
+  _syncZoom: observer('isMapLoaded', 'zoom', function() {
+    if(!this.get('isMapLoaded')) { return; }
+    const { map, zoom } = this.getProperties('map', 'zoom');
+    map.setZoom(zoom);
+  }),
 
-    if( typeof markers.toArray === 'function' ) {
-      markers = markers.toArray();
-    }
 
-    const configProps = this.get('_gmapMarkerProps')
-      .concat( this.get('_gmapMarkerEvents') )
-      .concat( this.get('_gmapChildEvents') );
-    // map.hideInfoWindows();
+  //////////////////////////////////
+  // Child -> Parent GMap Bindings
+  //////////////////////////////////
+  _addGMapPersisters: on('ember-cli-g-map-loaded', function() {
+    const map = this.get('map');
+    const areCoordsEqual = this._areCoordsEqual;
 
-    // Remove Markers and close any open infoWindows
-    map.markers.forEach((m) => {
-      if( this._isMarkerRemoved(m.details.id, markers) ) {
-        if(m.infoWindow && m.infoWindow.visible) { 
-          m.infoWindow.setMap(null);
-          m.infoWindow = null;
+    GMaps.on('center_changed', map.map, () => { 
+      later(() => {
+        const { lat, lng } = this.getProperties('lat', 'lng');
+        const { A, F } = map.getCenter();
+
+        // If app state is out of sync with GMap
+        if(!areCoordsEqual(A, lat) || !areCoordsEqual(F, lng)) {
+          this.setProperties({ lat: A, lng: F });
         }
-        m.setMap(null);
-      }
+      });
     });
 
-    // Add Markers
-    markers.forEach((m) => {
-      let config = this.getProperties.apply(m, configProps);
-      config.details = merge(m, config.details || {});
-      config.details.id = config.details.id || `ember-cli-g-maps-${uuid()}`;
-
-      if( !map.hasMarker(config.details.id) ) {
-        const marker = map.addMarker(config);
-
-        if(m.infoWindow && m.infoWindow.visible) {
-          marker.infoWindow.open(map.map, marker);
+    GMaps.on('zoom_changed', map.map, () => {
+      later(() => {
+        const zoom = this.get('zoom');
+        if(zoom !== map.map.zoom) {
+          this.set('zoom', map.map.zoom);
         }
-      }
-
+      });
     });
+  }),
+
+
+  // Utilities
+  _areCoordsEqual: (a, b) => a.toFixed(12) === b.toFixed(12),
+
+
+  // Supported Actions
+  actions: {
+    click: function() {
+      this.sendAction('click', merge(this.get('happyPathGMapState'), ...arguments));
+    },
+    bounds_changed: function() {
+      this.sendAction('bounds_changed', merge(this.get('happyPathGMapState'), ...arguments));
+    },
+    center_changed: function() {
+      this.sendAction('center_changed', merge(this.get('happyPathGMapState'), ...arguments));
+    },
+    dblclick: function() {
+      this.sendAction('dblclick', merge(this.get('happyPathGMapState'), ...arguments));
+    },
+    drag: function() {
+      this.sendAction('drag', merge(this.get('happyPathGMapState'), ...arguments));
+    },
+    dragend: function() {
+      this.sendAction('dragend', merge(this.get('happyPathGMapState'), ...arguments));
+    },
+    dragstart: function() {
+      this.sendAction('dragstart', merge(this.get('happyPathGMapState'), ...arguments));
+    },
+    heading_changed: function() {
+      this.sendAction('heading_changed', merge(this.get('happyPathGMapState'), ...arguments));
+    },
+    idle: function() {
+      this.sendAction('idle', merge(this.get('happyPathGMapState'), ...arguments));
+    },
+    maptypeid_changed: function() {
+      this.sendAction('maptypeid_changed', merge(this.get('happyPathGMapState'), ...arguments));
+    },
+    mousemove: function() {
+      this.sendAction('mousemove', merge(this.get('happyPathGMapState'), ...arguments));
+    },
+    mouseout: function() {
+      this.sendAction('mouseout', merge(this.get('happyPathGMapState'), ...arguments));
+    },
+    mouseover: function() {
+      this.sendAction('mouseover', merge(this.get('happyPathGMapState'), ...arguments));
+    },
+    projection_changed: function() {
+      this.sendAction('projection_changed', merge(this.get('happyPathGMapState'), ...arguments));
+    },
+    resize: function() {
+      this.sendAction('resize', merge(this.get('happyPathGMapState'), ...arguments));
+    },
+    rightclick: function() {
+      this.sendAction('rightclick', merge(this.get('happyPathGMapState'), ...arguments));
+    },
+    tilesloaded: function() {
+      this.sendAction('tilesloaded', merge(this.get('happyPathGMapState'), ...arguments));
+    },
+    tilt_changed: function() {
+      this.sendAction('tilt_changed', merge(this.get('happyPathGMapState'), ...arguments));
+    },
+    zoom_changed: function() {
+      this.sendAction('zoom_changed', merge(this.get('happyPathGMapState'), ...arguments));
+    }
   }
 });
