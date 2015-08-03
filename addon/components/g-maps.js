@@ -11,6 +11,7 @@ export default Ember.Component.extend(Ember.Evented, GMapMarkers, {
   isMapLoaded: false,
   classNames: ['ember-cli-g-map'], 
 
+
   // Map Events
   _gmapEvents: [
     'bounds_changed',
@@ -34,6 +35,7 @@ export default Ember.Component.extend(Ember.Evented, GMapMarkers, {
     'zoom_changed'
   ],
 
+
   happyPathGMapState: computed('lat', 'lng', 'zoom', function() {
     const map    = this.get('map');
     const bounds = map.map.getBounds();
@@ -51,6 +53,7 @@ export default Ember.Component.extend(Ember.Evented, GMapMarkers, {
       // tilesloaded Promise
     };
   }),
+
 
   insertGMap: on('didInsertElement', function() {
     const events = this.get('_gmapEvents');
@@ -85,9 +88,10 @@ export default Ember.Component.extend(Ember.Evented, GMapMarkers, {
     }
   }),
 
-  //////////////////////////////////
-  // Parent -> Child GMap Bindings
-  //////////////////////////////////
+
+  /////////////////////////////
+  // Parent -> GMap Bindings
+  /////////////////////////////
   _syncCenter: observer('isMapLoaded', 'lat', 'lng', function() {
     if(!this.get('isMapLoaded')) { return; }
     const { map, lat, lng } = this.getProperties('map', 'lng', 'lat');
@@ -107,9 +111,9 @@ export default Ember.Component.extend(Ember.Evented, GMapMarkers, {
   }),
 
 
-  //////////////////////////////////
-  // Child -> Parent GMap Bindings
-  //////////////////////////////////
+  /////////////////////////////
+  // GMap -> Parent Bindings
+  ////////////////////////////
   _addGMapPersisters: on('ember-cli-g-map-loaded', function() {
     const map = this.get('map');
     const areCoordsEqual = this._areCoordsEqual;
