@@ -1,12 +1,14 @@
 /* globals GMaps google */
-import Ember       from 'ember';
-import extendMap   from 'ember-cli-g-maps/utils/g-maps/extend-map';
-import GMapMarkers from 'ember-cli-g-maps/mixins/g-maps/markers';
+import Ember        from 'ember';
+import utils        from 'ember-cli-g-maps/utils/g-maps/g-map';
+import extendMap    from 'ember-cli-g-maps/utils/g-maps/extend-map';
+import GMapMarkers  from 'ember-cli-g-maps/mixins/g-maps/markers';
+import GMapPolygons from 'ember-cli-g-maps/mixins/g-maps/polygons'
 
 const { on, merge, uuid, computed, observer } = Ember;
 const { later } = Ember.run;
 
-export default Ember.Component.extend(Ember.Evented, GMapMarkers, {
+export default Ember.Component.extend(Ember.Evented, GMapMarkers, GMapPolygons, {
   map: null,
   isMapLoaded: false,
   classNames: ['ember-cli-g-map'], 
@@ -96,7 +98,7 @@ export default Ember.Component.extend(Ember.Evented, GMapMarkers, {
     if(!this.get('isMapLoaded')) { return; }
     const { map, lat, lng } = this.getProperties('map', 'lng', 'lat');
     const { A, F } = map.getCenter();
-    const areCoordsEqual = this._areCoordsEqual;
+    const areCoordsEqual = utils.areCoordsEqual;
 
     // If map is out of sync with app state
     if(!areCoordsEqual(A, lat) || !areCoordsEqual(F, lng)) {
@@ -116,7 +118,7 @@ export default Ember.Component.extend(Ember.Evented, GMapMarkers, {
   ////////////////////////////
   _addGMapPersisters: on('ember-cli-g-map-loaded', function() {
     const map = this.get('map');
-    const areCoordsEqual = this._areCoordsEqual;
+    const areCoordsEqual = utils.areCoordsEqual;
 
     GMaps.on('center_changed', map.map, () => { 
       later(() => {
@@ -139,10 +141,6 @@ export default Ember.Component.extend(Ember.Evented, GMapMarkers, {
       });
     });
   }),
-
-
-  // Utilities
-  _areCoordsEqual: (a, b) => a.toFixed(12) === b.toFixed(12),
 
 
   // Supported Actions

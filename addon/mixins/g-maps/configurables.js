@@ -4,6 +4,7 @@ const { isArray } = Ember;
 
 export default Ember.Mixin.create({
 
+
   // Common Child Events
   _gmapChildEvents: [
     'click',
@@ -17,6 +18,7 @@ export default Ember.Mixin.create({
     'mouseover',
     'mouseup'
   ],
+
 
   getConfigParams: function(...args) {
     const groups  = this.getProperties(...args);
@@ -35,9 +37,10 @@ export default Ember.Mixin.create({
     return confProps;
   },
 
+
   getConfig: function(params, context=this) {
     const config = this.getProperties.apply(context, params);
-
+    console.log(config);
     for(let p in config) {
       if(!config.hasOwnProperty(p)) { continue; }
       if(typeof config[p] === 'undefined') {
@@ -46,5 +49,16 @@ export default Ember.Mixin.create({
     }
 
     return config;
+  },
+
+
+  /**
+   * [getModelProperties convert Class or Object into POJO without prototype]
+   * @param  {[Class|Object]} model [Ember]
+   * @return {[Object]}       [POJO containing only model properties]
+   */
+  getModelProperties: function(model) {
+    const keys = Object.keys(model);
+    return this.getProperties.apply(model, keys);
   }
 });
