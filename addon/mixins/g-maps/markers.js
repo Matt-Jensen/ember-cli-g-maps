@@ -1,13 +1,15 @@
 /* globals GMaps google */
 
 import Ember         from 'ember';
-import Configurables from 'ember-cli-g-maps/mixins/g-maps/configurables';
 import utils         from 'ember-cli-g-maps/utils/g-maps/markers';
+import gmapChild     from 'ember-cli-g-maps/utils/g-maps/g-map-child';
+import Configurables from 'ember-cli-g-maps/mixins/g-maps/configurables';
 
-const { on, computed, observer, merge, uuid } = Ember;
+const { on, computed, observer, merge, isArray } = Ember;
 
 export default Ember.Mixin.create(Configurables, {
   markers: Ember.A(),
+
 
   ///////////////////////////
   // Marker Configurables
@@ -56,8 +58,8 @@ export default Ember.Mixin.create(Configurables, {
 
   validateMarkers: on('didInsertElement', function() {
     const markers = this.get('markers');
-    if(markers && !Ember.isArray(markers)) {
-      throw new Error('g-maps componet expects markers to be an Array');
+    if(markers && !isArray(markers)) {
+      throw new Error('g-maps component expects markers to be an Ember Array');
     }
   }),
 
@@ -74,24 +76,7 @@ export default Ember.Mixin.create(Configurables, {
 
 
   _markersUpdated: computed('_markerIds', {
-    get() {
-      if(!this.get('map')){ return false; }
-      const _markerIds  = this.get('_markerIds');
-      const mapMarkers  = this.get('map').markers;
-
-      // Markers were updated
-      if(mapMarkers.length !== _markerIds.length) { return true; }
-
-      for(let i = 0, l = mapMarkers.length; i < l; i++) {
-
-        // Compare GMap marker id's to Model markers id's
-        if(_markerIds.indexOf(mapMarkers[i].id) === -1) {
-          return true; // Markers were updated
-        }
-      }
-
-      return false; // Markers not updated
-    }
+    get: gmapChild.wasModelUpdated('_markerIds', 'markers')
   }),
 
 
@@ -121,19 +106,23 @@ export default Ember.Mixin.create(Configurables, {
       m.setMap(null);
     }
 
-    const markerConfProps = this.getConfigParams('_gmapChildEvents', '_gmapMarkerProps', '_gmapMarkerEvents');
+    const confProps = this.getConfigParams('_gmapChildEvents', '_gmapMarkerProps', '_gmapMarkerEvents');
 
     // Add (unadded) Markers to GMap
     for(let i = 0, l = markers.length; i < l; i++) {
       let m = markers[i];
       let id = m.id;
 
-      if( id && map.hasMarker(id) ) { continue; }
+      // Marker is already on map
+      if( id && map.hasChild(id, 'marker') ) { continue; }
 
-      let config = this.getConfig(markerConfProps, m);
+      let config = this.getConfig(confProps, m);
 
       // Merge marker source data into marker.details
-      config.details = merge(m, config.details || {});
+      config.details = merge(
+        this.getModelProperties(m), 
+        config.details || {}
+      );
 
       // Add new marker to map
       const marker = map.addMarker(config);

@@ -1,10 +1,20 @@
+import Ember from 'ember';
+
+const { isArray }   = Ember;
+const { pluralize } = Ember.String;
+
 export default function gMapsExtendMap(gmap) {
   
-  /* Method to test if the id is listed in the map's markers Array */
-  gmap.hasMarker = gmap.hasMarker || function gmapHasMarker(marker_id) {
-    const markers = this.markers;
-    for(let i = 0, l = markers.length; i < l; i++ ) {
-      if(markers[i].details.id === marker_id) {
+  /* Method to test if the id is listed in the give map's model Array */
+  gmap.hasChild = gmap.hasChild || function gmapHasChild(id, type) {
+    const model = this[ pluralize(type) ];
+
+    if( !isArray(model) ) {
+      throw new Error('hasChild requires a name to valid GMap model array');
+    }
+
+    for(let i = 0, l = model.length; i < l; i++ ) {
+      if(model[i].details.id === id) {
         return true;
       }
     }
