@@ -3,6 +3,11 @@ import Ember from 'ember';
 const { isArray }   = Ember;
 const { pluralize } = Ember.String;
 
+// TODO:
+// Convert this into an instance initializer extending GMap.prototype
+// Ensure that the initializer does not overwrite any exiting GMap methods
+// Avoid re-extending each GMap instances with the same methods
+
 export default function gMapsExtendMap(gmap) {
   
   /* Method to test if the id is listed in the give map's model Array */

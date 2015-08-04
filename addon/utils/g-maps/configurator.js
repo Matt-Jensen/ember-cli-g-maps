@@ -2,25 +2,10 @@ import Ember from 'ember';
 
 const { isArray } = Ember;
 
-export default Ember.Mixin.create({
+export default Ember.Object.create({
 
-  // Common Child Events
-  _gmapChildEvents: [
-    'click',
-    'rightclick',
-    'dblclick',
-    'drag',
-    'dragend',
-    'dragstart',
-    'mousedown',
-    'mouseout',
-    'mouseover',
-    'mouseup'
-  ],
-
-
-  getConfigParams: function(...args) {
-    const groups  = this.getProperties(...args);
+  getConfigParams: function(params, context=this) {
+    const groups  = this.getProperties.apply(context, params);
     let confProps = [];
 
     // Convert all configuration options to single level Array

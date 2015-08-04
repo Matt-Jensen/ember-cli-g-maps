@@ -1,12 +1,10 @@
 /* globals GMaps google */
 import Ember           from 'ember';
-import Configurables   from 'ember-cli-g-maps/mixins/g-maps/configurables';
 import childCollection from 'ember-cli-g-maps/utils/g-maps/child-collection';
 
 const { isArray } = Ember;
 
 export default Ember.Mixin.create(
-  Configurables,
   childCollection.create({
     model: 'markers',
 
@@ -37,6 +35,16 @@ export default Ember.Mixin.create(
     ],
 
     events: [
+      'click',
+      'rightclick',
+      'dblclick',
+      'drag',
+      'dragend',
+      'dragstart',
+      'mousedown',
+      'mouseout',
+      'mouseover',
+      'mouseup',
       'animation_changed',
       'clickable_changed',
       'cursor_changed',
