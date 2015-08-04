@@ -1,13 +1,11 @@
 /* globals GMaps google */
 import Ember           from 'ember';
-import Configurables   from 'ember-cli-g-maps/mixins/g-maps/configurables';
 import childCollection from 'ember-cli-g-maps/utils/g-maps/child-collection';
 
 
 const { isArray } = Ember;
 
 export default Ember.Mixin.create(
-  Configurables,
   childCollection.create({
     model: 'polygons',
 
@@ -30,7 +28,19 @@ export default Ember.Mixin.create(
       'zIndex'
     ],
 
-    events: ['mousemove'],
+    events: [
+      'click',
+      'rightclick',
+      'dblclick',
+      'drag',
+      'dragend',
+      'dragstart',
+      'mousedown',
+      'mouseout',
+      'mouseover',
+      'mouseup',
+      'mousemove'
+    ],
 
     validate: function() {
       const polygons = this.get('polygons');

@@ -1,15 +1,20 @@
-import Ember from 'ember';
+import Ember        from 'ember';
+import configurator from 'ember-cli-g-maps/utils/g-maps/configurator';
 
 const { merge, uuid, on, computed, observer, isArray } = Ember;
 const { capitalize } = Ember.String;
 
 export default {
   create: function createChildCollection(settings) {
-    const utils = this;
+    const utils           = this;
+    const noop            = function() {};
     const globalNamespace = '_gmap';
+
     const defaults = {
       namespace: `gMapChildCollection_${uuid()}`
     };
+
+    // TODO: Make these configurable
     const gmapCreate = {
       polygons:   'drawPolygon',
       markers:    'addMarker',
@@ -29,37 +34,84 @@ export default {
 
     const namespace  = globalNamespace+capitalize(settings.namespace);
     const model      = settings.model;
-    const removeItem = function(item, map) {
-      if(settings.onRemoveItem) {
-        settings.onRemoveItem(item, map);
-      }
 
+    // TODO: abstract instance methods
+    const removeItem = function(item, map) {
       if(item.setMap) {
         item.setMap(null);
       }
 
+      if(settings.onRemoveItem) {
+        settings.onRemoveItem(item, map);
+      }
+
       return item;
     };
-    const addedItem = settings.onAddedItem || function() {};
+    const addedItem = settings.onAddedItem || noop;
+
+    /////////////////////////////////////////
+    // Child Collection Mixin Configuration
+    ////////////////////////////////////////
 
     return {
-      [model]:                 Ember.A(),
-      [namespace+'Props']:     settings.props,
-      [namespace+'Events']:    settings.events,
 
-      [namespace+'Validate']:  on('didInsertElement', settings.validate),
+      /**
+       * Reference to the GMap instance store
+       */
+      [model]: Ember.A(),
 
-      [namespace+'OnDestroy']: on('willDestroyElement', settings.onDestroy),
-      [`${namespace}Ids`]:     computed.map(`${model}.@each.id`, function(m) {
+
+      /**
+       * Supported properties for the Child Collection
+       */
+      [namespace+'Props']: settings.props,
+
+
+      /**
+       * Supported events for the Child Collection
+       */
+      [namespace+'Events']: settings.events,
+
+
+      /**
+       * Optional method to ensure correct parent data for Child Collection
+       */
+      [namespace+'Validate']: on('didInsertElement', settings.validate || noop),
+
+
+      /**
+       * Optional method to remove any bound google.map.events ect
+       */
+      [namespace+'OnDestroy']: on('willDestroyElement', settings.onDestroy || noop),
+
+
+      /**
+       * [Computed property to map over parent model items, checking and returning ids]
+       * @param  {[Child Collection item]}
+       * @return {[Single level Array of Parent Model ids]}
+       */
+      [`${namespace}Ids`]: computed.map(`${model}.@each.id`, function(m) {
         if( !m.id ) { throw new Error(`${model} items require an id`); }
         return m.id;
       }),
 
+
+      /**
+       * [Computed property to determine differences between Parent and GMap models]
+       * @return {[Boolean]}
+       */
       [`${namespace}Updated`]: computed(`${namespace}Ids`, {
         get: utils._wasModelUpdated(`${namespace}Ids`, model)
       }),
 
-      [`${namespace}Sync`]:    observer('isMapLoaded', `${model}.@each.id`, function() {
+
+      /**
+       * [Observer to sync the Parent with the GMap model, of the same name]
+       * @requires  {[Parent Model]}
+       * @requires  {[GMap Model]}
+       * @requires  {[GMap create method]}
+       */
+      [`${namespace}Sync`]: observer('isMapLoaded', `${model}.@each.id`, function() {
         let parentModel    = this.get(model);
         const map          = this.get('map');
         const createMethod = gmapCreate[model];
@@ -84,11 +136,10 @@ export default {
           l--;
         }
 
-
-        const confProps = this.getConfigParams(
-          '_gmapChildEvents', // Set in configurables
-          `${namespace}Props`,
-          `${namespace}Events`
+        // Build supported config parameters
+        const confProps = configurator.getConfigParams(
+          [`${namespace}Props`, `${namespace}Events`],
+          this
         );
 
         // Add (unadded) Item to GMap
@@ -99,11 +150,11 @@ export default {
           // Child Item is already on map
           if( id && map.hasChild(id, model) ) { continue; }
 
-          let config = this.getConfig(confProps, item);
+          let config = configurator.getConfig(confProps, item);
 
           // Merge marker source data into marker.details
           config.details = merge(
-            this.getModelProperties(item), 
+            configurator.getModelProperties(item), 
             config.details || {}
           );
 
