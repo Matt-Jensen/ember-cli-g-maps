@@ -32,10 +32,30 @@ export default Ember.Route.extend({
   },
 
   actions: {
+    onClickPolygons: function(e) {
+      const controller = this.controller;
+      let polygons     = controller.polygons;
+
+      controller.set('polygons', Ember.A());
+
+      Ember.run.later(() => {
+        controller.get('polygons').pushObject({
+          id: 'ldfa3fadkafa32234klafj23', 
+          paths: [
+            [-0.19226038138120835, -120.498046875],
+            [1.0381511983133254, -104.0625],
+            [-9.725300127953915, -95.185546875],
+            [-14.365512629178598, -112.060546875],
+            [-7.204450551811732, -126.03515625]
+          ]
+        });
+      }, 1000);
+    },
+
     onClickMarkers: function(e) {
       const controller = this.controller;
-      let markers = controller.markers;
-      const id = Ember.uuid()+'-ember-g-map-id';
+      let markers      = controller.markers;
+      const id         = Ember.uuid()+'-ember-g-map-id';
 
       console.log(e.latLng.A, e.latLng.F);
 

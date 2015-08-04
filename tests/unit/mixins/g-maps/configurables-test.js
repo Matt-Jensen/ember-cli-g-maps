@@ -1,5 +1,5 @@
 import Ember from 'ember';
-import GMapsConfigurablesMixin from '../../../mixins/g-maps/configurables';
+import GMapsConfigurablesMixin from 'ember-cli-g-maps/mixins/g-maps/configurables';
 import { module, test } from 'qunit';
 
 module('Unit | Mixin | g maps/configurables');

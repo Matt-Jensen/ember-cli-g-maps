@@ -4,7 +4,6 @@ const { isArray } = Ember;
 
 export default Ember.Mixin.create({
 
-
   // Common Child Events
   _gmapChildEvents: [
     'click',
@@ -40,7 +39,7 @@ export default Ember.Mixin.create({
 
   getConfig: function(params, context=this) {
     const config = this.getProperties.apply(context, params);
-    console.log(config);
+
     for(let p in config) {
       if(!config.hasOwnProperty(p)) { continue; }
       if(typeof config[p] === 'undefined') {

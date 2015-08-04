@@ -1,4 +1,4 @@
-import gMapsMarkers from '../../../utils/g-maps/markers';
+import gMapsMarkers from 'ember-cli-g-maps/utils/g-maps/markers';
 import { module, test } from 'qunit';
 
 module('Unit | Utility | g maps/markers');
