@@ -1,25 +1,30 @@
 import Ember from 'ember';
 
+const pathToAlabama = [[35.0041, -88.1955], [34.9918, -85.6068], [32.8404, -85.1756], [32.2593, -84.8927], [32.1535, -85.0342], [31.7947, -85.1358], [31.52,   -85.0438], [31.3384, -85.0836], [31.2093, -85.107], [31.0023, -84.9944], [30.9953, -87.6009], [30.9423, -87.5926], [30.8539, -87.6256], [30.6745, -87.4072], [30.4404, -87.3688], [30.1463, -87.524], [30.1546, -88.3864], [31.8939, -88.4743], [34.8938, -88.1021], [34.9479, -88.1721], [34.9107, -88.1461]];
+
 export default Ember.Route.extend({
+  gMap: Ember.inject.service(),
+
   setupController: function(controller) {
+    Ember.run.scheduleOnce('afterRender', this, function() {
+      const mapHelper = this.get('gMap').maps.select('main-map');
+      if( !mapHelper ) { return; }
+      mapHelper.onLoad.then(function() {
+        console.info('Google map has finished loading!');
+      });
+    });
+
     controller.setProperties({
-      lat:  -12.043333,
-      lng:  -77.028333,
+      lat: 32.75494243654723,
+      lng: -86.8359375,
       zoom: 4,
       markers: Ember.A([
-        {id: '1231darsa2', lat:  -12.043333, lng:  -77.028333, title: 'One', click: function(e) {console.log(e); } }, 
-        {id: '7643darsa2', lat:  -12.5, lng:  -77.5, title: 'Two', click: function(e) {console.log(e); }, hugs: true }
+        {id: 'jdlkfajs22', lat: 33.516674497188255, lng: -86.80091857910156, infoWindow: { content: '<p>Birmingham</p>', visible: true }, click: function() {console.log('Boo Boo Boo'); }}
       ]),
       polygons: Ember.A([
         {
           id: 'lka234klafj23', 
-          paths: [
-            [-0.19226038138120835, -120.498046875],
-            [1.0381511983133254, -104.0625],
-            [-9.725300127953915, -95.185546875],
-            [-14.365512629178598, -112.060546875],
-            [-7.204450551811732, -126.03515625]
-          ]
+          paths: pathToAlabama
         }
       ])
     });
@@ -57,7 +62,9 @@ export default Ember.Route.extend({
       let markers      = controller.markers;
       const id         = Ember.uuid()+'-ember-g-map-id';
 
-      console.log(e.latLng.A, e.latLng.F);
+      e.mapTilesLoaded.then(function() {
+        console.log(e.latLng.A, e.latLng.F);
+      });
 
       // Mix up Markers
       // controller.set('markers', Ember.A(markers.map((m, i) => {
