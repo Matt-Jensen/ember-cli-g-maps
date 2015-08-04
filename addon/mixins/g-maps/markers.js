@@ -87,10 +87,12 @@ export default Ember.Mixin.create(
         marker.infoWindow.open(map.map, marker);
         marker.addListener('click', function toggleInfoWindow() {
           if(!marker.infoWindow) { return; }
-          if(marker.infoWindow.get('visible')) {
+          if(marker.infoWindow.get('visible') === false) {
             marker.infoWindow.open(map.map, marker);
+            marker.infoWindow.set('visible', true);
           } else {
             marker.infoWindow.close(map.map, marker);
+            marker.infoWindow.set('visible', false);
           }
         });
       }

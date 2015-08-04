@@ -9,8 +9,10 @@ const { later } = Ember.run;
 
 export default Ember.Component.extend(Ember.Evented, GMapMarkers, GMapPolygons, {
   map: null,
+  name: null,
   isMapLoaded: false,
   classNames: ['ember-cli-g-map'], 
+  gMap: Ember.inject.service(),
 
 
   // Map Events
@@ -37,25 +39,6 @@ export default Ember.Component.extend(Ember.Evented, GMapMarkers, GMapPolygons, 
   ],
 
 
-  happyPathGMapState: computed('lat', 'lng', 'zoom', function() {
-    const map    = this.get('map');
-    const bounds = map.map.getBounds();
-
-    return {
-      bounds: [
-        { lat: bounds.Da.j, lng: bounds.va.j },
-        { lat: bounds.Da.j, lng: bounds.va.A },
-        { lat: bounds.Da.A, lng: bounds.va.A },
-        { lat: bounds.Da.A, lng: bounds.va.j }
-      ]
-
-      // TODO:
-      // idle Promise
-      // tilesloaded Promise
-    };
-  }),
-
-
   insertGMap: on('didInsertElement', function() {
     const events = this.get('_gmapEvents');
     const configProps = ['lat', 'lng', 'zoom'];
@@ -71,12 +54,18 @@ export default Ember.Component.extend(Ember.Evented, GMapMarkers, GMapPolygons, 
       GMaps.on(events[i], map.map, (e) => this.send(events[i], e));
     }
 
-    google.maps.event.addListenerOnce(map.map, 'idle', () => {
+    if( !this.get('name') ) {
+      this.set('name', `ember-cli-g-map-${uuid()}`);
+    }
+
+    // Create map service instance and register load event
+    const mapService = this.get('gMap').maps.add(this.get('name'), map.map);
+    mapService.onLoad.then(() => {
       this.set('isMapLoaded', true);
       this.trigger('ember-cli-g-map-loaded');
-      // TODO: Service promise resolving
     });
   }),
+
 
   destroyGMap: on('willDestroyElement', function destroyGMap() {
     const events = this.get('events');
@@ -202,6 +191,33 @@ export default Ember.Component.extend(Ember.Evented, GMapMarkers, GMapPolygons, 
       this.sendAction('zoom_changed', merge(this.get('happyPathGMapState'), ...arguments));
     }
   },
+
+
+  /////////////////////////////////////////////////////
+  // Map state info, generally used to make requests
+  ////////////////////////////////////////////////////
+
+  happyPathGMapState: computed('lat', 'lng', 'zoom', function() {
+    const map    = this.get('map');
+    const bounds = map.map.getBounds();
+
+    return {
+      bounds: [
+        { lat: bounds.Da.j, lng: bounds.va.j },
+        { lat: bounds.Da.j, lng: bounds.va.A },
+        { lat: bounds.Da.A, lng: bounds.va.A },
+        { lat: bounds.Da.A, lng: bounds.va.j }
+      ],
+
+      mapIdle: new Promise((resolve) => {
+        google.maps.event.addListenerOnce(map.map, 'idle', resolve);
+      }),
+
+      mapTilesLoaded: new Promise((resolve) => {
+        google.maps.event.addListenerOnce(map.map, 'tilesloaded', resolve);
+      })
+    };
+  }),
 
 
   /////////////
