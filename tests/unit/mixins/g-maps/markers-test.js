@@ -1,5 +1,5 @@
 import Ember from 'ember';
-import GMapsMarkersMixin from '../../../mixins/g-maps/markers';
+import GMapsMarkersMixin from 'ember-cli-g-maps/mixins/g-maps/markers';
 import { module, test } from 'qunit';
 
 module('Unit | Mixin | g maps/markers');

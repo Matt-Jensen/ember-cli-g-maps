@@ -1,4 +1,4 @@
-import gMapsGMapChild from '../../../utils/g-maps/g-map-child';
+import gMapsGMapChild from 'ember-cli-g-maps/utils/g-maps/g-map-child';
 import { module, test } from 'qunit';
 
 module('Unit | Utility | g maps/g map child');

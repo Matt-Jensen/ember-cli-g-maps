@@ -1,5 +1,3 @@
-import Ember from 'ember';
-
 export default {
   wasModelUpdated: function wasModelUpdated(modelIdsKey, model) {
     return function() {
@@ -21,4 +19,4 @@ export default {
       return false; // Model not updated
     }
   }
-};
+}

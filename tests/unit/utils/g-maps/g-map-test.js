@@ -1,4 +1,4 @@
-import gMapsGMap from '../../../utils/g-maps/g-map';
+import gMapsGMap from 'ember-cli-g-maps/utils/g-maps/g-map';
 import { module, test } from 'qunit';
 
 module('Unit | Utility | g maps/g map');

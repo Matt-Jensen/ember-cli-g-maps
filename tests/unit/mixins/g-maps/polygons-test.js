@@ -1,5 +1,5 @@
 import Ember from 'ember';
-import GMapsPolygonsMixin from '../../../mixins/g-maps/polygons';
+import GMapsPolygonsMixin from 'ember-cli-g-maps/mixins/g-maps/polygons';
 import { module, test } from 'qunit';
 
 module('Unit | Mixin | g maps/polygons');
