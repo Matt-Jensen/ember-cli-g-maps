@@ -18,7 +18,6 @@ export default Ember.Mixin.create(
       'fillColor',
       'fillOpacity',
       'geodesic',
-      'map',
       'paths',
       'strokeColor',
       'strokeOpacity',
@@ -44,11 +43,20 @@ export default Ember.Mixin.create(
 
     validate: function() {
       const polygons = this.get('polygons');
-      if(polygons && !isArray(polygons)) {
+
+      if(!polygons) { return } // validation not necessary
+
+      if(!isArray(polygons)) {
         throw new Error('g-maps component expects polygons to be an Ember Array');
       }
-    },
 
-    onDestroy: function() {}
+      // End validation
+      if(!polygons[0] || !polygons[0].paths || !polygons[0].paths[0]) { return; }
+
+      // Reminder for well formed polygon paths
+      if(!isArray(polygons[0].paths[0])) {
+        throw new Error('g-maps polygon paths expects Array of Arrays: [[lat, lng]]');
+      }
+    }
   })
 );

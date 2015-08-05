@@ -24,7 +24,19 @@ export default Ember.Route.extend({
       polygons: Ember.A([
         {
           id: 'lka234klafj23', 
-          paths: pathToAlabama
+          paths: pathToAlabama,
+          zIndex: 10
+        }
+      ]),
+      circles: Ember.A([
+        {
+          id: 'lfkjasd23faj2f31',
+          lat: 32.75494243654723,
+          lng: -86.8359375,
+          radius: 500000,
+          fillOpacity: '0.1',
+          fillColor: 'red',
+          zIndex: 9
         }
       ])
     });
@@ -55,6 +67,25 @@ export default Ember.Route.extend({
           ]
         });
       }, 1000);
+    },
+
+    onCircleClick: function(e) {
+      const controller = this.controller;
+      let circles      = controller.get('circles');
+
+      circles.removeAt(0);
+
+      Ember.run.later(() => {
+        controller.get('circles').pushObject({
+          id: 'zfkj234d23faj2f31',
+          lat: 32.75494243654723,
+          lng: -86.8359375,
+          radius: 500000,
+          fillOpacity: '0.1',
+          fillColor: 'blue',
+          zIndex: 9
+        })
+      })
     },
 
     onClickMarkers: function(e) {
@@ -93,7 +124,7 @@ export default Ember.Route.extend({
           }
         },
         infoWindow: {
-          content: '<p>Mark that down!</p>',
+          content: '<p>Here I come, Alabama!</p>',
           visible: true
         }
       });
