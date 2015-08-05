@@ -31,7 +31,7 @@ ENV.contentSecurityPolicy = {
 };
 ```
 
-You wont see your map unless it has height
+You wont see your map unless it has height. In `app/styles/app.css`:
 
 ```css
 .ember-cli-g-map {
@@ -68,7 +68,6 @@ In your template:
 ```
 **Add Markers**
 ```js
-// route
 export default Ember.Route.extend({
   setupController: function(controller) {
     controller.setProperties({
@@ -100,7 +99,6 @@ export default Ember.Route.extend({
 
 **Add Polygons**
 ```js
-// route
 export default Ember.Route.extend({
   setupController: function(controller) {
     controller.setProperties({
@@ -153,7 +151,7 @@ export default Ember.Route.extend({
 ```
 
 **Add G-Map Component Events**
-```js   
+```js
 export default Ember.Route.extend({
   actions: {
     onMapClick: function(e) {
@@ -266,7 +264,7 @@ export default Ember.Route.extend({
 - [Routes](http://hpneo.github.io/gmaps/examples/routes.html)
 - [Info Windows](https://github.com/huafu/ember-google-map/wiki/Provided-Tools-and-Classes-%28API%29#info-windows)
 - Labels (A simple text element)
-- 
+
 ## Customization ##
 
 In `config/environment.js`
