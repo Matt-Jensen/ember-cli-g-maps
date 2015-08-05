@@ -1,13 +1,20 @@
 /* globals GMaps google */
 import Ember        from 'ember';
-import extendMap    from 'ember-cli-g-maps/utils/g-maps/extend-map';
+import gmapProtoExt from 'ember-cli-g-maps/utils/g-maps/prototype-ext';
 import GMapMarkers  from 'ember-cli-g-maps/mixins/g-maps/markers';
-import GMapPolygons from 'ember-cli-g-maps/mixins/g-maps/polygons'
+import GMapPolygons from 'ember-cli-g-maps/mixins/g-maps/polygons';
+import GMapCircles  from 'ember-cli-g-maps/mixins/g-maps/circles';
 
 const { on, merge, uuid, computed, observer } = Ember;
 const { later } = Ember.run;
 
-export default Ember.Component.extend(Ember.Evented, GMapMarkers, GMapPolygons, {
+//////////////////////////////////
+// Extend the Prototype of GMaps
+/////////////////////////////////
+gmapProtoExt();
+////////////////////////////////
+
+export default Ember.Component.extend(Ember.Evented, GMapMarkers, GMapPolygons, GMapCircles, {
   map: null,
   name: null,
   isMapLoaded: false,
@@ -45,7 +52,7 @@ export default Ember.Component.extend(Ember.Evented, GMapMarkers, GMapPolygons, 
     let config = this.getProperties.apply(this, configProps);
     config.div = `#${this.element.id}`;
 
-    const map = extendMap(new GMaps( config ));
+    const map = new GMaps( config );
     this.set('map', map);
 
     // Set GMap events
@@ -63,6 +70,12 @@ export default Ember.Component.extend(Ember.Evented, GMapMarkers, GMapPolygons, 
     mapService.onLoad.then(() => {
       this.set('isMapLoaded', true);
       this.trigger('ember-cli-g-map-loaded');
+      // map.drawCircle({
+      //   id: 'lfkjasd23faj2f31',
+      //   lat: 32.75494243654723,
+      //   lng: -86.8359375,
+      //   radius: 500000
+      // })
     });
   }),
 

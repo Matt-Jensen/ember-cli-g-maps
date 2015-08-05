@@ -1,3 +1,4 @@
+
 import Ember        from 'ember';
 import configurator from 'ember-cli-g-maps/utils/g-maps/configurator';
 
@@ -32,8 +33,8 @@ export default {
       throw new Error('childCollection requires a `model` string');
     }
 
-    const namespace  = globalNamespace+capitalize(settings.namespace);
-    const model      = settings.model;
+    const namespace = globalNamespace+capitalize(settings.namespace);
+    const model     = settings.model;
 
     // TODO: abstract instance methods
     const removeItem = function(item, map) {
@@ -122,7 +123,6 @@ export default {
         // Remove (deleted) Items from GMap
         for(let i = 0, l = map[model].length; i < l; i++) {
           let item  = map[model][i];
-          if(!item) { console.log(map[model], i); }
           let id    = item.details.id;
 
           if(utils._isItemRemoved(id, parentModel) === false) { 
