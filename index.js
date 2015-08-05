@@ -7,7 +7,7 @@ module.exports = {
   included: function(app) {
     this._super.included(app);
 
-    app.import('bower_components/gmaps/gmaps.js');
+    app.import(app.bowerDirectory + '/gmaps/gmaps.js');
   },
 
   // Request Google Maps script in consuming app
@@ -39,12 +39,14 @@ module.exports = {
       }
 
       // Build URL
+      // googleMapSrc += '?'+ params.join('&');
+      // if(googleMapConfig.lazyLoad) {
+      //   content = '<meta name="ember-cli-g-maps-sdk-url" content="'+ googleMapSrc +'">';
+      // } else {
+      //   content = '<script src="'+ googleMapSrc +'"></script>';
+      // }
       googleMapSrc += '?'+ params.join('&');
-      if(googleMapConfig.lazyLoad) {
-        content = '<meta name="ember-cli-g-maps-sdk-url" content="'+ googleMapSrc +'">';
-      } else {
-        content = '<script src="'+ googleMapSrc +'"></script>';
-      }
+      content = '<script src="'+ googleMapSrc +'"></script>';
     }
 
     return content;

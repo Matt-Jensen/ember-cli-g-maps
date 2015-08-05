@@ -45,11 +45,17 @@ export default Ember.Component.extend(Ember.Evented, GMapMarkers, GMapPolygons, 
     'zoom_changed'
   ],
 
+  _requiredProperties: {
+    lat: 0,
+    lng: 0,
+    zoom: 0
+  },
 
   insertGMap: on('didInsertElement', function() {
     const events = this.get('_gmapEvents');
     const configProps = ['lat', 'lng', 'zoom'];
     let config = this.getProperties.apply(this, configProps);
+    config     = merge(this._requiredProperties, config);
     config.div = `#${this.element.id}`;
 
     const map = new GMaps( config );
@@ -95,6 +101,7 @@ export default Ember.Component.extend(Ember.Evented, GMapMarkers, GMapPolygons, 
   /////////////////////////////
   // Parent -> GMap Bindings
   /////////////////////////////
+
   _syncCenter: observer('isMapLoaded', 'lat', 'lng', function() {
     if(!this.get('isMapLoaded')) { return; }
     const { map, lat, lng } = this.getProperties('map', 'lng', 'lat');
@@ -117,6 +124,7 @@ export default Ember.Component.extend(Ember.Evented, GMapMarkers, GMapPolygons, 
   /////////////////////////////
   // GMap -> Parent Bindings
   ////////////////////////////
+
   _addGMapPersisters: on('ember-cli-g-map-loaded', function() {
     const map = this.get('map');
     const areCoordsEqual = this._areCoordsEqual;
@@ -144,7 +152,8 @@ export default Ember.Component.extend(Ember.Evented, GMapMarkers, GMapPolygons, 
   }),
 
 
-  // Supported Actions
+  // Supported g-map Actions
+
   actions: {
     click: function() {
       this.sendAction('click', merge(this.get('happyPathGMapState'), ...arguments));

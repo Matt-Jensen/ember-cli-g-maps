@@ -1,7 +1,7 @@
 {
   "name": "ember-cli-g-maps",
-  "version": "0.0.0",
-  "description": "The default blueprint for ember-cli addons.",
+  "version": "0.0.6",
+  "description": "An Ember CLI Addon for map driven applications. Built with GMaps, an open source Google Maps project. Currently in Beta.",
   "directories": {
     "doc": "doc",
     "test": "tests"
