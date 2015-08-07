@@ -1,4 +1,3 @@
-/* globals GMaps google */
 import Ember           from 'ember';
 import childCollection from 'ember-cli-g-maps/utils/g-maps/child-collection';
 
@@ -44,7 +43,7 @@ export default Ember.Mixin.create(
     validate: function() {
       const polygons = this.get('polygons');
 
-      if(!polygons) { return } // validation not necessary
+      if(!polygons) { return; } // validation not necessary
 
       if(!isArray(polygons)) {
         throw new Error('g-maps component expects polygons to be an Ember Array');

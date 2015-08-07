@@ -1,4 +1,3 @@
-/* globals GMaps google */
 import Ember           from 'ember';
 import childCollection from 'ember-cli-g-maps/utils/g-maps/child-collection';
 

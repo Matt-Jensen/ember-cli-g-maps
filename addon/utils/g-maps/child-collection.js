@@ -2,7 +2,7 @@
 import Ember        from 'ember';
 import configurator from 'ember-cli-g-maps/utils/g-maps/configurator';
 
-const { merge, uuid, on, computed, observer, isArray } = Ember;
+const { merge, uuid, on, computed, observer } = Ember;
 const { capitalize } = Ember.String;
 
 export default {
@@ -126,7 +126,7 @@ export default {
           let id    = item.details.id;
 
           if(utils._isItemRemoved(id, parentModel) === false) { 
-            continue;
+            continue; // Item not removed
           }
 
           removeItem(item, map);
@@ -134,6 +134,7 @@ export default {
           // Remove Item from GMap store
           map[model].splice(i, 1);
           l--;
+          i--;
         }
 
         // Build supported config parameters

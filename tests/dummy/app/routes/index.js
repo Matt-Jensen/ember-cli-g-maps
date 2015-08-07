@@ -1,5 +1,6 @@
 import Ember from 'ember';
 
+const { bind } = Ember.run;
 const pathToAlabama = [[35.0041, -88.1955], [34.9918, -85.6068], [32.8404, -85.1756], [32.2593, -84.8927], [32.1535, -85.0342], [31.7947, -85.1358], [31.52,   -85.0438], [31.3384, -85.0836], [31.2093, -85.107], [31.0023, -84.9944], [30.9953, -87.6009], [30.9423, -87.5926], [30.8539, -87.6256], [30.6745, -87.4072], [30.4404, -87.3688], [30.1463, -87.524], [30.1546, -88.3864], [31.8939, -88.4743], [34.8938, -88.1021], [34.9479, -88.1721], [34.9107, -88.1461]];
 
 export default Ember.Route.extend({
@@ -19,7 +20,19 @@ export default Ember.Route.extend({
       lng: -86.8359375,
       zoom: 4,
       markers: Ember.A([
-        {id: 'jdlkfajs22', lat: 33.516674497188255, lng: -86.80091857910156, infoWindow: { content: '<p>Birmingham</p>', visible: true }, click: function() {console.log('Boo Boo Boo'); }}
+        {
+          id: 'jdlkfajs22',
+          lat: 33.516674497188255,
+          lng: -86.80091857910156,
+          infoWindow: { content: '<p>Birmingham</p>',
+          visible: true },
+          click: function() {console.log('Boo Boo Boo'); }
+        },
+        {
+          id: 'jdlkfajs23',
+          lat: 34.516674497188255,
+          lng: -85.80091857910156,
+        }
       ]),
       polygons: Ember.A([
         {
@@ -36,7 +49,13 @@ export default Ember.Route.extend({
           radius: 500000,
           fillOpacity: '0.1',
           fillColor: 'red',
-          zIndex: 9
+          zIndex: 9,
+          click: bind(this, function(e, circle) { 
+            console.log('I miss \'ole\' \'bamy once again and I think it\'s a sin'); 
+            console.log('Route context:', this);
+            console.log('Event data:', e);
+            console.log('Circle data:', circle);
+          })
         }
       ])
     });
@@ -49,9 +68,8 @@ export default Ember.Route.extend({
   },
 
   actions: {
-    onClickPolygons: function(e) {
+    onClickPolygons: function() {
       const controller = this.controller;
-      let polygons     = controller.polygons;
 
       controller.set('polygons', Ember.A());
 
@@ -69,7 +87,7 @@ export default Ember.Route.extend({
       }, 1000);
     },
 
-    onCircleClick: function(e) {
+    onCircleClick: function() {
       const controller = this.controller;
       let circles      = controller.get('circles');
 
@@ -84,8 +102,8 @@ export default Ember.Route.extend({
           fillOpacity: '0.1',
           fillColor: 'blue',
           zIndex: 9
-        })
-      })
+        });
+      });
     },
 
     onClickMarkers: function(e) {
@@ -128,6 +146,10 @@ export default Ember.Route.extend({
           visible: true
         }
       });
+    },
+
+    removeAllMarkers: function() {
+      this.controller.set('markers', Ember.A([]));
     }
   }
 });

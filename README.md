@@ -7,7 +7,7 @@ This project aims to accomodate map driven applications.  A map driven applicati
 Ember-cli-g-maps seeks to give you the information you need, when you need it, so that you can make the necessary requests and render responses intuitively.
 
 ## Installation ##
-Requires: Ember-CLI >= 1.13.6 & Ember > 1.13.6
+Requires: Ember-CLI >= 1.13.7 & Ember > 1.13.6
 
 In terminal:
 
