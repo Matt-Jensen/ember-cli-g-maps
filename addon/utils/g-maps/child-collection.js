@@ -101,7 +101,7 @@ export default {
        * [Computed property to determine differences between Parent and GMap models]
        * @return {[Boolean]}
        */
-      [`${namespace}Updated`]: computed(`${namespace}Ids`, {
+      [`${namespace}Updated`]: computed(`${namespace}Ids`, `${model}.@each.id`, {
         get: utils._wasModelUpdated(`${namespace}Ids`, model)
       }),
 
