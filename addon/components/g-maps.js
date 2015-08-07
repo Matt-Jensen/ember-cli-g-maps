@@ -1,4 +1,4 @@
-/* globals GMaps google */
+/* globals GMaps: true, google: true */
 import Ember        from 'ember';
 import gmapProtoExt from 'ember-cli-g-maps/utils/g-maps/prototype-ext';
 import GMapMarkers  from 'ember-cli-g-maps/mixins/g-maps/markers';
@@ -76,12 +76,6 @@ export default Ember.Component.extend(Ember.Evented, GMapMarkers, GMapPolygons, 
     mapService.onLoad.then(() => {
       this.set('isMapLoaded', true);
       this.trigger('ember-cli-g-map-loaded');
-      // map.drawCircle({
-      //   id: 'lfkjasd23faj2f31',
-      //   lat: 32.75494243654723,
-      //   lng: -86.8359375,
-      //   radius: 500000
-      // })
     });
   }),
 
@@ -95,6 +89,9 @@ export default Ember.Component.extend(Ember.Evented, GMapMarkers, GMapPolygons, 
       if( !this.get(events[i]) ) { continue; }
       GMaps.off(events[i], map.map);
     }
+
+    // Remove GMap from gMap service
+    this.get('gMap').maps.remove(this.get('name'));
   }),
 
 

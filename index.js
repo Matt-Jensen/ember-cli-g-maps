@@ -35,7 +35,7 @@ module.exports = {
 
       // add any optional libraries
       if (googleMapConfig.libraries && googleMapConfig.libraries.length) {
-        params.push('libraries='+ encodeURIComponent( google.libraries.join(',') ));
+        params.push('libraries='+ encodeURIComponent( googleMapConfig.libraries.join(',') ));
       }
 
       // Build URL

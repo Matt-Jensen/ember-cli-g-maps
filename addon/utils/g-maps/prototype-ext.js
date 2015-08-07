@@ -16,17 +16,26 @@ export default function gMapsPrototypeExt() {
     delete options.lat;
     delete options.lng;
 
-    var circle = new google.maps.Circle(options),
-        circle_events = ['click', 'dblclick', 'mousedown', 'mousemove', 'mouseout', 'mouseover', 'mouseup', 'rightclick'];
+    var circle = new google.maps.Circle(options);
+    var circle_events = ['click', 'dblclick', 'mousedown', 'mousemove', 'mouseout', 'mouseover', 'mouseup', 'rightclick'];
+    var subcribeEvent = function(callback, obj) {
+      return function(e) {
+        return callback(e, obj);
+      };
+    };
 
-    for (var ev = 0; ev < circle_events.length; ev++) {
-      (function(object, name) {
-        if (options[name]) {
-          google.maps.event.addListener(object, name, function(e){
-            options[name].apply(this, [e]);
-          });
-        }
-      })(circle, circle_events[ev]);
+    for (var i = 0, l = circle_events.length, eventName, action; i < l; i++) {
+      eventName = circle_events[i];
+
+      // If object has configured event
+      if (options[eventName]) {
+        action = options[eventName];
+        google.maps.event.addListener(
+          circle, 
+          eventName, 
+          subcribeEvent(options[eventName], circle)
+        );
+      }
     }
 
     this.circles.push(circle);
