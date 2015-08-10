@@ -17,6 +17,7 @@ gmapProtoExt();
 export default Ember.Component.extend(Ember.Evented, GMapMarkers, GMapPolygons, GMapCircles, {
   map: null,
   name: null,
+  draggable: true,
   isMapLoaded: false,
   classNames: ['ember-cli-g-map'], 
   gMap: Ember.inject.service(),
@@ -48,7 +49,9 @@ export default Ember.Component.extend(Ember.Evented, GMapMarkers, GMapPolygons, 
   _requiredProperties: {
     lat: 0,
     lng: 0,
-    zoom: 0
+    zoom: 0,
+    mapTypeControl: false,
+    mapType: 'ROADMAP'
   },
 
   insertGMap: on('didInsertElement', function() {
@@ -115,6 +118,19 @@ export default Ember.Component.extend(Ember.Evented, GMapMarkers, GMapPolygons, 
     if(!this.get('isMapLoaded')) { return; }
     const { map, zoom } = this.getProperties('map', 'zoom');
     map.setZoom(zoom);
+  }),
+
+  _syncDraggable: observer('draggable', function() {
+    if(!this.get('isMapLoaded')) { return; }
+    const map = this.get('map').map;
+    map.setOptions({ draggable: this.get('draggable') });
+  }),
+
+  _syncMapType: observer('mapType', function() {
+    if(!this.get('isMapLoaded')) { return; }
+    const map     = this.get('map').map;
+    const mapType = (this.get('mapType')+'').toUpperCase();
+    map.setMapTypeId( google.maps.MapTypeId[mapType] );
   }),
 
 

@@ -19,6 +19,8 @@ export default Ember.Route.extend({
       lat: 32.75494243654723,
       lng: -86.8359375,
       zoom: 4,
+      draggable: true,
+      mapType: 'roadMap',
       markers: Ember.A([
         {
           id: 'jdlkfajs22',
