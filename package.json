@@ -1,6 +1,6 @@
 {
   "name": "ember-cli-g-maps",
-  "version": "0.0.10",
+  "version": "0.0.11",
   "description": "An Ember CLI Addon for map driven applications. Built with GMaps, an open source Google Maps project. Currently in Beta.",
   "directories": {
     "doc": "doc",

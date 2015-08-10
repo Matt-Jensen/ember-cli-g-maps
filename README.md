@@ -86,7 +86,8 @@ export default Ember.Route.extend({
               console.log('You clicked me!');
             }
         }
-     ])
+     ]);
+    });
   }
 });
 ```
@@ -114,7 +115,8 @@ export default Ember.Route.extend({
             [34.9107, -88.1461]  // Lat, Lng
           ]
         }
-      ]),
+      ])
+    });
   }
 });
 ```
@@ -139,7 +141,8 @@ export default Ember.Route.extend({
           lng: -86.8359375,       // Required
           radius: 500000          // Not Required, but you'll probaby want to see it
         }
-      ]),
+      ])
+    });
   }
 });
 ```
@@ -175,11 +178,45 @@ export default Ember.Route.extend({
         });
     }
   }
-})
+});
 ```
 
 ```handlebars
 {{g-maps ... click="onMapClick"}}
+```
+
+**Set Map Type**
+```js
+export default Ember.Route.extend({
+  setupController: function(controller) {
+    controller.setProperties({
+      lat: 32.75494243654723,
+      lng: -86.8359375,
+      mapType: 'satellite' // Accepts roadmap, satellite, hybrid, or terrain
+    });
+  }
+});
+```
+
+```handlebars
+{{g-maps ... mapType=mapType}}
+```
+
+**Set Draggable**
+```js
+export default Ember.Route.extend({
+  setupController: function(controller) {
+    controller.setProperties({
+      lat: 32.75494243654723,
+      lng: -86.8359375,
+      draggable: false // default = true
+    });
+  }
+});
+```
+
+```handlebars
+{{g-maps ... draggable=draggable}}
 ```
 
 **Wait For Map To Load**
