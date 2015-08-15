@@ -66,6 +66,8 @@ export default Ember.Component.extend(Ember.Evented, GMapMarkers, GMapPolygons, 
 
     // Set GMap events
     for(let i = 0, l = events.length; i < l; i++ ) {
+
+      // If map event defined on component
       if( !this.get(events[i]) ) { continue; }
       GMaps.on(events[i], map.map, (e) => this.send(events[i], e));
     }
@@ -84,11 +86,13 @@ export default Ember.Component.extend(Ember.Evented, GMapMarkers, GMapPolygons, 
 
 
   destroyGMap: on('willDestroyElement', function destroyGMap() {
-    const events = this.get('events');
+    const events = this.get('_gmapEvents');
     const map    = this.get('map');
 
     // Remove GMap events
     for(let i = 0, l = events.length; i < l; i++ ) {
+
+      // If map event defined on component
       if( !this.get(events[i]) ) { continue; }
       GMaps.off(events[i], map.map);
     }
