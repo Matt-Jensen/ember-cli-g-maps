@@ -1,18 +1,11 @@
 /* globals GMaps: true, google: true */
 import Ember        from 'ember';
-import gmapProtoExt from 'ember-cli-g-maps/utils/g-maps/prototype-ext';
 import GMapMarkers  from 'ember-cli-g-maps/mixins/g-maps/markers';
 import GMapPolygons from 'ember-cli-g-maps/mixins/g-maps/polygons';
 import GMapCircles  from 'ember-cli-g-maps/mixins/g-maps/circles';
 
 const { on, merge, uuid, computed, observer } = Ember;
 const { later } = Ember.run;
-
-//////////////////////////////////
-// Extend the Prototype of GMaps
-/////////////////////////////////
-gmapProtoExt();
-////////////////////////////////
 
 export default Ember.Component.extend(Ember.Evented, GMapMarkers, GMapPolygons, GMapCircles, {
   map: null,
@@ -21,7 +14,6 @@ export default Ember.Component.extend(Ember.Evented, GMapMarkers, GMapPolygons, 
   isMapLoaded: false,
   classNames: ['ember-cli-g-map'], 
   gMap: Ember.inject.service(),
-
 
   // Map Events
   _gmapEvents: [
@@ -67,6 +59,8 @@ export default Ember.Component.extend(Ember.Evented, GMapMarkers, GMapPolygons, 
     // Set GMap events
     for(let i = 0, l = events.length; i < l; i++ ) {
       if( !this.get(events[i]) ) { continue; }
+
+      // Add GMaps event listener on google map instance
       GMaps.on(events[i], map.map, (e) => this.send(events[i], e));
     }
 
@@ -92,6 +86,9 @@ export default Ember.Component.extend(Ember.Evented, GMapMarkers, GMapPolygons, 
       if( !this.get(events[i]) ) { continue; }
       GMaps.off(events[i], map.map);
     }
+
+    this.get('map').destroy();
+    this.set('map', null);
 
     // Remove GMap from gMap service
     this.get('gMap').maps.remove(this.get('name'));

@@ -115,7 +115,7 @@ export default {
       [`${namespace}Sync`]: observer('isMapLoaded', `${model}.@each.id`, function() {
         let parentModel    = this.get(model);
         const map          = this.get('map');
-        const createMethod = gmapCreate[model];
+        const createMethod = Ember.String.singularize(`add${model[0].toUpperCase()}${model.slice(1)}`);
 
         // If Items require syncing
         if(!this.get('isMapLoaded') || !this.get(`${namespace}Updated`)) { return; }
