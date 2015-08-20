@@ -93,48 +93,59 @@ export default Ember.Route.extend({
       const controller = this.controller;
       let circles      = controller.get('circles');
 
-      circles.removeAt(0);
+      // circles.removeAt(0);
 
-      Ember.run.later(() => {
-        controller.get('circles').pushObject({
-          id: 'zfkj234d23faj2f31',
-          lat: 32.75494243654723,
-          lng: -86.8359375,
-          radius: 500000,
-          fillOpacity: '0.1',
-          fillColor: 'blue',
-          zIndex: 9
-        });
+      // const rand = Math.round(Math.random() * (circles.length - 1) + 0);
+
+      controller.get('circles').push({
+        id: 'zfkj234d23faj2f31-'+Ember.uuid(),
+        lat: (Math.random() * (55 - 22) + 22),
+        lng: (Math.random() * (-102 - -115) + -115),
+        radius: (Math.random() * (500000 - 10000) + 10000),
+        fillOpacity: (Math.random() * (1 - 0) + 0),
+        fillColor: getRandomColor(),
+        zIndex: 9,
+        click: function(e, cir) {
+          const cir_id = cir.id;
+
+          // Remove marker
+          for(let i = 0, l = circles.length; i < l; i++) {
+            if(circles[i].id !== cir_id) { continue; }
+
+            circles.removeAt(i, 1);
+            break;
+          }
+        }
       });
+
+      controller.circles.arrayContentDidChange(circles.length - 1, null, 1);
     },
 
     onClickMarkers: function(e) {
       const controller = this.controller;
       let markers      = controller.markers;
-      const id         = Ember.uuid()+'-ember-g-map-id';
+      const markerId   = Ember.uuid()+'-ember-g-map-id';
 
-      e.mapTilesLoaded.then(function() {
+      e.mapIdle.then(function() {
         console.log(e.latLng.A, e.latLng.F);
       });
 
-      // Mix up Markers
-      // controller.set('markers', Ember.A(markers.map((m, i) => {
-      //   const mid = Ember.uuid()+'-ember-g-map-id';
-      //   return {
-      //     id: mid,
-      //     lat: e.latLng.A + (i * 0.5),
-      //     lng: e.latLng.F + (i * 0.5)
-      //   }
-      // })));
+
+      // Relocate a random marker in markers
+      // const rand = Math.round(Math.random() * (markers.length - 1) + 0);
+      // if(markers[rand]) {
+      //   markers[rand].lat = (Math.random() * (55 - 22) + 22);
+      //   markers[rand].lng = (Math.random() * (-102 - -115) + -115);
+      // }
 
       // Add One Marker
-      markers.pushObject({
-        id,
+      markers.push({
+        id: markerId,
         lat:  e.latLng.A,
         lng:  e.latLng.F,
-        title: 'The title is -'+ id,
+        title: 'The title is -'+ markerId,
         click: function(e) {
-          const m_id = e.details.id;
+          const m_id = e.id;
           // Remove marker
           for(let i = 0, l = markers.length; i < l; i++) {
             if(markers[i].id !== m_id) { continue; }
@@ -148,6 +159,17 @@ export default Ember.Route.extend({
           visible: true
         }
       });
+
+      // Mix up All Markers
+      // controller.set('markers', Ember.A(markers.map((m, i) => {
+      //   const rand = Math.round(Math.random() * (markers.length - 1) + 0);
+      //   return Ember.merge(m, {
+      //     lat: (Math.random() * (55 - 22) + 22),
+      //     lng: (Math.random() * (-102 - -115) + -115)
+      //   });
+      // })));
+
+      controller.markers.arrayContentDidChange(markers.length - 1, null, 1);
     },
 
     removeAllMarkers: function() {
@@ -155,3 +177,12 @@ export default Ember.Route.extend({
     }
   }
 });
+
+function getRandomColor() {
+    var letters = '0123456789ABCDEF'.split('');
+    var color = '#';
+    for (var i = 0; i < 6; i++ ) {
+      color += letters[Math.floor(Math.random() * 16)];
+    }
+    return color;
+}

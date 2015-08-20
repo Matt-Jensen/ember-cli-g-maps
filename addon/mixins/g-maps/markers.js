@@ -78,8 +78,7 @@ export default Ember.Mixin.create(
 
     onAddedItem: function(m, marker, map) {
       // If marker has visible window, trigger open
-      if(!m.hasInfoWindow && m.infoWindow && m.infoWindow.visible) {
-        m.hasInfoWindow = true;
+      if(marker.infoWindow && marker.infoWindow.visible) {
         marker.infoWindow.addListener('closeclick', function() {
           marker.infoWindow.set('visible', false);
         });
