@@ -59,6 +59,25 @@ export default Ember.Route.extend({
             console.log('Circle data:', circle);
           })
         }
+      ]),
+      polylines: Ember.A([
+        {
+          id: 'jlkasdjfww-dfkad-oadfkj-sadf322',
+          strokeColor: 'blue',
+          strokeOpacity: 1,
+          strokeWeight: 6,
+          path: [
+            [34.22088697429015, -100.72265625],
+            [33.78371305547283, -92.8125],
+            [35.94688293218141, -94.833984375],
+            [32.45879106783458, -95.712890625],
+            [33.78371305547283, -92.8125]
+          ],
+          editable: true,
+          mouseup: function(e, polyline) {
+            console.log('done editing. Here\'s new polyline path:', polyline.getPath());
+          }
+        }
       ])
     });
 

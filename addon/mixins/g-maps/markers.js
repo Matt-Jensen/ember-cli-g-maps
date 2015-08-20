@@ -9,6 +9,7 @@ export default Ember.Mixin.create(
 
     namespace: 'marker',
 
+    /* Supported:
     props: [
       'lat',
       'lng',
@@ -57,6 +58,7 @@ export default Ember.Mixin.create(
       'visible_changed',
       'zindex_changed'
     ],
+    */
 
     validate: function() {
       const markers = this.get('markers');

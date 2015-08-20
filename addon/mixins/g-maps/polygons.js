@@ -1,7 +1,6 @@
 import Ember           from 'ember';
 import childCollection from 'ember-cli-g-maps/utils/g-maps/child-collection';
 
-
 const { isArray } = Ember;
 
 export default Ember.Mixin.create(
@@ -10,6 +9,7 @@ export default Ember.Mixin.create(
 
     namespace: 'polygon',
 
+    /* Supported:
     props: [
       'clickable',
       'draggable',
@@ -39,6 +39,7 @@ export default Ember.Mixin.create(
       'mouseup',
       'mousemove'
     ],
+    */
 
     validate: function() {
       const polygons = this.get('polygons');

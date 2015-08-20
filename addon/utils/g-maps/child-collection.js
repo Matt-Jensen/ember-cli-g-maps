@@ -19,26 +19,22 @@ export default {
       throw new Error('childCollection requires a `model` string');
     }
 
-    const model        = settings.model;
-    const namespace    = globalNamespace+capitalize(settings.namespace);
-    const addMethod    = Ember.String.singularize(`add${model[0].toUpperCase()}${model.slice(1)}`);
-    const removeMethod = Ember.String.singularize(`remove${model[0].toUpperCase()}${model.slice(1)}`);
 
-    // Called before final removal
-    // TODO: abstract instance methods
-    const beforeRemoveChild = function(item, map) {
-      if(settings.onRemoveItem) {
-        settings.onRemoveItem(item, map);
-      }
+    ////////////////////////////////////////////
+    // Child Collection Factory Configuration
+    ///////////////////////////////////////////
 
-      return item;
-    };
+    const model             = settings.model;
+    const namespace         = globalNamespace+capitalize(settings.namespace);
+    const addMethod         = Ember.String.singularize(`add${model[0].toUpperCase()}${model.slice(1)}`);
+    const removeMethod      = Ember.String.singularize(`remove${model[0].toUpperCase()}${model.slice(1)}`);
+    const afterAddChild     = settings.onAddedItem || noop;
+    const beforeRemoveChild = settings.onRemoveItem || noop;
 
-    const afterAddChild = settings.onAddedItem || noop;
 
-    /////////////////////////////////////////
-    // Child Collection Mixin Configuration
-    ////////////////////////////////////////
+    ////////////////////////////////////
+    // Child Collection Mixin Factory
+    ///////////////////////////////////
 
     return {
 
@@ -49,25 +45,13 @@ export default {
 
 
       /**
-       * Supported properties for the Child Collection
-       */
-      [namespace+'Props']: settings.props,
-
-
-      /**
-       * Supported events for the Child Collection
-       */
-      [namespace+'Events']: settings.events,
-
-
-      /**
        * Optional method to ensure correct parent data for Child Collection
        */
       [namespace+'Validate']: on('didInsertElement', settings.validate || noop),
 
 
       /**
-       * Optional method to remove any bound google.map.events ect
+       * Optional method to remove event listeners ect.
        */
       [namespace+'OnDestroy']: on('willDestroyElement', settings.onDestroy || noop),
 

@@ -9,6 +9,7 @@ export default Ember.Mixin.create(
 
     namespace: 'circle',
 
+    /* Supported:
     props: [
       'lat',
       'lng',
@@ -40,6 +41,7 @@ export default Ember.Mixin.create(
       'radius_changed',
       'rightclick'
     ],
+    */
 
     validate: function() {
       const circles = this.get('circles');

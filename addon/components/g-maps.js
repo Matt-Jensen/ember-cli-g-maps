@@ -1,13 +1,14 @@
 /* globals GMaps: true, google: true */
-import Ember        from 'ember';
-import GMapMarkers  from 'ember-cli-g-maps/mixins/g-maps/markers';
-import GMapPolygons from 'ember-cli-g-maps/mixins/g-maps/polygons';
-import GMapCircles  from 'ember-cli-g-maps/mixins/g-maps/circles';
+import Ember         from 'ember';
+import GMapMarkers   from 'ember-cli-g-maps/mixins/g-maps/markers';
+import GMapPolygons  from 'ember-cli-g-maps/mixins/g-maps/polygons';
+import GMapCircles   from 'ember-cli-g-maps/mixins/g-maps/circles';
+import GMapPolylines from 'ember-cli-g-maps/mixins/g-maps/polylines';
 
 const { on, merge, uuid, computed, observer } = Ember;
 const { later } = Ember.run;
 
-export default Ember.Component.extend(Ember.Evented, GMapMarkers, GMapPolygons, GMapCircles, {
+export default Ember.Component.extend(Ember.Evented, GMapMarkers, GMapPolygons, GMapCircles, GMapPolylines, {
   map: null,
   name: null,
   draggable: true,
@@ -47,11 +48,11 @@ export default Ember.Component.extend(Ember.Evented, GMapMarkers, GMapPolygons, 
   },
 
   insertGMap: on('didInsertElement', function() {
-    const events = this.get('_gmapEvents');
+    const events      = this.get('_gmapEvents');
     const configProps = ['lat', 'lng', 'zoom'];
-    let config = this.getProperties.apply(this, configProps);
-    config     = merge(this._requiredProperties, config);
-    config.div = `#${this.element.id}`;
+    let config        = this.getProperties.apply(this, configProps);
+    config            = merge(this._requiredProperties, config);
+    config.div        = `#${this.element.id}`;
 
     const map = new GMaps( config );
     this.set('map', map);
