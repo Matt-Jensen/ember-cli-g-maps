@@ -91,11 +91,13 @@ export default Ember.Component.extend(Ember.Evented, GMapMarkers, GMapPolygons, 
       GMaps.off(events[i], map.map);
     }
 
-    this.get('map').destroy();
-    this.set('map', null);
-
     // Remove GMap from gMap service
     this.get('gMap').maps.remove(this.get('name'));
+
+    // Run after Mixin willDestroyElement
+    Ember.run.later(() => {
+      this.get('map').destroy();
+    });
   }),
 
 
