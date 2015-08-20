@@ -1,10 +1,12 @@
 # Ember CLI G-Maps
 
-Ember CLI G-Maps is a Google Map component built with the [GMaps.js library](http://hpneo.github.io/gmaps).
+Ember CLI G-Maps is a Google Map component for map driven applications.
 
-This project aims to accomodate map driven applications.  A map driven application is one where user interaction generates requests for new data. What this means for the developer is that you will need consistent access to the state of the map as well as intuitive ways to efficiently render large amounts of data.
+A map driven application responds to map interactions with fresh data. What this means for the developer is that you will need consistent access to the state of the map as well as intuitive ways to efficiently render large amounts of data.
 
-Ember-cli-g-maps seeks to give you the information you need, when you need it, so that you can make the necessary requests and render responses intuitively.
+Ember-cli-g-maps seeks to give you the information you need, when you need it, so that you can make the necessary requests and render the most relevant map data for your users.
+
+Built with the [GMaps-For-Apps.js library](https://github.com/Matt-Jensen/gmaps-for-apps), a fork of GMaps.
 
 Installation
 ------------
