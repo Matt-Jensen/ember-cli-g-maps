@@ -1,5 +1,13 @@
 <h2 id="title">
   Sweet Home Alabama
+
+  <ul class="nav-links">
+    <li>{{#link-to 'index'}}Map{{/link-to}}</li>
+    <li>
+      {{#link-to 'destroy'}}Destroy{{/link-to}}
+    </li>
+  </ul>
+
   <div style="display: inline-block; float: right;">
     <button {{action "removeAllMarkers"}}>Remove Markers</button>
   </div>
