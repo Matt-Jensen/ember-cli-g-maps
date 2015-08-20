@@ -6,7 +6,9 @@ This project aims to accomodate map driven applications.  A map driven applicati
 
 Ember-cli-g-maps seeks to give you the information you need, when you need it, so that you can make the necessary requests and render responses intuitively.
 
-## Installation ##
+Installation
+------------
+
 Requires: Ember-CLI >= 1.13.7 & Ember > 1.13.6
 
 In terminal:
@@ -37,13 +39,16 @@ You wont see your map unless it has height. In `app/styles/app.css`:
 }
 ```
 
-## Currently Supports ##
+Currently Supports
+-------------------
 
 - [Polygons](http://hpneo.github.io/gmaps/documentation.html#GMaps-drawPolygon)
 - [Markers](http://hpneo.github.io/gmaps/documentation.html#GMaps-createMarker)
 - [Circles](http://hpneo.github.io/gmaps/documentation.html#GMaps-drawCircle)
+- [Polylines](https://developers.google.com/maps/documentation/javascript/3.exp/reference#CircleOptions#FusionTablesPolylineOptions)
 
-## Usage ##
+Usage
+------
 
 **Simplest Possible G-Map**
 
@@ -64,6 +69,7 @@ In your template:
 ```handlebars
 {{g-maps name="my-map" lat=lat lng=lng zoom=zoom}}
 ```
+
 **Add Markers**
 ```js
 export default Ember.Route.extend({
@@ -75,16 +81,16 @@ export default Ember.Route.extend({
       // Must be an Ember Array
       markers: Ember.A([
         {
-            id: 'jdlkfajs22', // Required
-            lat: 33.516674497188255, // Required
-            lng: -86.80091857910156, // Required
-            infoWindow: { 
-              content: '<p>Birmingham</p>',
-              visible: true
-            }, 
-            click: function() {
-              console.log('You clicked me!');
-            }
+          id: 'jdlkfajs22', // Recommended
+          lat: 33.516674497188255, // Required
+          lng: -86.80091857910156, // Required
+          infoWindow: { 
+            content: '<p>Birmingham</p>',
+            visible: true
+          }, 
+          click: function() {
+            console.log('You clicked me!');
+          }
         }
      ]);
     });
@@ -107,7 +113,7 @@ export default Ember.Route.extend({
       // Must be an Ember Array
       polygons: Ember.A([
         {
-          id: 'lka234klafj23', // Required
+          id: 'lka234klafj23', // Recommended
           paths: [ // Required
             [35.0041, -88.1955], // Lat, Lng
             [31.0023, -84.9944], // Lat, Lng
@@ -125,6 +131,39 @@ export default Ember.Route.extend({
 {{g-maps ... polygons=polygons}}
 ```
 
+**Add Polylines**
+```js
+export default Ember.Route.extend({
+  setupController: function(controller) {
+    controller.setProperties({
+      lat: 32.75494243654723,
+      lng: -86.8359375,
+      zoom: 4,
+      // Must be an Ember Array
+      polylines: Ember.A([
+        {
+          id: 'lka234klafj23', // Recommended
+          strokeColor: 'blue',
+          strokeOpacity: 1,
+          strokeWeight: 6,
+          path: [ // Required
+            [34.220, -100.7], // Lat, Lng
+            [33.783, -92.81], // Lat, Lng
+            [35.946, -94.83], // Lat, Lng
+            [32.458, -95.71], // Lat, Lng
+            [33.783, -92.85]  // Lat, Lng
+          ]
+        }
+      ])
+    });
+  }
+});
+```
+
+```handlebars
+{{g-maps ... polylines=polylines}}
+```
+
 **Add Circles**
 ```js
 export default Ember.Route.extend({
@@ -136,7 +175,7 @@ export default Ember.Route.extend({
       // Must be an Ember Array
       circles: Ember.A([
         {
-          id: 'lfkjasd23faj2f31', // Required
+          id: 'lfkjasd23faj2f31', // Recommended
           lat: 32.75494243654723, // Required
           lng: -86.8359375,       // Required
           radius: 500000          // Not Required, but you'll probaby want to see it
@@ -155,27 +194,27 @@ export default Ember.Route.extend({
 ```js
 export default Ember.Route.extend({
   actions: {
-    onMapClick: function(e) {
-        console.info('Click coordinate', 
-            e.latLng.A, // Latitude
-            e.latLng.F  // Longitude
-        );
-        console.info('Map boundaries',
-            e.bounds[0], // Top left map coordinate
-            e.bounds[1], // Top right map coordinate
-            e.bounds[2], // Bottom left map coordinate
-            e.bounds[3]  // Bottom right map coordinate
-        );
-        console.info('Map\'s center', 
-            this.controller.lat, 
-            this.controller.lng
-        );
-        e.mapIdle.then(function() { // Promise
-            console.log('maps done loading tiles and user is not interacting with map'); 
-        });
-        e.mapTilesLoaded.then(function() { // Promise
-            console.log('Map tiles have finished loading');
-        });
+    onMapEvent: function(e) {
+      console.info('Click coordinate', 
+        e.latLng.A, // Latitude
+        e.latLng.F  // Longitude
+      );
+      console.info('Map boundaries',
+        e.bounds[0], // Top left map coordinate
+        e.bounds[1], // Top right map coordinate
+        e.bounds[2], // Bottom left map coordinate
+        e.bounds[3]  // Bottom right map coordinate
+      );
+      console.info('Map\'s center', 
+        this.controller.lat, 
+        this.controller.lng
+      );
+      e.mapIdle.then(function() { // Promise
+        console.log('maps done loading tiles and user is not interacting with map'); 
+      });
+      e.mapTilesLoaded.then(function() { // Promise
+        console.log('Map tiles have finished loading');
+      });
     }
   }
 });
@@ -192,7 +231,7 @@ export default Ember.Route.extend({
     controller.setProperties({
       lat: 32.75494243654723,
       lng: -86.8359375,
-      mapType: 'satellite' // Accepts roadmap, satellite, hybrid, or terrain
+      mapType: 'satellite' // Accepts 'roadmap', 'satellite', 'hybrid', or 'terrain'
     });
   }
 });
@@ -290,17 +329,18 @@ export default Ember.Route.extend({
     zoom_changed="myZoom_changedAction"}}
 ```
 
-## Planned Features ##
+Planned Features
+----------------
 
 - [Overlays](https://developers.google.com/maps/documentation/javascript/3.exp/reference#CircleOptions#MapPanes)
-- [Polylines](https://developers.google.com/maps/documentation/javascript/3.exp/reference#CircleOptions#FusionTablesPolylineOptions)
 - [Controls](http://hpneo.github.io/gmaps/examples/custom_controls.html)
 - [Layers & KML Layers](https://developers.google.com/maps/documentation/javascript/3.exp/reference#CircleOptions#KmlLayerOptions)
 - [Routes](http://hpneo.github.io/gmaps/examples/routes.html)
 - [Info Windows](https://github.com/huafu/ember-google-map/wiki/Provided-Tools-and-Classes-%28API%29#info-windows)
-- Labels (A simple text element)
+- Text labels
 
-## Customization ##
+Customization
+-------------
 
 In `config/environment.js`
 
@@ -312,3 +352,27 @@ ENV.googleMap = {
   apiKey: 'your-unique-google-map-api-key'
 }
 ```
+
+Changelog
+---------
+
+0.0.12-beta
+-----------
+* GMaps-For-Apps.js rendering layer
+* Improved Map Child bindings
+  * No longer requires id property
+* Polyline Map Child
+* Performant Map destroy
+
+0.0.11-beta
+------------
+* Basic Map Component
+  * Bound MapType
+* Map service
+  * map idle promise
+  * map tilesLoaded promise
+* Marker Map Child
+* Circle Map Child
+* Polygon Map Child
+
+

@@ -116,7 +116,7 @@ export default Ember.Route.extend({
 
       // const rand = Math.round(Math.random() * (circles.length - 1) + 0);
 
-      controller.get('circles').push({
+      controller.get('circles').pushObject({
         id: 'zfkj234d23faj2f31-'+Ember.uuid(),
         lat: (Math.random() * (55 - 22) + 22),
         lng: (Math.random() * (-102 - -115) + -115),
@@ -137,7 +137,7 @@ export default Ember.Route.extend({
         }
       });
 
-      controller.circles.arrayContentDidChange(circles.length - 1, null, 1);
+      // controller.circles.arrayContentDidChange(circles.length - 1, null, 1);
     },
 
     onClickMarkers: function(e) {
@@ -158,7 +158,7 @@ export default Ember.Route.extend({
       // }
 
       // Add One Marker
-      markers.push({
+      markers.pushObject({
         id: markerId,
         lat:  e.latLng.A,
         lng:  e.latLng.F,
@@ -188,7 +188,7 @@ export default Ember.Route.extend({
       //   });
       // })));
 
-      controller.markers.arrayContentDidChange(markers.length - 1, null, 1);
+      // controller.markers.arrayContentDidChange(markers.length - 1, null, 1);
     },
 
     removeAllMarkers: function() {
