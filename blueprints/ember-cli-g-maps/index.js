@@ -11,6 +11,6 @@ module.exports = {
   normalizeEntityName: function() {},
 
   afterInstall: function() {
-    return this.addBowerPackageToProject('gmaps');
+    return this.addBowerPackageToProject('gmaps-for-apps');
   }
 };

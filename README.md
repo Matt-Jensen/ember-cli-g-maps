@@ -358,7 +358,11 @@ ENV.googleMap = {
 Changelog
 ---------
 
-0.0.12-beta
+0.0.14-beta
+------------
+* Fixed Bower dependency
+
+0.0.13-beta
 -----------
 * GMaps-For-Apps.js rendering layer
 * Improved Map Child bindings
@@ -366,7 +370,7 @@ Changelog
 * Polyline Map Child
 * Performant Map destroy
 
-0.0.11-beta
+0.0.12-beta
 ------------
 * Basic Map Component
   * Bound MapType
