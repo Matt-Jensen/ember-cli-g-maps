@@ -78,6 +78,19 @@ export default Ember.Route.extend({
             console.log('done editing. Here\'s new polyline path:', polyline.getPath());
           }
         }
+      ]),
+      rectangles: Ember.A([
+        {
+          bounds: [[40.300476079749465, -102.3046875],[26.258936094468414, -73.828125]],
+          strokeColor: 'green',
+          strokeOpacity: 1,
+          strokeWeight: 3,
+          fillColor: 'green',
+          fillOpacity: 0.2,
+          click: function(e, rectangle) {
+            console.log('Big wheels keep on turnin\'', e, rectangle);
+          }
+        }
       ])
     });
 
@@ -89,6 +102,32 @@ export default Ember.Route.extend({
   },
 
   actions: {
+    onClickRectangle: function(e) {
+      const color = getRandomColor();
+      const rectangles = this.controller.get('rectangles');
+
+      rectangles.pushObject({
+        id: 'jafs3239-kdafj32-dajfk332',
+        bounds: [[e.latLng.A - 5, e.latLng.F - 5], [e.latLng.A + 5, e.latLng.F + 5]],
+        strokeColor: color,
+        strokeOpacity: 1,
+        strokeWeight: 3,
+        fillColor: color,
+        fillOpacity: 0.2,
+        click: function(e, rect) {
+          const rect_id = rect.id;
+
+          // Remove marker
+          for(let i = 0, l = rectangles.length; i < l; i++) {
+            if(rectangles[i].id !== rect_id) { continue; }
+
+            rectangles.removeAt(i, 1);
+            break;
+          }
+        }
+      });
+    },
+
     onClickPolygons: function() {
       const controller = this.controller;
 

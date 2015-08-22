@@ -48,6 +48,7 @@ Currently Supports
 - [Markers](http://hpneo.github.io/gmaps/documentation.html#GMaps-createMarker)
 - [Circles](http://hpneo.github.io/gmaps/documentation.html#GMaps-drawCircle)
 - [Polylines](https://developers.google.com/maps/documentation/javascript/3.exp/reference#CircleOptions#FusionTablesPolylineOptions)
+- [Rectangles](http://hpneo.github.io/gmaps/documentation.html#GMaps-drawRectangle)
 
 Usage
 ------
@@ -90,9 +91,7 @@ export default Ember.Route.extend({
             content: '<p>Birmingham</p>',
             visible: true
           }, 
-          click: function() {
-            console.log('You clicked me!');
-          }
+          click: function(e, marker) {}
         }
      ]);
     });
@@ -121,7 +120,8 @@ export default Ember.Route.extend({
             [31.0023, -84.9944], // Lat, Lng
             [30.1546, -88.3864], // Lat, Lng
             [34.9107, -88.1461]  // Lat, Lng
-          ]
+          ],
+          click: function(e, polygon) {}
         }
       ])
     });
@@ -154,7 +154,8 @@ export default Ember.Route.extend({
             [35.946, -94.83], // Lat, Lng
             [32.458, -95.71], // Lat, Lng
             [33.783, -92.85]  // Lat, Lng
-          ]
+          ],
+          click: function(e, polyline) {}
         }
       ])
     });
@@ -181,6 +182,7 @@ export default Ember.Route.extend({
           lat: 32.75494243654723, // Required
           lng: -86.8359375,       // Required
           radius: 500000          // Not Required, but you'll probaby want to see it
+          click: function(e, circle) {}
         }
       ])
     });
@@ -190,6 +192,39 @@ export default Ember.Route.extend({
 
 ```handlebars
 {{g-maps ... circles=circles}}
+```
+
+**Add Rectangles**
+```js
+export default Ember.Route.extend({
+  setupController: function(controller) {
+    controller.setProperties({
+      lat: 32.75494243654723,
+      lng: -86.8359375,
+      zoom: 4,
+      // Must be an Ember Array
+      rectangles: Ember.A([
+        {
+          id: 'uaafkjkl2334lkadfj',             // Recommended
+          bounds: [
+            [40.300476079749465, -102.3046875], // lat, lng
+            [26.258936094468414, -73.828125]    // lat, lng
+          ],
+          strokeColor: 'green',
+          strokeOpacity: 1,
+          strokeWeight: 3,
+          fillColor: 'green',
+          fillOpacity: 0.2,
+          click: function(e, rectangle) {}
+        }
+      ])
+    });
+  }
+});
+```
+
+```handlebars
+{{g-maps ... rectangles=rectangles}}
 ```
 
 **Add G-Map Component Events**
@@ -335,7 +370,6 @@ Planned Features
 ----------------
 
 - [Overlays](https://developers.google.com/maps/documentation/javascript/3.exp/reference#CircleOptions#MapPanes)
-- [Rectangles](http://hpneo.github.io/gmaps/documentation.html#GMaps-drawRectangle)
 - [Controls](http://hpneo.github.io/gmaps/examples/custom_controls.html)
 - [Layers & KML Layers](https://developers.google.com/maps/documentation/javascript/3.exp/reference#CircleOptions#KmlLayerOptions)
 - [Routes](http://hpneo.github.io/gmaps/examples/routes.html)

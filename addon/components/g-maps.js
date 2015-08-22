@@ -4,11 +4,12 @@ import GMapMarkers     from 'ember-cli-g-maps/mixins/g-maps/markers';
 import GMapPolygons    from 'ember-cli-g-maps/mixins/g-maps/polygons';
 import GMapCircles     from 'ember-cli-g-maps/mixins/g-maps/circles';
 import GMapPolylines   from 'ember-cli-g-maps/mixins/g-maps/polylines';
+import GMapRectangles  from 'ember-cli-g-maps/mixins/g-maps/rectangles';
 
-const { on, merge, uuid, computed, observer } = Ember;
 const { later } = Ember.run;
+const { on, merge, uuid, computed, observer } = Ember;
 
-export default Ember.Component.extend(Ember.Evented, GMapMarkers, GMapPolygons, GMapCircles, GMapPolylines, {
+export default Ember.Component.extend(Ember.Evented, GMapMarkers, GMapPolygons, GMapCircles, GMapPolylines, GMapRectangles, {
   map: null,
   name: null,
   draggable: true,
