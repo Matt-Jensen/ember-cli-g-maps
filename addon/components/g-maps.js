@@ -1,9 +1,9 @@
 /* globals GMaps: true, google: true */
-import Ember         from 'ember';
-import GMapMarkers   from 'ember-cli-g-maps/mixins/g-maps/markers';
-import GMapPolygons  from 'ember-cli-g-maps/mixins/g-maps/polygons';
-import GMapCircles   from 'ember-cli-g-maps/mixins/g-maps/circles';
-import GMapPolylines from 'ember-cli-g-maps/mixins/g-maps/polylines';
+import Ember           from 'ember';
+import GMapMarkers     from 'ember-cli-g-maps/mixins/g-maps/markers';
+import GMapPolygons    from 'ember-cli-g-maps/mixins/g-maps/polygons';
+import GMapCircles     from 'ember-cli-g-maps/mixins/g-maps/circles';
+import GMapPolylines   from 'ember-cli-g-maps/mixins/g-maps/polylines';
 
 const { on, merge, uuid, computed, observer } = Ember;
 const { later } = Ember.run;
@@ -124,13 +124,13 @@ export default Ember.Component.extend(Ember.Evented, GMapMarkers, GMapPolygons, 
     map.setZoom(zoom);
   }),
 
-  _syncDraggable: observer('draggable', function() {
+  _syncDraggable: observer('isMapLoaded', 'draggable', function() {
     if(!this.get('isMapLoaded')) { return; }
     const map = this.get('map').map;
     map.setOptions({ draggable: this.get('draggable') });
   }),
 
-  _syncMapType: observer('mapType', function() {
+  _syncMapType: observer('isMapLoaded', 'mapType', function() {
     if(!this.get('isMapLoaded')) { return; }
     const map     = this.get('map').map;
     const mapType = (this.get('mapType')+'').toUpperCase();

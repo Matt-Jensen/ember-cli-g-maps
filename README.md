@@ -335,6 +335,7 @@ Planned Features
 ----------------
 
 - [Overlays](https://developers.google.com/maps/documentation/javascript/3.exp/reference#CircleOptions#MapPanes)
+- [Rectangles](http://hpneo.github.io/gmaps/documentation.html#GMaps-drawRectangle)
 - [Controls](http://hpneo.github.io/gmaps/examples/custom_controls.html)
 - [Layers & KML Layers](https://developers.google.com/maps/documentation/javascript/3.exp/reference#CircleOptions#KmlLayerOptions)
 - [Routes](http://hpneo.github.io/gmaps/examples/routes.html)
