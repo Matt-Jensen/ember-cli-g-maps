@@ -67,7 +67,7 @@ export default {
         let parentModel = this.get(model);
 
         // If Items require syncing
-        if(!this.get('isMapLoaded')) { return; }
+        if(!this.get('isMapLoaded') || !parentModel) { return; }
 
         for(let i = 0, l = parentModel.length; i < l; i++) {
           let item         = parentModel[i];
