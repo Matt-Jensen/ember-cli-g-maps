@@ -91,7 +91,13 @@ export default Ember.Route.extend({
             console.log('Big wheels keep on turnin\'', e, rectangle);
           }
         }
-      ])
+      ]),
+      selections: {
+        circleOptions: {
+          fillColor: getRandomColor(),
+          fillOpacity: 1,
+        }
+      }
     });
 
     // window.setInterval(() => {
@@ -102,6 +108,10 @@ export default Ember.Route.extend({
   },
 
   actions: {
+    selctionsBinding: function(e) {
+      this.controller.set('selections.circleOptions.fillColor', getRandomColor());
+    },
+
     onClickRectangle: function(e) {
       const color = getRandomColor();
       const rectangles = this.controller.get('rectangles');
