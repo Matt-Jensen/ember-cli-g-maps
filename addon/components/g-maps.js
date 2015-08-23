@@ -102,7 +102,7 @@ export default Ember.Component.extend(Ember.Evented, GMapMarkers, GMapPolygons, 
     this.get('gMap').maps.remove(this.get('name'));
 
     // Run after Mixin willDestroyElement
-    Ember.run.later(() => {
+    later(() => {
       this.get('map').destroy();
     });
   }),
@@ -150,29 +150,36 @@ export default Ember.Component.extend(Ember.Evented, GMapMarkers, GMapPolygons, 
 
   _addGMapPersisters: on('ember-cli-g-map-loaded', function() {
     const map = this.get('map');
-    const areCoordsEqual = this._areCoordsEqual;
 
     GMaps.on('center_changed', map.map, () => { 
-      later(() => {
-        const { lat, lng } = this.getProperties('lat', 'lng');
-        const { A, F } = map.getCenter();
-
-        // If app state is out of sync with GMap
-        if(!areCoordsEqual(A, lat) || !areCoordsEqual(F, lng)) {
-          this.setProperties({ lat: A, lng: F });
-        }
-      });
+      Ember.run.debounce(this, this._onCenterChanged, 100);
     });
 
     GMaps.on('zoom_changed', map.map, () => {
-      later(() => {
-        const zoom = this.get('zoom');
-        if(zoom !== map.map.zoom) {
-          this.set('zoom', map.map.zoom);
-        }
-      });
+      later(() => this._onZoomChanged());
     });
   }),
+
+  _onZoomChanged: function() {
+    const map = this.get('map');
+    const zoom = this.get('zoom');
+
+    if(zoom !== map.map.zoom) {
+      this.set('zoom', map.map.zoom);
+    }
+  },
+
+  _onCenterChanged: function() {
+    const map = this.get('map');
+    const areCoordsEqual = this._areCoordsEqual;
+    const { lat, lng } = this.getProperties('lat', 'lng');
+    const { A, F } = map.getCenter();
+
+    // If app state is out of sync with GMap
+    if(!areCoordsEqual(A, lat) || !areCoordsEqual(F, lng)) {
+      this.setProperties({ lat: A, lng: F });
+    }
+  },
 
 
   // Supported g-map Actions
@@ -248,10 +255,10 @@ export default Ember.Component.extend(Ember.Evented, GMapMarkers, GMapPolygons, 
 
     return {
       bounds: [
-        { lat: bounds.Da.j, lng: bounds.va.j },
-        { lat: bounds.Da.j, lng: bounds.va.A },
-        { lat: bounds.Da.A, lng: bounds.va.A },
-        { lat: bounds.Da.A, lng: bounds.va.j }
+        { lat: bounds.Da.j, lng: bounds.va.j }, // top left
+        { lat: bounds.Da.j, lng: bounds.va.A }, // top right
+        { lat: bounds.Da.A, lng: bounds.va.A }, // bottom left
+        { lat: bounds.Da.A, lng: bounds.va.j }  // bottom right
       ],
 
       mapIdle: new Promise((resolve) => {

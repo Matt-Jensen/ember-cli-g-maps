@@ -1,6 +1,6 @@
 import Ember        from 'ember';
 
-const { merge, uuid, on, computed, observer } = Ember;
+const { merge, uuid, on, observer } = Ember;
 const { capitalize } = Ember.String;
 
 export default {

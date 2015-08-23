@@ -1,19 +1,34 @@
 /* globals google: true */
 import Ember from 'ember';
 
-const { on, observer, computed } = Ember;
+const { on, computed } = Ember;
 
 export default Ember.Mixin.create({
-  _drawingManager:     null,
+  
+  // Stores reference to google DrawingManager instance
+  _drawingManager: null,
+  
+  /**
+   * [selectionsDelay time it takes to remove last selection from the map]
+   * @type {Number}
+   */
+  selectionsDelay: 400,
 
+  // Default to all supported mode
   selectionsModes: [
     'marker',
     'circle',
-    // 'polygon', <- Broken
-    // 'polyline', <- Broken
+    'polygon',
+    'polyline',
     'rectangle'
   ],
-  _gmapSelectionsModes: computed('selectionsModes', function() {
+
+  /**
+   * [_gmapSelectionsModes]
+   * @param  {String}  [observes `selectionsModes` binding options]
+   * @return {[Array]} [Returns array of matched google OverlayType's]
+   */
+  _gmapSelectionsModes: computed('selectionsModes.[]', function() {
     const modes = [];
     const selectionsModes = this.get('selectionsModes').map((dm) => dm.toLowerCase());
 
@@ -41,7 +56,14 @@ export default Ember.Mixin.create({
   }),
 
 
+  // Default to controls on top
   selectionsPosition: 'top',
+
+  /**
+   * [_gmapSelectionsPosition ]
+   * @param  {String}            [observes `selectionsPosition` binding]
+   * @return {[ControlPosition]} [Returns matching google ControlPosition]
+   */
   _gmapSelectionsPosition: computed('selectionsPosition', function() {
     let pos = 'TOP_CENTER';
 
@@ -80,7 +102,14 @@ export default Ember.Mixin.create({
   }),
 
 
-  selectionsMode:     '',
+  // Default to no active selection tool
+  selectionsMode:      '',
+
+  /**
+   * [_gmapSelectionsMode]
+   * @param  {String}             [observes `selectionsMode` binding]
+   * @return {[OverlayType|null]} [Returns matching google OverlayType]
+   */
   _gmapSelectionsMode: computed('selectionsMode', function() {
     let mode = '';
 
@@ -97,13 +126,20 @@ export default Ember.Mixin.create({
         mode = 'RECTANGLE'; break;
     }
 
-    return mode ? google.maps.drawing.OverlayType[mode] : null;
+    return (mode ? google.maps.drawing.OverlayType[mode] : null);
   }),
 
 
-  // Added via `_validateSelections`
-  // Observes ('isMapLoaded', 'selections')
-  _setupSelections: function() {
+  // Stores reference to `overlaycomplete` event
+  _selectionsEventOverlayComplete: null,
+
+
+  /**
+   * [_initSelections runs once per selections instance, instantiation]
+   * [Added via `_validateSelections`]
+   * [Observes ('isMapLoaded', 'selections')]
+   */
+  _initSelections: function() {
     const continueSetup = (
       this.get('isMapLoaded') &&
       this.get('selections') &&
@@ -113,41 +149,85 @@ export default Ember.Mixin.create({
 
     if(!continueSetup) { return; }
 
+    // Create DrawingManager Instance and store
     const drawingManager = new google.maps.drawing.DrawingManager();
     this.set('_drawingManager', drawingManager);
 
-    this.addObserver('drawManagerOptions', this, '_syncDrawMangagerOptions');
-    // this.addObserver('selections', this, '_hideDrawManager');
-
+    // Watch for changes to selections configuration and inital sync
+    this.addObserver('_drawManagerOptions', this, '_syncDrawMangagerOptions');
     this._syncDrawMangagerOptions();
 
+    // Add the drawing manager to the map
     drawingManager.setMap(this.get('map').map);
 
+    let lastSelection;
+
+    // Bind selection events
+    const listener = google.maps.event.addListener(drawingManager, 'overlaycomplete', (event) => {
+
+      // Prohibit simultanious selections
+      if(lastSelection && lastSelection.map) {
+        lastSelection.setMap(null);
+      }
+
+      lastSelection = event.overlay;
+
+      if (event.type === google.maps.drawing.OverlayType.MARKER) {
+        this.send('selectionsMarker', event.overlay);
+      } 
+      else if (event.type === google.maps.drawing.OverlayType.CIRCLE) {
+        this.send('selectionsCircle', event.overlay);
+      }
+      else if(event.type === google.maps.drawing.OverlayType.RECTANGLE) {
+        this.send('selectionsRectangle', event.overlay);
+      }
+      else if(event.type === google.maps.drawing.OverlayType.POLYGON) {
+        this.send('selectionsPolygon', event.overlay);
+      }
+      else if(event.type === google.maps.drawing.OverlayType.POLYLINE) {
+        this.send('selectionsPolyline', event.overlay); 
+      }
+
+      // Remove the last drawing from map
+      Ember.run.later(() => { event.overlay.setMap(null); }, this.get('selectionsDelay'));
+    });
+
+    // create reference to event
+    this.set('_selectionsEventOverlayComplete', listener);
+
     // Remove observers added during `didInsertElement`
-    this.removeObserver('isMapLoaded', this, '_setupSelections');
-    this.removeObserver('selections', this, '_setupSelections');
+    this.removeObserver('isMapLoaded', this, '_initSelections');
+    this.removeObserver('selections', this, '_initSelections');
   },
 
 
-  drawManagerOptions: computed(
+  /**
+   * [Return the configuration object for the drawingManager]
+   * @param  {[Strings]}  [Observes all relevant properties on `selections` config]
+   * @return {[Object]}   [Drawing Manager Configuration Object]
+   */
+  _drawManagerOptions: computed(
     'selections',
-    'selections.drawingControlOptions.{position,drawingModes}',
-    'selections.{drawingMode,drawingControl,markerOptions,circleOptions,polygonOptions,polylineOptions,rectangleOptions}',
+    '_gmapSelectionsMode',
+    '_gmapSelectionsModes',
+    '_gmapSelectionsPosition',
+    'selections.{visible,markerOptions,circleOptions,polygonOptions,polylineOptions,rectangleOptions}',
     function() {
       const markerOptions    = this.get('selections.markerOptions');
       const circleOptions    = this.get('selections.circleOptions');
       const polygonOptions   = this.get('selections.polygonOptions');
       const polylineOptions  = this.get('selections.polylineOptions');
       const rectangleOptions = this.get('selections.rectangleOptions');
+      const isVisible        = this.get('selections.visible');
 
       const options = {
         drawingMode: this.get('_gmapSelectionsMode'),
-        drawingControl: this.get('drawingControl'),
+        drawingControl: (typeof isVisible === 'boolean' ? isVisible : true), // Shows or hides draw manager
         drawingControlOptions: {
           position: this.get('_gmapSelectionsPosition'),
           drawingModes: this.get('_gmapSelectionsModes')
         }
-      }
+      };
 
       if(markerOptions) {
         options.markerOptions = markerOptions;
@@ -169,24 +249,25 @@ export default Ember.Mixin.create({
         options.rectangleOptions = rectangleOptions;
       }
 
-      console.log('drawManager options', options);
       return options;
     }
   ),
 
 
-  // Added via `_setupSelections`
-  // Observes ('drawManagerOptions')
+  /**
+   * [_syncDrawMangagerOptions finally sets the options on the drawManager instance]
+   * [Added via `_initSelections`]
+   * [Observes ('_drawManagerOptions')]
+   */
   _syncDrawMangagerOptions: function() {
-    Ember.run.throttle(this, this._setDrawingManagerOptions, 500);
-  },
-
-  _setDrawingManagerOptions: function() {
-    console.log('synccy');
-    return this.get('_drawingManager').setOptions(this.get('drawManagerOptions'));
+    return this.get('_drawingManager').setOptions(this.get('_drawManagerOptions'));
   },
 
 
+  /**
+   * [googleMapsSupportsDrawingManager returns a boolean indicating if DrawingManager is supported]
+   * @return {[Boolean]}
+   */
   googleMapsSupportsDrawingManager: computed(function() {
     return (
       google.maps &&
@@ -196,6 +277,11 @@ export default Ember.Mixin.create({
   }),
 
 
+  /**
+   * [_validateSelections determines if selections can instantiate, if so adds init observers]
+   * @param  {[String]} )[triggered on element insertion]
+   * @return {[Oberservers]}   [if valid adds obersvers to init method]
+   */
   _validateSelections: on('didInsertElement', function() {
     if(!this.get('selections')) { return; }
 
@@ -205,18 +291,70 @@ export default Ember.Mixin.create({
     else {
 
       // Enable selections setup
-      this.addObserver('isMapLoaded', this, '_setupSelections');
-      this.addObserver('selections', this, '_setupSelections');
+      this.addObserver('isMapLoaded', this, '_initSelections');
+      this.addObserver('selections', this, '_initSelections');
     }
   }),
 
 
+  /**
+   * [_teardownSelections removes the draw manager from the map, clears up memory, and unbinds events]
+   * @param  {[String]} [triggered on element destroy]
+   */
   _teardownSelections: on('willDestroyElement', function() {
     const drawingManager = this.get('_drawingManager');
 
     if(drawingManager) {
       drawingManager.setMap(null);
       this.set('drawingManager', null);
+
+      // Remove overlay complete listener
+      this.get('_selectionsEventOverlayComplete').remove();
     }
-  })
+  }),
+
+  actions: {
+    selectionsMarker: function(marker) {
+      this.sendAction('selectionsMarker', {
+        marker,
+        lat: marker.position.A,
+        lng: marker.position.F
+      });
+    },
+
+    selectionsCircle: function(circle) {
+      this.sendAction('selectionsCircle', {
+        circle,
+        radius: circle.getRadius(),
+        lat: circle.center.A,
+        lng: circle.center.F
+      });
+    },
+
+    selectionsRectangle: function(rectangle) {
+      this.sendAction('selectionsRectangle', {
+        rectangle,
+        bounds: [
+          { lat: rectangle.bounds.Da.j, lng: rectangle.bounds.va.j }, // top left
+          { lat: rectangle.bounds.Da.j, lng: rectangle.bounds.va.A }, // top right
+          { lat: rectangle.bounds.Da.A, lng: rectangle.bounds.va.A }, // bottom left
+          { lat: rectangle.bounds.Da.A, lng: rectangle.bounds.va.j }  // bottom right
+        ]
+      });
+    },
+
+    selectionsPolygon: function(polygon) {
+      this.sendAction('selectionsPolygon', {
+        polygon,
+        coords: polygon.latLngs.getArray()[0].j.map((c) => { return { lat: c.A, lng: c.F }; })
+      });
+    },
+
+    selectionsPolyline: function(polyline) {
+      this.sendAction('selectionsPolyline', {
+        polyline,
+        coords: polyline.latLngs.getArray()[0].j.map((c) => { return { lat: c.A, lng: c.F }; })
+      });
+    }
+  }
 });
