@@ -377,7 +377,7 @@ Repurposed from the [Google Maps Drawing Manager](https://developers.google.com/
 - Polygons
 - Polylines
 
-** Selections Requirements **
+**Selections Requirements**
 
 Selections requires the Google Maps Drawing library.  To add this library in:
 `config/environment.js` add:
@@ -388,7 +388,7 @@ ENV.googleMap = {
 };
 ```
 
-** Main Configuration Property **
+**Main Configuration Property**
 Your g-maps component requires a truthy `selections` property to be set in order to instantiate. The `selections` object may contain the following:
 - visible // [boolean] Show or hide the selection controls. {default} true
 - markerOptions // [Object] Supports styling of [marker configuration options](https://developers.google.com/maps/documentation/javascript/reference?hl=en#MarkerOptions)
@@ -398,14 +398,14 @@ Your g-maps component requires a truthy `selections` property to be set in order
 - rectangleOptions // [Object] Supports styling of [rectangle configuration options](https://developers.google.com/maps/documentation/javascript/reference?hl=en#RectangleOptions)
 
 
-** Additional Configuration Properties**
+**Additional Configuration Properties**
 - selectionsDelay // [number] Time until selection is removed. {default} 400.
 - selectionsMode  // [string] Current selection tool. Accepts value 'marker', 'circle', 'rectangle', 'polygon', and 'polyline'. {default} ''.
 - selectionsModes // [array] Supported selection modes. Accpets string values: 'marker', 'circle', 'rectangle', 'polygon', and 'polyline'. {default} ['marker', 'circle', 'rectangle', 'polygon', 'polyline']
 - selectionsPosition // [string] Location of selection controls. Accepts values: 'top', 'top-left', 'top-right', 'left-top', 'right-top', 'left', 'left-center', 'right', 'right-center', 'left-bottom', 'right-bottom', 'bottom', 'bottom-center', 'bottom-left', 'bottom-right'. {default} 'top'.
 
 
-** Actions **
+**Actions**
 Actions are fired when a selections are completed.  Available selections actions are:
 
 - selectionsMarker
@@ -415,7 +415,7 @@ Actions are fired when a selections are completed.  Available selections actions
 - selectionsPolyline
 
 
-** Selections Example **
+**Selections Example**
 
 ```handlebars
 {{g-maps
