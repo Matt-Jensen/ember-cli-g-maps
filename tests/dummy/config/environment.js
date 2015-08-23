@@ -28,6 +28,10 @@ module.exports = function(environment) {
     'style-src': "'self' 'unsafe-inline' fonts.googleapis.com maps.gstatic.com"
   };
 
+  ENV.googleMap = {
+    libraries: ['drawing']
+  };
+
   if (environment === 'development') {
     // ENV.APP.LOG_RESOLVER = true;
     // ENV.APP.LOG_ACTIVE_GENERATION = true;
