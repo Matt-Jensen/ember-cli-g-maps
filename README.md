@@ -366,6 +366,73 @@ export default Ember.Route.extend({
     zoom_changed="myZoom_changedAction"}}
 ```
 
+Selections
+------------
+
+Repurposed from the [Google Maps Drawing Manager](https://developers.google.com/maps/documentation/javascript/drawinglayer), Selections allow you to draw shapes on your map instance.  This allows users to select areas on the map to interact with.  Supported selection types include:
+
+- Markers
+- Rectangles
+- Circles
+- Polygons
+- Polylines
+
+** Selections Requirements **
+
+Selections requires the Google Maps Drawing library.  To add this library in:
+`config/environment.js` add:
+
+```json
+ENV.googleMap = {
+  libraries: ['drawing']
+};
+```
+
+** Main Configuration Property **
+Your g-maps component requires a truthy `selections` property to be set in order to instantiate. The `selections` object may contain the following:
+- visible // [boolean] Show or hide the selection controls. {default} true
+- markerOptions // [Object] Supports styling of [marker configuration options](https://developers.google.com/maps/documentation/javascript/reference?hl=en#MarkerOptions)
+- circleOptions // [Object] Supports styling of [circle configuration options](https://developers.google.com/maps/documentation/javascript/reference?hl=en#CircleOptions)
+- polygonOptions // [Object] Supports styling of [polygon configuration options](https://developers.google.com/maps/documentation/javascript/reference?hl=en#FusionTablesPolygonOptions)
+- polylineOptions // [Object] Supports styling of [polyline configuration options](https://developers.google.com/maps/documentation/javascript/reference?hl=en#FusionTablesPolylineOptions)
+- rectangleOptions // [Object] Supports styling of [rectangle configuration options](https://developers.google.com/maps/documentation/javascript/reference?hl=en#RectangleOptions)
+
+
+** Additional Configuration Properties**
+- selectionsDelay // [number] Time until selection is removed. {default} 400.
+- selectionsMode  // [string] Current selection tool. Accepts value 'marker', 'circle', 'rectangle', 'polygon', and 'polyline'. {default} ''.
+- selectionsModes // [array] Supported selection modes. Accpets string values: 'marker', 'circle', 'rectangle', 'polygon', and 'polyline'. {default} ['marker', 'circle', 'rectangle', 'polygon', 'polyline']
+- selectionsPosition // [string] Location of selection controls. Accepts values: 'top', 'top-left', 'top-right', 'left-top', 'right-top', 'left', 'left-center', 'right', 'right-center', 'left-bottom', 'right-bottom', 'bottom', 'bottom-center', 'bottom-left', 'bottom-right'. {default} 'top'.
+
+
+** Actions **
+Actions are fired when a selections are completed.  Available selections actions are:
+
+- selectionsMarker
+- selectionsCircle
+- selectionsRectangle
+- selectionsPolygon
+- selectionsPolyline
+
+
+** Selections Example **
+
+```handlebars
+{{g-maps
+  ...
+  selections=selections
+  selectionsDelay=delay
+  selectionsMode=activeMode
+  selectionsModes=supportedModes
+  selectionsPosition=position
+  selectionsMarker="onMarkerSelect"
+  selectionsCircle="onCircleSelect"
+  selectionsRectangle="onRectangleSelect"
+  selectionsPolygon="onPolygonSelect"
+  selectionsPolyline="onPolylineSelect"}}
+```
+
+
 Planned Features
 ----------------
 
@@ -392,6 +459,12 @@ ENV.googleMap = {
 
 Changelog
 ---------
+
+0.1.0-beta
+------------
+* Added Rectangle Maps Child
+* Map selections
+* fixed g-maps bindings on center_changed
 
 0.0.14-beta
 ------------

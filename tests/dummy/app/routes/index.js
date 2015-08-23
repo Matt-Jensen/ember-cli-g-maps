@@ -93,6 +93,7 @@ export default Ember.Route.extend({
         }
       ]),
       selections: {
+        visible: true,
         circleOptions: {
           fillColor: getRandomColor(),
           fillOpacity: 1,
@@ -108,8 +109,32 @@ export default Ember.Route.extend({
   },
 
   actions: {
-    selctionsBinding: function(e) {
+    selctionsBinding: function() {
       this.controller.set('selections.circleOptions.fillColor', getRandomColor());
+    },
+
+    selectionsMarker: function(marker) {
+      console.log('marker selection', marker);
+    },
+
+    selectionsCircle: function(circle) {
+      console.log('circular selection', circle);
+    },
+
+    selectionsRectangle: function(rectangle) {
+      console.log('rectangular selection', rectangle);
+    },
+
+    selectionsPolygon: function(polygon) {
+      console.log('polygon selection', polygon);
+    },
+
+    selectionsPolyline: function(polyline) {
+      console.log('polyline selection', polyline);
+    },
+
+    hideMapSelections: function() {
+      this.controller.set('selections.visible', !this.controller.get('selections.visible'));
     },
 
     onClickRectangle: function(e) {
