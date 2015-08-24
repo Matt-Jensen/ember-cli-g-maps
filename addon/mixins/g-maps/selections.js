@@ -1,18 +1,21 @@
 /* globals google: true */
 import Ember from 'ember';
 
-const { on, computed } = Ember;
+const { later } = Ember.run;
+const { on, computed, isArray } = Ember;
 
 export default Ember.Mixin.create({
-  
+
   // Stores reference to google DrawingManager instance
   _drawingManager: null,
-  
+
+
   /**
    * [selectionsDelay time it takes to remove last selection from the map]
    * @type {Number}
    */
-  selectionsDelay: 400,
+  selectionsDelay: null,
+
 
   // Default to all supported mode
   selectionsModes: [
@@ -23,6 +26,7 @@ export default Ember.Mixin.create({
     'rectangle'
   ],
 
+
   /**
    * [_gmapSelectionsModes]
    * @param  {String}  [observes `selectionsModes` binding options]
@@ -30,6 +34,11 @@ export default Ember.Mixin.create({
    */
   _gmapSelectionsModes: computed('selectionsModes.[]', function() {
     const modes = [];
+
+    if(isArray(this.get('selectionsModes')) === false) {
+      Ember.Logger.error('`selectionsModes` property expects an array');
+    }
+
     const selectionsModes = this.get('selectionsModes').map((dm) => dm.toLowerCase());
 
     if(selectionsModes.indexOf('marker') > -1) {
@@ -67,6 +76,10 @@ export default Ember.Mixin.create({
   _gmapSelectionsPosition: computed('selectionsPosition', function() {
     let pos = 'TOP_CENTER';
 
+    if(typeof this.get('selectionsPosition') !== 'string') {
+      Ember.Logger.error('`selectionsPosition` property expects a string');
+    }
+
     switch(Ember.String.dasherize(this.get('selectionsPosition')).toLowerCase()) {
       case 'top-left':
         pos = 'TOP_LEFT'; break;
@@ -103,7 +116,7 @@ export default Ember.Mixin.create({
 
 
   // Default to no active selection tool
-  selectionsMode:      '',
+  selectionsMode: '',
 
   /**
    * [_gmapSelectionsMode]
@@ -112,6 +125,10 @@ export default Ember.Mixin.create({
    */
   _gmapSelectionsMode: computed('selectionsMode', function() {
     let mode = '';
+
+    if(typeof this.get('selectionsMode') !== 'string') {
+      Ember.Logger.error('`selectionsMode` property expects a string');
+    }
 
     switch(this.get('selectionsMode').toLowerCase()) {
       case 'marker':
@@ -154,8 +171,8 @@ export default Ember.Mixin.create({
     this.set('_drawingManager', drawingManager);
 
     // Watch for changes to selections configuration and inital sync
-    this.addObserver('_drawManagerOptions', this, '_syncDrawMangagerOptions');
-    this._syncDrawMangagerOptions();
+    this.addObserver('_drawManagerOptions', this, '_syncDrawingMangagerOptions');
+    this._syncDrawingMangagerOptions();
 
     // Add the drawing manager to the map
     drawingManager.setMap(this.get('map').map);
@@ -163,7 +180,7 @@ export default Ember.Mixin.create({
     let lastSelection;
 
     // Bind selection events
-    const listener = google.maps.event.addListener(drawingManager, 'overlaycomplete', (event) => {
+    const overlayListener = google.maps.event.addListener(drawingManager, 'overlaycomplete', (event) => {
 
       // Prohibit simultanious selections
       if(lastSelection && lastSelection.map) {
@@ -189,11 +206,14 @@ export default Ember.Mixin.create({
       }
 
       // Remove the last drawing from map
-      Ember.run.later(() => { event.overlay.setMap(null); }, this.get('selectionsDelay'));
+      later(() => { event.overlay.setMap(null); }, this.get('selectionsDelay') || 400);
     });
 
+    // Add listener to sync user selection of map drawing controls
+    this.$().on('click', '.gmnoprint > div', this._syncDrawingManagerModeControls.bind(this));
+
     // create reference to event
-    this.set('_selectionsEventOverlayComplete', listener);
+    this.set('_selectionsEventOverlayComplete', overlayListener);
 
     // Remove observers added during `didInsertElement`
     this.removeObserver('isMapLoaded', this, '_initSelections');
@@ -255,12 +275,21 @@ export default Ember.Mixin.create({
 
 
   /**
-   * [_syncDrawMangagerOptions finally sets the options on the drawManager instance]
+   * [_syncDrawingMangagerOptions finally sets the options on the drawManager instance]
    * [Added via `_initSelections`]
    * [Observes ('_drawManagerOptions')]
    */
-  _syncDrawMangagerOptions: function() {
+  _syncDrawingMangagerOptions: function() {
     return this.get('_drawingManager').setOptions(this.get('_drawManagerOptions'));
+  },
+
+
+  /**
+   * [_syncDrawingManagerModeControls get active drawingMode and bind to parent, enforces string type if falsey]
+   */
+  _syncDrawingManagerModeControls: function() {
+    const mode = this.get('_drawingManager').drawingMode || '';
+    this.set('selectionsMode', mode);
   },
 
 
@@ -310,6 +339,9 @@ export default Ember.Mixin.create({
 
       // Remove overlay complete listener
       this.get('_selectionsEventOverlayComplete').remove();
+
+      // Remove select control sync listener
+      this.$().off('click', '.gmnoprint > div');
     }
   }),
 
