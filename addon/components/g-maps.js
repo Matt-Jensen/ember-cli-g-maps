@@ -53,7 +53,7 @@ export default Ember.Component.extend(Ember.Evented, GMapMarkers, GMapPolygons, 
     mapType: 'ROADMAP'
   },
 
-  insertGMap: on('didInsertElement', function() {
+  _initGMap: on('didInsertElement', function() {
     const events      = this.get('_gmapEvents');
     const configProps = ['lat', 'lng', 'zoom'];
     let config        = this.getProperties.apply(this, configProps);
@@ -139,8 +139,13 @@ export default Ember.Component.extend(Ember.Evented, GMapMarkers, GMapPolygons, 
   _syncMapType: observer('isMapLoaded', 'mapType', function() {
     if(!this.get('isMapLoaded')) { return; }
     const map     = this.get('map').map;
-    const mapType = (this.get('mapType')+'').toUpperCase();
-    map.setMapTypeId( google.maps.MapTypeId[mapType] );
+    const mapType = this.get('mapType')+'';
+
+    if(mapType === 'undefined') { return; }
+
+    if(mapType.toLowerCase() !== map.getMapTypeId()) {
+      map.setMapTypeId( google.maps.MapTypeId[mapType.toUpperCase()] );
+    }
   }),
 
 
@@ -164,8 +169,15 @@ export default Ember.Component.extend(Ember.Evented, GMapMarkers, GMapPolygons, 
     const map = this.get('map');
     const zoom = this.get('zoom');
 
+    // Zooming changes lat,lng state
+    const { A, F } = map.getCenter();
+
     if(zoom !== map.map.zoom) {
-      this.set('zoom', map.map.zoom);
+      this.setProperties({
+        zoom: map.map.zoom,
+        lat: A,
+        lng: F
+      });
     }
   },
 
@@ -177,7 +189,10 @@ export default Ember.Component.extend(Ember.Evented, GMapMarkers, GMapPolygons, 
 
     // If app state is out of sync with GMap
     if(!areCoordsEqual(A, lat) || !areCoordsEqual(F, lng)) {
-      this.setProperties({ lat: A, lng: F });
+      this.setProperties({
+        lat: A,
+        lng: F
+      });
     }
   },
 

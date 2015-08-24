@@ -460,6 +460,13 @@ ENV.googleMap = {
 Changelog
 ---------
 
+0.1.1-beta
+------------
+* Fixed GMap zooming lat lng hijacking
+* Added warnings for invalid selections' props
+* Added syncing of DrawingManager controls to selectionsMode
+* Fix auto setting of map type to 'undefined'
+
 0.1.0-beta
 ------------
 * Added Rectangle Maps Child

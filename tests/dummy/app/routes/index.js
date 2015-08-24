@@ -98,7 +98,11 @@ export default Ember.Route.extend({
           fillColor: getRandomColor(),
           fillOpacity: 1,
         }
-      }
+      },
+      selectionsMode: '',
+      selectionsModes: ['marker', 'circle', 'polygon', 'rectangle', 'polyline'],
+      selectionsPosition: 'top',
+      selectionsDelay: 400
     });
 
     // window.setInterval(() => {
@@ -114,23 +118,23 @@ export default Ember.Route.extend({
     },
 
     selectionsMarker: function(marker) {
-      console.log('marker selection', marker);
+      console.log(`${this.controller.get('selectionsMode')} selection`, marker);
     },
 
     selectionsCircle: function(circle) {
-      console.log('circular selection', circle);
+      console.log(`${this.controller.get('selectionsMode')} selection`, circle);
     },
 
     selectionsRectangle: function(rectangle) {
-      console.log('rectangular selection', rectangle);
+      console.log(`${this.controller.get('selectionsMode')} selection`, rectangle);
     },
 
     selectionsPolygon: function(polygon) {
-      console.log('polygon selection', polygon);
+      console.log(`${this.controller.get('selectionsMode')} selection`, polygon);
     },
 
     selectionsPolyline: function(polyline) {
-      console.log('polyline selection', polyline);
+      console.log(`${this.controller.get('selectionsMode')} selection`, polyline);
     },
 
     hideMapSelections: function() {
