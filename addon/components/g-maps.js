@@ -24,33 +24,33 @@ export default Ember.Component.extend(Ember.Evented, GMapMarkers, GMapPolygons, 
 
   // Map Events
   _gmapEvents: [
-    'bounds_changed',
-    'center_changed',
-    'click',
-    'dblclick',
-    'drag',
-    'dragend',
-    'dragstart',
-    'heading_changed',
     'idle',
-    'maptypeid_changed',
-    'mousemove',
-    'mouseout',
-    'mouseover',
-    'projection_changed',
+    'drag',
+    'click',
     'resize',
+    'dragend',
+    'dblclick',
+    'mouseout',
+    'dragstart',
+    'mousemove',
+    'mouseover',
     'rightclick',
     'tilesloaded',
     'tilt_changed',
-    'zoom_changed'
+    'zoom_changed',
+    'bounds_changed',
+    'center_changed',
+    'heading_changed',
+    'maptypeid_changed',
+    'projection_changed'
   ],
 
   _requiredProperties: {
     lat: 0,
     lng: 0,
     zoom: 0,
+    mapType: 'ROADMAP',
     mapTypeControl: false,
-    mapType: 'ROADMAP'
   },
 
   _initGMap: on('didInsertElement', function() {
