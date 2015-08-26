@@ -10,38 +10,12 @@ export default Ember.Mixin.create(
     namespace: 'polygon',
 
     /* Supported:
-    props: [
-      'clickable',
-      'draggable',
-      'editable',
-      'fillColor',
-      'fillOpacity',
-      'geodesic',
-      'paths',
-      'strokeColor',
-      'strokeOpacity',
-      'strokePosition',
-      'strokeWeight',
-      'visible',
-      'zIndex'
-    ],
+    props: [ 'clickable', 'draggable', 'editable', 'fillColor', 'fillOpacity', 'geodesic', 'paths', 'strokeColor', 'strokeOpacity', 'strokePosition', 'strokeWeight', 'visible', 'zIndex' ],
 
-    events: [
-      'click',
-      'rightclick',
-      'dblclick',
-      'drag',
-      'dragend',
-      'dragstart',
-      'mousedown',
-      'mouseout',
-      'mouseover',
-      'mouseup',
-      'mousemove'
-    ],
+    events: [ 'click', 'rightclick', 'dblclick', 'drag', 'dragend', 'dragstart', 'mousedown', 'mouseout', 'mouseover', 'mouseup', 'mousemove' ],
     */
 
-    validate: function() {
+    validate: function validatePolygons() {
       const polygons = this.get('polygons');
 
       if(!polygons) { return; } // validation not necessary

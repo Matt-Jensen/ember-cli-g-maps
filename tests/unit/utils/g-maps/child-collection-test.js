@@ -5,27 +5,48 @@ import { module, test } from 'qunit';
 module('Unit | Utility | g maps/child collection');
 
 const config = {
-  namespace: 'test',
   model: 'tests',
-  props: ['isTested'],
-  events: ['changed'],
+  namespace: 'test',
   validate: function() {},
   onDestroy: function() {}
 };
 
 test('it should throw an error when model property is undefined', function(assert) {
-  assert.throws(Ember.run.bind(childCollection, childCollection.create, {}), Error);
+  assert.throws(
+    function() { childCollection.create({}); },
+    new Error('childCollection requires a `model` string')
+  );
 });
 
 test('it should return a mixin configuration object', function(assert) {
   const result = childCollection.create(config);
-
   assert.ok(Ember.isArray(result.tests), 'model is array');
-  assert.equal(result._gmapTestProps[0], config.props, 'props is set correctly');
-  assert.equal(result._gmapTestEvents[0], config.events, 'events is set correctly');
   assert.ok(typeof result._gmapTestValidate === 'function', 'validate is set correctly');
-  assert.ok(typeof result._gmapTestOnDestroy === 'function', 'onDestroy is set correctly');
-  assert.ok(result._gmapTestIds.cacheable, 'is computed property');
-  assert.ok(result._gmapTestUpdated.cacheable, 'is computed property');
-  assert.ok(result._gmapTestSync.__ember_observes__, 'is an observer');
+  assert.ok(typeof result._gmapTestDestroy === 'function', 'onDestroy is set correctly');
+  assert.ok(typeof result._gmapTestSync === 'function', 'is computed property');
+});
+
+test('it should not require a validate or destroy method', function(assert) {
+  const result = childCollection.create({ model: 'tests', namespace: 'test' });
+  assert.ok(typeof result._gmapTestValidate === 'function', 'validate is set correctly');
+  assert.ok(typeof result._gmapTestDestroy === 'function', 'destroy is set correctly');
+});
+
+//////////////////////////
+// _modelVsMapChildDiff
+/////////////////////////
+
+test('_modelVsMapChildDiff should return false for identical model mapChild', function(assert) {
+  const result = childCollection._modelVsMapChildDiff({ test: 'test' }, { test: 'test' });
+  assert.equal(result, false);
+});
+
+test('_modelVsMapChildDiff should return true for non-identical objects', function(assert) {
+  const result = childCollection._modelVsMapChildDiff({ test: 'test' }, { test: false });
+  assert.equal(result, true);
+});
+
+test('_modelVsMapChildDiff should ignore top level objects on model parameter', function(assert) {
+  const result = childCollection._modelVsMapChildDiff({ test: 'test', ignore: {} }, { test: 'test' });
+  assert.equal(result, false);
 });

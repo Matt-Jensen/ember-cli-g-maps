@@ -9,7 +9,7 @@ export default Ember.Mixin.create(
 
     namespace: 'rectangle',
 
-    validate: function() {
+    validate: function validateRectangles() {
       const rectangles = this.get('rectangles');
 
       if(!rectangles) { return; } // validation not necessary

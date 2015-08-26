@@ -10,75 +10,30 @@ export default Ember.Mixin.create(
     namespace: 'marker',
 
     /* Supported:
-    props: [
-      'lat',
-      'lng',
-      'details',
-      'fences',
-      'outside',
-      'infoWindow',
-      'anchorPoint',
-      'animation',
-      'attribution',
-      'clickable',
-      'crossOnDrag',
-      'cursor',
-      'draggable',
-      'icon',
-      'opacity',
-      'optimized',
-      'place',
-      'shape',
-      'title',
-      'visible',
-      'zIndex'
-    ],
+    props: [ 'lat', 'lng', 'details', 'fences', 'outside', 'infoWindow', 'anchorPoint', 'animation', 'attribution', 'clickable', 'crossOnDrag', 'cursor', 'draggable', 'icon', 'opacity', 'optimized', 'place', 'shape', 'title', 'visible', 'zIndex' ],
 
-    events: [
-      'click',
-      'rightclick',
-      'dblclick',
-      'drag',
-      'dragend',
-      'dragstart',
-      'mousedown',
-      'mouseout',
-      'mouseover',
-      'mouseup',
-      'animation_changed',
-      'clickable_changed',
-      'cursor_changed',
-      'draggable_changed',
-      'flat_changed',
-      'icon_changed',
-      'position_changed',
-      'shadow_changed',
-      'shape_changed',
-      'title_changed',
-      'visible_changed',
-      'zindex_changed'
-    ],
+    events: [ 'click', 'rightclick', 'dblclick', 'drag', 'dragend', 'dragstart', 'mousedown', 'mouseout', 'mouseover', 'mouseup', 'animation_changed', 'clickable_changed', 'cursor_changed', 'draggable_changed', 'flat_changed', 'icon_changed', 'position_changed', 'shadow_changed', 'shape_changed', 'title_changed', 'visible_changed', 'zindex_changed' ],
     */
 
-    validate: function() {
+    validate: function validateMarkers() {
       const markers = this.get('markers');
       if(markers && !isArray(markers)) {
         throw new Error('g-maps component expects markers to be an Ember Array');
       }
     },
 
-    onDestroy: function() {
+    destroy: function destroyMarkers() {
       google.maps.event.clearListeners(this.get('map').map, 'closeclick');
     },
 
-    onRemoveItem: function(m) {
-      if(m.infoWindow) { 
+    removeItem: function removeMarker(m) {
+      if(m.infoWindow) {
         m.infoWindow.setMap(null);
         m.infoWindow = null;
       }
     },
 
-    onAddedItem: function(m, marker, map) {
+    addedItem: function addMarker(m, marker, map) {
       // If marker has visible window, trigger open
       if(marker.infoWindow && marker.infoWindow.visible) {
         marker.infoWindow.addListener('closeclick', function() {
