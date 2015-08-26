@@ -10,40 +10,12 @@ export default Ember.Mixin.create(
     namespace: 'circle',
 
     /* Supported:
-    props: [
-      'lat',
-      'lng',
-      'clickable',
-      'draggable',
-      'editable',
-      'fillColor',
-      'fillOpacity',
-      'radius',
-      'strokeColor',
-      'strokeOpacity',
-      'strokePosition',
-      'visible',
-      'zIndex'
-    ],
+    props: [ 'lat', 'lng', 'clickable', 'draggable', 'editable', 'fillColor', 'fillOpacity', 'radius', 'strokeColor', 'strokeOpacity', 'strokePosition', 'visible', 'zIndex' ],
 
-    events: [
-      'center_changed',
-      'click',
-      'dblclick',
-      'drag',
-      'dragend',
-      'dragstart',
-      'mousedown',
-      'mousemove',
-      'mouseout',
-      'mouseover',
-      'mouseup',
-      'radius_changed',
-      'rightclick'
-    ],
+    events: [ 'center_changed', 'click', 'dblclick', 'drag', 'dragend', 'dragstart', 'mousedown', 'mousemove', 'mouseout', 'mouseover', 'mouseup', 'radius_changed', 'rightclick' ],
     */
 
-    validate: function() {
+    validate: function validateCircles() {
       const circles = this.get('circles');
       if(circles && !isArray(circles)) {
         throw new Error('g-maps component expects circles to be an Ember Array');

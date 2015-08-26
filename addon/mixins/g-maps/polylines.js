@@ -9,7 +9,7 @@ export default Ember.Mixin.create(
 
     namespace: 'polyline',
 
-    validate: function() {
+    validate: function validatePolylines() {
       const polylines = this.get('polylines');
 
       if(!polylines) { return; } // validation not necessary

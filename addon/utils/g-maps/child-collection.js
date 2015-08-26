@@ -1,7 +1,7 @@
 import Ember        from 'ember';
 
-const { merge, uuid, on, observer } = Ember;
 const { capitalize } = Ember.String;
+const { merge, uuid, on, observer } = Ember;
 
 export default {
   create: function createChildCollection(settings) {
@@ -26,10 +26,8 @@ export default {
 
     const model             = settings.model;
     const namespace         = globalNamespace+capitalize(settings.namespace);
-    const addMethod         = Ember.String.singularize(`add${model[0].toUpperCase()}${model.slice(1)}`);
-    const removeMethod      = Ember.String.singularize(`remove${model[0].toUpperCase()}${model.slice(1)}`);
-    const afterAddChild     = settings.onAddedItem || noop;
-    const beforeRemoveChild = settings.onRemoveItem || noop;
+    const addMethod         = Ember.String.singularize(`add${capitalize(model)}`);
+    const removeMethod      = Ember.String.singularize(`remove${capitalize(model)}`);
 
 
     ////////////////////////////////////
@@ -53,7 +51,19 @@ export default {
       /**
        * Optional method to remove event listeners ect.
        */
-      [namespace+'OnDestroy']: on('willDestroyElement', settings.onDestroy || noop),
+      [namespace+'Destroy']: on('willDestroyElement', settings.destroy || noop),
+
+
+      /**
+       * Optional method to call after a map child item has been added.
+       */
+      [namespace+'AfterAddChild']: settings.addedItem || noop,
+
+
+      /**
+       * Optional method to call before a map child item has been removed.
+       */
+      [namespace+'BeforeRemoveChild']: settings.removeItem || noop,
 
 
       /**
@@ -62,7 +72,7 @@ export default {
        * @requires  {[GMap Model]}
        * @requires  {[GMap create method]}
        */
-      [`${namespace}Sync`]: observer('isMapLoaded', `${model}.[]`, function() {
+      [`${namespace}Sync`]: observer('isMapLoaded', `${model}.[]`, function sync() {
         const map       = this.get('map');
         let parentModel = this.get(model);
 
@@ -83,11 +93,11 @@ export default {
           else if(utils._modelVsMapChildDiff(item, mapChild)) {
 
             // Somethings different, so just rerender it!
-            beforeRemoveChild(mapChild, map);
+            this[namespace+'BeforeRemoveChild'](mapChild, map);
             map[ removeMethod ](mapChild);
 
             // Add to end of map[model]
-            addedMapItem = map[ addMethod ](item);
+            addedMapItem = map[addMethod](item);
 
             // So here we adjust it to be the current index
             map[model].splice(i, 0, map[model].pop());
@@ -95,16 +105,16 @@ export default {
 
           // Hook for mixin
           if(addedMapItem) {
-            afterAddChild(item, addedMapItem, map);
+            this[namespace+'AfterAddChild'](item, addedMapItem, map);
           }
         }
 
         // Remove any map children out of sync with model
-        while(map[model].length !== parentModel.length) {
+        while(map[model].length > parentModel.length) {
           let mapChild = map[model][map[model].length - 1];
 
           // Hook for mixin
-          beforeRemoveChild(mapChild, map);
+          this[namespace+'BeforeRemoveChild'](mapChild, map);
           map[removeMethod](mapChild);
         }
       })
@@ -116,7 +126,9 @@ export default {
       if(model.hasOwnProperty(p)) {
 
         // Only diff one level deep on parent model
-        if(typeof model[p] !== 'object' && model[p] !== mapChild[p]) { 
+        if(typeof model[p] === 'object') { continue; }
+
+        if(model[p] !== mapChild[p]) { 
           return true;
         }
       }

@@ -1,5 +1,5 @@
 import Ember from 'ember';
-import GMapsSelectionsMixin from '../../../mixins/g-maps/selections';
+import GMapsSelectionsMixin from 'ember-cli-g-maps/mixins/g-maps/selections';
 import { module, test } from 'qunit';
 
 module('Unit | Mixin | g maps/selections');

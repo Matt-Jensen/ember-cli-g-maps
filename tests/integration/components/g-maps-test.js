@@ -1,5 +1,5 @@
+import hbs                          from 'htmlbars-inline-precompile';
 import { moduleForComponent, test } from 'ember-qunit';
-import hbs from 'htmlbars-inline-precompile';
 
 moduleForComponent('g-maps', 'Integration | Component | g maps', {
   integration: true
