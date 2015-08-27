@@ -209,11 +209,11 @@ export default Ember.Mixin.create({
       later(() => { event.overlay.setMap(null); }, this.get('selectionsDelay') || 400);
     });
 
-    // Add listener to sync user selection of map drawing controls
-    this.$().on('click', '.gmnoprint > div', this._syncDrawingManagerModeControls.bind(this));
-
     // create reference to event
     this.set('_selectionsEventOverlayComplete', overlayListener);
+
+    // Add listener to sync user selection of map drawing controls
+    this.$().on('click', '.gmnoprint > div', this._syncDrawingManagerModeControls.bind(this));
 
     // Remove observers added during `didInsertElement`
     this.removeObserver('isMapLoaded', this, '_initSelections');
@@ -312,10 +312,10 @@ export default Ember.Mixin.create({
    * @return {[Oberservers]}   [if valid adds obersvers to init method]
    */
   _validateSelections: on('didInsertElement', function() {
-    if(!this.get('selections')) { return; }
+    if(!this.get('selections')) { return false; }
 
     if(!this.get('googleMapsSupportsDrawingManager')) {
-      Ember.Logger.error('the g-map component requires the "drawing" library included in config/environment.js');
+      throw new Error('the g-map component requires the "drawing" library included in `config/environment.js`');
     }
     else {
 
