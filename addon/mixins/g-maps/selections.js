@@ -80,7 +80,7 @@ export default Ember.Mixin.create({
       Ember.Logger.error('`selectionsPosition` property expects a string');
     }
 
-    switch(Ember.String.dasherize(this.get('selectionsPosition')).toLowerCase()) {
+    switch(Ember.String.dasherize(this.get('selectionsPosition').replace('_', '-')).toLowerCase()) {
       case 'top-left':
         pos = 'TOP_LEFT'; break;
       case 'top-right':
@@ -233,12 +233,12 @@ export default Ember.Mixin.create({
     '_gmapSelectionsPosition',
     'selections.{visible,markerOptions,circleOptions,polygonOptions,polylineOptions,rectangleOptions}',
     function() {
+      const isVisible        = this.get('selections.visible');
       const markerOptions    = this.get('selections.markerOptions');
       const circleOptions    = this.get('selections.circleOptions');
       const polygonOptions   = this.get('selections.polygonOptions');
       const polylineOptions  = this.get('selections.polylineOptions');
       const rectangleOptions = this.get('selections.rectangleOptions');
-      const isVisible        = this.get('selections.visible');
 
       const options = {
         drawingMode: this.get('_gmapSelectionsMode'),
@@ -339,6 +339,7 @@ export default Ember.Mixin.create({
 
       // Remove overlay complete listener
       this.get('_selectionsEventOverlayComplete').remove();
+      this.set('_selectionsEventOverlayComplete', null);
 
       // Remove select control sync listener
       this.$().off('click', '.gmnoprint > div');
