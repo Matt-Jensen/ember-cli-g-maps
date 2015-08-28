@@ -23,7 +23,7 @@ module('Unit | Mixin | g maps/core', {
         maps: { 
           add: function() {
             return {
-              onLoad: new Promise((resolve) => {})
+              onLoad: new Promise(() => {})
             };
           },
           remove: function() {}
@@ -40,7 +40,7 @@ module('Unit | Mixin | g maps/core', {
 
     // Clean up any instantiated GMaps
     Ember.run.later(() => {
-      if(gm && gm.map) { gm.destroy(); }
+      if(gm && gm.map && typeof gm.destroy === 'function') { gm.destroy(); }
     }, 10); // run after `_destroyGMap` if needed
   }
 });
@@ -148,7 +148,7 @@ test('`_destroyGMap` should remove all bound GMap events', function(assert) {
 test('`_destroyGMap` should remove gMap instance added to gMap service', function(assert) {
   assert.expect(1);
 
-  subject.set('name', 'may-test-map')
+  subject.set('name', 'may-test-map');
   subject.gMap.maps.remove = function(name) {
     assert.equal(name, 'may-test-map');
   };
@@ -257,48 +257,217 @@ test('`_syncDraggable` should sync `draggable` if `isMapLoaded` is true', functi
 //////////////////
 
 test('`_syncMapType` should not sync `mapType` if `isMapLoaded` is false', function(assert) {
-  subject.setProperties({ mapType: 'SATELITE',  isMapLoaded: false });
+  subject.setProperties({ mapType: 'SATELITE', isMapLoaded: false });
   assert.equal(subject._syncMapType(), false);
 });
-// test('`_syncMapType` should not sync `mapType` if `mapType` is undefined', function(assert) {});
-// test('`_syncMapType` should sync set `mapType` if `isMapLoaded` is true', function(assert) {});
+
+test('`_syncMapType` should not sync `mapType` if `mapType` is undefined', function(assert) {
+  subject.set('isMapLoaded', false);
+  subject._syncCenter = function() {};
+  subject._initGMap();
+  subject.setProperties({
+    mapType: undefined,
+    isMapLoaded: true,
+    map: merge(subject.get('map'), {
+      getCenter: function() { return { A: 1, F: 1 }; }
+    })
+  });
+  assert.equal(subject._syncMapType(), false);
+});
+
+test('`_syncMapType` should sync set `mapType` if `isMapLoaded` is true', function(assert) {
+  subject.set('isMapLoaded', false);
+  subject._syncCenter = function() {};
+  subject._initGMap();
+  subject.setProperties({
+    mapType: 'SATELITE',
+    isMapLoaded: true,
+    map: merge(subject.get('map'), {
+      getCenter: function() { return { A: 1, F: 1 }; },
+      map: {
+        setOptions: function() {},
+        getMapTypeId: function() { return 'ROADMAP'; },
+        setMapTypeId: sinon.spy()
+      }
+    })
+  });
+
+  assert.ok(subject.get('map').map.setMapTypeId.called);
+});
 
 
 /////////////////////////////
 // GMap Persistence Events
 ////////////////////////////
 
-// test('`_addGMapPersisters` should add GMap events on `ember-cli-g-map-loaded`', function(assert) {
-  // `center_changed`
-  // `zoom_changed`
-// });
-// test('`_addGMapPersisters` should call `_onCenterChanged` on GMap event: `center_changed` fire', function(assert) {});
-// test('`_addGMapPersisters` should call `_onZoomChanged` on GMap event: `zoom_changed` fire', function(assert) {});
+test('`_addGMapPersisters` should add GMap events on `ember-cli-g-map-loaded`', function(assert) {
+  const addedEvents = [];
+  const persistEvents = ['center_changed', 'zoom_changed'];
+  const originalGMapsOn = GMaps.on;
+  subject.set('map', { map: {} });
+
+  GMaps.on = function(e) {
+    addedEvents.push(e);
+  };
+
+  subject.trigger('ember-cli-g-map-loaded');
+  assert.deepEqual(addedEvents, persistEvents);
+
+  GMaps.on = originalGMapsOn;
+});
+
+test('`_addGMapPersisters` should call `_onCenterChanged` on GMap event: `center_changed` fire', function(assert) {
+  assert.expect(1);
+  const originalRunDebounce = Ember.run.debounce;
+
+  Ember.run.debounce = function(target, func) {
+    func.call(target);
+  };
+
+  subject._initGMap();
+  subject._onCenterChanged = function() {
+    assert.ok(true);
+  };
+  subject._addGMapPersisters();
+  GMaps.fire('center_changed', subject.get('map').map);
+
+  Ember.run.debounce = originalRunDebounce;
+});
+
+test('`_addGMapPersisters` should call `_onZoomChanged` on GMap event: `zoom_changed` fire', function(assert) {
+  assert.expect(1);
+  const originalRunLater = Ember.run.later;
+
+  Ember.run.later = function(func) { return func(); };
+
+  subject._initGMap();
+  subject._onZoomChanged = function() {
+    assert.ok(true);
+  };
+  subject._addGMapPersisters();
+  GMaps.fire('zoom_changed', subject.get('map').map);
+
+  Ember.run.later = originalRunLater;
+});
 
 
 ///////////////////////
 // On Center Changed
 //////////////////////
 
-// test('`_onCenterChanged` should not sync if same as subject `lat`,`lng`', function(assert) {});
-// test('`_onCenterChanged` should sync new `lat` & `lng` to subject', function(assert) {});
+test('`_onCenterChanged` should not sync if same as subject `lat`,`lng`', function(assert) {
+  subject.setProperties({
+    lat: 1, lng: 1, isMapLoaded: false,
+    map: {
+      getCenter: function() { return { A: 1, F: 1 }; }
+    }
+  });
+
+  assert.equal(subject._onCenterChanged(), false);
+});
+
+test('`_onCenterChanged` should sync new `lat` & `lng` to subject', function(assert) {
+  subject.setProperties({
+    lat: 1, lng: 1, isMapLoaded: false,
+    map: {
+      getCenter: function() { return { A: 2, F: 2 }; }
+    }
+  });
+
+  subject.setProperties = sinon.spy();
+
+  subject._onCenterChanged();
+  assert.ok(subject.setProperties.called);
+});
 
 
 /////////////////////
 // On Zoom Changed
 ////////////////////
 
-// test('`_onZoomChanged` should not sync if same as subject `zoom`', function(assert) {});
-// test('`_onZoomChanged` should sync new `zoom`, `lat`, and `zoom` to subject', function(assert) {});
+test('`_onZoomChanged` should not sync if same as subject `zoom`', function(assert) {
+  subject.setProperties({
+    zoom: 10, isMapLoaded: false,
+    map: { map: { zoom: 10 } }
+  });
+
+  assert.equal(subject._onZoomChanged(), false);
+});
+
+test('`_onZoomChanged` should sync new `zoom`, `lat`, and `zoom` to subject', function(assert) {
+  subject.setProperties({
+    lat: 1, lng: 1, zoom: 1, 
+    isMapLoaded: false,
+    map: { 
+      map: { zoom: 10 },
+      getCenter: function() { return { A: 2, F: 2 }; }
+    }
+  });
+
+  subject._onZoomChanged();
+
+  assert.equal(subject.get('lat'), 2);
+  assert.equal(subject.get('lng'), 2);
+  assert.equal(subject.get('zoom'), 10);
+});
 
 
 ////////////////////////
 // Default GMap State
 /////////////////////// 
 
-// test('`defaultGMapState` should return the current map bounds', function(assert) {});
-// test('`defaultGMapState` should return a `mapIdle` Promise', function(assert) {});
-// test('`defaultGMapState` should return a `mapTilesLoaded` Promise', function(assert) {});
+test('`defaultGMapState` should return the current map bounds', function(assert) {
+  subject.setProperties({
+    map: {
+      map: {
+        getBounds: function() {
+          return {
+            Da: { j: 1, A: 1 },
+            va: { j: 2, A: 2 }
+          };
+        }
+      }
+    }
+  });
+
+  assert.deepEqual(subject.get('defaultGMapState').bounds, [
+    { lat: 1, lng: 2 },
+    { lat: 1, lng: 2 },
+    { lat: 1, lng: 2 },
+    { lat: 1, lng: 2 }
+  ]);
+});
+
+test('`defaultGMapState` should return `mapIdle` Promise to `idle`', function(assert) {
+  assert.expect(2);
+  const addListenerOnce = google.maps.event.addListenerOnce;
+
+  google.maps.event.addListenerOnce = function(map, eventName) {
+    if(eventName === 'idle') { 
+      assert.ok(true);
+      google.maps.event.addListenerOnce = addListenerOnce;
+    }
+  };
+
+  subject._initGMap(); // set google map instance
+  assert.ok(subject.get('defaultGMapState').mapIdle instanceof Promise);
+
+});
+
+test('`defaultGMapState` should return `mapTilesLoaded` Promise to `tilesloaded`', function(assert) {
+  assert.expect(2);
+  const addListenerOnce = google.maps.event.addListenerOnce;
+
+  google.maps.event.addListenerOnce = function(map, eventName) {
+    if(eventName === 'tilesloaded') { 
+      assert.ok(true);
+      google.maps.event.addListenerOnce = addListenerOnce;
+    }
+  };
+
+  subject._initGMap(); // set google map instance
+  assert.ok(subject.get('defaultGMapState').mapTilesLoaded instanceof Promise);
+});
 
 
 /////////////
