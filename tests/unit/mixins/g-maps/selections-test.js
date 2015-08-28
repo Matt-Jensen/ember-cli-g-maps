@@ -170,7 +170,7 @@ test('`_gmapSelectionsMode` should return `null` if no mode specified', function
 /////////////////////
 
 test('`_gmapSelectionsModes` should provide the expected google maps overlay types', function(assert) {
-  subject.set('selectionsModes', ['marker', 'circle', 'polygon'])
+  subject.set('selectionsModes', ['marker', 'circle', 'polygon']);
   assert.deepEqual(subject.get('_gmapSelectionsModes'), [
     google.maps.drawing.OverlayType.MARKER,
     google.maps.drawing.OverlayType.CIRCLE,

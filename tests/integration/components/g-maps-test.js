@@ -1,7 +1,7 @@
 import hbs                          from 'htmlbars-inline-precompile';
 import Ember                        from 'ember';
 import { moduleForComponent, test } from 'ember-qunit';
-import waitForPromise               from '../../helpers/wait-for-promise';
+// import waitForPromise               from '../../helpers/wait-for-promise';
 
 moduleForComponent('g-maps', 'Integration | Component | g maps', {
   integration: true

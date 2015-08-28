@@ -1,7 +1,6 @@
 /* globals GMaps: true, google: true */
 import Ember from 'ember';
 
-const { later } = Ember.run;
 const { on, merge, uuid, computed, observer } = Ember;
 
 export default Ember.Mixin.create({
@@ -91,7 +90,7 @@ export default Ember.Mixin.create({
     this.get('gMap').maps.remove(this.get('name'));
 
     // Run after Mixin willDestroyElement
-    later(() => this.get('map').destroy());
+    Ember.run.later(() => this.get('map').destroy());
   }),
 
 
@@ -143,12 +142,12 @@ export default Ember.Mixin.create({
   _addGMapPersisters: on('ember-cli-g-map-loaded', function() {
     const map = this.get('map');
 
-    GMaps.on('center_changed', map.map, () => { 
+    GMaps.on('center_changed', map.map, () => {
       Ember.run.debounce(this, this._onCenterChanged, 100);
     });
 
     GMaps.on('zoom_changed', map.map, () => {
-      later(() => this._onZoomChanged());
+      Ember.run.later(() => this._onZoomChanged());
     });
   }),
 
@@ -158,29 +157,25 @@ export default Ember.Mixin.create({
     const { lat, lng } = this.getProperties('lat', 'lng');
     const { A, F } = map.getCenter();
 
-    // If app state is out of sync with GMap
-    if(!areCoordsEqual(A, lat) || !areCoordsEqual(F, lng)) {
-      this.setProperties({
-        lat: A,
-        lng: F
-      });
-    }
+    // Still in sync
+    if(areCoordsEqual(A, lat) || areCoordsEqual(F, lng)) { return false; }
+
+    // Out of sync
+    this.setProperties({ lat: A, lng: F });
   },
 
   _onZoomChanged: function() {
     const map = this.get('map');
     const zoom = this.get('zoom');
 
+    // Zoom still in sync
+    if(zoom === map.map.zoom) { return false; }
+
     // Zooming changes lat,lng state
     const { A, F } = map.getCenter();
 
-    if(zoom !== map.map.zoom) {
-      this.setProperties({
-        zoom: map.map.zoom,
-        lat: A,
-        lng: F
-      });
-    }
+    // Zoom out of sync
+    this.setProperties({ zoom: map.map.zoom, lat: A, lng: F });
   },
 
 
