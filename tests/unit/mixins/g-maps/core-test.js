@@ -1,7 +1,10 @@
+/* globals GMaps: true, google: true */
 import Ember            from 'ember';
 import GMapsCoreMixin   from 'ember-cli-g-maps/mixins/g-maps/core';
 import { module, test } from 'qunit';
 import sinon            from 'sinon';
+
+const { merge } = Ember;
 
 let subject, mapDiv;
 const mapID = 'test-map';
@@ -153,39 +156,110 @@ test('`_destroyGMap` should remove gMap instance added to gMap service', functio
   subject._destroyGMap();
 });
 
-// test('`_destroyGMap` should call `destroy` on the GMap instance', function(assert) {});
-
 
 //////////////////
 // Sync Lat Lng
 /////////////////
 
-// test('`_syncCenter` should not sync `lat` & `lng` if `isMapLoaded` is false', function(assert) {});
-// test('`_syncCenter` should not sync if `map.{lat,lng}` equals `subject.{lat,lng}`', function(assert) {});
-// test('`_syncCenter` should sync map instance if out of sync with subject', function(assert) {});
+test('`_syncCenter` should not sync `lat` & `lng` if `isMapLoaded` is false', function(assert) {
+  subject.setProperties({ lat: 1, lng: 1, isMapLoaded: false });
+  assert.equal(subject._syncCenter(), false);
+});
+
+test('`_syncCenter` should not sync if `map.{lat,lng}` equals `subject.{lat,lng}`', function(assert) {
+  const config = { lat: 1, lng: 1, isMapLoaded: false };
+  subject.setProperties(config);
+  subject._initGMap();
+  subject.setProperties({
+    isMapLoaded: true,
+    map: merge(subject.get('map'), {
+      getCenter: function() { return { A: config.lat, F: config.lng }; },
+      setCenter: sinon.spy()
+    })
+  });
+  subject._syncCenter();
+  assert.equal(subject.map.setCenter.called, false);
+});
+
+test('`_syncCenter` should sync map instance if out of sync with subject', function(assert) {
+  const config = { lat: 1, lng: 1, isMapLoaded: false };
+  subject.setProperties(config);
+  subject._initGMap();
+  subject.setProperties({
+    isMapLoaded: true,
+    map: merge(subject.get('map'), {
+      getCenter: function() { return { A: 2, F: 2 }; },
+      setCenter: sinon.spy()
+    })
+  });
+  subject._syncCenter();
+  assert.ok(subject.map.setCenter.called);
+});
 
 
 ///////////////
 // Sync Zoom
 //////////////
 
-// test('`_syncZoom` should not sync `zoom` if `isMapLoaded` is false', function(assert) {});
-// test('`_syncZoom` should sync zoom if `isMapLoaded` is true', function(assert) {});
+test('`_syncZoom` should not sync `zoom` if `isMapLoaded` is false', function(assert) {
+  subject.setProperties({ zoom: 10, isMapLoaded: false });
+  assert.equal(subject._syncZoom(), false);
+});
+
+test('`_syncZoom` should sync zoom if `isMapLoaded` is true', function(assert) {
+  const config = { zoom: 10, isMapLoaded: false };
+  subject.setProperties(config);
+  subject._syncCenter = function() {}; // avoid bindings
+  subject._initGMap();
+  subject.setProperties({
+    isMapLoaded: true,
+    map: merge(subject.get('map'), {
+      setZoom: sinon.spy()
+    })
+  });
+  subject._syncZoom();
+  assert.ok(subject.map.setZoom.called);
+});
 
 
 ////////////////////
 // Sync Draggable
 ///////////////////
 
-// test('`_syncDraggable` should not sync `draggable` if `isMapLoaded` is false', function(assert) {});
-// test('`_syncDraggable` should sync `draggable` if `isMapLoaded` is true', function(assert) {});
+test('`_syncDraggable` should not sync `draggable` if `isMapLoaded` is false', function(assert) {
+  subject.setProperties({ draggable: false, isMapLoaded: false });
+  assert.equal(subject._syncDraggable(), false);
+});
+
+test('`_syncDraggable` should sync `draggable` if `isMapLoaded` is true', function(assert) {
+  assert.expect(1);
+
+  const config = { draggable: false, isMapLoaded: false };
+  subject.setProperties(config);
+  subject._syncCenter = subject._syncZoom = subject._syncMapType = function() {}; // avoid bindings
+
+  subject._initGMap();
+  subject.setProperties({
+    isMapLoaded: true,
+    map: merge(subject.get('map'), {
+      map: {
+        setOptions: function(option) {
+          assert.equal(option.draggable, config.draggable);
+        }
+      }
+    })
+  });
+});
 
 
 ///////////////////
 // Sync Map Type
 //////////////////
 
-// test('`_syncMapType` should not sync `mapType` if `isMapLoaded` is false', function(assert) {});
+test('`_syncMapType` should not sync `mapType` if `isMapLoaded` is false', function(assert) {
+  subject.setProperties({ mapType: 'SATELITE',  isMapLoaded: false });
+  assert.equal(subject._syncMapType(), false);
+});
 // test('`_syncMapType` should not sync `mapType` if `mapType` is undefined', function(assert) {});
 // test('`_syncMapType` should sync set `mapType` if `isMapLoaded` is true', function(assert) {});
 

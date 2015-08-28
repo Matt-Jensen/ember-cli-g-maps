@@ -75,7 +75,6 @@ export default Ember.Mixin.create({
     });
   }),
 
-
   _destroyGMap: on('willDestroyElement', function destroyGMap() {
     const events = this.get('_gmapEvents');
     const map    = this.get('map');
@@ -101,7 +100,7 @@ export default Ember.Mixin.create({
   /////////////////////////////
 
   _syncCenter: observer('isMapLoaded', 'lat', 'lng', function() {
-    if(!this.get('isMapLoaded')) { return; }
+    if(!this.get('isMapLoaded')) { return false; }
     const { map, lat, lng } = this.getProperties('map', 'lng', 'lat');
     const { A, F } = map.getCenter();
     const areCoordsEqual = this._areCoordsEqual;
@@ -113,23 +112,23 @@ export default Ember.Mixin.create({
   }),
 
   _syncZoom: observer('isMapLoaded', 'zoom', function() {
-    if(!this.get('isMapLoaded')) { return; }
+    if(!this.get('isMapLoaded')) { return false; }
     const { map, zoom } = this.getProperties('map', 'zoom');
     map.setZoom(zoom);
   }),
 
   _syncDraggable: observer('isMapLoaded', 'draggable', function() {
-    if(!this.get('isMapLoaded')) { return; }
+    if(!this.get('isMapLoaded')) { return false; }
     const map = this.get('map').map;
     map.setOptions({ draggable: this.get('draggable') });
   }),
 
   _syncMapType: observer('isMapLoaded', 'mapType', function() {
-    if(!this.get('isMapLoaded')) { return; }
+    if(!this.get('isMapLoaded')) { return false; }
     const map     = this.get('map').map;
     const mapType = this.get('mapType')+'';
 
-    if(mapType === 'undefined') { return; }
+    if(mapType === 'undefined') { return false; }
 
     if(mapType.toLowerCase() !== map.getMapTypeId()) {
       map.setMapTypeId( google.maps.MapTypeId[mapType.toUpperCase()] );
