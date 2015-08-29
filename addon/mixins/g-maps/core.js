@@ -273,5 +273,5 @@ export default Ember.Mixin.create({
   // Helpers
   ////////////
   
-  _areCoordsEqual: (a, b) => a.toFixed(12) === b.toFixed(12)
+  _areCoordsEqual: (a, b) => parseFloat(a).toFixed(12) === parseFloat(b).toFixed(12)
 });
