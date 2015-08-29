@@ -197,7 +197,7 @@ export default Ember.Route.extend({
       controller.get('circles').pushObject({
         id: 'zfkj234d23faj2f31-'+Ember.uuid(),
         lat: (Math.random() * (55 - 22) + 22),
-        lng: (Math.random() * (-102 - -115) + -115),
+        lng: (Math.random() * (-102 + 115) + -115),
         radius: (Math.random() * (500000 - 10000) + 10000),
         fillOpacity: (Math.random() * (1 - 0) + 0),
         fillColor: getRandomColor(),
