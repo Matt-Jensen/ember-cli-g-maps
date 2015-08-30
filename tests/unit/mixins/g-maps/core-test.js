@@ -71,25 +71,25 @@ test('`_initGMap` should create a GMap instance with main config properties', fu
 });
 
 
-// test('`_initGMap` should set all configured gmap events', function(assert) {
-//   const noop            = function() {};
-//   const addedEvents     = [];
-//   const originalGMapsOn = GMaps.on;
-//   const supportedEvents = subject.get('_gmapEvents');
+test('`_initGMap` should set all configured gmap events', function(assert) {
+  const noop            = function() {};
+  const addedEvents     = [];
+  const originalGMapsOn = GMaps.on;
+  const supportedEvents = subject.get('_gmapEvents');
 
-//   GMaps.on = function(event) {
-//     addedEvents.push(event);
-//   };
+  GMaps.on = function(event) {
+    addedEvents.push(event);
+  };
 
-//   // Add all supported events
-//   supportedEvents.forEach((e) => subject.set(e, noop));
+  // Add all supported events
+  supportedEvents.forEach((e) => subject.set(e, noop));
 
-//   subject._initGMap();
+  subject._initGMap();
   
-//   assert.deepEqual(addedEvents, supportedEvents);
+  assert.deepEqual(addedEvents, supportedEvents);
 
-//   GMaps.on = originalGMapsOn;
-// });
+  GMaps.on = originalGMapsOn;
+});
 
 test('`_initGMap` should set a given name if provided', function(assert) {
   subject.set('name', 'my-cool-map');
