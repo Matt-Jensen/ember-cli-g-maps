@@ -29,7 +29,7 @@ module.exports = function(environment) {
   };
 
   ENV.googleMap = {
-    libraries: ['drawing']
+    libraries: ['drawing', 'visualization']
   };
 
   if (environment === 'development') {
