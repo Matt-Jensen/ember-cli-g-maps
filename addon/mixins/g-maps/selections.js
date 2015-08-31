@@ -309,13 +309,13 @@ export default Ember.Mixin.create({
   /**
    * [_validateSelections determines if selections can instantiate, if so adds init observers]
    * @param  {[String]} )[triggered on element insertion]
-   * @return {[Oberservers]}   [if valid adds obersvers to init method]
+   * @return {[Oberservers]} [if valid adds obersvers to init method]
    */
   _validateSelections: on('didInsertElement', function() {
     if(!this.get('selections')) { return false; }
 
     if(!this.get('googleMapsSupportsDrawingManager')) {
-      throw new Error('the g-map component requires the "drawing" library included in `config/environment.js`');
+      throw new Error('g-map component requires the "drawing" library included in `config/environment.js`');
     }
     else {
 

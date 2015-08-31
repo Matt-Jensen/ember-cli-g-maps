@@ -34,7 +34,7 @@ test('it should throw an error if Drawing Manager is not supported', function(as
 
   assert.throws(
     function() { return subject._validateSelections(); },
-    new Error('the g-map component requires the "drawing" library included in `config/environment.js`')
+    new Error('g-map component requires the "drawing" library included in `config/environment.js`')
   );
 });
 
