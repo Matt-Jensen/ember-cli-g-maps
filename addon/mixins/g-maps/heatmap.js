@@ -39,13 +39,14 @@ export default Ember.Mixin.create({
    * [googleMapsSupportsHeatmap returns a boolean indicating if HeatmapLayer is supported]
    * @return {[Boolean]}
    */
-  googleMapsSupportsHeatmap: computed(function() {
-    return (
+
+  googleMapsSupportsHeatmap: function() {
+    return !!(
       google.maps &&
       google.maps.visualization &&
       google.maps.visualization.HeatmapLayer
     );
-  }),
+  },
 
 
   /**
@@ -56,8 +57,8 @@ export default Ember.Mixin.create({
   _validateHeatmap: on('didInsertElement', function() {
     if(!this.get('heatmapMarkers')) { return false; }
 
-    if(!this.get('googleMapsSupportsHeatmap')) {
-      throw new Error('the g-map component requires the "visualization" library included in `config/environment.js`');
+    if(!this.googleMapsSupportsHeatmap()) {
+      throw new Error('g-map component requires the "visualization" library included in `config/environment.js`');
     }
     else {
 
@@ -77,11 +78,11 @@ export default Ember.Mixin.create({
     const continueSetup = (
       this.get('isMapLoaded') &&
       this.get('heatmapMarkers') &&
-      this.get('googleMapsSupportsHeatmap') &&
+      this.googleMapsSupportsHeatmap() &&
       !this.get('_heatmap')
     );
 
-    if(!continueSetup) { return; }
+    if(!continueSetup) { return false; }
 
     const googleMVCArray = new google.maps.MVCArray();
     this.set('_heatmapMarkersMVCArray', googleMVCArray);
@@ -138,8 +139,8 @@ export default Ember.Mixin.create({
    * [Observes ('heatmapMarkers.[]')]
    */
   _syncHeatmapMarkers: function() {
-    const heatmapMarkers = this._toJSArray(this.get('heatmapMarkers') || []);
-    const mvcArray = this.get('_heatmapMarkersMVCArray');
+    const mvcArray = this._heatmapMarkersMVCArray;
+    const heatmapMarkers = this._toJSArray(this.heatmapMarkers || []);
 
     if(heatmapMarkers[0]) {
 
@@ -178,35 +179,45 @@ export default Ember.Mixin.create({
     }
   },
 
+
+  /**
+   * [_syncHeatmapRadius sync heatmap instance to `heatmapRadius` Number]
+   * [Added via `_initHeatmap`]
+   * [Observes ('heatmapRadius')]
+   */
   _syncHeatmapRadius: function() {
+    const heatmap = this._heatmap;
     const radius = (typeof this.heatmapRadius === 'number' ? this.heatmapRadius : null);
-    const heatmap = this.get('_heatmap');
 
     if(!heatmap) { return false; }
 
     heatmap.set('radius', radius);
   },
 
-  _syncHeatmapVisible: function() {
-    const heatmap = this.get('_heatmap');
-    const visible = this.get('heatmapVisible');
 
-    if(!heatmap) { return false; }
 
-    heatmap.setMap(visible ? this.get('map').map : null);
-  },
-
+  /**
+   * [_syncHeatmapDissipating sync heatmap instance to `heatmapDissipating` Boolean]
+   * [Added via `_initHeatmap`]
+   * [Observes ('heatmapDissipating')]
+   */
   _syncHeatmapDissipating: function() {
-    const heatmap = this.get('_heatmap');
-    const dissipating = this.get('heatmapDissipating');
+    const heatmap = this._heatmap;
+    const dissipating = this.heatmapDissipating;
 
     if(!heatmap) { return false; }
 
     heatmap.set('dissipating', dissipating);
   },
 
+
+  /**
+   * [_syncHeatmapOpacity sync heatmap instance to `heatmapOpacity` Floating Point]
+   * [Added via `_initHeatmap`]
+   * [Observes ('heatmapOpacity')]
+   */
   _syncHeatmapOpacity: function() {
-    const heatmap = this.get('_heatmap');
+    const heatmap = this._heatmap;
     const opacity = (typeof this.heatmapOpacity === 'number' ? this.heatmapOpacity : 1);
 
     if(!heatmap) { return false; }
@@ -214,12 +225,33 @@ export default Ember.Mixin.create({
     heatmap.set('opacity', opacity);
   },
 
+
+  /**
+   * [_syncHeatmapGradient sync heatmap instance to `heatmapGradient` Array]
+   * [Added via `_initHeatmap`]
+   * [Observes ('heatmapGradient.[]')]
+   */
   _syncHeatmapGradient: function() {
-    const heatmap = this.get('_heatmap');
+    const heatmap = this._heatmap;
     const gradient = (isArray(this.heatmapGradient) ? this._toJSArray(this.heatmapGradient) : null);
 
     if(!heatmap) { return false; }
 
     heatmap.set('gradient', gradient);
+  },
+
+
+  /**
+   * [_syncHeatmapVisible sync heatmap instance to `heatmapVisible` Boolean]
+   * [Added via `_initHeatmap`]
+   * [Observes ('heatmapVisible')]
+   */
+  _syncHeatmapVisible: function() {
+    const heatmap = this._heatmap;
+    const visible = this.heatmapVisible;
+
+    if(!heatmap) { return false; }
+
+    heatmap.setMap(visible ? this.get('map').map : null);
   }
 });
