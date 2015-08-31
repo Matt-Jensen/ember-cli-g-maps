@@ -49,6 +49,8 @@ Currently Supports
 - [Circles](http://hpneo.github.io/gmaps/documentation.html#GMaps-drawCircle)
 - [Polylines](https://developers.google.com/maps/documentation/javascript/3.exp/reference#CircleOptions#FusionTablesPolylineOptions)
 - [Rectangles](http://hpneo.github.io/gmaps/documentation.html#GMaps-drawRectangle)
+- Selections
+- [Heatmap Layer](https://developers.google.com/maps/documentation/javascript/examples/layer-heatmap)
 
 Usage
 ------
@@ -432,6 +434,34 @@ Actions are fired when a selections are completed.  Available selections actions
   selectionsPolyline="onPolylineSelect"}}
 ```
 
+Heatmap
+--------
+
+Heatmap is an abstraction of the [Google Maps Heatmap Layer](https://developers.google.com/maps/documentation/javascript/examples/layer-heatmap).
+
+**Heatmap Requirements**
+
+Selections requires the Google Maps Visualization library.  To add this library in:
+`config/environment.js` add:
+
+```json
+ENV.googleMap = {
+  libraries: ['visualization']
+};
+```
+
+**Main Configuration Property**
+- heatmapMarkers // [Array] Required property to enable Heatmap. May contain array of [lat, lng], or heatmap-marker config object.
+-- [1, 1] // lat, lng
+-- { location: [1, 1], weight: 3 } // location: lat,lng array, optional weight parameter
+--- [WeightedLocation](https://developers.google.com/maps/documentation/javascript/reference#WeightedLocation)
+- heatmapRadius [Number] Size of all heatmap markers {default} 0.
+- heatmapDissipating [Boolean] Specifies whether heatmaps dissipate on zoom. When dissipating is false the radius of influence increases with zoom level to ensure that the color intensity is preserved at any given geographic location. {default} false.
+- heatmapOpacity [Number] The opacity of the heatmap, expressed as a number between 0 and 1. {default} 1.
+- heatmapGradient [Array] The color gradient of the heatmap, specified as an array of CSS color strings.
+-- Supports all CSS3 colors — including RGBA (except: extended named colors and HSL(A)).
+- heatmapVisible // [boolean] Show or hide the Heatmap Layer. {default} true.
+
 
 Planned Features
 ----------------
@@ -459,6 +489,10 @@ ENV.googleMap = {
 
 Changelog
 ---------
+
+0.2.0
+------------
+* Heatmap Extension
 
 0.1.2
 ------------

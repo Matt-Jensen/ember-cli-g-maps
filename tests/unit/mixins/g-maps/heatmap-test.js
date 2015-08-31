@@ -1,5 +1,5 @@
 import Ember from 'ember';
-import GMapsHeatmapMixin from '../../../mixins/g-maps/heatmap';
+import GMapsHeatmapMixin from 'ember-cli-g-maps/mixins/g-maps/heatmap';
 import { module, test } from 'qunit';
 
 module('Unit | Mixin | g maps/heatmap');
