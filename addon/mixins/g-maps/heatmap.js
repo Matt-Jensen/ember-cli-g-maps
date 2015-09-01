@@ -1,6 +1,6 @@
 import Ember from 'ember';
 
-const { computed, on, isArray } = Ember;
+const { on, isArray } = Ember;
 
 export default Ember.Mixin.create({
   heatmapRadius: null,
@@ -143,13 +143,13 @@ export default Ember.Mixin.create({
 
     if(heatmapMarkers[0]) {
 
-      // is an object without a location array
-      if(!isArray(heatmapMarkers[0]) && !isArray(heatmapMarkers[0].location)) {
-        throw new Error('`heatmapMarkers` must be an array of objects with a location array');
-      }
       // is something other than an array of array/objects
-      else if(typeof heatmapMarkers[0] !== 'object') {
-        throw new Error('`heatmapMarkers` must be an array of arrays');
+      if(typeof heatmapMarkers[0] !== 'object') {
+        throw new Error('`heatmapMarkers` must be an array of arrays or objects');
+      }
+      // is an object without a location array
+      else if(!isArray(heatmapMarkers[0]) && !isArray(heatmapMarkers[0].location)) {
+        throw new Error('`heatmapMarkers` must be an array of objects with a location array');
       }
     }
 

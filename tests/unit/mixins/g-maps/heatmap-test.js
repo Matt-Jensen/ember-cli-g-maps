@@ -154,3 +154,12 @@ test('`_syncHeatmapMarkers` throws error for invalid heatmapMarker item object',
     new Error('`heatmapMarkers` must be an array of objects with a location array')
   );
 });
+
+test('`_syncHeatmapMarkers` throws error for invalid heatmapMarker item array', function(a) {
+  const subject = createSubject(true, true);
+  subject.heatmapMarkers.push({ location: false });
+  a.throws(
+    function() { return subject._syncHeatmapMarkers(); },
+    new Error('`heatmapMarkers` must be an array of objects with a location array')
+  );
+});
