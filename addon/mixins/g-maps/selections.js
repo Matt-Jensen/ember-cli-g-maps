@@ -152,7 +152,7 @@ export default Ember.Mixin.create({
 
 
   /**
-   * [_initSelections runs once per selections instance, instantiation]
+   * [_initSelections runs once per selections instance instantiation]
    * [Added via `_validateSelections`]
    * [Observes ('isMapLoaded', 'selections')]
    */
