@@ -45,7 +45,8 @@ export default Ember.Route.extend({
         {
           id: 'lka234klafj23', 
           paths: pathToAlabama,
-          zIndex: 10
+          zIndex: 10,
+          strokeColor: 'orange'
         }
       ]),
       circles: Ember.A([
@@ -92,11 +93,28 @@ export default Ember.Route.extend({
           strokeWeight: 3,
           fillColor: 'green',
           fillOpacity: 0.2,
-          click: function(e, rectangle) {
-            console.log('Big wheels keep on turnin\'', e, rectangle);
+          draggable: true,
+          mouseup: function(e, rect) {
+            console.log('Big wheels keep on turnin\'', e);
+            console.log('Rectangle NE corner:', rect.bounds.getNorthEast());
+            console.log('Rectangle SW corner:', rect.bounds.getSouthWest());
           }
         }
       ]),
+
+      overlays: Ember.A([
+        { 
+          id: 'rj32faks09-adfkjhas-3hfds',
+          lat: 32.7,
+          lng: -86.8,
+          content: '<strong class="shaa-label shaa-label--draggable">Alabama</strong>',
+          mousedown: function(e, o) {
+            console.log('Where the skys are so blue', e, o);
+          }
+        }
+      ]),
+
+      // Extensions //
       selections: {
         visible: true,
         circleOptions: {
@@ -183,6 +201,31 @@ export default Ember.Route.extend({
 
     toggleSelections: function() {
       this.controller.set('selections.visible', !this.controller.get('selections.visible'));
+    },
+
+    onClickOverlay: function(e) {
+      const controller = this.controller;
+      controller.get('overlays').pushObject({
+        id: 'zafa3239-khafj32-dajfk332-'+Ember.uuid(),
+        lat: e.latLng.lat(),
+        lng: e.latLng.lng(),
+        content: '<div class="shaa-overlay">Alabama!<div class="overlay_arrow above"></div></div>',
+        verticalAlign: 'top',
+        horizontalAlign: 'center',
+        click: function(e, o) {
+          e.stopPropagation();
+          const o_id = o.id;
+          const overlays = controller.overlays;
+
+          // Remove marker
+          for(let i = 0, l = overlays.length; i < l; i++) {
+            if(overlays[i].id !== o_id) { continue; }
+
+            overlays.removeAt(i, 1);
+            break;
+          }
+        }
+      })
     },
 
     onClickRectangle: function(e) {

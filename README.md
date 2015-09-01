@@ -49,6 +49,7 @@ Currently Supports
 - [Circles](http://hpneo.github.io/gmaps/documentation.html#GMaps-drawCircle)
 - [Polylines](https://developers.google.com/maps/documentation/javascript/3.exp/reference#CircleOptions#FusionTablesPolylineOptions)
 - [Rectangles](http://hpneo.github.io/gmaps/documentation.html#GMaps-drawRectangle)
+- [Overlays](https://developers.google.com/maps/documentation/javascript/3.exp/reference#CircleOptions#MapPanes)
 - Selections
 - [Heatmap Layer](https://developers.google.com/maps/documentation/javascript/examples/layer-heatmap)
 
@@ -80,20 +81,23 @@ In your template:
 export default Ember.Route.extend({
   setupController: function(controller) {
     controller.setProperties({
-      lat: 32.75494243654723,
-      lng: -86.8359375,
-      zoom: 4,
       // Must be an Ember Array
       markers: Ember.A([
         {
-          id: 'jdlkfajs22', // Recommended
+          id: 'unique-marker-id',  // Recommended
           lat: 33.516674497188255, // Required
           lng: -86.80091857910156, // Required
           infoWindow: { 
             content: '<p>Birmingham</p>',
             visible: true
           }, 
-          click: function(e, marker) {}
+          click: function(event, marker) {},
+          rightclick: function(event, marker) {},
+          dblclick: function(event, marker) {},
+          mouseover: function(event, marker) {},
+          mouseout: function(event, marker) {},
+          mouseup: function(event, marker) {},
+          mousedown: function(event, marker) {}
         }
      ]);
     });
@@ -110,20 +114,24 @@ export default Ember.Route.extend({
 export default Ember.Route.extend({
   setupController: function(controller) {
     controller.setProperties({
-      lat: 32.75494243654723,
-      lng: -86.8359375,
-      zoom: 4,
       // Must be an Ember Array
       polygons: Ember.A([
         {
-          id: 'lka234klafj23', // Recommended
+          id: 'unique-polygon-id', // Recommended
           paths: [ // Required
             [35.0041, -88.1955], // Lat, Lng
             [31.0023, -84.9944], // Lat, Lng
             [30.1546, -88.3864], // Lat, Lng
             [34.9107, -88.1461]  // Lat, Lng
           ],
-          click: function(e, polygon) {}
+          click: function(event, polygon) {},
+          rightclick: function(event, polygon) {},
+          dblclick: function(event, polygon) {},
+          mouseover: function(event, polygon) {},
+          mouseout: function(event, polygon) {},
+          mouseup: function(event, polygon) {},
+          mousedown: function(event, polygon) {},
+          mousemove: function(event, polygon) {}
         }
       ])
     });
@@ -140,13 +148,10 @@ export default Ember.Route.extend({
 export default Ember.Route.extend({
   setupController: function(controller) {
     controller.setProperties({
-      lat: 32.75494243654723,
-      lng: -86.8359375,
-      zoom: 4,
       // Must be an Ember Array
       polylines: Ember.A([
         {
-          id: 'lka234klafj23', // Recommended
+          id: 'unique-polyline-id', // Recommended
           strokeColor: 'blue',
           strokeOpacity: 1,
           strokeWeight: 6,
@@ -157,7 +162,14 @@ export default Ember.Route.extend({
             [32.458, -95.71], // Lat, Lng
             [33.783, -92.85]  // Lat, Lng
           ],
-          click: function(e, polyline) {}
+          click: function(event, polyline) {},
+          rightclick: function(event, polyline) {},
+          dblclick: function(event, polyline) {},
+          mouseover: function(event, polyline) {},
+          mouseout: function(event, polyline) {},
+          mouseup: function(event, polyline) {},
+          mousedown: function(event, polyline) {},
+          mousemove: function(event, polyline) {}
         }
       ])
     });
@@ -174,17 +186,21 @@ export default Ember.Route.extend({
 export default Ember.Route.extend({
   setupController: function(controller) {
     controller.setProperties({
-      lat: 32.75494243654723,
-      lng: -86.8359375,
-      zoom: 4,
       // Must be an Ember Array
       circles: Ember.A([
         {
-          id: 'lfkjasd23faj2f31', // Recommended
+          id: 'unique-circle-id', // Recommended
           lat: 32.75494243654723, // Required
           lng: -86.8359375,       // Required
           radius: 500000          // Not Required, but you'll probaby want to see it
-          click: function(e, circle) {}
+          click: function(event, circle) {},
+          rightclick: function(event, circle) {},
+          dblclick: function(event, circle) {},
+          mouseover: function(event, circle) {},
+          mouseout: function(event, circle) {},
+          mouseup: function(event, circle) {},
+          mousedown: function(event, circle) {},
+          mousemove: function(event, circle) {}
         }
       ])
     });
@@ -201,13 +217,10 @@ export default Ember.Route.extend({
 export default Ember.Route.extend({
   setupController: function(controller) {
     controller.setProperties({
-      lat: 32.75494243654723,
-      lng: -86.8359375,
-      zoom: 4,
       // Must be an Ember Array
       rectangles: Ember.A([
         {
-          id: 'uaafkjkl2334lkadfj',             // Recommended
+          id: 'unique-rectangle-id',            // Recommended
           bounds: [
             [40.300476079749465, -102.3046875], // lat, lng
             [26.258936094468414, -73.828125]    // lat, lng
@@ -217,7 +230,46 @@ export default Ember.Route.extend({
           strokeWeight: 3,
           fillColor: 'green',
           fillOpacity: 0.2,
-          click: function(e, rectangle) {}
+          click: function(event, rectangle) {},
+          rightclick: function(event, rectangle) {},
+          dblclick: function(event, rectangle) {},
+          mouseover: function(event, rectangle) {},
+          mouseout: function(event, rectangle) {},
+          mouseup: function(event, rectangle) {},
+          mousedown: function(event, rectangle) {},
+          mousemove: function(event, rectangle) {}
+        }
+      ])
+    });
+  }
+});
+```
+
+```handlebars
+{{g-maps ... rectangles=rectangles}}
+```
+
+**Add Overlay**
+```js
+export default Ember.Route.extend({
+  setupController: function(controller) {
+    controller.setProperties({
+      // Must be an Ember Array
+      overlays: Ember.A([
+        {
+          id: 'unique-overlay-id', // Recommended
+          lat: 32.75494243654723,  // Required
+          lng: -86.8359375,        // Required
+          content: '<strong class="my-class">Some HTML</strong>',
+          verticalAlign: 'top',
+          horizontalAlign: 'center',
+          click: function(event, overlay) {},
+          dblclick: function(event, overlay) {},
+          mouseup: function(event, overlay) {},
+          mousedown: function(event, overlay) {},
+          mouseover: function(event, overlay) {},
+          mousemove: function(event, overlay) {},
+          mouseout: function(event, overlay) {}
         }
       ])
     });
@@ -233,23 +285,23 @@ export default Ember.Route.extend({
 ```js
 export default Ember.Route.extend({
   actions: {
-    onMapEvent: function(e) {
+    onMapEvent: function(event) {
       console.info('Click coordinate', 
-        e.latLng.lat(), // Latitude
-        e.latLng.lng()  // Longitude
+        event.latLng.lat(), // Latitude
+        event.latLng.lng()  // Longitude
       );
       console.info('Map boundaries',
-        e.bounds[0], // Northeast map coordinate
-        e.bounds[1]  // Southwest map coordinate
+        event.bounds[0], // Northeast map coordinate
+        event.bounds[1]  // Southwest map coordinate
       );
       console.info('Map\'s center', 
         this.controller.lat, 
         this.controller.lng
       );
-      e.mapIdle.then(function() { // Promise
+      event.mapIdle.then(function() { // Promise
         console.log('maps done loading tiles and user is not interacting with map'); 
       });
-      e.mapTilesLoaded.then(function() { // Promise
+      event.mapTilesLoaded.then(function() { // Promise
         console.log('Map tiles have finished loading');
       });
     }
@@ -464,7 +516,6 @@ ENV.googleMap = {
 Planned Features
 ----------------
 
-- [Overlays](https://developers.google.com/maps/documentation/javascript/3.exp/reference#CircleOptions#MapPanes)
 - [Controls](http://hpneo.github.io/gmaps/examples/custom_controls.html)
 - [Layers & KML Layers](https://developers.google.com/maps/documentation/javascript/3.exp/reference#CircleOptions#KmlLayerOptions)
 - [Routes](http://hpneo.github.io/gmaps/examples/routes.html)
@@ -487,6 +538,12 @@ ENV.googleMap = {
 
 Changelog
 ---------
+
+0.3.0
+------------
+* Google Maps Overlays child
+* README Overlay examples
+* Document supported child events
 
 0.2.1
 ------------
