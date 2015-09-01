@@ -1,6 +1,6 @@
 import Ember from 'ember';
 
-const { computed, on, isArray } = Ember;
+const { on, isArray } = Ember;
 
 export default Ember.Mixin.create({
   heatmapRadius: null,
@@ -39,7 +39,6 @@ export default Ember.Mixin.create({
    * [googleMapsSupportsHeatmap returns a boolean indicating if HeatmapLayer is supported]
    * @return {[Boolean]}
    */
-
   googleMapsSupportsHeatmap: function() {
     return !!(
       google.maps &&
@@ -144,13 +143,13 @@ export default Ember.Mixin.create({
 
     if(heatmapMarkers[0]) {
 
-      // is an object without a location array
-      if(!isArray(heatmapMarkers[0]) && !isArray(heatmapMarkers[0].location)) {
-        throw new Error('`heatmapMarkers` must be an array of objects with a location array');
-      }
       // is something other than an array of array/objects
-      else if(typeof heatmapMarkers[0] !== 'object') {
-        throw new Error('`heatmapMarkers` must be an array of arrays');
+      if(typeof heatmapMarkers[0] !== 'object') {
+        throw new Error('`heatmapMarkers` must be an array of arrays or objects');
+      }
+      // is an object without a location array
+      else if(!isArray(heatmapMarkers[0]) && !isArray(heatmapMarkers[0].location)) {
+        throw new Error('`heatmapMarkers` must be an array of objects with a location array');
       }
     }
 
@@ -187,13 +186,12 @@ export default Ember.Mixin.create({
    */
   _syncHeatmapRadius: function() {
     const heatmap = this._heatmap;
-    const radius = (typeof this.heatmapRadius === 'number' ? this.heatmapRadius : null);
+    const radius = (this.heatmapRadius ? parseInt(this.heatmapRadius, 10) : null);
 
     if(!heatmap) { return false; }
 
     heatmap.set('radius', radius);
   },
-
 
 
   /**
@@ -203,7 +201,7 @@ export default Ember.Mixin.create({
    */
   _syncHeatmapDissipating: function() {
     const heatmap = this._heatmap;
-    const dissipating = this.heatmapDissipating;
+    const dissipating = !!(this.heatmapDissipating);
 
     if(!heatmap) { return false; }
 
@@ -218,7 +216,7 @@ export default Ember.Mixin.create({
    */
   _syncHeatmapOpacity: function() {
     const heatmap = this._heatmap;
-    const opacity = (typeof this.heatmapOpacity === 'number' ? this.heatmapOpacity : 1);
+    const opacity = (this.heatmapOpacity ? parseFloat(this.heatmapOpacity) : 1);
 
     if(!heatmap) { return false; }
 
@@ -248,7 +246,7 @@ export default Ember.Mixin.create({
    */
   _syncHeatmapVisible: function() {
     const heatmap = this._heatmap;
-    const visible = this.heatmapVisible;
+    const visible = !!(this.heatmapVisible);
 
     if(!heatmap) { return false; }
 

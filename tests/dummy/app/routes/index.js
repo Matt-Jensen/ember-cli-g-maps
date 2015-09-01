@@ -128,7 +128,7 @@ export default Ember.Route.extend({
 
       // Randomly push or pop heatmap markers
       if(new Date().getTime() % 2) {
-        heatmapMarkers.pushObject({ location: [e.latLng.A, e.latLng.F], weight: 3 });
+        heatmapMarkers.pushObject({ location: [e.latLng.lat(), e.latLng.lng()], weight: 3 });
       } else {
         heatmapMarkers.popObject();
       }
@@ -191,7 +191,7 @@ export default Ember.Route.extend({
 
       rectangles.pushObject({
         id: 'jafs3239-kdafj32-dajfk332',
-        bounds: [[e.latLng.A - 5, e.latLng.F - 5], [e.latLng.A + 5, e.latLng.F + 5]],
+        bounds: [[e.latLng.lat() - 5, e.latLng.lng() - 5], [e.latLng.lat() + 5, e.latLng.lng() + 5]],
         strokeColor: color,
         strokeOpacity: 1,
         strokeWeight: 3,
@@ -266,9 +266,9 @@ export default Ember.Route.extend({
       const controller = this.controller;
       let markers      = controller.markers;
       const markerId   = Ember.uuid()+'-ember-g-map-id';
-
+      console.log(e);
       e.mapIdle.then(function() {
-        console.log(e.latLng.A, e.latLng.F);
+        console.log(e.latLng.lat(), e.latLng.lng());
       });
 
 
@@ -282,8 +282,8 @@ export default Ember.Route.extend({
       // Add One Marker
       markers.pushObject({
         id: markerId,
-        lat:  e.latLng.A,
-        lng:  e.latLng.F,
+        lat:  e.latLng.lat(),
+        lng:  e.latLng.lng(),
         title: 'The title is -'+ markerId,
         click: function(e) {
           const m_id = e.id;

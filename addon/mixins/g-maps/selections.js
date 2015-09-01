@@ -350,8 +350,8 @@ export default Ember.Mixin.create({
     selectionsMarker: function(marker) {
       this.sendAction('selectionsMarker', {
         marker,
-        lat: marker.position.A,
-        lng: marker.position.F
+        lat: marker.position.lat(),
+        lng: marker.position.lng()
       });
     },
 
@@ -359,34 +359,47 @@ export default Ember.Mixin.create({
       this.sendAction('selectionsCircle', {
         circle,
         radius: circle.getRadius(),
-        lat: circle.center.A,
-        lng: circle.center.F
+        lat: circle.center.lat(),
+        lng: circle.center.lng()
       });
     },
 
     selectionsRectangle: function(rectangle) {
+      const ne = rectangle.bounds.getNorthEast();
+      const sw = rectangle.bounds.getSouthWest();
+
       this.sendAction('selectionsRectangle', {
         rectangle,
         bounds: [
-          { lat: rectangle.bounds.Da.j, lng: rectangle.bounds.va.j }, // top left
-          { lat: rectangle.bounds.Da.j, lng: rectangle.bounds.va.A }, // top right
-          { lat: rectangle.bounds.Da.A, lng: rectangle.bounds.va.A }, // bottom left
-          { lat: rectangle.bounds.Da.A, lng: rectangle.bounds.va.j }  // bottom right
+          { lat: ne.lat(), lng: ne.lng(), location: 'northeast' }, // Northeast
+          { lat: sw.lat(), lng: sw.lng(), location: 'southwest' }  // Southwest
         ]
       });
     },
 
     selectionsPolygon: function(polygon) {
+      let pathTarget = polygon.latLngs.getArray()[0];
+
+      if(typeof pathTarget.getArray === 'function') {
+        pathTarget = pathTarget.getArray();
+      }
+
       this.sendAction('selectionsPolygon', {
         polygon,
-        coords: polygon.latLngs.getArray()[0].j.map((c) => { return { lat: c.A, lng: c.F }; })
+        coords: pathTarget.map((c) => { return { lat: c.lat(), lng: c.lng() }; })
       });
     },
 
     selectionsPolyline: function(polyline) {
+      let pathTarget = polyline.latLngs.getArray()[0];
+
+      if(typeof pathTarget.getArray === 'function') {
+        pathTarget = pathTarget.getArray();
+      }
+
       this.sendAction('selectionsPolyline', {
         polyline,
-        coords: polyline.latLngs.getArray()[0].j.map((c) => { return { lat: c.A, lng: c.F }; })
+        coords: pathTarget.map((c) => { return { lat: c.lat(), lng: c.lng() }; })
       });
     }
   }
