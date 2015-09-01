@@ -36,6 +36,11 @@ export default Ember.Route.extend({
           lng: -85.80091857910156,
         }
       ]),
+      heatmapMarkers: Ember.A([
+        [ 45.817315080406246, -103.095703125 ],
+        [ 46.54752767224308, -91.40625 ],
+        { location: [ 44.51609322284931, -81.826171875 ] }
+      ]),
       polygons: Ember.A([
         {
           id: 'lka234klafj23', 
@@ -102,7 +107,12 @@ export default Ember.Route.extend({
       selectionsMode: '',
       selectionsModes: ['marker', 'circle', 'polygon', 'rectangle', 'polyline'],
       selectionsPosition: 'top',
-      selectionsDelay: 400
+      selectionsDelay: 400,
+
+      heatmapVisible: true,
+      heatmapRadius: 40,
+      heatmapDissipating: true,
+      heatmapOpacity: 1
     });
 
     // window.setInterval(() => {
@@ -113,6 +123,36 @@ export default Ember.Route.extend({
   },
 
   actions: {
+    heatmapBinding: function(e) {
+      const heatmapMarkers = this.controller.get('heatmapMarkers');
+
+      // Randomly push or pop heatmap markers
+      if(new Date().getTime() % 2) {
+        heatmapMarkers.pushObject({ location: [e.latLng.A, e.latLng.F], weight: 3 });
+      } else {
+        heatmapMarkers.popObject();
+      }
+
+      this.controller.set('heatmapRadius', getRandomNumber(1, 80));
+      this.controller.set('heatmapOpacity', getRandomNumber(0, 100) / 100);
+      this.controller.set('heatmapGradient', this.controller.heatmapGradient ? null : [
+        'rgba(0, 255, 255, 0)',
+        'rgba(0, 255, 255, 1)',
+        'rgba(0, 191, 255, 1)',
+        'rgba(0, 127, 255, 1)',
+        'rgba(0, 63, 255, 1)',
+        'rgba(0, 0, 255, 1)',
+        'rgba(0, 0, 223, 1)',
+        'rgba(0, 0, 191, 1)',
+        'rgba(0, 0, 159, 1)',
+        'rgba(0, 0, 127, 1)',
+        'rgba(63, 0, 91, 1)',
+        'rgba(127, 0, 63, 1)',
+        'rgba(191, 0, 31, 1)',
+        'rgba(255, 0, 0, 1)'
+      ]);
+    },
+
     selctionsBinding: function() {
       this.controller.set('selections.circleOptions.fillColor', getRandomColor());
     },
@@ -137,7 +177,11 @@ export default Ember.Route.extend({
       console.log(`${this.controller.get('selectionsMode')} selection`, polyline);
     },
 
-    hideMapSelections: function() {
+    toggleHeatmap: function() {
+      this.controller.set('heatmapVisible', !this.controller.heatmapVisible);
+    },
+
+    toggleSelections: function() {
       this.controller.set('selections.visible', !this.controller.get('selections.visible'));
     },
 
@@ -276,10 +320,18 @@ export default Ember.Route.extend({
 });
 
 function getRandomColor() {
-    var letters = '0123456789ABCDEF'.split('');
-    var color = '#';
-    for (var i = 0; i < 6; i++ ) {
-      color += letters[Math.floor(Math.random() * 16)];
-    }
-    return color;
+  var letters = '0123456789ABCDEF'.split('');
+  var color = '#';
+  for (var i = 0; i < 6; i++ ) {
+    color += letters[Math.floor(Math.random() * 16)];
+  }
+  return color;
 }
+
+function getRandomNumber(min, max) {
+  return Math.round(Math.random() * (max - min) + min);
+}
+
+// function getRandomRgb(opacity=1) {
+//   return 'rgba('+ getRandomNumber(0, 255) +','+ getRandomNumber(0, 255) +','+ getRandomNumber(0, 255) +','+ opacity +')';
+// }

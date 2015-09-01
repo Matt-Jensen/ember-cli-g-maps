@@ -10,6 +10,7 @@ import GMapPolylines  from 'ember-cli-g-maps/mixins/g-maps/polylines';
 import GMapRectangles from 'ember-cli-g-maps/mixins/g-maps/rectangles';
 
 // Extensions //
+import GMapHeatmap from 'ember-cli-g-maps/mixins/g-maps/heatmap';
 import GMapSelections from 'ember-cli-g-maps/mixins/g-maps/selections';
 
 export default Ember.Component.extend(
@@ -19,6 +20,7 @@ export default Ember.Component.extend(
   GMapCircles,
   GMapPolylines,
   GMapRectangles,
+  GMapHeatmap,
   GMapSelections,
   GMapCore
 );
