@@ -109,7 +109,7 @@ test('it should create an event listener for `overlayComplete`', function(assert
   });
 
   subject._initSelections();
-  assert.equal(subject.get('_selectionsEventOverlayComplete').A, 'overlaycomplete');
+  assert.ok(subject.get('_selectionsEventOverlayComplete'));
 });
 
 test('it should remove observers for `isMapLoaded` and `selections` property changes', function(assert) {

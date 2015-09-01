@@ -29,7 +29,7 @@ function createSubject(isValid=false, hasInit=false) {
   if(hasInit) { subject._initHeatmap(); }
 
   return subject;
-};
+}
 
 module('Unit | Mixin | g maps/heatmap');
 
@@ -146,6 +146,15 @@ test('`_teardownHeatmap` should teardown the heatmap and MVC Array', function(a)
 // Sync Heatmap Markers
 /////////////////////////
 
+test('`_syncHeatmapMarkers` throws error for invalid heatmapMarker item array', function(a) {
+  const subject = createSubject(true, true);
+  subject.heatmapMarkers.push('string');
+  a.throws(
+    function() { return subject._syncHeatmapMarkers(); },
+    new Error('`heatmapMarkers` must be an array of arrays or objects')
+  );
+});
+
 test('`_syncHeatmapMarkers` throws error for invalid heatmapMarker item object', function(a) {
   const subject = createSubject(true, true);
   subject.heatmapMarkers.push({ location: false });
@@ -155,11 +164,146 @@ test('`_syncHeatmapMarkers` throws error for invalid heatmapMarker item object',
   );
 });
 
-test('`_syncHeatmapMarkers` throws error for invalid heatmapMarker item array', function(a) {
+test('`_syncHeatmapMarkers` should correctly update MVC array', function(a) {
   const subject = createSubject(true, true);
-  subject.heatmapMarkers.push({ location: false });
-  a.throws(
-    function() { return subject._syncHeatmapMarkers(); },
-    new Error('`heatmapMarkers` must be an array of objects with a location array')
-  );
+  const heatmapMarkerOne = { location: [1, 2] };
+  const heatmapMarkerTwo = [2, 1];
+  subject.heatmapMarkers.push(heatmapMarkerOne);
+  subject.heatmapMarkers.push(heatmapMarkerTwo);
+
+  subject._syncHeatmapMarkers();
+
+  a.equal(subject._heatmapMarkersMVCArray.getAt(0).location.lat(), heatmapMarkerOne.location[0]);
+  a.equal(subject._heatmapMarkersMVCArray.getAt(1).location.lat(), heatmapMarkerTwo[0]);
+});
+
+test('`_syncHeatmapMarkers` should remove deleted markers from MVC array', function(a) {
+  const subject = createSubject(true, true);
+  const heatmapMarkerOne = { location: [1, 2] };
+  const heatmapMarkerTwo = [2, 1];
+  subject.heatmapMarkers.push(heatmapMarkerOne);
+  subject.heatmapMarkers.push(heatmapMarkerTwo);
+  subject._syncHeatmapMarkers();
+  subject.heatmapMarkers.pop(); // remove heatmap marker # two
+  subject._syncHeatmapMarkers();
+
+  a.equal(subject._heatmapMarkersMVCArray.getLength(), 1);
+});
+
+
+/////////////////////////
+// Sync Heatmap Radius
+////////////////////////
+
+test('`_syncHeatmapRadius` should not sync heatmap if it does not exist', function(a) {
+  const subject = createSubject();
+  subject.heatmapRadius = 40;
+  a.equal(subject._syncHeatmapRadius(), false);
+});
+
+test('`_syncHeatmapRadius` should convert truthy radius to numeric types', function(a) {
+  const subject = createSubject(true, true);
+  subject.set('heatmapRadius', '40');
+  a.equal(subject._heatmap.get('radius'), 40);
+});
+
+test('`_syncHeatmapRadius` should convert falsey radius values to null', function(a) {
+  const subject = createSubject(true, true);
+  subject.set('heatmapRadius', false);
+  a.equal(subject._heatmap.get('radius'), null);
+});
+
+
+//////////////////////////////
+// Sync Heatmap Dissipating
+/////////////////////////////
+
+test('`_syncHeatmapDissipating` should not sync heatmap if it does not exist', function(a) {
+  const subject = createSubject();
+  subject.heatmapDissipating = true;
+  a.equal(subject._syncHeatmapDissipating(), false);
+});
+
+test('`_syncHeatmapDissipating` should convert truthy dissipating to true', function(a) {
+  const subject = createSubject(true, true);
+  subject.set('heatmapDissipating', 'true');
+  a.equal(subject._heatmap.get('dissipating'), true);
+});
+
+test('`_syncHeatmapDissipating` should convert falsey dissipating values to false', function(a) {
+  const subject = createSubject(true, true);
+  subject.set('heatmapDissipating', '');
+  a.equal(subject._heatmap.get('dissipating'), false);
+});
+
+
+//////////////////////////
+// Sync Heatmap Opacity
+/////////////////////////
+
+test('`_syncHeatmapOpacity` should not sync heatmap if it does not exist', function(a) {
+  const subject = createSubject();
+  subject.heatmapOpacity = 0.1;
+  a.equal(subject._syncHeatmapOpacity(), false);
+});
+
+test('`_syncHeatmapOpacity` should convert truthy opacity to a floating point', function(a) {
+  const subject = createSubject(true, true);
+  subject.set('heatmapOpacity', '0.58');
+  a.equal(subject._heatmap.get('opacity'), 0.58);
+});
+
+test('`_syncHeatmapOpacity` should convert falsey opacity values into the numeric value: 1', function(a) {
+  const subject = createSubject(true, true);
+  subject.set('heatmapOpacity', '');
+  a.equal(subject._heatmap.get('opacity'), 1);
+});
+
+
+//////////////////////////
+// Sync Heatmap Gradient
+/////////////////////////
+
+test('`_syncHeatmapGradient` should not sync heatmap if it does not exist', function(a) {
+  const subject = createSubject();
+  subject.heatmapGradient = ['rgb(0, 0, 0)', 'rgb(255, 255, 255)'];
+  a.equal(subject._syncHeatmapGradient(), false);
+});
+
+test('`_syncHeatmapGradient` should convert non array gradient to null', function(a) {
+  const subject = createSubject(true, true);
+  subject.set('heatmapGradient', 'rgb(0, 0, 0)');
+  a.equal(subject._heatmap.get('gradient'), null);
+});
+
+test('`_syncHeatmapGradient` should correctly set valid `heatmapGradient`', function(a) {
+  const subject  = createSubject(true, true);
+  const gradient = ['rgb(0, 0, 0)', 'rgb(255, 255, 255)'];
+  subject.set('heatmapGradient', gradient);
+  a.deepEqual(subject._heatmap.get('gradient'), gradient);
+});
+
+
+//////////////////////////
+// Sync Heatmap Visible
+/////////////////////////
+
+test('`_syncHeatmapVisible` should not sync heatmap if it does not exist', function(a) {
+  const subject = createSubject();
+  subject.heatmapVisible = false;
+  a.equal(subject._syncHeatmapVisible(), false);
+});
+
+test('`_syncHeatmapVisible` should accept truthy and trigger heatmap.setMap w/ map', function(a) {
+  const subject = createSubject(true, true);
+  subject._heatmap.setMap = sinon.spy();
+  subject.set('heatmapVisible', 'true');
+  a.ok(subject._heatmap.setMap.calledWith(subject.get('map').map));
+});
+
+test('`_syncHeatmapVisible` should accept falsey and trigger heatmap.setMap w/ null', function(a) {
+  const subject = createSubject(true, true);
+  subject._heatmap.setMap = sinon.spy();
+  subject.set('heatmapVisible', '');
+  a.ok(subject._heatmap.setMap.calledWith(null));
 });
