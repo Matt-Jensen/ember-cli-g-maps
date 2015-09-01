@@ -6,6 +6,7 @@ import GMapCore       from 'ember-cli-g-maps/mixins/g-maps/core';
 import GMapCircles    from 'ember-cli-g-maps/mixins/g-maps/circles';
 import GMapMarkers    from 'ember-cli-g-maps/mixins/g-maps/markers';
 import GMapPolygons   from 'ember-cli-g-maps/mixins/g-maps/polygons';
+import GMapOverlays   from 'ember-cli-g-maps/mixins/g-maps/overlays';
 import GMapPolylines  from 'ember-cli-g-maps/mixins/g-maps/polylines';
 import GMapRectangles from 'ember-cli-g-maps/mixins/g-maps/rectangles';
 
@@ -15,12 +16,13 @@ import GMapSelections from 'ember-cli-g-maps/mixins/g-maps/selections';
 
 export default Ember.Component.extend(
   Ember.Evented,
+  GMapCircles,
   GMapMarkers,
   GMapPolygons,
-  GMapCircles,
+  GMapOverlays,
   GMapPolylines,
   GMapRectangles,
-  GMapHeatmap,
   GMapSelections,
+  GMapHeatmap,
   GMapCore
 );
