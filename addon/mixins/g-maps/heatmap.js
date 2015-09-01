@@ -186,7 +186,7 @@ export default Ember.Mixin.create({
    */
   _syncHeatmapRadius: function() {
     const heatmap = this._heatmap;
-    const radius = (typeof this.heatmapRadius === 'number' ? this.heatmapRadius : null);
+    const radius = (this.heatmapRadius ? parseInt(this.heatmapRadius, 10) : null);
 
     if(!heatmap) { return false; }
 
@@ -201,7 +201,7 @@ export default Ember.Mixin.create({
    */
   _syncHeatmapDissipating: function() {
     const heatmap = this._heatmap;
-    const dissipating = this.heatmapDissipating;
+    const dissipating = !!(this.heatmapDissipating);
 
     if(!heatmap) { return false; }
 
@@ -216,7 +216,7 @@ export default Ember.Mixin.create({
    */
   _syncHeatmapOpacity: function() {
     const heatmap = this._heatmap;
-    const opacity = (typeof this.heatmapOpacity === 'number' ? this.heatmapOpacity : 1);
+    const opacity = (this.heatmapOpacity ? parseFloat(this.heatmapOpacity) : 1);
 
     if(!heatmap) { return false; }
 
@@ -246,7 +246,7 @@ export default Ember.Mixin.create({
    */
   _syncHeatmapVisible: function() {
     const heatmap = this._heatmap;
-    const visible = this.heatmapVisible;
+    const visible = !!(this.heatmapVisible);
 
     if(!heatmap) { return false; }
 
