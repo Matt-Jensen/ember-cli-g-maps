@@ -235,14 +235,12 @@ export default Ember.Route.extend({
   actions: {
     onMapEvent: function(e) {
       console.info('Click coordinate', 
-        e.latLng.A, // Latitude
-        e.latLng.F  // Longitude
+        e.latLng.lat(), // Latitude
+        e.latLng.lng()  // Longitude
       );
       console.info('Map boundaries',
-        e.bounds[0], // Top left map coordinate
-        e.bounds[1], // Top right map coordinate
-        e.bounds[2], // Bottom left map coordinate
-        e.bounds[3]  // Bottom right map coordinate
+        e.bounds[0], // Northeast map coordinate
+        e.bounds[1]  // Southwest map coordinate
       );
       console.info('Map\'s center', 
         this.controller.lat, 
@@ -489,6 +487,11 @@ ENV.googleMap = {
 
 Changelog
 ---------
+
+0.2.1
+------------
+* Google Maps API updates
+* Heatmap tests
 
 0.2.0
 ------------

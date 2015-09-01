@@ -63,10 +63,10 @@ test('`_initGMap` should create a GMap instance with main config properties', fu
   subject._initGMap();
 
   const zoom = subject.get('map').map.zoom;
-  const { A, F } = subject.get('map').map.getCenter();
+  const center = subject.get('map').map.getCenter();
 
-  assert.equal(A, config.lat);
-  assert.equal(F, config.lng);
+  assert.equal(center.lat(), config.lat);
+  assert.equal(center.lng(), config.lng);
   assert.equal(zoom, config.zoom);
 });
 
@@ -174,7 +174,12 @@ test('`_syncCenter` should not sync if `map.{lat,lng}` equals `subject.{lat,lng}
   subject.setProperties({
     isMapLoaded: true,
     map: merge(subject.get('map'), {
-      getCenter: function() { return { A: config.lat, F: config.lng }; },
+      getCenter: function() { 
+        return { 
+          lat: function() { return config.lat; }, 
+          lng: function() { return config.lng; }
+        }; 
+      },
       setCenter: sinon.spy()
     })
   });
@@ -189,7 +194,12 @@ test('`_syncCenter` should sync map instance if out of sync with subject', funct
   subject.setProperties({
     isMapLoaded: true,
     map: merge(subject.get('map'), {
-      getCenter: function() { return { A: 2, F: 2 }; },
+      getCenter: function() {
+        return { 
+          lat: function() { return 2; }, 
+          lng: function() { return 2; }
+        };
+      },
       setCenter: sinon.spy()
     })
   });
@@ -284,7 +294,6 @@ test('`_syncMapType` should sync set `mapType` if `isMapLoaded` is true', functi
     mapType: 'SATELITE',
     isMapLoaded: true,
     map: merge(subject.get('map'), {
-      getCenter: function() { return { A: 1, F: 1 }; },
       map: {
         setOptions: function() {},
         getMapTypeId: function() { return 'ROADMAP'; },
@@ -338,7 +347,6 @@ test('`_addGMapPersisters` should call `_onCenterChanged` on GMap event: `center
 test('`_addGMapPersisters` should call `_onZoomChanged` on GMap event: `zoom_changed` fire', function(assert) {
   assert.expect(1);
   const originalRunLater = Ember.run.later;
-
   Ember.run.later = function(func) { return func(); };
 
   subject._initGMap();
@@ -360,7 +368,12 @@ test('`_onCenterChanged` should not sync if same as subject `lat`,`lng`', functi
   subject.setProperties({
     lat: 1, lng: 1, isMapLoaded: false,
     map: {
-      getCenter: function() { return { A: 1, F: 1 }; }
+      getCenter: function() {
+        return { 
+          lat: function() { return 1; },
+          lng: function() { return 1; }
+        }; 
+      }
     }
   });
 
@@ -371,7 +384,12 @@ test('`_onCenterChanged` should sync new `lat` & `lng` to subject', function(ass
   subject.setProperties({
     lat: 1, lng: 1, isMapLoaded: false,
     map: {
-      getCenter: function() { return { A: 2, F: 2 }; }
+      getCenter: function() {
+        return { 
+          lat: function() { return 2; },
+          lng: function() { return 2; }
+        }; 
+      }
     }
   });
 
@@ -401,7 +419,12 @@ test('`_onZoomChanged` should sync new `zoom`, `lat`, and `zoom` to subject', fu
     isMapLoaded: false,
     map: { 
       map: { zoom: 10 },
-      getCenter: function() { return { A: 2, F: 2 }; }
+      getCenter: function() { 
+        return { 
+          lat: function() { return 2; },
+          lng: function() { return 2; }
+        };
+      }
     }
   });
 
@@ -423,8 +446,18 @@ test('`defaultGMapState` should return the current map bounds', function(assert)
       map: {
         getBounds: function() {
           return {
-            Da: { j: 1, A: 1 },
-            va: { j: 2, A: 2 }
+            getNorthEast: function() { 
+              return {
+                lat: function() { return 1; },
+                lng: function() { return 1; }
+              };
+            },
+            getSouthWest: function() {
+              return {
+                lat: function() { return 2; },
+                lng: function() { return 2; }
+              };
+            }
           };
         }
       }
@@ -432,10 +465,8 @@ test('`defaultGMapState` should return the current map bounds', function(assert)
   });
 
   assert.deepEqual(subject.get('defaultGMapState').bounds, [
-    { lat: 1, lng: 2 },
-    { lat: 1, lng: 2 },
-    { lat: 1, lng: 2 },
-    { lat: 1, lng: 2 }
+    { lat: 1, lng: 1, location: 'northeast' },
+    { lat: 2, lng: 2, location: 'southwest' }
   ]);
 });
 

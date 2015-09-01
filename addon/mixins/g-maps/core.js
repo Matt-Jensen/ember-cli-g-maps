@@ -101,11 +101,11 @@ export default Ember.Mixin.create({
   _syncCenter: observer('isMapLoaded', 'lat', 'lng', function() {
     if(!this.get('isMapLoaded')) { return false; }
     const { map, lat, lng } = this.getProperties('map', 'lng', 'lat');
-    const { A, F } = map.getCenter();
+    const center = map.getCenter();
     const areCoordsEqual = this._areCoordsEqual;
 
     // If map is out of sync with app state
-    if(!areCoordsEqual(A, lat) || !areCoordsEqual(F, lng)) {
+    if(!areCoordsEqual(center.lat(), lat) || !areCoordsEqual(center.lng(), lng)) {
       map.setCenter(lat, lng);
     }
   }),
@@ -155,13 +155,13 @@ export default Ember.Mixin.create({
     const map = this.get('map');
     const areCoordsEqual = this._areCoordsEqual;
     const { lat, lng } = this.getProperties('lat', 'lng');
-    const { A, F } = map.getCenter();
+    const center = map.getCenter();
 
     // Still in sync
-    if(areCoordsEqual(A, lat) || areCoordsEqual(F, lng)) { return false; }
+    if(areCoordsEqual(center.lat(), lat) || areCoordsEqual(center.lng(), lng)) { return false; }
 
     // Out of sync
-    this.setProperties({ lat: A, lng: F });
+    this.setProperties({ lat: center.lat(), lng: center.lng() });
   },
 
   _onZoomChanged: function() {
@@ -172,10 +172,10 @@ export default Ember.Mixin.create({
     if(zoom === map.map.zoom) { return false; }
 
     // Zooming changes lat,lng state
-    const { A, F } = map.getCenter();
+    const center = map.getCenter();
 
     // Zoom out of sync
-    this.setProperties({ zoom: map.map.zoom, lat: A, lng: F });
+    this.setProperties({ zoom: map.map.zoom, lat: center.lat(), lng: center.lng() });
   },
 
 
@@ -186,13 +186,13 @@ export default Ember.Mixin.create({
   defaultGMapState: computed('lat', 'lng', 'zoom', function() {
     const map    = this.get('map');
     const bounds = map.map.getBounds();
+    const ne     = bounds.getNorthEast();
+    const sw     = bounds.getSouthWest();
 
     return {
       bounds: [
-        { lat: bounds.Da.j, lng: bounds.va.j }, // top left
-        { lat: bounds.Da.j, lng: bounds.va.A }, // top right
-        { lat: bounds.Da.A, lng: bounds.va.A }, // bottom left
-        { lat: bounds.Da.A, lng: bounds.va.j }  // bottom right
+        { lat: ne.lat(), lng: ne.lng(), location: 'northeast' }, // Northeast
+        { lat: sw.lat(), lng: sw.lng(), location: 'southwest' }  // Southwest
       ],
 
       mapIdle: new Promise((resolve) => {
