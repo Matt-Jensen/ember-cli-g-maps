@@ -1,3 +1,4 @@
+import Ember               from 'ember';
 import { moduleFor, test } from 'ember-qunit';
 
 let service;
@@ -30,7 +31,7 @@ test('it should add,select a map to,from a private array', function(assert) {
 
 test('it should provide an onLoad promise', function(assert) {
   service.maps.add('test-4', {});
-  assert.ok(service.maps.select('test-4').onLoad instanceof Promise);
+  assert.ok(service.maps.select('test-4').onLoad instanceof Ember.RSVP.Promise);
 });
 
 test('it should successfully remove map instance with `remove`', function(assert) {

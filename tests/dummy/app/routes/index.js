@@ -225,7 +225,7 @@ export default Ember.Route.extend({
             break;
           }
         }
-      })
+      });
     },
 
     onClickRectangle: function(e) {

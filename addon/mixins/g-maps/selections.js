@@ -213,7 +213,7 @@ export default Ember.Mixin.create({
     this.set('_selectionsEventOverlayComplete', overlayListener);
 
     // Add listener to sync user selection of map drawing controls
-    this.$().on('click', '.gmnoprint > div', this._syncDrawingManagerModeControls.bind(this));
+    this.$().on('click', '.gmnoprint > div', Ember.run.bind(this, this._syncDrawingManagerModeControls));
 
     // Remove observers added during `didInsertElement`
     this.removeObserver('isMapLoaded', this, '_initSelections');
