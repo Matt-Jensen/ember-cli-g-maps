@@ -195,11 +195,11 @@ export default Ember.Mixin.create({
         { lat: sw.lat(), lng: sw.lng(), location: 'southwest' }  // Southwest
       ],
 
-      mapIdle: new Promise((resolve) => {
+      mapIdle: new Ember.RSVP.Promise((resolve) => {
         google.maps.event.addListenerOnce(map.map, 'idle', resolve);
       }),
 
-      mapTilesLoaded: new Promise((resolve) => {
+      mapTilesLoaded: new Ember.RSVP.Promise((resolve) => {
         google.maps.event.addListenerOnce(map.map, 'tilesloaded', resolve);
       })
     };

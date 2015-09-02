@@ -1,3 +1,6 @@
+[![Build Status](https://travis-ci.org/Matt-Jensen/ember-cli-g-maps.svg)](https://travis-ci.org/Matt-Jensen/ember-cli-g-maps)
+[![Ember Observer Score](http://emberobserver.com/badges/ember-cli-g-maps.svg)](http://emberobserver.com/addons/ember-cli-g-maps)
+
 # Ember CLI G-Maps
 
 Ember CLI G-Maps is a Google Map component for map driven applications.
@@ -538,6 +541,15 @@ ENV.googleMap = {
 
 Changelog
 ---------
+
+0.3.1
+------------
+* Upgrade to Ember-cli@1.13.8
+* Reverted to RSVP.Promise for tests
+* Unit test for Overlay Mixin
+* Travis-CI Badge
+* Ember Observer Badge
+* Passing Phantom Tests
 
 0.3.0
 ------------

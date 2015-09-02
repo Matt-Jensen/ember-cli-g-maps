@@ -24,7 +24,7 @@ export default Ember.Service.extend({
 
         const mapItem = { 
           name: name, 
-          onLoad: new Promise((resolve) => {
+          onLoad: new Ember.RSVP.Promise((resolve) => {
             google.maps.event.addListenerOnce(map, 'idle', resolve);
           })
         };

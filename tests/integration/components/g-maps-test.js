@@ -21,13 +21,7 @@ test('it renders', function(assert) {
     gMap: Ember.inject.service()
   });
 
-  this.render(hbs`
-    {{g-maps
-      name=name
-      lat=lat
-      lng=lng
-      zoom=zoom}}
-  `);
+  this.render(hbs`{{g-maps name=name lat=lat lng=lng zoom=zoom}}`);
 
   /* Need map to render
   Ember.run(() => {
