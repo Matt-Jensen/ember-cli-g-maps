@@ -6,42 +6,78 @@ import sinon            from 'sinon';
 
 const { merge } = Ember;
 
-let subject, mapDiv;
-const mapID = 'test-map';
+let sourceGoogleMapsAddListenerOnce;
 const emberTestingDiv = document.getElementById('ember-testing');
+
+function createSubject() {
+  let mapDiv = document.createElement('div');
+  mapDiv.id = `map-id-${Ember.uuid()}`;
+  emberTestingDiv.appendChild(mapDiv);
+  
+  const GMapsCoreObject = Ember.Object.extend(GMapsCoreMixin, Ember.Evented, {
+    element: mapDiv,
+
+    _mapDiv: mapDiv,
+
+    // Mock gMap service
+    gMap: {
+      maps: { 
+        add: function() {
+          return {
+            onLoad: new Ember.RSVP.Promise(() => {})
+          };
+        },
+        remove: function() {}
+      }
+    },
+
+    map: {
+      map: {
+        getBounds: function() {
+          return {
+            getNorthEast: function() { 
+              return {
+                lat: function() { return 1; },
+                lng: function() { return 1; }
+              };
+            },
+            getSouthWest: function() {
+              return {
+                lat: function() { return 2; },
+                lng: function() { return 2; }
+              };
+            }
+          };
+        }
+      }
+    },
+
+    send: function() {}
+  });
+
+  return GMapsCoreObject.create();
+}
+
+function removeSubject(subject) {
+  const gm = subject.get('map');
+
+  // Clean up any instantiated GMaps
+  Ember.run.later(() => {
+    if(gm && gm.map && typeof gm.destroy === 'function') { gm.destroy(); }
+  }, 10); // run after `_destroyGMap` if needed
+
+  emberTestingDiv.removeChild(subject._mapDiv);
+}
 
 module('Unit | Mixin | g maps/core', {
   beforeEach: function() {
-    mapDiv = document.createElement('div');
-    mapDiv.id = mapID;
-    emberTestingDiv.appendChild(mapDiv);
-    const GMapsCoreObject = Ember.Object.extend(GMapsCoreMixin, Ember.Evented, {
-      element: mapDiv,
-
-      // Mock gMap service
-      gMap: {
-        maps: { 
-          add: function() {
-            return {
-              onLoad: new Ember.RSVP.Promise(() => {})
-            };
-          },
-          remove: function() {}
-        }
-      },
-
-      send: function() {}
-    });
-    subject = GMapsCoreObject.create();
+    sourceGoogleMapsAddListenerOnce = google.maps.event.addListenerOnce;
+    google.maps.event.addListenerOnce = function addListenerOnce(map, eventName, invoke) {
+      invoke();
+    };
   },
   afterEach: function() {
-    const gm = subject.get('map');
-    emberTestingDiv.removeChild(mapDiv);
-
-    // Clean up any instantiated GMaps
-    Ember.run.later(() => {
-      if(gm && gm.map && typeof gm.destroy === 'function') { gm.destroy(); }
-    }, 10); // run after `_destroyGMap` if needed
+    google.maps.event.addListenerOnce = sourceGoogleMapsAddListenerOnce;
   }
 });
 
@@ -51,12 +87,17 @@ module('Unit | Mixin | g maps/core', {
 //////////////
 
 test('`_initGMap` should invoke on `didInsertElement` event', function(assert) {
+  const subject = createSubject();
+
   subject._initGMap = sinon.spy();
   subject.trigger('didInsertElement');
   assert.ok(subject._initGMap.called);
+
+  window.setTimeout(() => removeSubject(subject));
 });
 
 test('`_initGMap` should create a GMap instance with main config properties', function(assert) {
+  const subject = createSubject();
   const config = { lat: 1, lng: 1, zoom: 10 };
 
   subject.setProperties(config);
@@ -68,14 +109,19 @@ test('`_initGMap` should create a GMap instance with main config properties', fu
   assert.equal(center.lat(), config.lat);
   assert.equal(center.lng(), config.lng);
   assert.equal(zoom, config.zoom);
+
+  window.setTimeout(() => removeSubject(subject));
 });
 
 
 test('`_initGMap` should set all configured gmap events', function(assert) {
+  const subject = createSubject();
+
   const noop            = function() {};
   const addedEvents     = [];
   const originalGMapsOn = GMaps.on;
-  const supportedEvents = subject.get('_gmapEvents');
+  const supportedEvents = subject._gmapEvents;
+  subject._addGMapPersisters = function() {};
 
   GMaps.on = function(event) {
     addedEvents.push(event);
@@ -85,25 +131,37 @@ test('`_initGMap` should set all configured gmap events', function(assert) {
   supportedEvents.forEach((e) => subject.set(e, noop));
 
   subject._initGMap();
-  
-  assert.deepEqual(addedEvents, supportedEvents);
+  assert.equal(addedEvents.length, supportedEvents.length);
 
   GMaps.on = originalGMapsOn;
+
+  window.setTimeout(() => removeSubject(subject));
 });
 
 test('`_initGMap` should set a given name if provided', function(assert) {
+  const subject = createSubject();
+
   subject.set('name', 'my-cool-map');
   subject._initGMap();
 
   assert.equal(subject.get('name'), 'my-cool-map');
+
+  window.setTimeout(() => removeSubject(subject));
 });
 
 test('`_initGMap` should automatically set a `name` if none provided', function(assert) {
+  const subject = createSubject();
+
   subject._initGMap();
   assert.ok(subject.get('name').length);
+
+  window.setTimeout(() => removeSubject(subject));
 });
 
+// TODO: remove for 0.4.0
 test('`_initGMap` should add a map to the `gMap` service with same `name`', function(assert) {
+  const subject = createSubject();
+
   assert.expect(1);
   subject.set('name', 'Marmaduke');
 
@@ -113,20 +171,65 @@ test('`_initGMap` should add a map to the `gMap` service with same `name`', func
   };
 
   subject._initGMap();
+
+  window.setTimeout(() => removeSubject(subject));
 });
 
+test('`_initGMap` should addListenerOnce `idle` event via google.maps.event', function(assert) {
+  const subject = createSubject();
+
+  assert.expect(1);
+
+  // Assert ok if idle event was ever subscribed
+  google.maps.event.addListenerOnce = function(map, eventName) {
+    if(eventName === 'idle') { assert.ok(true); }
+  };
+
+  subject._initGMap();
+  window.setTimeout(() => removeSubject(subject));
+});
+
+test('`_initGMap` load should set `isMapLoaded` and trigger `ember-cli-g-map-loaded`', function(assert) {
+  const subject = createSubject();
+
+  assert.expect(2);
+  subject.trigger = sinon.spy();
+  subject._initGMap();
+
+  assert.equal(true, subject.isMapLoaded);
+  assert.equal('ember-cli-g-map-loaded', subject.trigger.args[0][0]);
+
+  window.setTimeout(() => removeSubject(subject));
+});
+
+test('`_initGMap` load should send `loaded` event', function(assert) {
+  const subject = createSubject();
+
+  subject.send = sinon.spy();
+  subject._initGMap();
+
+  assert.equal('loaded', subject.send.args[0][0]);
+
+  window.setTimeout(() => removeSubject(subject));
+});
 
 /////////////////
 // Destroy Core
 /////////////////
 
 test('`_destroyGMap` should invoke on `willDestroyElement` event', function(assert) {
+  const subject = createSubject();
+
   subject._destroyGMap = sinon.spy();
   subject.trigger('willDestroyElement');
   assert.ok(subject._destroyGMap.called);
+
+  window.setTimeout(() => removeSubject(subject));
 });
 
 test('`_destroyGMap` should remove all bound GMap events', function(assert) {
+  const subject = createSubject();
+
   const noop             = function() {};
   const removedEvents    = [];
   const originalGMapsOff = GMaps.off;
@@ -144,14 +247,18 @@ test('`_destroyGMap` should remove all bound GMap events', function(assert) {
   assert.deepEqual(removedEvents, supportedEvents);
 
   GMaps.off = originalGMapsOff;
+  window.setTimeout(() => removeSubject(subject));
 });
 
 test('`_destroyGMap` should remove gMap instance added to gMap service', function(assert) {
+  const subject = createSubject();
+
   assert.expect(1);
 
   subject.set('name', 'may-test-map');
   subject.gMap.maps.remove = function(name) {
     assert.equal(name, 'may-test-map');
+    removeSubject(subject);
   };
   subject._initGMap();
   subject._destroyGMap();
@@ -163,11 +270,17 @@ test('`_destroyGMap` should remove gMap instance added to gMap service', functio
 /////////////////
 
 test('`_syncCenter` should not sync `lat` & `lng` if `isMapLoaded` is false', function(assert) {
+  const subject = createSubject();
+
   subject.setProperties({ lat: 1, lng: 1, isMapLoaded: false });
   assert.equal(subject._syncCenter(), false);
+
+  window.setTimeout(() => removeSubject(subject));
 });
 
-test('`_syncCenter` should not sync if `map.{lat,lng}` equals `subject.{lat,lng}`', function(assert) {
+test('`_syncCenter` shouldn\'t sync if `map.{lat,lng}` = `subject.{lat,lng}`', function(assert) {
+  const subject = createSubject();
+
   const config = { lat: 1, lng: 1, isMapLoaded: false };
   subject.setProperties(config);
   subject._initGMap();
@@ -185,9 +298,12 @@ test('`_syncCenter` should not sync if `map.{lat,lng}` equals `subject.{lat,lng}
   });
   subject._syncCenter();
   assert.equal(subject.map.setCenter.called, false);
+  window.setTimeout(() => removeSubject(subject));
 });
 
 test('`_syncCenter` should sync map instance if out of sync with subject', function(assert) {
+  const subject = createSubject();
+
   const config = { lat: 1, lng: 1, isMapLoaded: false };
   subject.setProperties(config);
   subject._initGMap();
@@ -205,6 +321,7 @@ test('`_syncCenter` should sync map instance if out of sync with subject', funct
   });
   subject._syncCenter();
   assert.ok(subject.map.setCenter.called);
+  window.setTimeout(() => removeSubject(subject));
 });
 
 
@@ -213,11 +330,17 @@ test('`_syncCenter` should sync map instance if out of sync with subject', funct
 //////////////
 
 test('`_syncZoom` should not sync `zoom` if `isMapLoaded` is false', function(assert) {
+  const subject = createSubject();
+
   subject.setProperties({ zoom: 10, isMapLoaded: false });
   assert.equal(subject._syncZoom(), false);
+
+  window.setTimeout(() => removeSubject(subject));
 });
 
 test('`_syncZoom` should sync zoom if `isMapLoaded` is true', function(assert) {
+  const subject = createSubject();
+
   const config = { zoom: 10, isMapLoaded: false };
   subject.setProperties(config);
   subject._syncCenter = function() {}; // avoid bindings
@@ -230,6 +353,8 @@ test('`_syncZoom` should sync zoom if `isMapLoaded` is true', function(assert) {
   });
   subject._syncZoom();
   assert.ok(subject.map.setZoom.called);
+
+  window.setTimeout(() => removeSubject(subject));
 });
 
 
@@ -238,12 +363,18 @@ test('`_syncZoom` should sync zoom if `isMapLoaded` is true', function(assert) {
 ///////////////////
 
 test('`_syncDraggable` should not sync `draggable` if `isMapLoaded` is false', function(assert) {
+  const subject = createSubject();
+
   subject.setProperties({ draggable: false, isMapLoaded: false });
   assert.equal(subject._syncDraggable(), false);
+
+  window.setTimeout(() => removeSubject(subject));
 });
 
 test('`_syncDraggable` should sync `draggable` if `isMapLoaded` is true', function(assert) {
   assert.expect(1);
+
+  const subject = createSubject();
 
   const config = { draggable: false, isMapLoaded: false };
   subject.setProperties(config);
@@ -256,10 +387,13 @@ test('`_syncDraggable` should sync `draggable` if `isMapLoaded` is true', functi
       map: {
         setOptions: function(option) {
           assert.equal(option.draggable, config.draggable);
+          removeSubject(subject);
         }
       }
     })
   });
+
+  subject._syncDraggable();
 });
 
 
@@ -268,11 +402,17 @@ test('`_syncDraggable` should sync `draggable` if `isMapLoaded` is true', functi
 //////////////////
 
 test('`_syncMapType` should not sync `mapType` if `isMapLoaded` is false', function(assert) {
+  const subject = createSubject();
+
   subject.setProperties({ mapType: 'SATELITE', isMapLoaded: false });
   assert.equal(subject._syncMapType(), false);
+
+  window.setTimeout(() => removeSubject(subject));
 });
 
 test('`_syncMapType` should not sync `mapType` if `mapType` is undefined', function(assert) {
+  const subject = createSubject();
+
   subject.set('isMapLoaded', false);
   subject._syncCenter = function() {};
   subject._initGMap();
@@ -284,9 +424,13 @@ test('`_syncMapType` should not sync `mapType` if `mapType` is undefined', funct
     })
   });
   assert.equal(subject._syncMapType(), false);
+
+  window.setTimeout(() => removeSubject(subject));
 });
 
 test('`_syncMapType` should sync set `mapType` if `isMapLoaded` is true', function(assert) {
+  const subject = createSubject();
+
   subject.set('isMapLoaded', false);
   subject._syncCenter = function() {};
   subject._initGMap();
@@ -303,6 +447,8 @@ test('`_syncMapType` should sync set `mapType` if `isMapLoaded` is true', functi
   });
 
   assert.ok(subject.get('map').map.setMapTypeId.called);
+
+  window.setTimeout(() => removeSubject(subject));
 });
 
 
@@ -311,6 +457,8 @@ test('`_syncMapType` should sync set `mapType` if `isMapLoaded` is true', functi
 ////////////////////////////
 
 test('`_addGMapPersisters` should add GMap events on `ember-cli-g-map-loaded`', function(assert) {
+  const subject = createSubject();
+
   const addedEvents = [];
   const persistEvents = ['center_changed', 'zoom_changed'];
   const originalGMapsOn = GMaps.on;
@@ -324,12 +472,16 @@ test('`_addGMapPersisters` should add GMap events on `ember-cli-g-map-loaded`', 
   assert.deepEqual(addedEvents, persistEvents);
 
   GMaps.on = originalGMapsOn;
+  window.setTimeout(() => removeSubject(subject));
 });
 
 test('`_addGMapPersisters` should call `_onCenterChanged` on GMap event: `center_changed` fire', function(assert) {
   assert.expect(1);
+
+  const subject = createSubject();
   const originalRunDebounce = Ember.run.debounce;
 
+  subject.trigger = function() {};
   Ember.run.debounce = function(target, func) {
     func.call(target);
   };
@@ -337,6 +489,7 @@ test('`_addGMapPersisters` should call `_onCenterChanged` on GMap event: `center
   subject._initGMap();
   subject._onCenterChanged = function() {
     assert.ok(true);
+    removeSubject(subject);
   };
   subject._addGMapPersisters();
   GMaps.fire('center_changed', subject.get('map').map);
@@ -346,12 +499,15 @@ test('`_addGMapPersisters` should call `_onCenterChanged` on GMap event: `center
 
 test('`_addGMapPersisters` should call `_onZoomChanged` on GMap event: `zoom_changed` fire', function(assert) {
   assert.expect(1);
+
+  const subject = createSubject();
   const originalRunLater = Ember.run.later;
   Ember.run.later = function(func) { return func(); };
 
   subject._initGMap();
   subject._onZoomChanged = function() {
     assert.ok(true);
+    removeSubject(subject);
   };
   subject._addGMapPersisters();
   GMaps.fire('zoom_changed', subject.get('map').map);
@@ -365,6 +521,8 @@ test('`_addGMapPersisters` should call `_onZoomChanged` on GMap event: `zoom_cha
 //////////////////////
 
 test('`_onCenterChanged` should not sync if same as subject `lat`,`lng`', function(assert) {
+  const subject = createSubject();
+
   subject.setProperties({
     lat: 1, lng: 1, isMapLoaded: false,
     map: {
@@ -378,9 +536,13 @@ test('`_onCenterChanged` should not sync if same as subject `lat`,`lng`', functi
   });
 
   assert.equal(subject._onCenterChanged(), false);
+
+  window.setTimeout(() => removeSubject(subject));
 });
 
 test('`_onCenterChanged` should sync new `lat` & `lng` to subject', function(assert) {
+  const subject = createSubject();
+
   subject.setProperties({
     lat: 1, lng: 1, isMapLoaded: false,
     map: {
@@ -397,6 +559,8 @@ test('`_onCenterChanged` should sync new `lat` & `lng` to subject', function(ass
 
   subject._onCenterChanged();
   assert.ok(subject.setProperties.called);
+
+  window.setTimeout(() => removeSubject(subject));
 });
 
 
@@ -405,15 +569,21 @@ test('`_onCenterChanged` should sync new `lat` & `lng` to subject', function(ass
 ////////////////////
 
 test('`_onZoomChanged` should not sync if same as subject `zoom`', function(assert) {
+  const subject = createSubject();
+
   subject.setProperties({
     zoom: 10, isMapLoaded: false,
     map: { map: { zoom: 10 } }
   });
 
   assert.equal(subject._onZoomChanged(), false);
+
+  window.setTimeout(() => removeSubject(subject));
 });
 
 test('`_onZoomChanged` should sync new `zoom`, `lat`, and `zoom` to subject', function(assert) {
+  const subject = createSubject();
+
   subject.setProperties({
     lat: 1, lng: 1, zoom: 1, 
     isMapLoaded: false,
@@ -433,6 +603,8 @@ test('`_onZoomChanged` should sync new `zoom`, `lat`, and `zoom` to subject', fu
   assert.equal(subject.get('lat'), 2);
   assert.equal(subject.get('lng'), 2);
   assert.equal(subject.get('zoom'), 10);
+
+  window.setTimeout(() => removeSubject(subject));
 });
 
 
@@ -441,6 +613,8 @@ test('`_onZoomChanged` should sync new `zoom`, `lat`, and `zoom` to subject', fu
 /////////////////////// 
 
 test('`defaultGMapState` should return the current map bounds', function(assert) {
+  const subject = createSubject();
+
   subject.setProperties({
     map: {
       map: {
@@ -468,36 +642,28 @@ test('`defaultGMapState` should return the current map bounds', function(assert)
     { lat: 1, lng: 1, location: 'northeast' },
     { lat: 2, lng: 2, location: 'southwest' }
   ]);
+
+  window.setTimeout(() => removeSubject(subject));
 });
 
 test('`defaultGMapState` should return `mapIdle` Promise to `idle`', function(assert) {
   assert.expect(2);
-  const addListenerOnce = google.maps.event.addListenerOnce;
 
-  google.maps.event.addListenerOnce = function(map, eventName) {
-    if(eventName === 'idle') { 
-      assert.ok(true);
-      google.maps.event.addListenerOnce = addListenerOnce;
-    }
-  };
+  const subject = createSubject();
+  google.maps.event.addListenerOnce = sinon.spy();
 
-  subject._initGMap(); // set google map instance
   assert.ok(subject.get('defaultGMapState').mapIdle instanceof Ember.RSVP.Promise);
+  assert.ok(google.maps.event.addListenerOnce.called);
 });
 
 test('`defaultGMapState` should return `mapTilesLoaded` Promise to `tilesloaded`', function(assert) {
   assert.expect(2);
-  const addListenerOnce = google.maps.event.addListenerOnce;
 
-  google.maps.event.addListenerOnce = function(map, eventName) {
-    if(eventName === 'tilesloaded') { 
-      assert.ok(true);
-      google.maps.event.addListenerOnce = addListenerOnce;
-    }
-  };
+  const subject = createSubject();
+  google.maps.event.addListenerOnce = sinon.spy();
 
-  subject._initGMap(); // set google map instance
   assert.ok(subject.get('defaultGMapState').mapTilesLoaded instanceof Ember.RSVP.Promise);
+  assert.ok(google.maps.event.addListenerOnce.called);
 });
 
 
@@ -760,5 +926,7 @@ test('it should sendAction `projection_changed` on GMap event: `projection_chang
 ////////////
 
 test('`_areCoordsEqual` should correctly compare 2 numbers within 12 digits', function(assert) {
+  const subject = createSubject();
   assert.ok(subject._areCoordsEqual(4.234234232324, 4.2342342323235555));
+  window.setTimeout(() => removeSubject(subject));
 });
