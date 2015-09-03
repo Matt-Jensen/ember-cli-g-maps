@@ -1,5 +1,7 @@
+/* globals google: true */
 import Ember               from 'ember';
 import { moduleFor, test } from 'ember-qunit';
+import sinon               from 'sinon';
 
 let service;
 
@@ -9,33 +11,52 @@ moduleFor('service:g-map', 'Unit | Service | g map', {
   }
 });
 
-test('it should throw an error if name is not a string', function(assert) {
-  assert.throws(
+test('it should throw an error if name is not a string', function(a) {
+  a.throws(
     function() { return service.maps.add(2, {}); },
     new Error('GMap name must be a string')
   );
 });
 
-test('it should throw an error if a map with the same name exists', function(assert) {
+test('it should throw an error if a map with the same name exists', function(a) {
   service.maps.add('test-2', {});
-  assert.throws(
+  a.throws(
     function() { return service.maps.add('test-2', {}); },
     new Error('GMap name is taken, select a new GMap name')
   );
 });
 
-test('it should add,select a map to,from a private array', function(assert) {
+test('it should add,select a map to,from a private array', function(a) {
   service.maps.add('test-3', {});
-  assert.equal(service.maps.select('test-3').name, 'test-3');
+  a.equal(service.maps.select('test-3').name, 'test-3');
 });
 
-test('it should provide an onLoad promise', function(assert) {
+test('it should provide an onLoad promise', function(a) {
   service.maps.add('test-4', {});
-  assert.ok(service.maps.select('test-4').onLoad instanceof Ember.RSVP.Promise);
+  a.ok(service.maps.select('test-4').onLoad instanceof Ember.RSVP.Promise);
 });
 
-test('it should successfully remove map instance with `remove`', function(assert) {
+test('it should create a deprecation warning when onLoad is invoked', function(a) {
+  a.expect(1);
+  const originalEmberWarning = Ember.Logger.warn;
+  const originalAddListenerOnce = google.maps.event.addListenerOnce;
+
+  google.maps.event.addListenerOnce = function(map, event, invoke) {
+    invoke();
+  };
+
+  Ember.Logger.warn = sinon.spy();
   service.maps.add('test-5', {});
-  service.maps.remove('test-5');
-  assert.equal(service.maps.select('test-5'), undefined);
+
+  service.maps.select('test-5').onLoad.then(function() {
+    a.ok(Ember.Logger.warn.called);
+    Ember.Logger.warn = originalEmberWarning;
+    google.maps.event.addListenerOnce = originalAddListenerOnce;
+  });
+});
+
+test('it should successfully remove map instance with `remove`', function(a) {
+  service.maps.add('test-6', {});
+  service.maps.remove('test-6');
+  a.equal(service.maps.select('test-6'), undefined);
 });

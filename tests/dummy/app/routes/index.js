@@ -7,14 +7,6 @@ export default Ember.Route.extend({
   gMap: Ember.inject.service(),
 
   setupController: function(controller) {
-    Ember.run.scheduleOnce('afterRender', this, function() {
-      const mapHelper = this.get('gMap').maps.select('main-map');
-      if( !mapHelper ) { return; }
-      mapHelper.onLoad.then(function() {
-        console.info('Google map has finished loading!');
-      });
-    });
-
     controller.setProperties({
       lat: 32.75494243654723,
       lng: -86.8359375,
@@ -358,6 +350,11 @@ export default Ember.Route.extend({
 
     removeAllMarkers: function() {
       this.controller.set('markers', Ember.A([]));
+    },
+
+    mapLoaded: function(e) {
+      // Map's name: e.map
+      console.info('Google map has finished loading!');
     }
   }
 });

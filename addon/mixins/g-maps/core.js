@@ -66,11 +66,14 @@ export default Ember.Mixin.create({
       this.set('name', `ember-cli-g-map-${uuid()}`);
     }
 
-    // Create map service instance and register load event
-    const mapService = this.get('gMap').maps.add(this.get('name'), map.map);
-    mapService.onLoad.then(() => {
+    // TODO: remove for v0.4.0
+    this.get('gMap').maps.add(this.get('name'), map.map);
+
+    // When map instance has finished loading
+    google.maps.event.addListenerOnce(map.map, 'idle', (e) => {
       this.set('isMapLoaded', true);
       this.trigger('ember-cli-g-map-loaded');
+      this.send('loaded', e);
     });
   }),
 
@@ -86,7 +89,7 @@ export default Ember.Mixin.create({
       GMaps.off(events[i], map.map);
     }
 
-    // Remove GMap from gMap service
+    // TODO: remove for v0.4.0
     this.get('gMap').maps.remove(this.get('name'));
 
     // Run after Mixin willDestroyElement
@@ -190,6 +193,8 @@ export default Ember.Mixin.create({
     const sw     = bounds.getSouthWest();
 
     return {
+      map: this.get('name'),
+
       bounds: [
         { lat: ne.lat(), lng: ne.lng(), location: 'northeast' }, // Northeast
         { lat: sw.lat(), lng: sw.lng(), location: 'southwest' }  // Southwest
@@ -220,6 +225,9 @@ export default Ember.Mixin.create({
     },
     resize: function() {
       this.sendAction('resize', merge(this.get('defaultGMapState'), ...arguments));
+    },
+    loaded: function() {
+      this.sendAction('loaded', merge(this.get('defaultGMapState'), ...arguments));
     },
     dragend: function() {
       this.sendAction('dragend', merge(this.get('defaultGMapState'), ...arguments));

@@ -14,7 +14,9 @@ Built with the [GMaps-For-Apps.js library](https://github.com/Matt-Jensen/gmaps-
 Installation
 ------------
 
-Requires: Ember-CLI >= 1.13.7 & Ember > 1.13.6
+Supports: 
+- Ember ~1.13
+- Google Maps v3
 
 In terminal:
 
@@ -350,31 +352,20 @@ export default Ember.Route.extend({
 {{g-maps ... draggable=draggable}}
 ```
 
-**Wait For Map To Load**
+**React to Map Loading Completion**
 ```js
 export default Ember.Route.extend({
-  // Inject the gMap service
-  gMap: Ember.inject.service(),
-
-  setupController: function(controller) {
-
-    // Schedule after map rendering
-    Ember.run.scheduleOnce('afterRender', this, function() {
-      
-      // Get the service and select desired G-Map
-      const mapUtil = this.get('gMap').maps.select('my-map');
-      
-      // onLoad Promise resolved
-      mapUtil.onLoad.then(function() {
-        console.log('my-map has finished loading!');
-      });
-    });
+  actions: {
+    onMapLoad: function(e) {
+      console.log(e.map +' has finished loading!');
+      // > "my-map has finished loading!"
+    }
   }
 });
 ```
 
 ```handlebars
-{{g-maps name="my-map" ...}}
+{{g-maps name="my-map" loaded="onMapLoad"}}
 ```
 
 ## Supported G-Maps Events ##
@@ -494,7 +485,7 @@ Heatmap is an abstraction of the [Google Maps Heatmap Layer](https://developers.
 
 **Heatmap Requirements**
 
-Selections requires the Google Maps Visualization library.  To add this library in:
+Heatmap requires the Google Maps Visualization library.  To add this library in:
 `config/environment.js` add:
 
 ```json
@@ -541,6 +532,12 @@ ENV.googleMap = {
 
 Changelog
 ---------
+
+0.3.2
+------------
+* Delegated gMap service onLoad to component loaded action
+* Fixed some core mixin test race conditions
+* Updated readme
 
 0.3.1
 ------------
