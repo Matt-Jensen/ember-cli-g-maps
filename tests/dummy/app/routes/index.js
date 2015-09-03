@@ -352,7 +352,7 @@ export default Ember.Route.extend({
       this.controller.set('markers', Ember.A([]));
     },
 
-    mapLoaded: function(e) {
+    mapLoaded: function() {
       // Map's name: e.map
       console.info('Google map has finished loading!');
     }
