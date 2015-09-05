@@ -1,20 +1,22 @@
-<aside class="grid-block medium-2 vertical l-sidebar">
-  <nav class="th-google-sidebar">
-    <ul class="th-google-sidebar__links">
-      <li>{{#link-to 'setup.index'}}Installation{{/link-to}}</li>
-      <li>
-        <strong>Configuration</strong>
-        <a>contentSecurityPolicy</a>
-        <a>API Key</a>
-        <a>Adding Libraries</a>
-        <a>Misc Options</a>
-      </li>
-    </ul>
-  </nav>
-</aside>
+<main class="grid-block l-main">
+  <aside class="grid-block medium-3 vertical show-for-medium">
+    <nav class="th-google-sidebar">
+      <ul class="th-google-sidebar__links">
+        <li>{{#link-to 'setup.index'}}Installation{{/link-to}}</li>
+        <li>
+          <strong>Configuration</strong>
+          <a>API Key</a>
+          <a>Adding Libraries</a>
+          <a>Misc Options</a>
+        </li>
+      </ul>
+    </nav>
+  </aside>
 
-<div class="grid-block medium-10 vertical">
-  <div class="grid-content -np">
-    {{outlet}}
+  <div class="grid-block medium-9 vertical">
+    <h1 class="th-google-chapter-header">Install &amp; Config</h1>
+    <section class="grid-content -np">
+      {{outlet}}
+    </section>
   </div>
-</div>
+</main>
