@@ -1,0 +1,35 @@
+@import 'settings';
+
+.th-google-sidebar {
+  background-color: $google-white;
+  padding: rem-calc(16) rem-calc(12) rem-calc(12) rem-calc(16);
+  /*margin-right: rem-calc(40);*/
+}
+
+.th-google-sidebar__links {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+
+  > li {
+    font-size: rem-calc(13);
+    margin-bottom: (1.25 * $global-padding);
+
+    &:last-child  {
+      margin-bottom: 0;
+    }
+  }
+
+  a, strong {
+    display: block;
+    margin-bottom: ($global-padding / 3);
+  }
+
+  a {
+    color: $body-font-color;
+
+    &.active {
+      color: $primary-color;
+    }
+  }
+}

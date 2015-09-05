@@ -3,6 +3,7 @@
 module.exports = function(environment) {
   var ENV = {
     modulePrefix: 'dummy',
+    podModulePrefix: 'dummy/pods',
     environment: environment,
     baseURL: '/',
     locationType: 'auto',
@@ -21,11 +22,11 @@ module.exports = function(environment) {
 
   ENV.contentSecurityPolicy = {
     'default-src': "'none'",
-    'script-src': "'self' 'unsafe-eval' *.googleapis.com maps.gstatic.com",
+    'script-src': "'self' 'unsafe-eval' *.googleapis.com maps.gstatic.com gist.github.com cdnjs.cloudflare.com",
     'font-src': "'self' fonts.gstatic.com",
     'connect-src': "'self' maps.gstatic.com",
-    'img-src': "'self' *.googleapis.com maps.gstatic.com csi.gstatic.com",
-    'style-src': "'self' 'unsafe-inline' fonts.googleapis.com maps.gstatic.com"
+    'img-src': "'self' *.googleapis.com maps.gstatic.com csi.gstatic.com camo.githubusercontent.com",
+    'style-src': "'self' 'unsafe-inline' fonts.googleapis.com maps.gstatic.com assets-cdn.github.com"
   };
 
   ENV.googleMap = {
