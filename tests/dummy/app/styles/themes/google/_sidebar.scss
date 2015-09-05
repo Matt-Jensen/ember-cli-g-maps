@@ -3,7 +3,11 @@
 .th-google-sidebar {
   background-color: $google-white;
   padding: rem-calc(16) rem-calc(12) rem-calc(12) rem-calc(16);
-  /*margin-right: rem-calc(40);*/
+  margin-right: $global-padding;
+
+  @include breakpoint(large) {
+    margin-right: rem-calc(40);
+  }
 }
 
 .th-google-sidebar__links {

@@ -1,7 +1,14 @@
 .l-main {
-  padding: rem-calc(40) rem-calc(24);
-}
+  margin: $global-padding;
+  overflow: visible;
 
-.l-sidebar {
-  margin-right: rem-calc(40);
+  @include breakpoint(medium) {
+    margin-top: rem-calc(40);
+    margin-bottom: rem-calc(40);
+  }
+
+  @include breakpoint(large) {
+    margin-left: rem-calc(24);
+    margin-right: rem-calc(24);
+  }
 }

@@ -11,11 +11,15 @@
 @import 'themes/google/tabs';
 @import 'themes/google/navigation';
 @import 'themes/google/sidebar';
+@import 'themes/google/headers';
 
 @import 'layouts/main';
 @import 'layouts/g-maps';
 
 @import 'components/headers';
+@import 'components/snippet';
+@import 'components/inline-code';
+@import 'components/inline-file-path';
 
 @import 'helpers/margin';
 @import 'helpers/padding';

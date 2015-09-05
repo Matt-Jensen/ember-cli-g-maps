@@ -1,0 +1,16 @@
+.gmaps-inline-code {
+  display: inline-block;
+  padding: rem-calc(2 6);
+  margin: rem-calc(0 3);
+
+  background: #f7f7f7;
+  border: 1px solid #ddd;
+  border-radius: rem-calc(3);
+  text-shadow: 1px 1px 0 rgb(255, 255, 255);
+
+  font-family: $gist-font-family;
+  color: $gist-font-color;
+  font-size: rem-calc(13);
+  font-weight: bold;
+  white-space: nowrap;
+}

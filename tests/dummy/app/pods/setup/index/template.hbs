@@ -1,5 +1,25 @@
-<h3>Setup Docs Coming Soon!</h3>
+<p class="medium-7 large-4">Thanks to Ember-CLI installing <strong class="-nowrap">ember-cli-g-maps</strong> couldn't be simpler.  Just cd into an Ember-CLI project and type this command in your terminal:</p>
 
-{{!--
-<code data-gist-id="ebc439d942bed2ec10c8"></code>
---}}
+<div class="gmaps-snippet -lmb">
+  <header>Install</header>
+  <code data-gist-id="3059242a2e470410fc98"></code>
+</div>
+
+<p class="medium-7 large-4">
+  Unfortunately we are not done yet! As is serving your ember app with <span class="gmaps-inline-code">ember serve</span> will generate content security issues, however this is easy to fix. Simply go to 
+  <ul class="gmaps-inline-file-path"><li>config</li><li>environment.js</li></ul> and include the following JSON:
+</p>
+
+<div class="gmaps-snippet -lmb">
+  <header>config/environment.js</header>
+  <code data-gist-id="55583c86cdb36ba05d26"></code>
+</div>
+
+<p class="medium-7 large-4">
+  Don't forget! You'll most likely want to see the map you're requesting, so be sure your map container some height.
+</p>
+
+<div class="gmaps-snippet">
+  <header>styles/app.css</header>
+  <code data-gist-id="65049864c0fe4c81acd2"></code>
+</div>

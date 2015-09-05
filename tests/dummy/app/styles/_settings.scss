@@ -93,6 +93,7 @@ $font-weight-bold: bold;
 $body-background: #fff;
 $body-font-color: #222;
 $body-font-family: Roboto,sans-serif;
+$gist-font-family: Helvetica, arial, nimbussansl, liberationsans, freesans, clean, sans-serif, 'Segoe UI Emoji', 'Segoe UI Symbol';
 $body-font-weight: $font-weight-normal;
 $body-font-style: normal;
 $body-antialiased: true;
@@ -110,6 +111,13 @@ $gray: #dfdfdf;
 $gray-dark: darken($gray, 8);
 $gray-light: lighten($gray, 8);
 
+
+$gist-primary: #183691;
+$gist-info: #0086b3;
+$gist-warning: #ed6a43;
+$gist-error: #a71d5d;
+$gist-font-color: #666;
+
 // We use these to make sure border radius matches unless we want it different.
 $global-radius: 4px;
 $global-rounded: 1000px;
@@ -125,13 +133,14 @@ $global-spacing: rem-calc(15);
 $breakpoints: (
   small: rem-calc(0),
   medium: rem-calc(640),
+  medium-large: rem-calc(800),
   large: rem-calc(1200),
   xlarge: rem-calc(1440),
   xxlarge: rem-calc(1920),
 );
 
 // All of the names in this list will be output as classes in your CSS, like small-12, medium-6, and so on.
-// $breakpoint-classes: (small medium large); 
+$breakpoint-classes: (small medium large); 
 
 // 4. Typography
 // - - - - - - - - - - - - - - -

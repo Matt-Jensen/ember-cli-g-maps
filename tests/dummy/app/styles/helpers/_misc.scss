@@ -1,3 +1,11 @@
 .-cursor-pointer {
   cursor: pointer !important;
 }
+
+.-nowrap {
+  white-space: nowrap;
+}
+
+.-scroll-y {
+  overflow-y: scroll !important;
+}
