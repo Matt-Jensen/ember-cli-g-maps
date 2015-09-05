@@ -1,0 +1,33 @@
+.th-google-tabs {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  white-space: nowrap;
+  display: inline-block;
+}
+
+.th-google-tabs__tab,
+.title-bar .th-google-tabs__tab {
+  display: inline-block;
+  padding: 0;
+
+  > a {
+    color: rgba($white-color, 0.6);
+    display: block;
+    padding: 0 rem-calc(24);
+    text-transform: uppercase;
+    font-size: rem-calc(14);
+    font-weight: bold;
+    line-height: rem-calc(44);
+
+    &.active {
+      color: $white-color;
+      border-bottom: 2px solid $white-color;
+    }
+
+    &:hover {
+      color: $white-color;
+    }
+  }
+}
+

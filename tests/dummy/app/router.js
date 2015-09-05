@@ -6,7 +6,24 @@ var Router = Ember.Router.extend({
 });
 
 Router.map(function() {
-  this.route('destroy');
+  this.route('setup', function() {
+    this.route('index');
+  });
+  this.route('basicUsage', { path: '/basic-usage' }, function() {
+    this.route('index');
+  });
+  this.route('service', function() {
+    this.route('index');
+  });
+  this.route('selections', function() {
+    this.route('index');
+  });
+  this.route('heatmap', function() {
+    this.route('index');
+  });
+  this.route('performance', function() {
+    this.route('index');
+  });
 });
 
 export default Router;

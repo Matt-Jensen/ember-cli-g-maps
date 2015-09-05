@@ -1,0 +1,18 @@
+#{$headers} {
+  letter-spacing: -0.34px;
+}
+
+code {
+  background-color: $body-background;
+  border-width: 0;
+  padding: 0;
+
+  .gist {
+    max-width: 98%;
+  }
+
+  .gist-data {
+    max-height: rem-calc(400);
+    overflow-y: scroll;
+  }
+}

@@ -21,11 +21,6 @@ export default Ember.Route.extend({
           infoWindow: { content: '<p>Birmingham</p>',
           visible: true },
           click: function() {console.log('Boo Boo Boo'); }
-        },
-        {
-          id: 'jdlkfajs23',
-          lat: 34.516674497188255,
-          lng: -85.80091857910156,
         }
       ]),
       heatmapMarkers: Ember.A([
@@ -38,7 +33,8 @@ export default Ember.Route.extend({
           id: 'lka234klafj23', 
           paths: pathToAlabama,
           zIndex: 10,
-          strokeColor: 'orange'
+          strokeColor: '#F6D622',
+          fillColor: '#F6D622'
         }
       ]),
       circles: Ember.A([
@@ -48,7 +44,8 @@ export default Ember.Route.extend({
           lng: -86.8359375,
           radius: 500000,
           fillOpacity: '0.1',
-          fillColor: 'red',
+          fillColor: '#D43029',
+          strokeColor: '#D43029',
           zIndex: 9,
           click: bind(this, function(e, circle) { 
             console.log('I miss \'ole\' \'bamy once again and I think it\'s a sin'); 
@@ -61,7 +58,7 @@ export default Ember.Route.extend({
       polylines: Ember.A([
         {
           id: 'jlkasdjfww-dfkad-oadfkj-sadf322',
-          strokeColor: 'blue',
+          strokeColor: '#03a9f4',
           strokeOpacity: 1,
           strokeWeight: 6,
           path: [
@@ -80,10 +77,10 @@ export default Ember.Route.extend({
       rectangles: Ember.A([
         {
           bounds: [[40.300476079749465, -102.3046875],[26.258936094468414, -73.828125]],
-          strokeColor: 'green',
+          strokeColor: '#1A954A',
           strokeOpacity: 1,
           strokeWeight: 3,
-          fillColor: 'green',
+          fillColor: '#1A954A',
           fillOpacity: 0.2,
           draggable: true,
           mouseup: function(e, rect) {
