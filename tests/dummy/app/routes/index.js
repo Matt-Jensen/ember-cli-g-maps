@@ -18,8 +18,7 @@ export default Ember.Route.extend({
           id: 'jdlkfajs22',
           lat: 33.516674497188255,
           lng: -86.80091857910156,
-          infoWindow: { content: '<p>Birmingham</p>',
-          visible: true },
+          infoWindow: { content: '<p>Birmingham</p>', visible: true },
           click: function() {console.log('Boo Boo Boo'); }
         }
       ]),
