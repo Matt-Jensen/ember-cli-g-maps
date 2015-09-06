@@ -20,6 +20,8 @@ module.exports = function(environment) {
     }
   };
 
+  ENV.locationType = 'hash';
+
   ENV.contentSecurityPolicy = {
     'default-src': "'none'",
     'script-src': "'self' 'unsafe-eval' *.googleapis.com maps.gstatic.com gist.github.com cdnjs.cloudflare.com",
