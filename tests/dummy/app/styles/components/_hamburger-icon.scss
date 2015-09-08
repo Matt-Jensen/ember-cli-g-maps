@@ -1,0 +1,24 @@
+.gmaps-hamburger-icon {
+  width: rem-calc(32);
+  height: rem-calc(32);
+  display: inline-block;
+  vertical-align: top;
+  position: relative;
+  top: rem-calc(4);
+  padding-left: 1.25em;
+  color: #757575;
+  cursor: pointer;
+
+  &:before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.25em;
+    width: 1em;
+    height: 0.15em;
+    background: #757575;
+    box-shadow: 
+      0 0.25em 0 0 #757575,
+      0 0.5em 0 0 #757575;
+  }
+}

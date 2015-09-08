@@ -8,6 +8,9 @@ var Router = Ember.Router.extend({
 Router.map(function() {
   this.route('setup', function() {
     this.route('index');
+    this.route('apiKey');
+    this.route('libraries');
+    this.route('misc');
   });
   this.route('basicUsage', { path: '/basic-usage' }, function() {
     this.route('index');

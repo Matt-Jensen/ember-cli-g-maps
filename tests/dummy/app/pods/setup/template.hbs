@@ -1,22 +1,44 @@
-<main class="grid-block l-main">
-  <aside class="grid-block medium-3 vertical show-for-medium">
-    <nav class="th-google-sidebar">
-      <ul class="th-google-sidebar__links">
-        <li>{{#link-to 'setup.index'}}Installation{{/link-to}}</li>
-        <li>
-          <strong>Configuration</strong>
-          <a>API Key</a>
-          <a>Adding Libraries</a>
-          <a>Misc Options</a>
-        </li>
-      </ul>
-    </nav>
-  </aside>
+{{#gmaps-chapter as |chapter|}}
+  <main class="grid-block l-main">
+    <aside class="grid-block medium-3 vertical show-for-medium">
+      <nav class="th-google-sidebar">
+        <ul class="th-google-sidebar__links">
+          <li>{{#link-to 'setup.index'}}Installation{{/link-to}}</li>
+          <li>
+            <strong>Configuration</strong>
+            {{#link-to 'setup.apiKey'}}API Key{{/link-to}}
+            {{#link-to 'setup.libraries'}}Adding Libraries{{/link-to}}
+            {{#link-to 'setup.misc'}}Misc Options{{/link-to}}
+          </li>
+        </ul>
+      </nav>
+    </aside>
 
-  <div class="grid-block medium-9 vertical">
-    <h1 class="th-google-chapter-header">Install &amp; Config</h1>
-    <section class="grid-content -np">
-      {{outlet}}
-    </section>
-  </div>
-</main>
+    <div class="grid-block small-12 medium-9 vertical -of-visible">
+      <h1 class="th-google-chapter-header">
+        <span class="gmaps-hamburger-icon show-for-small--inline" {{action 'toggleMobileNav' target=chapter}}></span>
+        Install &amp; Config
+      </h1>
+      <section class="grid-content -of-visible -np">
+        {{outlet}}
+      </section>
+    </div>
+
+    {{#gmaps-mobile-nav isActive=chapter.isMobileNavOpen as |mobile|}}
+      <aside class="panel panel-left panel--mobile-nav {{if mobile.isActive 'is-active'}}">
+        <nav>
+          <a class="close-button" {{action "closeMobileNav" target=mobile}}>×</a>
+          <ul class="th-google-sidebar__links">
+            <li>{{#link-to 'setup.index'}}Installation{{/link-to}}</li>
+            <li>
+              <strong>Configuration</strong>
+              {{#link-to 'setup.apiKey'}}API Key{{/link-to}}
+              {{#link-to 'setup.libraries'}}Adding Libraries{{/link-to}}
+              {{#link-to 'setup.misc'}}Misc Options{{/link-to}}
+            </li>
+          </ul>
+        </nav>
+      </aside>
+    {{/gmaps-mobile-nav}}
+  </main>
+{{/gmaps-chapter}}

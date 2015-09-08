@@ -1,11 +1,11 @@
 import Ember from 'ember';
 
 export default Ember.Component.extend({
-  isMobileNavActive: false,
+  isMobileNavOpen: false,
 
   actions: {
     toggleMobileNav: function() {
-      this.set('isMobileNavActive', !this.get('isMobileNavActive'));
+      this.set('isMobileNavOpen', !this.get('isMobileNavOpen'));
     }
   }
 });
