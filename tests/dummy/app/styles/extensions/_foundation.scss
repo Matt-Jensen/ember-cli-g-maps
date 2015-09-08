@@ -8,3 +8,20 @@
   position: relative;
   z-index: 2;
 }
+
+.panel--mobile-nav {
+  width: 100%;
+  max-width: 300px;
+  margin-top: -1 * $global-padding;
+  margin-left: -1 * $global-padding;
+  padding-top: $global-padding;
+  padding-left: $global-padding;
+}
+
+.show-for-small--inline {
+  display: inline-block !important;
+
+  @include breakpoint(medium) {
+    display: none !important;
+  }
+}
