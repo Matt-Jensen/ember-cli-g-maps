@@ -6,6 +6,8 @@
   color: $google-gray;
   letter-spacing: -.01em;
 
+  border-bottom: 1px solid #E4E4E4;
+
   @include breakpoint(large) {
     margin-bottom: rem-calc(20);
   }
