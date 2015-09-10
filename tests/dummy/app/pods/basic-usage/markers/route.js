@@ -1,3 +1,4 @@
+/* globals google: true */
 import Ember from 'ember';
 
 export default Ember.Route.extend({
@@ -17,14 +18,9 @@ export default Ember.Route.extend({
           mousedown: function() {
             controller.set('isMarkerDragging', true);
           },
-          mouseup: function(e) {
-            const lat = e.latLng.lat();
-            const lng = e.latLng.lng();
-
-            const marker = controller.markers.firstObject;
-
-            controller.set('markers.[].0.lat', lat);
-            controller.set('markers.[].0.lng', lng);
+          mouseup: function(e, marker) {
+            const lat = marker.position.lat();
+            const lng = marker.position.lng();
 
             // Recenter map
             controller.setProperties({
@@ -32,6 +28,10 @@ export default Ember.Route.extend({
               lng: lng,
               isMarkerDragging: false
             });
+          },
+          drag: function(e) {
+            controller.set('markers.[].0.lat', e.latLng.lat());
+            controller.set('markers.[].0.lng', e.latLng.lng());
           }
         }
       ]),
