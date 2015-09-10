@@ -18,7 +18,7 @@ export default Ember.Route.extend({
           strokeColor: '#D43029',
           draggable: true,
           editable: true,
-          mousedown: function(e) {
+          mousedown: function() {
             controller.set('isCircleDragging', true);
           },
           center_changed: function() {
@@ -36,9 +36,9 @@ export default Ember.Route.extend({
             controller.setProperties({
               lat, lng,
               isCircleDragging: false,
-              "circles.[].0.lat": lat,
-              "circles.[].0.lng": lng,
-              "circles.[].0.radius": Math.round(circle.radius)
+              'circles.[].0.lat': lat,
+              'circles.[].0.lng': lng,
+              'circles.[].0.radius': Math.round(circle.radius)
             });
           }
         }
