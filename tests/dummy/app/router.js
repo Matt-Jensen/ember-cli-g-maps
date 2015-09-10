@@ -14,6 +14,12 @@ Router.map(function() {
   });
   this.route('basicUsage', { path: '/basic-usage' }, function() {
     this.route('index');
+    this.route('markers');
+    this.route('circles');
+    this.route('polygons');
+    this.route('polylines');
+    this.route('rectangles');
+    this.route('overlays');
   });
   this.route('service', function() {
     this.route('index');

@@ -13,3 +13,11 @@
 .-npr {
   padding-right: 0 !important;
 }
+
+.-spb {
+  padding-bottom: ($global-padding / 2) !important;
+}
+
+.-pb {
+  padding-bottom: $global-padding !important;
+}
