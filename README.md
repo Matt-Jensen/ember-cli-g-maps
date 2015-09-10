@@ -205,7 +205,9 @@ export default Ember.Route.extend({
           mouseout: function(event, circle) {},
           mouseup: function(event, circle) {},
           mousedown: function(event, circle) {},
-          mousemove: function(event, circle) {}
+          mousemove: function(event, circle) {},
+          radius_changed: function() {}, // this = `circle`
+          center_changed: function() {}, // this = `circle`
         }
       ])
     });

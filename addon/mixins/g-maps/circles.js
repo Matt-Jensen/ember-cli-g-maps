@@ -20,6 +20,6 @@ export default Ember.Mixin.create(
       if(circles && !isArray(circles)) {
         throw new Error('g-maps component expects circles to be an Ember Array');
       }
-    },
+    }
   })
 );
