@@ -14,6 +14,8 @@ Built with the [GMaps-For-Apps.js library](https://github.com/Matt-Jensen/gmaps-
 Installation
 ------------
 
+[Read Installation & Configuration documentation.](http://matt-jensen.github.io/ember-cli-g-maps/#/basic-usage/index)
+
 Supports: 
 - Ember ~1.13
 - Google Maps v3
@@ -62,6 +64,7 @@ Usage
 ------
 
 **Simplest Possible G-Map**
+[Read Basic Map documentation.](http://matt-jensen.github.io/ember-cli-g-maps/#/basic-usage/index)
 
 In your route:
 ```js
@@ -81,7 +84,9 @@ In your template:
 {{g-maps name="my-map" lat=lat lng=lng zoom=zoom}}
 ```
 
-**Add Markers**
+**Adding Markers**
+[Read Marker documentation.](http://matt-jensen.github.io/ember-cli-g-maps/#/basic-usage/markers)
+
 ```js
 export default Ember.Route.extend({
   setupController: function(controller) {
@@ -102,7 +107,10 @@ export default Ember.Route.extend({
           mouseover: function(event, marker) {},
           mouseout: function(event, marker) {},
           mouseup: function(event, marker) {},
-          mousedown: function(event, marker) {}
+          mousedown: function(event, marker) {},
+          drag: function(e, marker) {},
+          dragstart: function(e, marker) {},
+          dragend: function(e, marker) {}
         }
      ]);
     });
@@ -114,7 +122,9 @@ export default Ember.Route.extend({
 {{g-maps ... markers=markers}}
 ```
 
-**Add Polygons**
+**Adding Polygons**
+[Read Polygon documentation.](http://matt-jensen.github.io/ember-cli-g-maps/#/basic-usage/polygons)
+
 ```js
 export default Ember.Route.extend({
   setupController: function(controller) {
@@ -136,7 +146,13 @@ export default Ember.Route.extend({
           mouseout: function(event, polygon) {},
           mouseup: function(event, polygon) {},
           mousedown: function(event, polygon) {},
-          mousemove: function(event, polygon) {}
+          mousemove: function(event, polygon) {},
+          drag: function(event, polygon) {},
+          dragstart: function(event, polygon) {},
+          dragend: function(event, polygon) {},
+          set_at: function(polygon) {},
+          insert_at: function(polygon) {},
+          remove_at: function(polygon) {}
         }
       ])
     });
@@ -148,7 +164,7 @@ export default Ember.Route.extend({
 {{g-maps ... polygons=polygons}}
 ```
 
-**Add Polylines**
+**Adding Polylines**
 ```js
 export default Ember.Route.extend({
   setupController: function(controller) {
@@ -186,7 +202,9 @@ export default Ember.Route.extend({
 {{g-maps ... polylines=polylines}}
 ```
 
-**Add Circles**
+**Adding Circles**
+[Read Polygon documentation.](http://matt-jensen.github.io/ember-cli-g-maps/#/basic-usage/polygons)
+
 ```js
 export default Ember.Route.extend({
   setupController: function(controller) {
@@ -206,8 +224,11 @@ export default Ember.Route.extend({
           mouseup: function(event, circle) {},
           mousedown: function(event, circle) {},
           mousemove: function(event, circle) {},
-          radius_changed: function() {}, // this = `circle`
-          center_changed: function() {}, // this = `circle`
+          drag: function(e, circle) {},
+          dragstart: function(e, circle) {},
+          dragend: function(e, circle) {},
+          radius_changed: function(circle) {},
+          center_changed: function(circle) {}
         }
       ])
     });
@@ -219,7 +240,7 @@ export default Ember.Route.extend({
 {{g-maps ... circles=circles}}
 ```
 
-**Add Rectangles**
+**Adding Rectangles**
 ```js
 export default Ember.Route.extend({
   setupController: function(controller) {
@@ -256,7 +277,7 @@ export default Ember.Route.extend({
 {{g-maps ... rectangles=rectangles}}
 ```
 
-**Add Overlay**
+**Adding Overlays**
 ```js
 export default Ember.Route.extend({
   setupController: function(controller) {
@@ -288,7 +309,7 @@ export default Ember.Route.extend({
 {{g-maps ... rectangles=rectangles}}
 ```
 
-**Add G-Map Component Events**
+**Adding G-Map Component Events**
 ```js
 export default Ember.Route.extend({
   actions: {
@@ -320,7 +341,7 @@ export default Ember.Route.extend({
 {{g-maps ... click="onMapClick"}}
 ```
 
-**Set Map Type**
+**Setting Map Type**
 ```js
 export default Ember.Route.extend({
   setupController: function(controller) {
@@ -337,7 +358,7 @@ export default Ember.Route.extend({
 {{g-maps ... mapType=mapType}}
 ```
 
-**Set Draggable**
+**Setting Draggable**
 ```js
 export default Ember.Route.extend({
   setupController: function(controller) {

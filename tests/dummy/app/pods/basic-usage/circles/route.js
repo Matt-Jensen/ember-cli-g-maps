@@ -18,24 +18,24 @@ export default Ember.Route.extend({
           strokeColor: '#D43029',
           draggable: true,
           editable: true,
-          mousedown: function() {
+          dragstart: function() {
             controller.set('isCircleDragging', true);
           },
-          center_changed: function() {
-            if(!this) { return; }
-            controller.set('circles.[].0.lat', this.getCenter().lat());
-            controller.set('circles.[].0.lng', this.getCenter().lng());
+          dragend: function() {
+            controller.set('isCircleDragging', false);
           },
-          radius_changed: function() {
-            if(!this) { return; }
-            controller.set('circles.[].0.radius', Math.round(this.radius));
+          center_changed: function(circle) {
+            controller.set('circles.[].0.lat', circle.center.lat());
+            controller.set('circles.[].0.lng', circle.center.lng());
+          },
+          radius_changed: function(circle) {
+            controller.set('circles.[].0.radius', Math.round(circle.radius));
           },
           mouseup: function(e, circle) {
             const lat = circle.center.lat();
             const lng = circle.center.lng();
             controller.setProperties({
               lat, lng,
-              isCircleDragging: false,
               'circles.[].0.lat': lat,
               'circles.[].0.lng': lng,
               'circles.[].0.radius': Math.round(circle.radius)
