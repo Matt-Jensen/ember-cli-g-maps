@@ -15,8 +15,11 @@ export default Ember.Route.extend({
           animation: google.maps.Animation.DROP,
           infoWindow: { content: '<p>They\'re Remarkable!</p>', visible: true },
           draggable: true,
-          mousedown: function() {
+          dragstart: function() {
             controller.set('isMarkerDragging', true);
+          },
+          dragend: function() {
+            controller.set('isMarkerDragging', false);
           },
           mouseup: function(e, marker) {
             const lat = marker.position.lat();
@@ -25,8 +28,7 @@ export default Ember.Route.extend({
             // Recenter map
             controller.setProperties({
               lat: lat,
-              lng: lng,
-              isMarkerDragging: false
+              lng: lng
             });
           },
           drag: function(e) {
