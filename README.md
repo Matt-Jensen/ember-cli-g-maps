@@ -54,7 +54,7 @@ Currently Supports
 - [Polygons](http://hpneo.github.io/gmaps/documentation.html#GMaps-drawPolygon)
 - [Markers](http://hpneo.github.io/gmaps/documentation.html#GMaps-createMarker)
 - [Circles](http://hpneo.github.io/gmaps/documentation.html#GMaps-drawCircle)
-- [Polylines](https://developers.google.com/maps/documentation/javascript/3.exp/reference#CircleOptions#FusionTablesPolylineOptions)
+- [Polylines](https://developers.google.com/maps/documentation/javascript/3.exp/reference#Polyline)
 - [Rectangles](http://hpneo.github.io/gmaps/documentation.html#GMaps-drawRectangle)
 - [Overlays](https://developers.google.com/maps/documentation/javascript/3.exp/reference#CircleOptions#MapPanes)
 - Selections
@@ -150,9 +150,9 @@ export default Ember.Route.extend({
           drag: function(event, polygon) {},
           dragstart: function(event, polygon) {},
           dragend: function(event, polygon) {},
-          set_at: function(polygon) {},
-          insert_at: function(polygon) {},
-          remove_at: function(polygon) {}
+          set_at: function(polygonPath) {},
+          insert_at: function(polygonPath) {},
+          remove_at: function(polygonPath) {}
         }
       ])
     });
@@ -190,7 +190,10 @@ export default Ember.Route.extend({
           mouseout: function(event, polyline) {},
           mouseup: function(event, polyline) {},
           mousedown: function(event, polyline) {},
-          mousemove: function(event, polyline) {}
+          mousemove: function(event, polyline) {},
+          set_at: function(polylinePath) {},
+          insert_at: function(polylinePath) {},
+          remove_at: function(polylinePath) {}
         }
       ])
     });

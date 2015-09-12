@@ -22,10 +22,10 @@ export default Ember.Route.extend({
           strokeColor: '#03a9f4',
           fillColor: '#03a9f4',
           draggable: true,
-          dragstart: function(e, polygon) {
+          dragstart: function() {
             controller.set('isPolygonDragging', true);
           },
-          dragend: function(e, polygon) {
+          dragend: function() {
             controller.set('isPolygonDragging', false);
           },
           set_at: function(polygonPath) {
