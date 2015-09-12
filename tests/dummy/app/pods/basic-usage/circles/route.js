@@ -25,10 +25,12 @@ export default Ember.Route.extend({
             controller.set('isCircleDragging', false);
           },
           center_changed: function(circle) {
+            if(!circle) { return false; }
             controller.set('circles.[].0.lat', circle.center.lat());
             controller.set('circles.[].0.lng', circle.center.lng());
           },
           radius_changed: function(circle) {
+            if(!circle) { return false; }
             controller.set('circles.[].0.radius', Math.round(circle.radius));
           },
           mouseup: function(e, circle) {

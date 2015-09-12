@@ -1,33 +1,29 @@
-<h2>Polygons</h2>
+<h2>Markers</h2>
 
 <p class="medium-7 large-5">
-  <a href="https://developers.google.com/maps/documentation/javascript/3.exp/reference#Polygon" target="_blank">Goolge Map Polygons</a> allow you to draw geometric shapes on your map. Polygons support interactions, editing, skinning, and dragging.
+  <a href="https://developers.google.com/maps/documentation/javascript/3.exp/reference#Polyline" target="_blank">Goolge Map Polylines</a> allow you to draw skinnable and editable lines on your maps. Very useful for marking boundaries, distance, and routes between two coordinates.
 </p>
 
+
 <div class="grid-block -spb">
-  <div class="grid-content small-12 medium-3 -smb">
+  <div class="grid-content small-12 medium-9 -smb">
     <small class="-db">Path</small>
-    <small>{{polygonPathStr}}</small>
+    <small>{{polylinePathStr}}</small>
   </div>
 
   <div class="grid-content small-12 medium-3 -smb">
     <small class="-db">Points</small>
-    {{polygon.paths.length}}
-  </div>
-
-  <div class="grid-content small-12 medium-3 -smb">
-    <small class="-db">Is Dragging</small>
-    {{isPolygonDragging}}
+    {{polyline.path.length}}
   </div>
 </div>
 
 <div class="grid-content -np -lmb">
-  {{g-maps class="gmaps-docs-map" lat=lat lng=lng zoom=zoom polygons=polygons}}
+  {{g-maps class="gmaps-docs-map" lat=lat lng=lng zoom=zoom polylines=polylines draggable=false}}
 </div>
 
 <article class="grid-block">
   <div class="grid-content gmaps-snippet">
-    <header>Supported Polygon Config</header>
+    <header>Supported Polyline Config</header>
     <code>
       <div class="gist">
         <div class="gist-file">
@@ -54,7 +50,7 @@
                     </tr>
                     <tr>
                       <td id="file-templa-js-L5" class="blob-num js-line-number" data-line-number="5"></td>
-                      <td id="file-templa-js-LC5" class="blob-code blob-code-inner js-file-line">      polygons<span class="pl-k">:</span> Ember.A([</td>
+                      <td id="file-templa-js-LC5" class="blob-code blob-code-inner js-file-line">      polylines<span class="pl-k">:</span> Ember.A([</td>
                     </tr>
                     <tr>
                       <td id="file-templa-js-L6" class="blob-num js-line-number" data-line-number="6"></td>
@@ -66,107 +62,107 @@
                     </tr>
                     <tr>
                       <td id="file-templa-js-L8" class="blob-num js-line-number" data-line-number="8"></td>
-                      <td id="file-templa-js-LC8" class="blob-code blob-code-inner js-file-line">          paths<span class="pl-k">:</span> [ <span class="pl-c">// Required</span></td>
+                      <td id="file-templa-js-LC8" class="blob-code blob-code-inner js-file-line">          path<span class="pl-k">:</span> [ <span class="pl-c">// Required</span></td>
                     </tr>
                     <tr>
                       <td id="file-templa-js-L9" class="blob-num js-line-number" data-line-number="9"></td>
-                      <td id="file-templa-js-LC9" class="blob-code blob-code-inner js-file-line">            [<span class="pl-c1">35.0041</span>, <span class="pl-k">-</span><span class="pl-c1">88.1955</span>] <span class="pl-c">// Lat, Lng</span></td>
+                      <td id="file-templa-js-LC9" class="blob-code blob-code-inner js-file-line">            [<span class="pl-c1">34.220</span>, <span class="pl-k">-</span><span class="pl-c1">100.7</span>], <span class="pl-c">// Lat, Lng</span></td>
                     </tr>
                     <tr>
                       <td id="file-templa-js-L10" class="blob-num js-line-number" data-line-number="10"></td>
-                      <td id="file-templa-js-LC10" class="blob-code blob-code-inner js-file-line">          ],</td>
+                      <td id="file-templa-js-LC10" class="blob-code blob-code-inner js-file-line">            [<span class="pl-c1">33.783</span>, <span class="pl-k">-</span><span class="pl-c1">92.81</span>]  <span class="pl-c">// Lat, Lng</span></td>
                     </tr>
                     <tr>
                       <td id="file-templa-js-L11" class="blob-num js-line-number" data-line-number="11"></td>
-                      <td id="file-templa-js-LC11" class="blob-code blob-code-inner js-file-line">          <span class="pl-en">click</span><span class="pl-k">:</span> <span class="pl-k">function</span>(<span class="pl-smi">event</span>, <span class="pl-smi">polygon</span>) {},</td>
+                      <td id="file-templa-js-LC11" class="blob-code blob-code-inner js-file-line">          ],</td>
                     </tr>
                     <tr>
                       <td id="file-templa-js-L12" class="blob-num js-line-number" data-line-number="12"></td>
-                      <td id="file-templa-js-LC12" class="blob-code blob-code-inner js-file-line">          <span class="pl-en">rightclick</span><span class="pl-k">:</span> <span class="pl-k">function</span>(<span class="pl-smi">event</span>, <span class="pl-smi">polygon</span>) {},</td>
+                      <td id="file-templa-js-LC12" class="blob-code blob-code-inner js-file-line">          <span class="pl-en">click</span><span class="pl-k">:</span> <span class="pl-k">function</span>(<span class="pl-smi">event</span>, <span class="pl-smi">polyline</span>) {},</td>
                     </tr>
                     <tr>
                       <td id="file-templa-js-L13" class="blob-num js-line-number" data-line-number="13"></td>
-                      <td id="file-templa-js-LC13" class="blob-code blob-code-inner js-file-line">          <span class="pl-en">dblclick</span><span class="pl-k">:</span> <span class="pl-k">function</span>(<span class="pl-smi">event</span>, <span class="pl-smi">polygon</span>) {},</td>
+                      <td id="file-templa-js-LC13" class="blob-code blob-code-inner js-file-line">          <span class="pl-en">rightclick</span><span class="pl-k">:</span> <span class="pl-k">function</span>(<span class="pl-smi">event</span>, <span class="pl-smi">polyline</span>) {},</td>
                     </tr>
                     <tr>
                       <td id="file-templa-js-L14" class="blob-num js-line-number" data-line-number="14"></td>
-                      <td id="file-templa-js-LC14" class="blob-code blob-code-inner js-file-line">          <span class="pl-en">mouseover</span><span class="pl-k">:</span> <span class="pl-k">function</span>(<span class="pl-smi">event</span>, <span class="pl-smi">polygon</span>) {},</td>
+                      <td id="file-templa-js-LC14" class="blob-code blob-code-inner js-file-line">          <span class="pl-en">dblclick</span><span class="pl-k">:</span> <span class="pl-k">function</span>(<span class="pl-smi">event</span>, <span class="pl-smi">polyline</span>) {},</td>
                     </tr>
                     <tr>
                       <td id="file-templa-js-L15" class="blob-num js-line-number" data-line-number="15"></td>
-                      <td id="file-templa-js-LC15" class="blob-code blob-code-inner js-file-line">          <span class="pl-en">mouseout</span><span class="pl-k">:</span> <span class="pl-k">function</span>(<span class="pl-smi">event</span>, <span class="pl-smi">polygon</span>) {},</td>
+                      <td id="file-templa-js-LC15" class="blob-code blob-code-inner js-file-line">          <span class="pl-en">mouseover</span><span class="pl-k">:</span> <span class="pl-k">function</span>(<span class="pl-smi">event</span>, <span class="pl-smi">polyline</span>) {},</td>
                     </tr>
                     <tr>
                       <td id="file-templa-js-L16" class="blob-num js-line-number" data-line-number="16"></td>
-                      <td id="file-templa-js-LC16" class="blob-code blob-code-inner js-file-line">          <span class="pl-en">mouseup</span><span class="pl-k">:</span> <span class="pl-k">function</span>(<span class="pl-smi">event</span>, <span class="pl-smi">polygon</span>) {},</td>
+                      <td id="file-templa-js-LC16" class="blob-code blob-code-inner js-file-line">          <span class="pl-en">mouseout</span><span class="pl-k">:</span> <span class="pl-k">function</span>(<span class="pl-smi">event</span>, <span class="pl-smi">polyline</span>) {},</td>
                     </tr>
                     <tr>
                       <td id="file-templa-js-L17" class="blob-num js-line-number" data-line-number="17"></td>
-                      <td id="file-templa-js-LC17" class="blob-code blob-code-inner js-file-line">          <span class="pl-en">mousedown</span><span class="pl-k">:</span> <span class="pl-k">function</span>(<span class="pl-smi">event</span>, <span class="pl-smi">polygon</span>) {},</td>
+                      <td id="file-templa-js-LC17" class="blob-code blob-code-inner js-file-line">          <span class="pl-en">mouseup</span><span class="pl-k">:</span> <span class="pl-k">function</span>(<span class="pl-smi">event</span>, <span class="pl-smi">polyline</span>) {},</td>
                     </tr>
                     <tr>
                       <td id="file-templa-js-L18" class="blob-num js-line-number" data-line-number="18"></td>
-                      <td id="file-templa-js-LC18" class="blob-code blob-code-inner js-file-line">          <span class="pl-en">mousemove</span><span class="pl-k">:</span> <span class="pl-k">function</span>(<span class="pl-smi">event</span>, <span class="pl-smi">polygon</span>) {},</td>
+                      <td id="file-templa-js-LC18" class="blob-code blob-code-inner js-file-line">          <span class="pl-en">mousedown</span><span class="pl-k">:</span> <span class="pl-k">function</span>(<span class="pl-smi">event</span>, <span class="pl-smi">polyline</span>) {},</td>
                     </tr>
                     <tr>
                       <td id="file-templa-js-L19" class="blob-num js-line-number" data-line-number="19"></td>
-                      <td id="file-templa-js-LC19" class="blob-code blob-code-inner js-file-line">          <span class="pl-en">drag</span><span class="pl-k">:</span> <span class="pl-k">function</span>(<span class="pl-smi">event</span>, <span class="pl-smi">polygon</span>) {},</td>
+                      <td id="file-templa-js-LC19" class="blob-code blob-code-inner js-file-line">          <span class="pl-en">mousemove</span><span class="pl-k">:</span> <span class="pl-k">function</span>(<span class="pl-smi">event</span>, <span class="pl-smi">polyline</span>) {},</td>
                     </tr>
                     <tr>
                       <td id="file-templa-js-L20" class="blob-num js-line-number" data-line-number="20"></td>
-                      <td id="file-templa-js-LC20" class="blob-code blob-code-inner js-file-line">          <span class="pl-en">dragstart</span><span class="pl-k">:</span> <span class="pl-k">function</span>(<span class="pl-smi">event</span>, <span class="pl-smi">polygon</span>) {},</td>
+                      <td id="file-templa-js-LC20" class="blob-code blob-code-inner js-file-line">          <span class="pl-en">set_at</span><span class="pl-k">:</span> <span class="pl-k">function</span>(<span class="pl-smi">polylinePath</span>) {},</td>
                     </tr>
                     <tr>
                       <td id="file-templa-js-L21" class="blob-num js-line-number" data-line-number="21"></td>
-                      <td id="file-templa-js-LC21" class="blob-code blob-code-inner js-file-line">          <span class="pl-en">dragend</span><span class="pl-k">:</span> <span class="pl-k">function</span>(<span class="pl-smi">event</span>, <span class="pl-smi">polygon</span>) {},</td>
+                      <td id="file-templa-js-LC21" class="blob-code blob-code-inner js-file-line">          <span class="pl-en">insert_at</span><span class="pl-k">:</span> <span class="pl-k">function</span>(<span class="pl-smi">polylinePath</span>) {},</td>
                     </tr>
                     <tr>
                       <td id="file-templa-js-L22" class="blob-num js-line-number" data-line-number="22"></td>
-                      <td id="file-templa-js-LC22" class="blob-code blob-code-inner js-file-line">          <span class="pl-en">set_at</span><span class="pl-k">:</span> <span class="pl-k">function</span>(<span class="pl-smi">polygonPath</span>) {},</td>
+                      <td id="file-templa-js-LC22" class="blob-code blob-code-inner js-file-line">          <span class="pl-en">remove_at</span><span class="pl-k">:</span> <span class="pl-k">function</span>(<span class="pl-smi">polylinePath</span>) {},</td>
                     </tr>
                     <tr>
                       <td id="file-templa-js-L23" class="blob-num js-line-number" data-line-number="23"></td>
-                      <td id="file-templa-js-LC23" class="blob-code blob-code-inner js-file-line">          <span class="pl-en">insert_at</span><span class="pl-k">:</span> <span class="pl-k">function</span>(<span class="pl-smi">polygonPath</span>) {},</td>
+                      <td id="file-templa-js-LC23" class="blob-code blob-code-inner js-file-line">          clickable<span class="pl-k">:</span> <span class="pl-c1">true</span>,</td>
                     </tr>
                     <tr>
                       <td id="file-templa-js-L24" class="blob-num js-line-number" data-line-number="24"></td>
-                      <td id="file-templa-js-LC24" class="blob-code blob-code-inner js-file-line">          <span class="pl-en">remove_at</span><span class="pl-k">:</span> <span class="pl-k">function</span>(<span class="pl-smi">polygonPath</span>) {},</td>
+                      <td id="file-templa-js-LC24" class="blob-code blob-code-inner js-file-line">          editable<span class="pl-k">:</span> <span class="pl-c1">true</span>,</td>
                     </tr>
                     <tr>
                       <td id="file-templa-js-L25" class="blob-num js-line-number" data-line-number="25"></td>
-                      <td id="file-templa-js-LC25" class="blob-code blob-code-inner js-file-line">          clickable<span class="pl-k">:</span> <span class="pl-c1">true</span>,</td>
+                      <td id="file-templa-js-LC25" class="blob-code blob-code-inner js-file-line">          geodesic<span class="pl-k">:</span> <span class="pl-c1">true</span>,</td>
                     </tr>
                     <tr>
                       <td id="file-templa-js-L26" class="blob-num js-line-number" data-line-number="26"></td>
-                      <td id="file-templa-js-LC26" class="blob-code blob-code-inner js-file-line">          draggable<span class="pl-k">:</span> <span class="pl-c1">true</span>,</td>
+                      <td id="file-templa-js-LC26" class="blob-code blob-code-inner js-file-line">          icons<span class="pl-k">:</span> [{</td>
                     </tr>
                     <tr>
                       <td id="file-templa-js-L27" class="blob-num js-line-number" data-line-number="27"></td>
-                      <td id="file-templa-js-LC27" class="blob-code blob-code-inner js-file-line">          editable<span class="pl-k">:</span> <span class="pl-c1">true</span>,</td>
+                      <td id="file-templa-js-LC27" class="blob-code blob-code-inner js-file-line">            icon<span class="pl-k">:</span> { </td>
                     </tr>
                     <tr>
                       <td id="file-templa-js-L28" class="blob-num js-line-number" data-line-number="28"></td>
-                      <td id="file-templa-js-LC28" class="blob-code blob-code-inner js-file-line">          fillColor<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>#03a9f4<span class="pl-pds">'</span></span>,</td>
+                      <td id="file-templa-js-LC28" class="blob-code blob-code-inner js-file-line">              path<span class="pl-k">:</span> google.maps.SymbolPath.FORWARD_CLOSED_ARROW <span class="pl-c">// BACKWARD_CLOSED_ARROW | BACKWARD_OPEN_ARROW | CIRLCE | FORWARD_OPEN_ARROW</span></td>
                     </tr>
                     <tr>
                       <td id="file-templa-js-L29" class="blob-num js-line-number" data-line-number="29"></td>
-                      <td id="file-templa-js-LC29" class="blob-code blob-code-inner js-file-line">          fillOpacity<span class="pl-k">:</span> <span class="pl-c1">0.3</span>,</td>
+                      <td id="file-templa-js-LC29" class="blob-code blob-code-inner js-file-line">            },</td>
                     </tr>
                     <tr>
                       <td id="file-templa-js-L30" class="blob-num js-line-number" data-line-number="30"></td>
-                      <td id="file-templa-js-LC30" class="blob-code blob-code-inner js-file-line">          strokeColor<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>#03a9f4<span class="pl-pds">'</span></span>,</td>
+                      <td id="file-templa-js-LC30" class="blob-code blob-code-inner js-file-line">            offset<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>100%<span class="pl-pds">'</span></span></td>
                     </tr>
                     <tr>
                       <td id="file-templa-js-L31" class="blob-num js-line-number" data-line-number="31"></td>
-                      <td id="file-templa-js-LC31" class="blob-code blob-code-inner js-file-line">          strokeOpacity<span class="pl-k">:</span> <span class="pl-c1">0.8</span>,</td>
+                      <td id="file-templa-js-LC31" class="blob-code blob-code-inner js-file-line">          }],</td>
                     </tr>
                     <tr>
                       <td id="file-templa-js-L32" class="blob-num js-line-number" data-line-number="32"></td>
-                      <td id="file-templa-js-LC32" class="blob-code blob-code-inner js-file-line">          geodesic<span class="pl-k">:</span> <span class="pl-c1">true</span>,</td>
+                      <td id="file-templa-js-LC32" class="blob-code blob-code-inner js-file-line">          strokeColor<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>blue<span class="pl-pds">'</span></span>,</td>
                     </tr>
                     <tr>
                       <td id="file-templa-js-L33" class="blob-num js-line-number" data-line-number="33"></td>
-                      <td id="file-templa-js-LC33" class="blob-code blob-code-inner js-file-line">          strokePosition<span class="pl-k">:</span> google.maps.StrokePosition.CENTER, <span class="pl-c">// INSIDE | OUTSIDE</span></td>
+                      <td id="file-templa-js-LC33" class="blob-code blob-code-inner js-file-line">          strokeOpacity<span class="pl-k">:</span> <span class="pl-c1">0.3</span>,</td>
                     </tr>
                     <tr>
                       <td id="file-templa-js-L34" class="blob-num js-line-number" data-line-number="34"></td>
@@ -215,5 +211,5 @@
 </article>
 
 <p class="medium-7 large-5 -npb">
-  For in depth documentation and further customization you can read more in <a href="https://developers.google.com/maps/documentation/javascript/3.exp/reference#Polygon" target="_blank">the Google Maps Polygon Docs.</a>
+  For in depth documentation and further customization you can read more in <a href="https://developers.google.com/maps/documentation/javascript/3.exp/reference#Polyline" target="_blank">the Google Maps Polyline Docs.</a>
 </p>

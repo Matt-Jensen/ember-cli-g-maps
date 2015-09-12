@@ -1,7 +1,7 @@
 @import 'settings';
 
 .th-google-button {
-  @extends %google-button;
+  @extend %google-button;
 
   font-size: rem-calc(14);
   font-weight: 500;

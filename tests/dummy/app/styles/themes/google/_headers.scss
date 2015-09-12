@@ -6,10 +6,11 @@
   color: $google-gray;
   letter-spacing: -.01em;
 
-  border-bottom: 1px solid #E4E4E4;
+  line-height: 1.4;
 
-  @include breakpoint(large) {
+  @include breakpoint(medium) {
     margin-bottom: rem-calc(20);
+    border-bottom: 1px solid #E4E4E4;
   }
 
   @include breakpoint(large) {

@@ -1,11 +1,10 @@
 .l-main {
-  height: calc(100vh - 163px);
-  margin: $global-padding;
+  height: auto;
+  margin: $global-padding rem-calc(30);
   overflow: visible;
 
   @include breakpoint(medium) {
-    margin-top: rem-calc(40);
-    margin-bottom: rem-calc(40);
+    margin: rem-calc(40) $global-padding;
   }
 
   @include breakpoint(large) {
