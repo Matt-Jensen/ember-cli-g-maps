@@ -64,6 +64,7 @@ Usage
 ------
 
 **Simplest Possible G-Map**
+
 [Read Basic Map documentation.](http://matt-jensen.github.io/ember-cli-g-maps/#/basic-usage/index)
 
 In your route:
@@ -85,6 +86,7 @@ In your template:
 ```
 
 **Adding Markers**
+
 [Read Marker documentation.](http://matt-jensen.github.io/ember-cli-g-maps/#/basic-usage/markers)
 
 ```js
@@ -123,6 +125,7 @@ export default Ember.Route.extend({
 ```
 
 **Adding Polygons**
+
 [Read Polygon documentation.](http://matt-jensen.github.io/ember-cli-g-maps/#/basic-usage/polygons)
 
 ```js
@@ -165,6 +168,7 @@ export default Ember.Route.extend({
 ```
 
 **Adding Polylines**
+
 [Read Polyline documentation.](http://matt-jensen.github.io/ember-cli-g-maps/#/basic-usage/polylines)
 
 ```js
@@ -208,7 +212,8 @@ export default Ember.Route.extend({
 ```
 
 **Adding Circles**
-[Read Polygon documentation.](http://matt-jensen.github.io/ember-cli-g-maps/#/basic-usage/polygons)
+
+[Read Circle documentation.](http://matt-jensen.github.io/ember-cli-g-maps/#/basic-usage/circles)
 
 ```js
 export default Ember.Route.extend({
@@ -246,6 +251,7 @@ export default Ember.Route.extend({
 ```
 
 **Adding Rectangles**
+
 [Read Rectangle documentation.](http://matt-jensen.github.io/ember-cli-g-maps/#/basic-usage/rectangles)
 
 ```js
@@ -289,6 +295,7 @@ export default Ember.Route.extend({
 ```
 
 **Adding Overlays**
+
 [Read Overlay documentation.](http://matt-jensen.github.io/ember-cli-g-maps/#/basic-usage/overlays)
 
 ```js
