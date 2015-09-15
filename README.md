@@ -56,7 +56,7 @@ Currently Supports
 - [Circles](http://hpneo.github.io/gmaps/documentation.html#GMaps-drawCircle)
 - [Polylines](https://developers.google.com/maps/documentation/javascript/3.exp/reference#Polyline)
 - [Rectangles](http://hpneo.github.io/gmaps/documentation.html#GMaps-drawRectangle)
-- [Overlays](https://developers.google.com/maps/documentation/javascript/3.exp/reference#CircleOptions#MapPanes)
+- [Overlays](https://developers.google.com/maps/documentation/javascript/3.exp/reference#OverlayView)
 - Selections
 - [Heatmap Layer](https://developers.google.com/maps/documentation/javascript/examples/layer-heatmap)
 
@@ -165,6 +165,8 @@ export default Ember.Route.extend({
 ```
 
 **Adding Polylines**
+[Read Polyline documentation.](http://matt-jensen.github.io/ember-cli-g-maps/#/basic-usage/polylines)
+
 ```js
 export default Ember.Route.extend({
   setupController: function(controller) {
@@ -244,6 +246,8 @@ export default Ember.Route.extend({
 ```
 
 **Adding Rectangles**
+[Read Rectangle documentation.](http://matt-jensen.github.io/ember-cli-g-maps/#/basic-usage/rectangles)
+
 ```js
 export default Ember.Route.extend({
   setupController: function(controller) {
@@ -253,8 +257,8 @@ export default Ember.Route.extend({
         {
           id: 'unique-rectangle-id',            // Recommended
           bounds: [
-            [40.300476079749465, -102.3046875], // lat, lng
-            [26.258936094468414, -73.828125]    // lat, lng
+            [40.300476079749465, -102.3046875], // NE lat, lng
+            [26.258936094468414, -73.828125]    // SW lat, lng
           ],
           strokeColor: 'green',
           strokeOpacity: 1,
@@ -268,7 +272,11 @@ export default Ember.Route.extend({
           mouseout: function(event, rectangle) {},
           mouseup: function(event, rectangle) {},
           mousedown: function(event, rectangle) {},
-          mousemove: function(event, rectangle) {}
+          mousemove: function(event, rectangle) {},
+          drag: function(e, rectangle) {},
+          dragstart: function(e, rectangle) {},
+          dragend: function(e, rectangle) {},
+          bounds_changed: function(rectangle) {}
         }
       ])
     });
@@ -281,6 +289,8 @@ export default Ember.Route.extend({
 ```
 
 **Adding Overlays**
+[Read Overlay documentation.](http://matt-jensen.github.io/ember-cli-g-maps/#/basic-usage/overlays)
+
 ```js
 export default Ember.Route.extend({
   setupController: function(controller) {

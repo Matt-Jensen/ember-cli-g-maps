@@ -1,0 +1,158 @@
+<h2>Overlays</h2>
+
+<p class="medium-7 large-5">
+  <a href="https://developers.google.com/maps/documentation/javascript/3.exp/reference#OverlayView" target="_blank">Goolge Map Overlays</a> allow you to inject HTML into your maps that can be styled by CSS. If you need more customized UI for your map, this is your best bet.
+</p>
+
+<div class="grid-content -np -lmb">
+  {{g-maps class="gmaps-docs-map" lat=lat lng=lng zoom=zoom overlays=overlays}}
+</div>
+
+<article class="grid-block">
+  <div class="grid-content gmaps-snippet">
+    <header>Supported Overlay Config</header>
+    <code>
+      <div class="gist">
+        <div class="gist-file">
+          <div class="gist-data">
+            <div class="js-gist-file-update-container js-task-list-container file-box">
+              <div id="file-templa-js" class="file">
+                <div class="blob-wrapper data type-javascript">
+                  <table class="highlight tab-size js-file-line-container" data-tab-size="8">
+                    <tbody><tr>
+                      <td id="file-templa-js-L1" class="blob-num js-line-number" data-line-number="1"></td>
+                      <td id="file-templa-js-LC1" class="blob-code blob-code-inner js-file-line"><span class="pl-k">export</span> <span class="pl-k">default</span> Ember.Route.extend({</td>
+                    </tr>
+                    <tr>
+                      <td id="file-templa-js-L2" class="blob-num js-line-number" data-line-number="2"></td>
+                      <td id="file-templa-js-LC2" class="blob-code blob-code-inner js-file-line">  <span class="pl-en">setupController</span><span class="pl-k">:</span> <span class="pl-k">function</span>(<span class="pl-smi">controller</span>) {</td>
+                    </tr>
+                    <tr>
+                      <td id="file-templa-js-L3" class="blob-num js-line-number" data-line-number="3"></td>
+                      <td id="file-templa-js-LC3" class="blob-code blob-code-inner js-file-line">    controller.setProperties({</td>
+                    </tr>
+                    <tr>
+                      <td id="file-templa-js-L4" class="blob-num js-line-number" data-line-number="4"></td>
+                      <td id="file-templa-js-LC4" class="blob-code blob-code-inner js-file-line">      <span class="pl-c">// Must be an Ember Array</span></td>
+                    </tr>
+                    <tr>
+                      <td id="file-templa-js-L5" class="blob-num js-line-number" data-line-number="5"></td>
+                      <td id="file-templa-js-LC5" class="blob-code blob-code-inner js-file-line">      overlays<span class="pl-k">:</span> Ember.A([</td>
+                    </tr>
+                    <tr>
+                      <td id="file-templa-js-L6" class="blob-num js-line-number" data-line-number="6"></td>
+                      <td id="file-templa-js-LC6" class="blob-code blob-code-inner js-file-line">        {</td>
+                    </tr>
+                    <tr>
+                      <td id="file-templa-js-L7" class="blob-num js-line-number" data-line-number="7"></td>
+                      <td id="file-templa-js-LC7" class="blob-code blob-code-inner js-file-line">          id<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>unique-id<span class="pl-pds">'</span></span>,         <span class="pl-c">// Recommended</span></td>
+                    </tr>
+                    <tr>
+                      <td id="file-templa-js-L8" class="blob-num js-line-number" data-line-number="8"></td>
+                      <td id="file-templa-js-LC8" class="blob-code blob-code-inner js-file-line">          lat<span class="pl-k">:</span> <span class="pl-c1">32.75494243654723</span>,  <span class="pl-c">// Required</span></td>
+                    </tr>
+                    <tr>
+                      <td id="file-templa-js-L9" class="blob-num js-line-number" data-line-number="9"></td>
+                      <td id="file-templa-js-LC9" class="blob-code blob-code-inner js-file-line">          lng<span class="pl-k">:</span> <span class="pl-k">-</span><span class="pl-c1">86.8359375</span>,        <span class="pl-c">// Required</span></td>
+                    </tr>
+                    <tr>
+                      <td id="file-templa-js-L10" class="blob-num js-line-number" data-line-number="10"></td>
+                      <td id="file-templa-js-LC10" class="blob-code blob-code-inner js-file-line">          content<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>&lt;strong class="my-class"&gt;Some HTML&lt;/strong&gt;<span class="pl-pds">'</span></span>,</td>
+                    </tr>
+                    <tr>
+                      <td id="file-templa-js-L11" class="blob-num js-line-number" data-line-number="11"></td>
+                      <td id="file-templa-js-LC11" class="blob-code blob-code-inner js-file-line">          layer<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>floatPane<span class="pl-pds">'</span></span>,       <span class="pl-c">// Id of any of the layers defined in google.maps.MapPanes</span></td>
+                    </tr>
+                    <tr>
+                      <td id="file-templa-js-L12" class="blob-num js-line-number" data-line-number="12"></td>
+                      <td id="file-templa-js-LC12" class="blob-code blob-code-inner js-file-line">          verticalAlign<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>top<span class="pl-pds">'</span></span>,      <span class="pl-c">// middle | bottom</span></td>
+                    </tr>
+                    <tr>
+                      <td id="file-templa-js-L13" class="blob-num js-line-number" data-line-number="13"></td>
+                      <td id="file-templa-js-LC13" class="blob-code blob-code-inner js-file-line">          horizontalAlign<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>center<span class="pl-pds">'</span></span>, <span class="pl-c">// left | right</span></td>
+                    </tr>
+                    <tr>
+                      <td id="file-templa-js-L14" class="blob-num js-line-number" data-line-number="14"></td>
+                      <td id="file-templa-js-LC14" class="blob-code blob-code-inner js-file-line">          horizontalOffset<span class="pl-k">:</span> <span class="pl-c1">50</span>,      <span class="pl-c">// in pixels</span></td>
+                    </tr>
+                    <tr>
+                      <td id="file-templa-js-L15" class="blob-num js-line-number" data-line-number="15"></td>
+                      <td id="file-templa-js-LC15" class="blob-code blob-code-inner js-file-line">          verticalOffset<span class="pl-k">:</span> <span class="pl-c1">50</span>,        <span class="pl-c">// in pixels</span></td>
+                    </tr>
+                    <tr>
+                      <td id="file-templa-js-L16" class="blob-num js-line-number" data-line-number="16"></td>
+                      <td id="file-templa-js-LC16" class="blob-code blob-code-inner js-file-line">          <span class="pl-en">click</span><span class="pl-k">:</span> <span class="pl-k">function</span>(<span class="pl-smi">event</span>, <span class="pl-smi">overlay</span>) {},</td>
+                    </tr>
+                    <tr>
+                      <td id="file-templa-js-L17" class="blob-num js-line-number" data-line-number="17"></td>
+                      <td id="file-templa-js-LC17" class="blob-code blob-code-inner js-file-line">          <span class="pl-en">dblclick</span><span class="pl-k">:</span> <span class="pl-k">function</span>(<span class="pl-smi">event</span>, <span class="pl-smi">overlay</span>) {},</td>
+                    </tr>
+                    <tr>
+                      <td id="file-templa-js-L18" class="blob-num js-line-number" data-line-number="18"></td>
+                      <td id="file-templa-js-LC18" class="blob-code blob-code-inner js-file-line">          <span class="pl-en">mouseup</span><span class="pl-k">:</span> <span class="pl-k">function</span>(<span class="pl-smi">event</span>, <span class="pl-smi">overlay</span>) {},</td>
+                    </tr>
+                    <tr>
+                      <td id="file-templa-js-L19" class="blob-num js-line-number" data-line-number="19"></td>
+                      <td id="file-templa-js-LC19" class="blob-code blob-code-inner js-file-line">          <span class="pl-en">mousedown</span><span class="pl-k">:</span> <span class="pl-k">function</span>(<span class="pl-smi">event</span>, <span class="pl-smi">overlay</span>) {},</td>
+                    </tr>
+                    <tr>
+                      <td id="file-templa-js-L20" class="blob-num js-line-number" data-line-number="20"></td>
+                      <td id="file-templa-js-LC20" class="blob-code blob-code-inner js-file-line">          <span class="pl-en">mouseover</span><span class="pl-k">:</span> <span class="pl-k">function</span>(<span class="pl-smi">event</span>, <span class="pl-smi">overlay</span>) {},</td>
+                    </tr>
+                    <tr>
+                      <td id="file-templa-js-L21" class="blob-num js-line-number" data-line-number="21"></td>
+                      <td id="file-templa-js-LC21" class="blob-code blob-code-inner js-file-line">          <span class="pl-en">mousemove</span><span class="pl-k">:</span> <span class="pl-k">function</span>(<span class="pl-smi">event</span>, <span class="pl-smi">overlay</span>) {},</td>
+                    </tr>
+                    <tr>
+                      <td id="file-templa-js-L22" class="blob-num js-line-number" data-line-number="22"></td>
+                      <td id="file-templa-js-LC22" class="blob-code blob-code-inner js-file-line">          <span class="pl-en">mouseout</span><span class="pl-k">:</span> <span class="pl-k">function</span>(<span class="pl-smi">event</span>, <span class="pl-smi">overlay</span>) {}</td>
+                    </tr>
+                    <tr>
+                      <td id="file-templa-js-L23" class="blob-num js-line-number" data-line-number="23"></td>
+                      <td id="file-templa-js-LC23" class="blob-code blob-code-inner js-file-line">        }</td>
+                    </tr>
+                    <tr>
+                      <td id="file-templa-js-L24" class="blob-num js-line-number" data-line-number="24"></td>
+                      <td id="file-templa-js-LC24" class="blob-code blob-code-inner js-file-line">      ])</td>
+                    </tr>
+                    <tr>
+                      <td id="file-templa-js-L25" class="blob-num js-line-number" data-line-number="25"></td>
+                      <td id="file-templa-js-LC25" class="blob-code blob-code-inner js-file-line">    });</td>
+                    </tr>
+                    <tr>
+                      <td id="file-templa-js-L26" class="blob-num js-line-number" data-line-number="26"></td>
+                      <td id="file-templa-js-LC26" class="blob-code blob-code-inner js-file-line">  }</td>
+                    </tr>
+                    <tr>
+                      <td id="file-templa-js-L27" class="blob-num js-line-number" data-line-number="27"></td>
+                      <td id="file-templa-js-LC27" class="blob-code blob-code-inner js-file-line">});</td>
+                    </tr>
+                  </tbody></table>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="gist-meta">
+            made with ❤ by <a href="https://github.com">GitHub</a>
+          </div>
+        </div>
+      </div>
+    </code>
+  </div>
+</article>
+
+<p class="medium-7 large-5 -lmb">
+  Additional documentation for the <span class="gmaps-inline-code">layer</span> configuration option can be found here:
+  <ul>
+    <li>
+      <a href="https://hpneo.github.io/gmaps/documentation.html#GMaps-drawOverlay">Gmaps.js Overlay Documentation</a>
+    </li>
+    <li>
+      <a href="https://developers.google.com/maps/documentation/javascript/reference#MapPanes">Google Maps MapPanes</a>
+    </li>
+  </ul>
+</p>
+
+<p class="medium-7 large-5 -npb">
+  For in depth documentation and further customization you can read more in <a href="https://developers.google.com/maps/documentation/javascript/3.exp/reference#OverlayView" target="_blank">the Google Maps OverlayView Docs.</a>
+</p>
