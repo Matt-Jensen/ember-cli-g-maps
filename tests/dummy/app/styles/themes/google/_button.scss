@@ -19,4 +19,17 @@
   border-radius: $google-radius;
 
   cursor: pointer;
+
+  &.active {
+    background-color: $primary-color;
+    color: $google-white;
+  }
+}
+
+.th-google-button--small {
+  @extend .th-google-button;
+
+  font-size: rem-calc(10);
+  line-height: 1.1;
+  height: rem-calc(26);
 }

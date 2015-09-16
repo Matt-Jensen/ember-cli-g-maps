@@ -13,6 +13,19 @@ export default Ember.Route.extend({
         ]
       },
       {
+        label: 'Component',
+        links: [
+          {
+            href: 'basicUsage.mapProperties',
+            text: 'Properties'
+          },
+          {
+            href: 'basicUsage.mapEvents',
+            text: 'Events'
+          }
+        ]
+      },
+      {
         label: 'Elements',
         links: [
           {

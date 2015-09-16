@@ -128,7 +128,7 @@ export default Ember.Mixin.create({
   _syncMapType: observer('isMapLoaded', 'mapType', function() {
     if(!this.get('isMapLoaded')) { return false; }
     const map     = this.get('map').map;
-    const mapType = this.get('mapType')+'';
+    const mapType = `${this.get('mapType')}`;
 
     if(mapType === 'undefined') { return false; }
 
