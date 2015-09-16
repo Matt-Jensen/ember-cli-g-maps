@@ -48,6 +48,23 @@ You wont see your map unless it has height. In `app/styles/app.css`:
 }
 ```
 
+Documentation
+----------------
+
+- [Installation and Configuration](http://matt-jensen.github.io/ember-cli-g-maps/#/basic-usage/index)
+- [Setting Google API Key](http://matt-jensen.github.io/ember-cli-g-maps/#/setup/apiKey)
+- [Adding Libraries](http://matt-jensen.github.io/ember-cli-g-maps/#/setup/libraries)
+- [Read Basic Map documentation.](http://matt-jensen.github.io/ember-cli-g-maps/#/setup/apiKey)
+- [Misc Setup Options](http://matt-jensen.github.io/ember-cli-g-maps/#/setup/misc)
+- [Supported Component Properties](http://matt-jensen.github.io/ember-cli-g-maps/#/basic-usage/map-properties)
+- [Supported Component Events](http://matt-jensen.github.io/ember-cli-g-maps/#/basic-usage/map-events)
+- [Marker Elements](http://matt-jensen.github.io/ember-cli-g-maps/#/basic-usage/markers)
+- [Polygon Elements](http://matt-jensen.github.io/ember-cli-g-maps/#/basic-usage/polygons)
+- [Polyline Elements](http://matt-jensen.github.io/ember-cli-g-maps/#/basic-usage/polylines)
+- [Circle Elements](http://matt-jensen.github.io/ember-cli-g-maps/#/basic-usage/circles)
+- [Rectangle Elements](http://matt-jensen.github.io/ember-cli-g-maps/#/basic-usage/rectangles)
+- [Overlay Elements](http://matt-jensen.github.io/ember-cli-g-maps/#/basic-usage/overlays)
+
 Currently Supports
 -------------------
 

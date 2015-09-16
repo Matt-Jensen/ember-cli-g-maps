@@ -14,7 +14,8 @@ Router.map(function() {
   });
   this.route('basicUsage', { path: '/basic-usage' }, function() {
     this.route('index');
-    // TODO Advanced google map events + properties
+    this.route('mapProperties', { path: '/map-properties' });
+    this.route('mapEvents', { path: '/map-events' });
     this.route('markers');
     this.route('circles');
     this.route('polygons');

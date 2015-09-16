@@ -1,0 +1,211 @@
+<h2>Properties</h2>
+
+<ul>
+  <li><a {{action "scrollToId" 'mapType'}}>mapType</a></li>
+  <li><a {{action "scrollToId" 'draggable'}}>draggable</a></li>
+  {{!-- <li><a {{action "scrollToId" 'mapTypeControl'}}>mapTypeControl</a></li> --}}
+</ul>
+
+
+<div class="grid-block -pb">
+  <div class="grid-content small-12 medium-3 -smb">
+    <small class="-db">Map Type</small>
+    {{type}}
+  </div>
+
+  <div class="grid-content small-12 medium-3 -smb">
+    <small class="-db">Is Draggable</small>
+    <input type="checkbox" value=drag {{action "toggleDrag" on="change"}}>
+  </div>
+</div>
+
+<div class="grid-block">
+  <div class="grid-content small-12 -pb">
+    {{#each types as |mapType|}}
+      <button class="th-google-button--small -ilb -smr
+        {{if (eq mapType type) 'active'}}"
+        {{action "setMapType" mapType}}>
+        {{mapType}}
+      </button>
+    {{/each}}
+  </div>
+</div>
+
+<div class="grid-content -np -mb">
+  {{g-maps class="gmaps-docs-map" lat=lat lng=lng zoom=zoom mapType=type draggable=drag}}
+</div>
+
+<hr>
+
+<p id="mapType" class="medium-7">
+  <h3>mapType</h3>
+
+  <div class="-mb">
+    <small class="-db">Type</small>
+    String
+  </div>
+
+  <div class="-mb">
+    <small class="-db">Options</small>
+    <span class="gmaps-inline-code -nml">roadmap</span>
+    <span class="gmaps-inline-code">satellite</span>
+    <span class="gmaps-inline-code">hybrid</span>
+    <span class="gmaps-inline-code">terrain</span>
+  </div>
+
+  <div class="-mb">
+    <small class="-db">Default</small>
+    <span class="gmaps-inline-code -nml">roadmap</span>
+  </div>
+
+  <div class="-mb">
+    <small class="-db">Resources</small>
+    <a href="https://developers.google.com/maps/documentation/javascript/maptypes" target="_blank">Google Map Type Docs</a>
+  </div>
+
+  <div class="gmaps-snippet">
+    <header>Example</header>
+    <code>
+      <div class="gist">
+        <div class="gist-file">
+          <div class="gist-data">
+            <div class="js-gist-file-update-container js-task-list-container file-box">
+              <div id="file-templa-hbs" class="file">
+                <div class="blob-wrapper data type-handlebars">
+                  <table class="highlight tab-size js-file-line-container" data-tab-size="8">
+                    <tbody><tr>
+                      <td id="file-templa-hbs-L1" class="blob-num js-line-number" data-line-number="1"></td>
+                      <td id="file-templa-hbs-LC1" class="blob-code blob-code-inner js-file-line"><span class="pl-c1">\{{</span><span class="pl-v">g-maps</span> mapType=myMapType<span class="pl-c1">}}</span></td>
+                    </tr>
+                  </tbody></table>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="gist-meta">
+            made with ❤ by <a href="https://github.com">GitHub</a>
+          </div>
+        </div>
+      </div>
+    </code>
+  </div>
+</p>
+
+<hr>
+
+<p id="draggable" class="medium-7">
+  <h3>draggable</h3>
+
+  <div class="-mb">
+    <small class="-db">Type</small>
+    Boolean
+  </div>
+  <div class="-mb">
+    <small class="-db">Default</small>
+    <div class="gmaps-inline-code -nml">false</div>
+  </div>
+  <div class="-mb">
+    <small class="-db">Resources</small>
+    <a href="https://developers.google.com/maps/documentation/javascript/3.20/reference#MapOptions" target="_blank">Google Map Options</a>
+  </div>
+  <div class="gmaps-snippet">
+    <header>Example</header>
+    <code>
+      <div class="gist">
+        <div class="gist-file">
+          <div class="gist-data">
+            <div class="js-gist-file-update-container js-task-list-container file-box">
+              <div id="file-templa-hbs" class="file">
+                <div class="blob-wrapper data type-handlebars">
+                  <table class="highlight tab-size js-file-line-container" data-tab-size="8">
+                    <tbody><tr>
+                      <td id="file-templa-hbs-L1" class="blob-num js-line-number" data-line-number="1"></td>
+                      <td id="file-templa-hbs-LC1" class="blob-code blob-code-inner js-file-line"><span class="pl-c1">\{{</span><span class="pl-v">g-maps</span> draggable=setMapDrag<span class="pl-c1">}}</span></td>
+                    </tr>
+                  </tbody></table>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="gist-meta">
+            made with ❤ by <a href="https://github.com">GitHub</a>
+          </div>
+        </div>
+      </div>
+    </code>
+  </div>
+</p>
+
+{{!--
+<hr>
+
+<p id="mapTypeControl" class="medium-7">
+  <h3>mapTypeControl</h3>
+
+  <div class="-mb">
+    <small class="-db">Type</small>
+    Boolean
+  </div>
+  <div class="-mb">
+    <small class="-db">Default</small>
+    false
+  </div>
+  <div class="-mb">
+    <small class="-db">Resources</small>
+    <a href="https://developers.google.com/maps/documentation/javascript/3.20/reference#MapOptions" target="_blank">Google Map Options</a>
+  </div>
+  <div class="gmaps-snippet">
+    <header>Example</header>
+    <code>
+      <div class="gist">
+        <div class="gist-file">
+          <div class="gist-data">
+            <div class="js-gist-file-update-container js-task-list-container file-box">
+              <div id="file-templa-hbs" class="file">
+                <div class="blob-wrapper data type-handlebars">
+                  <table class="highlight tab-size js-file-line-container" data-tab-size="8">
+                    <tbody><tr>
+                      <td id="file-templa-hbs-L1" class="blob-num js-line-number" data-line-number="1"></td>
+                      <td id="file-templa-hbs-LC1" class="blob-code blob-code-inner js-file-line"><span class="pl-c1">\{{</span><span class="pl-v">g-maps</span> draggable=setMapDrag<span class="pl-c1">}}</span></td>
+                    </tr>
+                  </tbody></table>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="gist-meta">
+            made with ❤ by <a href="https://github.com">GitHub</a>
+          </div>
+        </div>
+      </div>
+    </code>
+  </div> 
+</p>
+--}}
+
+{{!-- <div class="grid-block -spb">
+  <div class="grid-content small-12 medium-3 -smb">
+    <small class="-db">Latitude</small>
+    {{circle.lat}}
+  </div>
+
+  <div class="grid-content small-12 medium-3 -smb">
+    <small class="-db">Longitude</small>
+    {{circle.lng}}
+  </div>
+
+  <div class="grid-content small-12 medium-3 -smb">
+    <small class="-db">Radius</small>
+    {{circle.radius}}
+  </div>
+
+  <div class="grid-content small-12 medium-3 -smb">
+    <small class="-db">Is Dragging</small>
+    {{isCircleDragging}}
+  </div>
+</div>
+
+<div class="grid-content -np -lmb">
+  {{g-maps class="gmaps-docs-map" lat=lat lng=lng zoom=zoom circles=circles}}
+</div>
+ --}}
