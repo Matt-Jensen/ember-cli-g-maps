@@ -1,29 +1,875 @@
 <h2>Events</h2>
 
-<ul>
-  <li><a {{action "scrollToId" 'mapType'}}>mapType</a></li>
-  <li><a {{action "scrollToId" 'draggable'}}>draggable</a></li>
-  <li><a {{action "scrollToId" 'click'}}>click</a></li>
-  <li><a {{action "scrollToId" 'bounds_changed'}}>bounds_changed</a></li>
-  <li><a {{action "scrollToId" 'center_changed'}}>center_changed</a></li>
-  <li><a {{action "scrollToId" 'dblclick'}}>dblclick</a></li>
-  <li><a {{action "scrollToId" 'drag'}}>drag</a></li>
-  <li><a {{action "scrollToId" 'dragend'}}>dragend</a></li>
-  <li><a {{action "scrollToId" 'dragstart'}}>dragstart</a></li>
-  <li><a {{action "scrollToId" 'heading_changed'}}>heading_changed</a></li>
-  <li><a {{action "scrollToId" 'idle'}}>idle</a></li>
-  <li><a {{action "scrollToId" 'maptypeid_changed'}}>maptypeid_changed</a></li>
-  <li><a {{action "scrollToId" 'mousemove'}}>mousemove</a></li>
-  <li><a {{action "scrollToId" 'mouseout'}}>mouseout</a></li>
-  <li><a {{action "scrollToId" 'mouseover'}}>mouseover</a></li>
-  <li><a {{action "scrollToId" 'projection_changed'}}>projection_changed</a></li>
-  <li><a {{action "scrollToId" 'resize'}}>resize</a></li>
-  <li><a {{action "scrollToId" 'rightclick'}}>rightclick</a></li>
-  <li><a {{action "scrollToId" 'tilesloaded'}}>tilesloaded</a></li>
-  <li><a {{action "scrollToId" 'tilt_changed'}}>tilt_changed</a></li>
-  <li><a {{action "scrollToId" 'zoom_changed'}}>zoom_changed</a></li>
-</ul>
+<div class="grid-block -lmb">
+  <ul class="grid-content small-12 medium-5 -nmb">
+    <li><a {{action "scrollToId" 'click'}}>click</a></li>
+    <li><a {{action "scrollToId" 'bounds_changed'}}>bounds_changed</a></li>
+    <li><a {{action "scrollToId" 'center_changed'}}>center_changed</a></li>
+    <li><a {{action "scrollToId" 'dblclick'}}>dblclick</a></li>
+    <li><a {{action "scrollToId" 'drag'}}>drag</a></li>
+    <li><a {{action "scrollToId" 'dragend'}}>dragend</a></li>
+    <li><a {{action "scrollToId" 'dragstart'}}>dragstart</a></li>
+    <li><a {{action "scrollToId" 'heading_changed'}}>heading_changed</a></li>
+    <li><a {{action "scrollToId" 'idle'}}>idle</a></li>
+    <li><a {{action "scrollToId" 'maptypeid_changed'}}>maptypeid_changed</a></li>
+  </ul>
+  <ul class="grid-content small-12 medium-5 -nmb">
+    <li><a {{action "scrollToId" 'mousemove'}}>mousemove</a></li>
+    <li><a {{action "scrollToId" 'mouseout'}}>mouseout</a></li>
+    <li><a {{action "scrollToId" 'mouseover'}}>mouseover</a></li>
+    <li><a {{action "scrollToId" 'projection_changed'}}>projection_changed</a></li>
+    <li><a {{action "scrollToId" 'resize'}}>resize</a></li>
+    <li><a {{action "scrollToId" 'rightclick'}}>rightclick</a></li>
+    <li><a {{action "scrollToId" 'tilesloaded'}}>tilesloaded</a></li>
+    <li><a {{action "scrollToId" 'tilt_changed'}}>tilt_changed</a></li>
+    <li><a {{action "scrollToId" 'zoom_changed'}}>zoom_changed</a></li>
+    <li><a {{action "scrollToId" 'loaded'}}>loaded</a></li>
+  </ul>
+</div>
 
-<p class="medium-7 large-5">
-  Component event docs coming soon.
+<h3 class="grid-content -npl">Events States</h3>
+
+<div class="grid-block -pb">
+  <div class="grid-content small-12 medium-3 -smb">
+    <div class="gmaps-fade-text {{if isclick '-fade'}}">click</div>
+    <div class="gmaps-fade-text {{if isbounds_changed '-fade'}}">bounds_changed</div>
+    <div class="gmaps-fade-text {{if iscenter_changed '-fade'}}">center_changed</div>
+    <div class="gmaps-fade-text {{if isdblclick '-fade'}}">dblclick</div>
+    <div class="gmaps-fade-text {{if isdrag '-fade'}}">drag</div>
+    <div class="gmaps-fade-text {{if isdragend '-fade'}}">dragend</div>
+    <div class="gmaps-fade-text {{if isdragstart '-fade'}}">dragstart</div>
+  </div>
+
+  <div class="grid-content small-12 medium-3 -smb">
+    <div class="gmaps-fade-text {{if isheading_changed '-fade'}}">heading_changed</div>
+    <div class="gmaps-fade-text {{if isidle '-fade'}}">idle</div>
+    <div class="gmaps-fade-text {{if ismaptypeid_changed '-fade'}}">maptypeid_changed</div>
+    <div class="gmaps-fade-text {{if ismousemove '-fade'}}">mousemove</div>
+    <div class="gmaps-fade-text {{if ismouseout '-fade'}}">mouseout</div>
+    <div class="gmaps-fade-text {{if ismouseover '-fade'}}">mouseover</div>
+    <div class="gmaps-fade-text {{if isprojection_changed '-fade'}}">projection_changed</div>
+  </div>
+
+  <div class="grid-content small-12 medium-3 -smb">
+    <div class="gmaps-fade-text {{if isresize '-fade'}}">resize</div>
+    <div class="gmaps-fade-text {{if isrightclick '-fade'}}">rightclick</div>
+    <div class="gmaps-fade-text {{if istilesloaded '-fade'}}">tilesloaded</div>
+    <div class="gmaps-fade-text {{if istilt_changed '-fade'}}">tilt_changed</div>
+    <div class="gmaps-fade-text {{if iszoom_changed '-fade'}}">zoom_changed</div>
+    <div class="gmaps-fade-text {{if isloaded '-fade'}}">loaded</div>
+  </div>
+</div>
+
+<div class="grid-content -np -mb">
+  {{g-maps 
+    class="gmaps-docs-map"
+    lat=lat
+    lng=lng
+    zoom=zoom
+    click="click"
+    bounds_changed="bounds_changed"
+    center_changed="center_changed"
+    dblclick="dblclick"
+    drag="drag"
+    dragend="dragend"
+    dragstart="dragstart"
+    heading_changed="heading_changed"
+    idle="idle"
+    maptypeid_changed="maptypeid_changed"
+    mousemove="mousemove"
+    mouseout="mouseout"
+    mouseover="mouseover"
+    projection_changed="projection_changed"
+    resize="resize"
+    rightclick="rightclick"
+    tilesloaded="tilesloaded"
+    zoom_changed="zoom_changed"
+    tilt_changed="tilt_changed"
+    loaded="loaded"}}
+</div>
+
+<hr>
+
+<p id="click" class="medium-7">
+  <h3>click</h3>
+
+  <div class="-mb">
+    <small class="-db">Response</small>
+    <div class="gmaps-inline-code -nml">gMapEvent</div>
+  </div>
+
+  <div class="gmaps-snippet">
+    <header>Example</header>
+    <code>
+      <div class="gist">
+        <div class="gist-file">
+          <div class="gist-data">
+            <div class="js-gist-file-update-container js-task-list-container file-box">
+              <div id="file-templa-hbs" class="file">
+                <div class="blob-wrapper data type-handlebars">
+                  <table class="highlight tab-size js-file-line-container" data-tab-size="8">
+                    <tbody><tr>
+                      <td id="file-templa-hbs-L1" class="blob-num js-line-number" data-line-number="1"></td>
+                      <td id="file-templa-hbs-LC1" class="blob-code blob-code-inner js-file-line"><span class="pl-c1">\{{</span><span class="pl-v">g-maps</span> click="myClick"<span class="pl-c1">}}</span></td>
+                    </tr>
+                  </tbody></table>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="gist-meta">
+            made with ❤ by <a href="https://github.com">GitHub</a>
+          </div>
+        </div>
+      </div>
+    </code>
+  </div>
+</p>
+
+<hr>
+
+<p id="bounds_changed" class="medium-7">
+  <h3>bounds_changed</h3>
+
+  <div class="-mb">
+    <small class="-db">Response</small>
+    <div class="gmaps-inline-code -nml">gMapEvent</div>
+  </div>
+
+  <div class="gmaps-snippet">
+    <header>Example</header>
+    <code>
+      <div class="gist">
+        <div class="gist-file">
+          <div class="gist-data">
+            <div class="js-gist-file-update-container js-task-list-container file-box">
+              <div id="file-templa-hbs" class="file">
+                <div class="blob-wrapper data type-handlebars">
+                  <table class="highlight tab-size js-file-line-container" data-tab-size="8">
+                    <tbody><tr>
+                      <td id="file-templa-hbs-L1" class="blob-num js-line-number" data-line-number="1"></td>
+                      <td id="file-templa-hbs-LC1" class="blob-code blob-code-inner js-file-line"><span class="pl-c1">\{{</span><span class="pl-v">g-maps</span> bounds_changed="myBoundsChanged"<span class="pl-c1">}}</span></td>
+                    </tr>
+                  </tbody></table>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="gist-meta">
+            made with ❤ by <a href="https://github.com">GitHub</a>
+          </div>
+        </div>
+      </div>
+    </code>
+  </div>
+</p>
+
+<hr>
+
+<p id="center_changed" class="medium-7">
+  <h3>center_changed</h3>
+
+  <div class="-mb">
+    <small class="-db">Response</small>
+    <div class="gmaps-inline-code -nml">gMapEvent</div>
+  </div>
+
+  <div class="gmaps-snippet">
+    <header>Example</header>
+    <code>
+      <div class="gist">
+        <div class="gist-file">
+          <div class="gist-data">
+            <div class="js-gist-file-update-container js-task-list-container file-box">
+              <div id="file-templa-hbs" class="file">
+                <div class="blob-wrapper data type-handlebars">
+                  <table class="highlight tab-size js-file-line-container" data-tab-size="8">
+                    <tbody><tr>
+                      <td id="file-templa-hbs-L1" class="blob-num js-line-number" data-line-number="1"></td>
+                      <td id="file-templa-hbs-LC1" class="blob-code blob-code-inner js-file-line"><span class="pl-c1">\{{</span><span class="pl-v">g-maps</span> center_changed="myCenterChanged"<span class="pl-c1">}}</span></td>
+                    </tr>
+                  </tbody></table>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="gist-meta">
+            made with ❤ by <a href="https://github.com">GitHub</a>
+          </div>
+        </div>
+      </div>
+    </code>
+  </div>
+</p>
+
+<hr>
+
+<p id="dblclick" class="medium-7">
+  <h3>dblclick</h3>
+
+  <div class="-mb">
+    <small class="-db">Response</small>
+    <div class="gmaps-inline-code -nml">gMapEvent</div>
+  </div>
+
+  <div class="gmaps-snippet">
+    <header>Example</header>
+    <code>
+      <div class="gist">
+        <div class="gist-file">
+          <div class="gist-data">
+            <div class="js-gist-file-update-container js-task-list-container file-box">
+              <div id="file-templa-hbs" class="file">
+                <div class="blob-wrapper data type-handlebars">
+                  <table class="highlight tab-size js-file-line-container" data-tab-size="8">
+                    <tbody><tr>
+                      <td id="file-templa-hbs-L1" class="blob-num js-line-number" data-line-number="1"></td>
+                      <td id="file-templa-hbs-LC1" class="blob-code blob-code-inner js-file-line"><span class="pl-c1">\{{</span><span class="pl-v">g-maps</span> dblclick="myDblclick"<span class="pl-c1">}}</span></td>
+                    </tr>
+                  </tbody></table>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="gist-meta">
+            made with ❤ by <a href="https://github.com">GitHub</a>
+          </div>
+        </div>
+      </div>
+    </code>
+  </div>
+</p>
+
+<hr>
+
+<p id="drag" class="medium-7">
+  <h3>drag</h3>
+
+  <div class="-mb">
+    <small class="-db">Response</small>
+    <div class="gmaps-inline-code -nml">gMapEvent</div>
+  </div>
+
+  <div class="gmaps-snippet">
+    <header>Example</header>
+    <code>
+      <div class="gist">
+        <div class="gist-file">
+          <div class="gist-data">
+            <div class="js-gist-file-update-container js-task-list-container file-box">
+              <div id="file-templa-hbs" class="file">
+                <div class="blob-wrapper data type-handlebars">
+                  <table class="highlight tab-size js-file-line-container" data-tab-size="8">
+                    <tbody><tr>
+                      <td id="file-templa-hbs-L1" class="blob-num js-line-number" data-line-number="1"></td>
+                      <td id="file-templa-hbs-LC1" class="blob-code blob-code-inner js-file-line"><span class="pl-c1">\{{</span><span class="pl-v">g-maps</span> drag="myDrag"<span class="pl-c1">}}</span></td>
+                    </tr>
+                  </tbody></table>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="gist-meta">
+            made with ❤ by <a href="https://github.com">GitHub</a>
+          </div>
+        </div>
+      </div>
+    </code>
+  </div>
+</p>
+
+<hr>
+
+<p id="dragend" class="medium-7">
+  <h3>dragend</h3>
+
+  <div class="-mb">
+    <small class="-db">Response</small>
+    <div class="gmaps-inline-code -nml">gMapEvent</div>
+  </div>
+
+  <div class="gmaps-snippet">
+    <header>Example</header>
+    <code>
+      <div class="gist">
+        <div class="gist-file">
+          <div class="gist-data">
+            <div class="js-gist-file-update-container js-task-list-container file-box">
+              <div id="file-templa-hbs" class="file">
+                <div class="blob-wrapper data type-handlebars">
+                  <table class="highlight tab-size js-file-line-container" data-tab-size="8">
+                    <tbody><tr>
+                      <td id="file-templa-hbs-L1" class="blob-num js-line-number" data-line-number="1"></td>
+                      <td id="file-templa-hbs-LC1" class="blob-code blob-code-inner js-file-line"><span class="pl-c1">\{{</span><span class="pl-v">g-maps</span> dragend="myDragend"<span class="pl-c1">}}</span></td>
+                    </tr>
+                  </tbody></table>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="gist-meta">
+            made with ❤ by <a href="https://github.com">GitHub</a>
+          </div>
+        </div>
+      </div>
+    </code>
+  </div>
+</p>
+
+<hr>
+
+<p id="dragstart" class="medium-7">
+  <h3>dragstart</h3>
+
+  <div class="-mb">
+    <small class="-db">Response</small>
+    <div class="gmaps-inline-code -nml">gMapEvent</div>
+  </div>
+
+  <div class="gmaps-snippet">
+    <header>Example</header>
+    <code>
+      <div class="gist">
+        <div class="gist-file">
+          <div class="gist-data">
+            <div class="js-gist-file-update-container js-task-list-container file-box">
+              <div id="file-templa-hbs" class="file">
+                <div class="blob-wrapper data type-handlebars">
+                  <table class="highlight tab-size js-file-line-container" data-tab-size="8">
+                    <tbody><tr>
+                      <td id="file-templa-hbs-L1" class="blob-num js-line-number" data-line-number="1"></td>
+                      <td id="file-templa-hbs-LC1" class="blob-code blob-code-inner js-file-line"><span class="pl-c1">\{{</span><span class="pl-v">g-maps</span> dragstart="myDragstart"<span class="pl-c1">}}</span></td>
+                    </tr>
+                  </tbody></table>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="gist-meta">
+            made with ❤ by <a href="https://github.com">GitHub</a>
+          </div>
+        </div>
+      </div>
+    </code>
+  </div>
+</p>
+
+<hr>
+
+<p id="heading_changed" class="medium-7">
+  <h3>heading_changed</h3>
+
+  <div class="-mb">
+    <small class="-db">Response</small>
+    <div class="gmaps-inline-code -nml">gMapEvent</div>
+  </div>
+
+  <div class="gmaps-snippet">
+    <header>Example</header>
+    <code>
+      <div class="gist">
+        <div class="gist-file">
+          <div class="gist-data">
+            <div class="js-gist-file-update-container js-task-list-container file-box">
+              <div id="file-templa-hbs" class="file">
+                <div class="blob-wrapper data type-handlebars">
+                  <table class="highlight tab-size js-file-line-container" data-tab-size="8">
+                    <tbody><tr>
+                      <td id="file-templa-hbs-L1" class="blob-num js-line-number" data-line-number="1"></td>
+                      <td id="file-templa-hbs-LC1" class="blob-code blob-code-inner js-file-line"><span class="pl-c1">\{{</span><span class="pl-v">g-maps</span> heading_changed="myHeadingChanged"<span class="pl-c1">}}</span></td>
+                    </tr>
+                  </tbody></table>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="gist-meta">
+            made with ❤ by <a href="https://github.com">GitHub</a>
+          </div>
+        </div>
+      </div>
+    </code>
+  </div>
+</p>
+
+<hr>
+
+<p id="idle" class="medium-7">
+  <h3>idle</h3>
+
+  <div class="-mb">
+    <small class="-db">Response</small>
+    <div class="gmaps-inline-code -nml">gMapEvent</div>
+  </div>
+
+  <div class="gmaps-snippet">
+    <header>Example</header>
+    <code>
+      <div class="gist">
+        <div class="gist-file">
+          <div class="gist-data">
+            <div class="js-gist-file-update-container js-task-list-container file-box">
+              <div id="file-templa-hbs" class="file">
+                <div class="blob-wrapper data type-handlebars">
+                  <table class="highlight tab-size js-file-line-container" data-tab-size="8">
+                    <tbody><tr>
+                      <td id="file-templa-hbs-L1" class="blob-num js-line-number" data-line-number="1"></td>
+                      <td id="file-templa-hbs-LC1" class="blob-code blob-code-inner js-file-line"><span class="pl-c1">\{{</span><span class="pl-v">g-maps</span> idle="myIdle"<span class="pl-c1">}}</span></td>
+                    </tr>
+                  </tbody></table>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="gist-meta">
+            made with ❤ by <a href="https://github.com">GitHub</a>
+          </div>
+        </div>
+      </div>
+    </code>
+  </div>
+</p>
+
+<hr>
+
+<p id="maptypeid_changed" class="medium-7">
+  <h3>maptypeid_changed</h3>
+
+  <div class="-mb">
+    <small class="-db">Response</small>
+    <div class="gmaps-inline-code -nml">gMapEvent</div>
+  </div>
+
+  <div class="gmaps-snippet">
+    <header>Example</header>
+    <code>
+      <div class="gist">
+        <div class="gist-file">
+          <div class="gist-data">
+            <div class="js-gist-file-update-container js-task-list-container file-box">
+              <div id="file-templa-hbs" class="file">
+                <div class="blob-wrapper data type-handlebars">
+                  <table class="highlight tab-size js-file-line-container" data-tab-size="8">
+                    <tbody><tr>
+                      <td id="file-templa-hbs-L1" class="blob-num js-line-number" data-line-number="1"></td>
+                      <td id="file-templa-hbs-LC1" class="blob-code blob-code-inner js-file-line"><span class="pl-c1">\{{</span><span class="pl-v">g-maps</span> maptypeid_changed="myMapTypeIdChanged"<span class="pl-c1">}}</span></td>
+                    </tr>
+                  </tbody></table>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="gist-meta">
+            made with ❤ by <a href="https://github.com">GitHub</a>
+          </div>
+        </div>
+      </div>
+    </code>
+  </div>
+</p>
+
+<hr>
+
+<p id="mousemove" class="medium-7">
+  <h3>mousemove</h3>
+
+  <div class="-mb">
+    <small class="-db">Response</small>
+    <div class="gmaps-inline-code -nml">gMapEvent</div>
+  </div>
+
+  <div class="gmaps-snippet">
+    <header>Example</header>
+    <code>
+      <div class="gist">
+        <div class="gist-file">
+          <div class="gist-data">
+            <div class="js-gist-file-update-container js-task-list-container file-box">
+              <div id="file-templa-hbs" class="file">
+                <div class="blob-wrapper data type-handlebars">
+                  <table class="highlight tab-size js-file-line-container" data-tab-size="8">
+                    <tbody><tr>
+                      <td id="file-templa-hbs-L1" class="blob-num js-line-number" data-line-number="1"></td>
+                      <td id="file-templa-hbs-LC1" class="blob-code blob-code-inner js-file-line"><span class="pl-c1">\{{</span><span class="pl-v">g-maps</span> mousemove="myMousemove"<span class="pl-c1">}}</span></td>
+                    </tr>
+                  </tbody></table>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="gist-meta">
+            made with ❤ by <a href="https://github.com">GitHub</a>
+          </div>
+        </div>
+      </div>
+    </code>
+  </div>
+</p>
+
+<hr>
+
+<p id="mouseout" class="medium-7">
+  <h3>mouseout</h3>
+
+  <div class="-mb">
+    <small class="-db">Response</small>
+    <div class="gmaps-inline-code -nml">gMapEvent</div>
+  </div>
+
+  <div class="gmaps-snippet">
+    <header>Example</header>
+    <code>
+      <div class="gist">
+        <div class="gist-file">
+          <div class="gist-data">
+            <div class="js-gist-file-update-container js-task-list-container file-box">
+              <div id="file-templa-hbs" class="file">
+                <div class="blob-wrapper data type-handlebars">
+                  <table class="highlight tab-size js-file-line-container" data-tab-size="8">
+                    <tbody><tr>
+                      <td id="file-templa-hbs-L1" class="blob-num js-line-number" data-line-number="1"></td>
+                      <td id="file-templa-hbs-LC1" class="blob-code blob-code-inner js-file-line"><span class="pl-c1">\{{</span><span class="pl-v">g-maps</span> mouseout="myMouseout"<span class="pl-c1">}}</span></td>
+                    </tr>
+                  </tbody></table>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="gist-meta">
+            made with ❤ by <a href="https://github.com">GitHub</a>
+          </div>
+        </div>
+      </div>
+    </code>
+  </div>
+</p>
+
+<hr>
+
+<p id="projection_changed" class="medium-7">
+  <h3>projection_changed</h3>
+
+  <div class="-mb">
+    <small class="-db">Response</small>
+    <div class="gmaps-inline-code -nml">gMapEvent</div>
+  </div>
+
+  <div class="gmaps-snippet">
+    <header>Example</header>
+    <code>
+      <div class="gist">
+        <div class="gist-file">
+          <div class="gist-data">
+            <div class="js-gist-file-update-container js-task-list-container file-box">
+              <div id="file-templa-hbs" class="file">
+                <div class="blob-wrapper data type-handlebars">
+                  <table class="highlight tab-size js-file-line-container" data-tab-size="8">
+                    <tbody><tr>
+                      <td id="file-templa-hbs-L1" class="blob-num js-line-number" data-line-number="1"></td>
+                      <td id="file-templa-hbs-LC1" class="blob-code blob-code-inner js-file-line"><span class="pl-c1">\{{</span><span class="pl-v">g-maps</span> projection_changed="myProjectionChanged"<span class="pl-c1">}}</span></td>
+                    </tr>
+                  </tbody></table>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="gist-meta">
+            made with ❤ by <a href="https://github.com">GitHub</a>
+          </div>
+        </div>
+      </div>
+    </code>
+  </div>
+</p>
+
+<hr>
+
+<p id="resize" class="medium-7">
+  <h3>resize</h3>
+
+  <div class="-mb">
+    <small class="-db">Response</small>
+    <div class="gmaps-inline-code -nml">gMapEvent</div>
+  </div>
+
+  <div class="gmaps-snippet">
+    <header>Example</header>
+    <code>
+      <div class="gist">
+        <div class="gist-file">
+          <div class="gist-data">
+            <div class="js-gist-file-update-container js-task-list-container file-box">
+              <div id="file-templa-hbs" class="file">
+                <div class="blob-wrapper data type-handlebars">
+                  <table class="highlight tab-size js-file-line-container" data-tab-size="8">
+                    <tbody><tr>
+                      <td id="file-templa-hbs-L1" class="blob-num js-line-number" data-line-number="1"></td>
+                      <td id="file-templa-hbs-LC1" class="blob-code blob-code-inner js-file-line"><span class="pl-c1">\{{</span><span class="pl-v">g-maps</span> resize="myResize"<span class="pl-c1">}}</span></td>
+                    </tr>
+                  </tbody></table>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="gist-meta">
+            made with ❤ by <a href="https://github.com">GitHub</a>
+          </div>
+        </div>
+      </div>
+    </code>
+  </div>
+</p>
+
+<hr>
+
+<p id="rightclick" class="medium-7">
+  <h3>rightclick</h3>
+
+  <div class="-mb">
+    <small class="-db">Response</small>
+    <div class="gmaps-inline-code -nml">gMapEvent</div>
+  </div>
+
+  <div class="gmaps-snippet">
+    <header>Example</header>
+    <code>
+      <div class="gist">
+        <div class="gist-file">
+          <div class="gist-data">
+            <div class="js-gist-file-update-container js-task-list-container file-box">
+              <div id="file-templa-hbs" class="file">
+                <div class="blob-wrapper data type-handlebars">
+                  <table class="highlight tab-size js-file-line-container" data-tab-size="8">
+                    <tbody><tr>
+                      <td id="file-templa-hbs-L1" class="blob-num js-line-number" data-line-number="1"></td>
+                      <td id="file-templa-hbs-LC1" class="blob-code blob-code-inner js-file-line"><span class="pl-c1">\{{</span><span class="pl-v">g-maps</span> rightclick="myRightClick"<span class="pl-c1">}}</span></td>
+                    </tr>
+                  </tbody></table>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="gist-meta">
+            made with ❤ by <a href="https://github.com">GitHub</a>
+          </div>
+        </div>
+      </div>
+    </code>
+  </div>
+</p>
+
+<hr>
+
+<p id="tilesloaded" class="medium-7">
+  <h3>tilesloaded</h3>
+
+  <div class="-mb">
+    <small class="-db">Response</small>
+    <div class="gmaps-inline-code -nml">gMapEvent</div>
+  </div>
+
+  <div class="gmaps-snippet">
+    <header>Example</header>
+    <code>
+      <div class="gist">
+        <div class="gist-file">
+          <div class="gist-data">
+            <div class="js-gist-file-update-container js-task-list-container file-box">
+              <div id="file-templa-hbs" class="file">
+                <div class="blob-wrapper data type-handlebars">
+                  <table class="highlight tab-size js-file-line-container" data-tab-size="8">
+                    <tbody><tr>
+                      <td id="file-templa-hbs-L1" class="blob-num js-line-number" data-line-number="1"></td>
+                      <td id="file-templa-hbs-LC1" class="blob-code blob-code-inner js-file-line"><span class="pl-c1">\{{</span><span class="pl-v">g-maps</span> tilesloaded="myTilesLoaded"<span class="pl-c1">}}</span></td>
+                    </tr>
+                  </tbody></table>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="gist-meta">
+            made with ❤ by <a href="https://github.com">GitHub</a>
+          </div>
+        </div>
+      </div>
+    </code>
+  </div>
+</p>
+
+<hr>
+
+<p id="tilt_changed" class="medium-7">
+  <h3>tilt_changed</h3>
+
+  <div class="-mb">
+    <small class="-db">Response</small>
+    <div class="gmaps-inline-code -nml">googleMapEvent</div>
+  </div>
+
+  <div class="gmaps-snippet">
+    <header>Example</header>
+    <code>
+      <div class="gist">
+        <div class="gist-file">
+          <div class="gist-data">
+            <div class="js-gist-file-update-container js-task-list-container file-box">
+              <div id="file-templa-hbs" class="file">
+                <div class="blob-wrapper data type-handlebars">
+                  <table class="highlight tab-size js-file-line-container" data-tab-size="8">
+                    <tbody><tr>
+                      <td id="file-templa-hbs-L1" class="blob-num js-line-number" data-line-number="1"></td>
+                      <td id="file-templa-hbs-LC1" class="blob-code blob-code-inner js-file-line"><span class="pl-c1">\{{</span><span class="pl-v">g-maps</span> tilt_changed="myTiltChanged"<span class="pl-c1">}}</span></td>
+                    </tr>
+                  </tbody></table>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="gist-meta">
+            made with ❤ by <a href="https://github.com">GitHub</a>
+          </div>
+        </div>
+      </div>
+    </code>
+  </div>
+</p>
+
+<hr>
+
+<p id="zoom_changed" class="medium-7">
+  <h3>zoom_changed</h3>
+
+  <div class="-mb">
+    <small class="-db">Response</small>
+    <div class="gmaps-inline-code -nml">gMapEvent</div>
+  </div>
+
+  <div class="gmaps-snippet">
+    <header>Example</header>
+    <code>
+      <div class="gist">
+        <div class="gist-file">
+          <div class="gist-data">
+            <div class="js-gist-file-update-container js-task-list-container file-box">
+              <div id="file-templa-hbs" class="file">
+                <div class="blob-wrapper data type-handlebars">
+                  <table class="highlight tab-size js-file-line-container" data-tab-size="8">
+                    <tbody><tr>
+                      <td id="file-templa-hbs-L1" class="blob-num js-line-number" data-line-number="1"></td>
+                      <td id="file-templa-hbs-LC1" class="blob-code blob-code-inner js-file-line"><span class="pl-c1">\{{</span><span class="pl-v">g-maps</span> zoom_changed="myZoomChanged"<span class="pl-c1">}}</span></td>
+                    </tr>
+                  </tbody></table>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="gist-meta">
+            made with ❤ by <a href="https://github.com">GitHub</a>
+          </div>
+        </div>
+      </div>
+    </code>
+  </div>
+</p>
+
+<hr>
+
+<p id="loaded" class="medium-7">
+  <h3>loaded</h3>
+
+  <div class="-mb">
+    <small class="-db">Response</small>
+    <div class="gmaps-inline-code -nml">gMapEvent</div>
+  </div>
+
+  <div class="gmaps-snippet">
+    <header>Example</header>
+    <code>
+      <div class="gist">
+        <div class="gist-file">
+          <div class="gist-data">
+            <div class="js-gist-file-update-container js-task-list-container file-box">
+              <div id="file-templa-hbs" class="file">
+                <div class="blob-wrapper data type-handlebars">
+                  <table class="highlight tab-size js-file-line-container" data-tab-size="8">
+                    <tbody><tr>
+                      <td id="file-templa-hbs-L1" class="blob-num js-line-number" data-line-number="1"></td>
+                      <td id="file-templa-hbs-LC1" class="blob-code blob-code-inner js-file-line"><span class="pl-c1">\{{</span><span class="pl-v">g-maps</span> loaded="myLoaded"<span class="pl-c1">}}</span></td>
+                    </tr>
+                  </tbody></table>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="gist-meta">
+            made with ❤ by <a href="https://github.com">GitHub</a>
+          </div>
+        </div>
+      </div>
+    </code>
+  </div>
+</p>
+
+<hr>
+
+<p id="misc" class="medium-7 -nmb">
+  <h3>Misc</h3>
+  <div class="gmaps-snippet">
+    <header>gMapEvent Object</header>
+    <code>
+      <div class="gist">
+        <div class="gist-file">
+          <div class="gist-data">
+            <div class="js-gist-file-update-container js-task-list-container file-box">
+              <div id="file-ember-cli-g-maps__app-js" class="file">
+                <div class="blob-wrapper data type-javascript">
+                  <table class="highlight tab-size js-file-line-container" data-tab-size="8">
+                    <tbody><tr>
+                      <td id="file-ember-cli-g-maps__app-js-L1" class="blob-num js-line-number" data-line-number="1"></td>
+                      <td id="file-ember-cli-g-maps__app-js-LC1" class="blob-code blob-code-inner js-file-line">{</td>
+                    </tr>
+                    <tr>
+                      <td id="file-ember-cli-g-maps__app-js-L2" class="blob-num js-line-number" data-line-number="2"></td>
+                      <td id="file-ember-cli-g-maps__app-js-LC2" class="blob-code blob-code-inner js-file-line">  map<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>map-name<span class="pl-pds">'</span></span>,</td>
+                    </tr>
+                    <tr>
+                      <td id="file-ember-cli-g-maps__app-js-L4" class="blob-num js-line-number" data-line-number="4"></td>
+                      <td id="file-ember-cli-g-maps__app-js-LC4" class="blob-code blob-code-inner js-file-line">  bounds<span class="pl-k">:</span> [</td>
+                    </tr>
+                    <tr>
+                      <td id="file-ember-cli-g-maps__app-js-L5" class="blob-num js-line-number" data-line-number="5"></td>
+                      <td id="file-ember-cli-g-maps__app-js-LC5" class="blob-code blob-code-inner js-file-line">    { lat<span class="pl-k">:</span> <span class="pl-c1">32.22</span>, lng<span class="pl-k">:</span> <span class="pl-k">-</span><span class="pl-c1">103</span>, location<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>northeast<span class="pl-pds">'</span></span> },</td>
+                    </tr>
+                    <tr>
+                      <td id="file-ember-cli-g-maps__app-js-L6" class="blob-num js-line-number" data-line-number="6"></td>
+                      <td id="file-ember-cli-g-maps__app-js-LC6" class="blob-code blob-code-inner js-file-line">    { lat<span class="pl-k">:</span> <span class="pl-c1">30.34</span>, lng<span class="pl-k">:</span> <span class="pl-k">-</span><span class="pl-c1">99.1</span>, location<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>southwest<span class="pl-pds">'</span></span> }  <span class="pl-c"></span></td>
+                    </tr>
+                    <tr>
+                      <td id="file-ember-cli-g-maps__app-js-L7" class="blob-num js-line-number" data-line-number="7"></td>
+                      <td id="file-ember-cli-g-maps__app-js-LC7" class="blob-code blob-code-inner js-file-line">  ],</td>
+                    </tr>
+                    <tr>
+                      <td id="file-ember-cli-g-maps__app-js-L9" class="blob-num js-line-number" data-line-number="9"></td>
+                      <td id="file-ember-cli-g-maps__app-js-LC9" class="blob-code blob-code-inner js-file-line">  mapIdle<span class="pl-k">:</span> <span class="pl-k">new</span> <span class="pl-en">Ember.RSVP</span>.Promise(),</td>
+                    </tr>
+                    <tr>
+                      <td id="file-ember-cli-g-maps__app-js-L11" class="blob-num js-line-number" data-line-number="11"></td>
+                      <td id="file-ember-cli-g-maps__app-js-LC11" class="blob-code blob-code-inner js-file-line">  mapTilesLoaded<span class="pl-k">:</span> <span class="pl-k">new</span> <span class="pl-en">Ember.RSVP</span>.Promise()</td>
+                    </tr>
+                    <tr>
+                      <td id="file-ember-cli-g-maps__app-js-L12" class="blob-num js-line-number" data-line-number="12"></td>
+                      <td id="file-ember-cli-g-maps__app-js-LC12" class="blob-code blob-code-inner js-file-line">}</td>
+                    </tr>
+                  </tbody></table>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="gist-meta">
+            made with ❤ by <a href="https://github.com">GitHub</a>
+          </div>
+        </div>
+      </div>
+    </code>
+  </div>
 </p>
