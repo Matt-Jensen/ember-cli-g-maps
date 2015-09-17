@@ -55,7 +55,7 @@ Documentation
 - [Setting Google API Key](http://matt-jensen.github.io/ember-cli-g-maps/#/setup/apiKey)
 - [Adding Libraries](http://matt-jensen.github.io/ember-cli-g-maps/#/setup/libraries)
 - [Misc Setup Options](http://matt-jensen.github.io/ember-cli-g-maps/#/setup/misc)
-- [Read Basic Map Example](http://matt-jensen.github.io/ember-cli-g-maps/#/basic-usage/index)
+- [Basic Map Example](http://matt-jensen.github.io/ember-cli-g-maps/#/basic-usage/index)
 - [Supported Component Properties](http://matt-jensen.github.io/ember-cli-g-maps/#/basic-usage/map-properties)
 - [Supported Component Events](http://matt-jensen.github.io/ember-cli-g-maps/#/basic-usage/map-events)
 - [Marker Elements](http://matt-jensen.github.io/ember-cli-g-maps/#/basic-usage/markers)

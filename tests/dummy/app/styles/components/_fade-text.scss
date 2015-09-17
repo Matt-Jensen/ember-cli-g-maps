@@ -1,0 +1,9 @@
+.gmaps-fade-text {
+  display: block;
+  line-height: rem-calc(24);
+  transition: all 300ms ease;
+
+  &.-fade {
+    background-color: $primary-color;
+  }
+}

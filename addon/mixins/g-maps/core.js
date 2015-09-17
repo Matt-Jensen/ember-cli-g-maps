@@ -254,7 +254,7 @@ export default Ember.Mixin.create({
       this.sendAction('tilesloaded', merge(this.get('defaultGMapState'), ...arguments));
     },
     tilt_changed: function() {
-      this.sendAction('tilt_changed', merge(this.get('defaultGMapState'), ...arguments));
+      this.sendAction('tilt_changed', ...arguments);
     },
     zoom_changed: function() {
       this.sendAction('zoom_changed', merge(this.get('defaultGMapState'), ...arguments));

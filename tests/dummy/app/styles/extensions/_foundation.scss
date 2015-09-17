@@ -13,7 +13,7 @@
   width: 100%;
   max-width: 300px;
   margin-top: -1 * $global-padding;
-  margin-left: -1 * $global-padding;
+  margin-left: rem-calc(-30);
   padding-top: $global-padding;
   padding-left: $global-padding;
 }
