@@ -1,0 +1,444 @@
+<h2>Properties</h2>
+
+<ul class="-lmb">
+  <li><a {{action "scrollToId" 'selections'}}>selections</a></li>
+  <li><a {{action "scrollToId" 'selectionsDelay'}}>selectionsDelay</a></li>
+  <li><a {{action "scrollToId" 'selectionsMode'}}>selectionsMode</a></li>
+  <li><a {{action "scrollToId" 'selectionsModes'}}>selectionsModes</a></li>
+  <li><a {{action "scrollToId" 'selectionsPosition'}}>selectionsPosition</a></li>
+</ul>
+
+<p class="medium-7 large-5">
+  The <span class="gmaps-inline-code">selections</span> properties allow you to configure what controls are supported, how long selections appear on map, what the current selection mode is, and where the selection controls appear on the map.
+</p>
+
+<div class="grid-block -pb">
+  <div class="grid-content small-12 -mb">
+    <small class="-db">Active Modes</small>
+    <label class="-ilb -spr">
+      <input
+        type="checkbox"
+        checked={{hasMarker}}
+        {{action "toggleMode" 'marker' on="change"}}>
+      Marker
+    </label>
+
+    <label class="-ilb -spr">
+      <input
+        type="checkbox"
+        checked={{hasCirlce}}
+        {{action "toggleMode" 'circle' on="change"}}>
+      Circle
+    </label>
+
+    <label class="-ilb -spr">
+      <input
+        type="checkbox"
+        checked={{hasPolygon}}
+        {{action "toggleMode" 'polygon' on="change"}}>
+      Polygon
+    </label>
+
+    <label class="-ilb -spr">
+      <input
+        type="checkbox"
+        checked={{hasPolyline}}
+        {{action "toggleMode" 'polyline' on="change"}}>
+      Polyline
+    </label>
+
+    <label class="-ilb">
+      <input
+        type="checkbox"
+        checked={{hasRectangle}}
+        {{action "toggleMode" 'rectangle' on="change"}}>
+      Rectangle
+    </label>
+  </div>
+
+  <div class="grid-content small-12 medium-4 -mb">
+    <small class="-db">Visible</small>
+    <input
+      type="checkbox"
+      checked={{selections.visible}}
+      {{action "toggleVisibile" on="change"}}>
+  </div>
+
+  <div class="grid-content small-12 medium-4 -mb">
+    <small class="-db">Position</small>
+      <button class="th-google-button--small -ilb -smr"
+        {{action "randomSelectionsPosition"}}>
+        Set New Position
+      </button>
+  </div>
+
+  <div class="grid-content small-12 medium-4 -mb">
+    <small class="-db">Mode</small>
+      <button class="th-google-button--small -ilb -smr"
+        {{action "randomSelectionsMode"}}>
+        Set New Mode
+      </button>
+  </div>
+
+  <div class="grid-content small-12 medium-4 -mb">
+    <small class="-db">Delay (milliseconds)</small>
+    {{input
+      type="number"
+      value=inputSelectionsDelay}}
+  </div>
+</div>
+
+<div class="grid-content -np -mb">
+  {{g-maps 
+    class="gmaps-docs-map"
+    lat=lat
+    lng=lng
+    zoom=zoom
+    selections=selections
+    selectionsDelay=selectionsDelay
+    selectionsMode=selectionsMode
+    selectionsModes=selectionsModes
+    selectionsPosition=selectionsPosition}}
+</div>
+
+<hr>
+
+<p id="selections" class="medium-7">
+  <h3>selections</h3>
+
+  <div class="-mb">
+    <small class="-db">Type</small>
+    Object
+  </div>
+
+  <div class="-mb">
+    <small class="-db">Description</small>
+    Enables selections API and allows you to configure selections menu visiblity as well as selections options.
+  </div>
+
+  <div class="gmaps-snippet -lmb">
+    <header>Configuring</header>
+    <code>
+      <div class="gist">
+        <div class="gist-file">
+          <div class="gist-data">
+            <div class="js-gist-file-update-container js-task-list-container file-box">
+              <div id="file-ember-cli-g-maps__app-js" class="file">
+                <div class="blob-wrapper data type-javascript">
+                  <table class="highlight tab-size js-file-line-container" data-tab-size="8">
+                    <tbody><tr>
+                      <td id="file-ember-cli-g-maps__app-js-L1" class="blob-num js-line-number" data-line-number="1"></td>
+                      <td id="file-ember-cli-g-maps__app-js-LC1" class="blob-code blob-code-inner js-file-line"><span class="pl-k">export</span> <span class="pl-k">default</span> Ember.Route.extend({</td>
+                    </tr>
+                    <tr>
+                      <td id="file-ember-cli-g-maps__app-js-L2" class="blob-num js-line-number" data-line-number="2"></td>
+                      <td id="file-ember-cli-g-maps__app-js-LC2" class="blob-code blob-code-inner js-file-line">  <span class="pl-en">setupController</span><span class="pl-k">:</span> <span class="pl-k">function</span>(<span class="pl-smi">controller</span>) {</td>
+                    </tr>
+                    <tr>
+                      <td id="file-ember-cli-g-maps__app-js-L3" class="blob-num js-line-number" data-line-number="3"></td>
+                      <td id="file-ember-cli-g-maps__app-js-LC3" class="blob-code blob-code-inner js-file-line">    controller.setProperties({</td>
+                    </tr>
+                    <tr>
+                      <td id="file-ember-cli-g-maps__app-js-L4" class="blob-num js-line-number" data-line-number="4"></td>
+                      <td id="file-ember-cli-g-maps__app-js-LC4" class="blob-code blob-code-inner js-file-line">      selections<span class="pl-k">:</span> {</td>
+                    </tr>
+                    <tr>
+                      <td id="file-ember-cli-g-maps__app-js-L5" class="blob-num js-line-number" data-line-number="5"></td>
+                      <td id="file-ember-cli-g-maps__app-js-LC5" class="blob-code blob-code-inner js-file-line">        visible<span class="pl-k">:</span> <span class="pl-c1">true</span>, <span class="pl-c">// Default</span></td>
+                    </tr>
+                    <tr>
+                      <td id="file-ember-cli-g-maps__app-js-L6" class="blob-num js-line-number" data-line-number="6"></td>
+                      <td id="file-ember-cli-g-maps__app-js-LC6" class="blob-code blob-code-inner js-file-line">        markerOptions<span class="pl-k">:</span> {},</td>
+                    </tr>
+                    <tr>
+                      <td id="file-ember-cli-g-maps__app-js-L7" class="blob-num js-line-number" data-line-number="7"></td>
+                      <td id="file-ember-cli-g-maps__app-js-LC7" class="blob-code blob-code-inner js-file-line">        circleOptions<span class="pl-k">:</span> {},</td>
+                    </tr>
+                    <tr>
+                      <td id="file-ember-cli-g-maps__app-js-L8" class="blob-num js-line-number" data-line-number="8"></td>
+                      <td id="file-ember-cli-g-maps__app-js-LC8" class="blob-code blob-code-inner js-file-line">        polygonOptions<span class="pl-k">:</span> {},</td>
+                    </tr>
+                    <tr>
+                      <td id="file-ember-cli-g-maps__app-js-L9" class="blob-num js-line-number" data-line-number="9"></td>
+                      <td id="file-ember-cli-g-maps__app-js-LC9" class="blob-code blob-code-inner js-file-line">        polylineOptions<span class="pl-k">:</span> {},</td>
+                    </tr>
+                    <tr>
+                      <td id="file-ember-cli-g-maps__app-js-L10" class="blob-num js-line-number" data-line-number="10"></td>
+                      <td id="file-ember-cli-g-maps__app-js-LC10" class="blob-code blob-code-inner js-file-line">        rectangleOptions<span class="pl-k">:</span> {}</td>
+                    </tr>
+                    <tr>
+                      <td id="file-ember-cli-g-maps__app-js-L11" class="blob-num js-line-number" data-line-number="11"></td>
+                      <td id="file-ember-cli-g-maps__app-js-LC11" class="blob-code blob-code-inner js-file-line">      }</td>
+                    </tr>
+                    <tr>
+                      <td id="file-ember-cli-g-maps__app-js-L12" class="blob-num js-line-number" data-line-number="12"></td>
+                      <td id="file-ember-cli-g-maps__app-js-LC12" class="blob-code blob-code-inner js-file-line">    });</td>
+                    </tr>
+                    <tr>
+                      <td id="file-ember-cli-g-maps__app-js-L13" class="blob-num js-line-number" data-line-number="13"></td>
+                      <td id="file-ember-cli-g-maps__app-js-LC13" class="blob-code blob-code-inner js-file-line">  }</td>
+                    </tr>
+                    <tr>
+                      <td id="file-ember-cli-g-maps__app-js-L14" class="blob-num js-line-number" data-line-number="14"></td>
+                      <td id="file-ember-cli-g-maps__app-js-LC14" class="blob-code blob-code-inner js-file-line">});</td>
+                    </tr>
+                  </tbody></table>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="gist-meta">
+            made with ❤ by <a href="https://github.com">GitHub</a>
+          </div>
+        </div>
+      </div>
+    </code>
+  </div>
+
+  <div class="gmaps-snippet -lmb">
+    <header>Adding</header>
+    <code>
+      <div class="gist">
+        <div class="gist-file">
+          <div class="gist-data">
+            <div class="js-gist-file-update-container js-task-list-container file-box">
+              <div id="file-templa-hbs" class="file">
+                <div class="blob-wrapper data type-handlebars">
+                  <table class="highlight tab-size js-file-line-container" data-tab-size="8">
+                    <tbody><tr>
+                      <td id="file-templa-hbs-L1" class="blob-num js-line-number" data-line-number="1"></td>
+                      <td id="file-templa-hbs-LC1" class="blob-code blob-code-inner js-file-line"><span class="pl-c1">\{{</span><span class="pl-v">g-maps</span> selections=mySelections<span class="pl-c1">}}</span></td>
+                    </tr>
+                  </tbody></table>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="gist-meta">
+            made with ❤ by <a href="https://github.com">GitHub</a>
+          </div>
+        </div>
+      </div>
+    </code>
+  </div>
+</p>
+
+<hr>
+
+<p id="selectionsDelay" class="medium-7">
+  <h3>selectionsDelay</h3>
+
+  <div class="-mb">
+    <small class="-db">Type</small>
+    Number
+  </div>
+
+  <div class="-mb">
+    <small class="-db">Default</small>
+    <div class="gmaps-inline-code -nml">400</div>
+  </div>
+
+  <div class="-mb">
+    <small class="-db">Description</small>
+    Sets the time it takes for selection elements to be visibly removed from the map.
+  </div>
+
+  <div class="gmaps-snippet -lmb">
+    <header>Adding</header>
+    <code>
+      <div class="gist">
+        <div class="gist-file">
+          <div class="gist-data">
+            <div class="js-gist-file-update-container js-task-list-container file-box">
+              <div id="file-templa-hbs" class="file">
+                <div class="blob-wrapper data type-handlebars">
+                  <table class="highlight tab-size js-file-line-container" data-tab-size="8">
+                    <tbody><tr>
+                      <td id="file-templa-hbs-L1" class="blob-num js-line-number" data-line-number="1"></td>
+                      <td id="file-templa-hbs-LC1" class="blob-code blob-code-inner js-file-line"><span class="pl-c1">\{{</span><span class="pl-v">g-maps</span> selectionsDelay=myDelay<span class="pl-c1">}}</span></td>
+                    </tr>
+                  </tbody></table>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="gist-meta">
+            made with ❤ by <a href="https://github.com">GitHub</a>
+          </div>
+        </div>
+      </div>
+    </code>
+  </div>
+</p>
+
+<hr>
+
+<p id="selectionsMode" class="medium-7">
+  <h3>selectionsMode</h3>
+
+  <div class="-mb">
+    <small class="-db">Type</small>
+    String
+  </div>
+
+  <div class="-mb">
+    <small class="-db">Default</small>
+    <div class="gmaps-inline-code -nml">''</div>
+  </div>
+
+  <div class="-mb">
+    <small class="-db">Description</small>
+    Sets the current selector used by the map. Falsey values are interpreted as no active selection and map is interacted with normally.
+  </div>
+
+  <div class="gmaps-snippet -lmb">
+    <header>Adding</header>
+    <code>
+      <div class="gist">
+        <div class="gist-file">
+          <div class="gist-data">
+            <div class="js-gist-file-update-container js-task-list-container file-box">
+              <div id="file-templa-hbs" class="file">
+                <div class="blob-wrapper data type-handlebars">
+                  <table class="highlight tab-size js-file-line-container" data-tab-size="8">
+                    <tbody><tr>
+                      <td id="file-templa-hbs-L1" class="blob-num js-line-number" data-line-number="1"></td>
+                      <td id="file-templa-hbs-LC1" class="blob-code blob-code-inner js-file-line"><span class="pl-c1">\{{</span><span class="pl-v">g-maps</span> selectionsMode=myActiveMode<span class="pl-c1">}}</span></td>
+                    </tr>
+                  </tbody></table>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="gist-meta">
+            made with ❤ by <a href="https://github.com">GitHub</a>
+          </div>
+        </div>
+      </div>
+    </code>
+  </div>
+</p>
+
+<hr>
+
+<p id="selectionsModes" class="medium-7">
+  <h3>selectionsModes</h3>
+
+  <div class="-mb">
+    <small class="-db">Type</small>
+    Ember.Array
+  </div>
+
+  <div class="-mb">
+    <small class="-db">Default</small>
+    <div class="gmaps-inline-code -nml">['marker', 'circle', 'polygon', 'polyline', 'rectangle']</div>
+  </div>
+
+  <div class="-mb">
+    <small class="-db">Accepted</small>
+    <div class="gmaps-inline-code -nml -smr">marker</div>
+    <div class="gmaps-inline-code -nml -smr">circle</div>
+    <div class="gmaps-inline-code -nml -smr">polygon</div>
+    <div class="gmaps-inline-code -nml -smr">polyline</div>
+    <div class="gmaps-inline-code -nml">rectangle</div>
+  </div>
+
+  <div class="-mb">
+    <small class="-db">Description</small>
+    Sets available selectors that may be choosen from.
+  </div>
+
+  <div class="gmaps-snippet -lmb">
+    <header>Adding</header>
+    <code>
+      <div class="gist">
+        <div class="gist-file">
+          <div class="gist-data">
+            <div class="js-gist-file-update-container js-task-list-container file-box">
+              <div id="file-templa-hbs" class="file">
+                <div class="blob-wrapper data type-handlebars">
+                  <table class="highlight tab-size js-file-line-container" data-tab-size="8">
+                    <tbody><tr>
+                      <td id="file-templa-hbs-L1" class="blob-num js-line-number" data-line-number="1"></td>
+                      <td id="file-templa-hbs-LC1" class="blob-code blob-code-inner js-file-line"><span class="pl-c1">\{{</span><span class="pl-v">g-maps</span> selectionsModes=myModes<span class="pl-c1">}}</span></td>
+                    </tr>
+                  </tbody></table>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="gist-meta">
+            made with ❤ by <a href="https://github.com">GitHub</a>
+          </div>
+        </div>
+      </div>
+    </code>
+  </div>
+</p>
+
+<hr>
+
+<p id="selectionsPosition" class="medium-7">
+  <h3>selectionsPosition</h3>
+
+  <div class="-mb">
+    <small class="-db">Type</small>
+    <div class="gmaps-inline-code -nml">String</div>
+  </div>
+
+  <div class="-mb">
+    <small class="-db">Default</small>
+    <div class="gmaps-inline-code -nml">top</div>
+  </div>
+
+  <div class="-mb">
+    <small class="-db">Accepted</small>
+    <div class="gmaps-inline-code -nml -smr">top</div>
+    <div class="gmaps-inline-code -nml -smr">top-left</div>
+    <div class="gmaps-inline-code -nml -smr">top-right</div>
+    <div class="gmaps-inline-code -nml -smr">left-top</div>
+    <div class="gmaps-inline-code -nml -smr">right-top</div>
+    <div class="gmaps-inline-code -nml -smr">left</div>
+    <div class="gmaps-inline-code -nml -smr">left-center</div>
+    <div class="gmaps-inline-code -nml -smr">right</div>
+    <div class="gmaps-inline-code -nml -smr">right-center</div>
+    <div class="gmaps-inline-code -nml -smr">left-bottom</div>
+    <div class="gmaps-inline-code -nml -smr">right-bottom</div>
+    <div class="gmaps-inline-code -nml -smr">bottom</div>
+    <div class="gmaps-inline-code -nml -smr">bottom-center</div>
+    <div class="gmaps-inline-code -nml -smr">bottom-left</div>
+    <div class="gmaps-inline-code -nml">bottom-right</div>
+  </div>
+
+  <div class="-mb">
+    <small class="-db">Description</small>
+    Sets location of the selections menu within the map element.
+  </div>
+
+  <div class="gmaps-snippet -lmb">
+    <header>Adding</header>
+    <code>
+      <div class="gist">
+        <div class="gist-file">
+          <div class="gist-data">
+            <div class="js-gist-file-update-container js-task-list-container file-box">
+              <div id="file-templa-hbs" class="file">
+                <div class="blob-wrapper data type-handlebars">
+                  <table class="highlight tab-size js-file-line-container" data-tab-size="8">
+                    <tbody><tr>
+                      <td id="file-templa-hbs-L1" class="blob-num js-line-number" data-line-number="1"></td>
+                      <td id="file-templa-hbs-LC1" class="blob-code blob-code-inner js-file-line"><span class="pl-c1">\{{</span><span class="pl-v">g-maps</span> selectionsPosition=myPosition<span class="pl-c1">}}</span></td>
+                    </tr>
+                  </tbody></table>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="gist-meta">
+            made with ❤ by <a href="https://github.com">GitHub</a>
+          </div>
+        </div>
+      </div>
+    </code>
+  </div>
+</p>

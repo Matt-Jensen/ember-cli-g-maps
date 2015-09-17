@@ -1,0 +1,112 @@
+<h2>Marker</h2>
+
+<p class="medium-7 large-5">
+  The marker selector allows users to select specific coordinates on a map. Marker selectors are configured via the selections object and support many of the Google Map <a href="https://developers.google.com/maps/documentation/javascript/3.exp/reference#MarkerOptions" target="_blank">Marker Options</a>.  Marker selection events are bound via the <span class="gmaps-inline-code">selectionsMarker</span> component action.
+</p>
+
+<div class="gmaps-snippet -lmb">
+  <header>Configuring</header>
+  <code>
+    <div class="gist">
+      <div class="gist-file">
+        <div class="gist-data">
+          <div class="js-gist-file-update-container js-task-list-container file-box">
+            <div id="file-ember-cli-g-maps__app-js" class="file">
+              <div class="blob-wrapper data type-javascript">
+                <table class="highlight tab-size js-file-line-container" data-tab-size="8">
+                  <tbody><tr>
+                    <td id="file-ember-cli-g-maps__app-js-L1" class="blob-num js-line-number" data-line-number="1"></td>
+                    <td id="file-ember-cli-g-maps__app-js-LC1" class="blob-code blob-code-inner js-file-line"><span class="pl-k">export</span> <span class="pl-k">default</span> Ember.Route.extend({</td>
+                  </tr>
+                  <tr>
+                    <td id="file-ember-cli-g-maps__app-js-L2" class="blob-num js-line-number" data-line-number="2"></td>
+                    <td id="file-ember-cli-g-maps__app-js-LC2" class="blob-code blob-code-inner js-file-line">  <span class="pl-en">setupController</span><span class="pl-k">:</span> <span class="pl-k">function</span>(<span class="pl-smi">controller</span>) {</td>
+                  </tr>
+                  <tr>
+                    <td id="file-ember-cli-g-maps__app-js-L3" class="blob-num js-line-number" data-line-number="3"></td>
+                    <td id="file-ember-cli-g-maps__app-js-LC3" class="blob-code blob-code-inner js-file-line">    controller.setProperties({</td>
+                  </tr>
+                  <tr>
+                    <td id="file-ember-cli-g-maps__app-js-L4" class="blob-num js-line-number" data-line-number="4"></td>
+                    <td id="file-ember-cli-g-maps__app-js-LC4" class="blob-code blob-code-inner js-file-line">      selections<span class="pl-k">:</span> {</td>
+                  </tr>
+                  <tr>
+                    <td id="file-ember-cli-g-maps__app-js-L5" class="blob-num js-line-number" data-line-number="5"></td>
+                    <td id="file-ember-cli-g-maps__app-js-LC5" class="blob-code blob-code-inner js-file-line">        markerOptions<span class="pl-k">:</span> {</td>
+                  </tr>
+                  <tr>
+                    <td id="file-ember-cli-g-maps__app-js-L6" class="blob-num js-line-number" data-line-number="6"></td>
+                    <td id="file-ember-cli-g-maps__app-js-LC6" class="blob-code blob-code-inner js-file-line">          animation<span class="pl-k">:</span> google.maps.Animation.DROP,</td>
+                  </tr>
+                  <tr>
+                    <td id="file-ember-cli-g-maps__app-js-L7" class="blob-num js-line-number" data-line-number="7"></td>
+                    <td id="file-ember-cli-g-maps__app-js-LC7" class="blob-code blob-code-inner js-file-line">          anchorPoint<span class="pl-k">:</span> <span class="pl-k">new</span> <span class="pl-en">google.maps</span>.Point(),</td>
+                  </tr>
+                  <tr>
+                    <td id="file-ember-cli-g-maps__app-js-L8" class="blob-num js-line-number" data-line-number="8"></td>
+                    <td id="file-ember-cli-g-maps__app-js-LC8" class="blob-code blob-code-inner js-file-line">          attribution<span class="pl-k">:</span> <span class="pl-k">new</span> <span class="pl-en">google.maps</span>.Attribution(),</td>
+                  </tr>
+                  <tr>
+                    <td id="file-ember-cli-g-maps__app-js-L9" class="blob-num js-line-number" data-line-number="9"></td>
+                    <td id="file-ember-cli-g-maps__app-js-LC9" class="blob-code blob-code-inner js-file-line">          icon<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>beachflag.png<span class="pl-pds">'</span></span>,</td>
+                  </tr>
+                  <tr>
+                    <td id="file-ember-cli-g-maps__app-js-L10" class="blob-num js-line-number" data-line-number="10"></td>
+                    <td id="file-ember-cli-g-maps__app-js-LC10" class="blob-code blob-code-inner js-file-line">          label<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>A<span class="pl-pds">'</span></span>,</td>
+                  </tr>
+                  <tr>
+                    <td id="file-ember-cli-g-maps__app-js-L11" class="blob-num js-line-number" data-line-number="11"></td>
+                    <td id="file-ember-cli-g-maps__app-js-LC11" class="blob-code blob-code-inner js-file-line">          optimized<span class="pl-k">:</span> <span class="pl-c1">true</span>,</td>
+                  </tr>
+                  <tr>
+                    <td id="file-ember-cli-g-maps__app-js-L12" class="blob-num js-line-number" data-line-number="12"></td>
+                    <td id="file-ember-cli-g-maps__app-js-LC12" class="blob-code blob-code-inner js-file-line">          place<span class="pl-k">:</span> <span class="pl-k">new</span> <span class="pl-en">google.maps</span>.MarkerPlace(),</td>
+                  </tr>
+                  <tr>
+                    <td id="file-ember-cli-g-maps__app-js-L13" class="blob-num js-line-number" data-line-number="13"></td>
+                    <td id="file-ember-cli-g-maps__app-js-LC13" class="blob-code blob-code-inner js-file-line">          position<span class="pl-k">:</span> <span class="pl-k">new</span> <span class="pl-en">google.maps</span>.LatLng(),</td>
+                  </tr>
+                  <tr>
+                    <td id="file-ember-cli-g-maps__app-js-L14" class="blob-num js-line-number" data-line-number="14"></td>
+                    <td id="file-ember-cli-g-maps__app-js-LC14" class="blob-code blob-code-inner js-file-line">          shape<span class="pl-k">:</span> <span class="pl-k">new</span> <span class="pl-en">google.maps</span>.MarkerShape(),</td>
+                  </tr>
+                  <tr>
+                    <td id="file-ember-cli-g-maps__app-js-L15" class="blob-num js-line-number" data-line-number="15"></td>
+                    <td id="file-ember-cli-g-maps__app-js-LC15" class="blob-code blob-code-inner js-file-line">          title<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>string<span class="pl-pds">'</span></span>,</td>
+                  </tr>
+                  <tr>
+                    <td id="file-ember-cli-g-maps__app-js-L16" class="blob-num js-line-number" data-line-number="16"></td>
+                    <td id="file-ember-cli-g-maps__app-js-LC16" class="blob-code blob-code-inner js-file-line">          zIndex<span class="pl-k">:</span> <span class="pl-c1">999</span></td>
+                  </tr>
+                  <tr>
+                    <td id="file-ember-cli-g-maps__app-js-L17" class="blob-num js-line-number" data-line-number="17"></td>
+                    <td id="file-ember-cli-g-maps__app-js-LC17" class="blob-code blob-code-inner js-file-line">        }</td>
+                  </tr>
+                  <tr>
+                    <td id="file-ember-cli-g-maps__app-js-L18" class="blob-num js-line-number" data-line-number="18"></td>
+                    <td id="file-ember-cli-g-maps__app-js-LC18" class="blob-code blob-code-inner js-file-line">      }</td>
+                  </tr>
+                  <tr>
+                    <td id="file-ember-cli-g-maps__app-js-L19" class="blob-num js-line-number" data-line-number="19"></td>
+                    <td id="file-ember-cli-g-maps__app-js-LC19" class="blob-code blob-code-inner js-file-line">    });</td>
+                  </tr>
+                  <tr>
+                    <td id="file-ember-cli-g-maps__app-js-L20" class="blob-num js-line-number" data-line-number="20"></td>
+                    <td id="file-ember-cli-g-maps__app-js-LC20" class="blob-code blob-code-inner js-file-line">  }</td>
+                  </tr>
+                  <tr>
+                    <td id="file-ember-cli-g-maps__app-js-L21" class="blob-num js-line-number" data-line-number="21"></td>
+                    <td id="file-ember-cli-g-maps__app-js-LC21" class="blob-code blob-code-inner js-file-line">});</td>
+                  </tr>
+                </tbody></table>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="gist-meta">
+          made with ❤ by <a href="https://github.com">GitHub</a>
+        </div>
+      </div>
+    </div>
+  </code>
+</div>
