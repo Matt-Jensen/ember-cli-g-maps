@@ -14,7 +14,7 @@ Built with the [GMaps-For-Apps.js library](https://github.com/Matt-Jensen/gmaps-
 Installation
 ------------
 
-[Read Installation & Configuration documentation.](http://matt-jensen.github.io/ember-cli-g-maps/#/basic-usage/index)
+[Full installation & configuration documentation.](http://matt-jensen.github.io/ember-cli-g-maps/#/basic-usage/index)
 
 Supports: 
 - Ember ~1.13
@@ -51,20 +51,20 @@ You wont see your map unless it has height. In `app/styles/app.css`:
 Documentation
 ----------------
 
-** Install and Configuration **
+**Install and Configuration**
 
 - [Installation and Configuration](http://matt-jensen.github.io/ember-cli-g-maps/#/basic-usage/index)
 - [Setting Google API Key](http://matt-jensen.github.io/ember-cli-g-maps/#/setup/apiKey)
 - [Adding Libraries](http://matt-jensen.github.io/ember-cli-g-maps/#/setup/libraries)
 - [Misc Setup Options](http://matt-jensen.github.io/ember-cli-g-maps/#/setup/misc)
 
-** Component Properties and Events **
+**Component Properties and Events**
 
 - [Basic Map Example](http://matt-jensen.github.io/ember-cli-g-maps/#/basic-usage/index)
 - [Supported Component Properties](http://matt-jensen.github.io/ember-cli-g-maps/#/basic-usage/map-properties)
 - [Supported Component Events](http://matt-jensen.github.io/ember-cli-g-maps/#/basic-usage/map-events)
 
-** Elements **
+**Elements**
 
 - [Marker Elements](http://matt-jensen.github.io/ember-cli-g-maps/#/basic-usage/markers)
 - [Circle Elements](http://matt-jensen.github.io/ember-cli-g-maps/#/basic-usage/circles)
@@ -73,7 +73,7 @@ Documentation
 - [Rectangle Elements](http://matt-jensen.github.io/ember-cli-g-maps/#/basic-usage/rectangles)
 - [Overlay Elements](http://matt-jensen.github.io/ember-cli-g-maps/#/basic-usage/overlays)
 
-** Selections **
+**Selections**
 
 - [Setup](http://matt-jensen.github.io/ember-cli-g-maps/#/selections/index)
 - [Properties](http://matt-jensen.github.io/ember-cli-g-maps/#/selections/properties)
@@ -483,6 +483,7 @@ ENV.googleMap = {
 ```
 
 **Actions**
+
 Actions are fired when a selections are completed.  Available selections actions are:
 
 - selectionsMarker
