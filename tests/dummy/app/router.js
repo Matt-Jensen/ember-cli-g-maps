@@ -25,9 +25,20 @@ Router.map(function() {
   });
   this.route('service', function() {
     this.route('index');
+    this.route('travelRoute', { path: '/travel-route' });
+    this.route('suggestFrame', { path: '/suggest-frame' });
+    this.route('geocoding');
+    this.route('refresh');
   });
   this.route('selections', function() {
     this.route('index');
+    this.route('properties');
+    this.route('events');
+    this.route('marker');
+    this.route('rectangle');
+    this.route('circle');
+    this.route('polygon');
+    this.route('polyline');
   });
   this.route('heatmap', function() {
     this.route('index');
