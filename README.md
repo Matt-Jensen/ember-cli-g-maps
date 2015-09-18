@@ -108,7 +108,7 @@ Usage
 
 **Simplest Possible G-Map**
 
-[Full simple map documentation.](http://matt-jensen.github.io/ember-cli-g-maps/#/basic-usage/index)
+[Full simple map documentation](http://matt-jensen.github.io/ember-cli-g-maps/#/basic-usage/index)
 
 In your route:
 ```js
@@ -130,7 +130,7 @@ In your template:
 
 **Adding Markers**
 
-[Full marker documentation.](http://matt-jensen.github.io/ember-cli-g-maps/#/basic-usage/markers)
+[Full marker documentation](http://matt-jensen.github.io/ember-cli-g-maps/#/basic-usage/markers)
 
 ```js
 export default Ember.Route.extend({
@@ -169,7 +169,7 @@ export default Ember.Route.extend({
 
 **Adding Polygons**
 
-[Full polygon documentation.](http://matt-jensen.github.io/ember-cli-g-maps/#/basic-usage/polygons)
+[Full polygon documentation](http://matt-jensen.github.io/ember-cli-g-maps/#/basic-usage/polygons)
 
 ```js
 export default Ember.Route.extend({
@@ -212,7 +212,7 @@ export default Ember.Route.extend({
 
 **Adding Polylines**
 
-[Full polyline documentation.](http://matt-jensen.github.io/ember-cli-g-maps/#/basic-usage/polylines)
+[Full polyline documentation](http://matt-jensen.github.io/ember-cli-g-maps/#/basic-usage/polylines)
 
 ```js
 export default Ember.Route.extend({
@@ -256,7 +256,7 @@ export default Ember.Route.extend({
 
 **Adding Circles**
 
-[Full circle documentation.](http://matt-jensen.github.io/ember-cli-g-maps/#/basic-usage/circles)
+[Full circle documentation](http://matt-jensen.github.io/ember-cli-g-maps/#/basic-usage/circles)
 
 ```js
 export default Ember.Route.extend({
@@ -295,7 +295,7 @@ export default Ember.Route.extend({
 
 **Adding Rectangles**
 
-[Full rectangle documentation.](http://matt-jensen.github.io/ember-cli-g-maps/#/basic-usage/rectangles)
+[Full rectangle documentation](http://matt-jensen.github.io/ember-cli-g-maps/#/basic-usage/rectangles)
 
 ```js
 export default Ember.Route.extend({
@@ -339,7 +339,7 @@ export default Ember.Route.extend({
 
 **Adding Overlays**
 
-[Full overlay documentation.](http://matt-jensen.github.io/ember-cli-g-maps/#/basic-usage/overlays)
+[Full overlay documentation](http://matt-jensen.github.io/ember-cli-g-maps/#/basic-usage/overlays)
 
 ```js
 export default Ember.Route.extend({
@@ -406,7 +406,7 @@ export default Ember.Route.extend({
 
 **Setting Map Properties**
 
-[Full component properties documentation.](http://matt-jensen.github.io/ember-cli-g-maps/#/basic-usage/map-properties)
+[Full component properties documentation](http://matt-jensen.github.io/ember-cli-g-maps/#/basic-usage/map-properties)
 
 ```js
 export default Ember.Route.extend({
@@ -443,7 +443,7 @@ export default Ember.Route.extend({
 
 ## Supported G-Maps Events ##
 
-[Full component events documentation.](http://matt-jensen.github.io/ember-cli-g-maps/#/basic-usage/map-events)
+[Full component events documentation](http://matt-jensen.github.io/ember-cli-g-maps/#/basic-usage/map-events)
 
 - click
 - bounds_changed
@@ -468,7 +468,7 @@ export default Ember.Route.extend({
 Selections
 ------------
 
-[Full selections documentation.](http://matt-jensen.github.io/ember-cli-g-maps/#/selections/index)
+[Full selections documentation](http://matt-jensen.github.io/ember-cli-g-maps/#/selections/index)
 
 Repurposed from the [Google Maps Drawing Manager](https://developers.google.com/maps/documentation/javascript/drawinglayer), Selections allow you to draw shapes on your map instance.  This allows users to select areas on the map to interact with.  Supported selection types include:
 
@@ -502,7 +502,7 @@ Actions are fired when a selections are completed.  Available selections actions
 Heatmap
 --------
 
-[Full heatmap documentation.](http://matt-jensen.github.io/ember-cli-g-maps/#/heatmap/index)
+[Full heatmap documentation](http://matt-jensen.github.io/ember-cli-g-maps/#/heatmap/index)
 
 Heatmap is an abstraction of the [Google Maps Heatmap Layer](https://developers.google.com/maps/documentation/javascript/examples/layer-heatmap).
 
