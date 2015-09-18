@@ -1,0 +1,363 @@
+<h2>Properties</h2>
+
+<ul class="-lmb">
+  <li><a {{action "scrollToId" 'heatmapMarkers'}}>heatmapMarkers</a></li>
+  <li><a {{action "scrollToId" 'heatmapRadius'}}>heatmapRadius</a></li>
+  <li><a {{action "scrollToId" 'heatmapDissipating'}}>heatmapDissipating</a></li>
+  <li><a {{action "scrollToId" 'heatmapOpacity'}}>heatmapOpacity</a></li>
+  <li><a {{action "scrollToId" 'heatmapGradient'}}>heatmapGradient</a></li>
+  <li><a {{action "scrollToId" 'heatmapVisible'}}>heatmapVisible</a></li>
+</ul>
+
+<p class="medium-7 large-5">
+  The <span class="gmaps-inline-code">heatmap</span> properties allow you to configure what the overall weight of each marker, dissipation of radius on zoom, overall opacity and gradient color.
+</p>
+
+<div class="grid-block -pb">
+  <div class="grid-content small-12 medium-4 -mb">
+    <small class="-db">Radius</small>
+    {{input
+      type="number"
+      value=inputHeatmapRadius}}
+  </div>
+
+  <div class="grid-content small-12 medium-4 -mb">
+    <small class="-db">Dissipating</small>
+    <input
+      type="checkbox"
+      checked={{heatmapDissipating}}
+      {{action "toggleDissipate" on="change"}}>
+  </div>
+
+  <div class="grid-content small-12 medium-4 -mb">
+    <small class="-db">Opacity</small>
+    <div style="width: 60px">
+      {{input
+        type="number"
+        class="-db -full"
+        step="10"
+        min="0"
+        max="100"
+        value=inputHeatmapOpacity}} = {{heatmapOpacity}}
+    </div>
+  </div>
+
+  <div class="grid-content small-12 medium-4 -mb">
+    <small class="-db">Swap Gradient</small>
+    <input
+      type="checkbox"
+      checked={{heatmapGradient}}
+      {{action "toggleGradient" on="change"}}>
+  </div>
+
+  <div class="grid-content small-12 medium-4 -mb">
+    <small class="-db">Visible</small>
+    <input
+      type="checkbox"
+      checked={{heatmapVisible}}
+      {{action "toggleVisibility" on="change"}}>
+  </div>
+</div>
+
+<div class="grid-content -np -mb">
+  {{g-maps 
+    class="gmaps-docs-map"
+    lat=lat
+    lng=lng
+    zoom=zoom
+    heatmapMarkers=heatmapMarkers
+    heatmapRadius=heatmapRadius
+    heatmapDissipating=heatmapDissipating
+    heatmapOpacity=heatmapOpacity
+    heatmapGradient=heatmapGradient
+    heatmapVisible=heatmapVisible
+    click="onClick"}}
+</div>
+
+<hr>
+
+<p id="heatmapMarkers" class="medium-7">
+  <h3>heatmapMarkers</h3>
+
+  <div class="-mb">
+    <small class="-db">Type</small>
+    <div class="gmaps-inline-code -nml">Ember.Array</div>
+  </div>
+
+  <div class="-mb">
+    <small class="-db">Description</small>
+    Enables heatmap and provides source data for heatmap
+  </div>
+
+  <div class="gmaps-snippet -lmb">
+    <header>Adding</header>
+    <code>
+      <div class="gist">
+        <div class="gist-file">
+          <div class="gist-data">
+            <div class="js-gist-file-update-container js-task-list-container file-box">
+              <div id="file-templa-hbs" class="file">
+                <div class="blob-wrapper data type-handlebars">
+                  <table class="highlight tab-size js-file-line-container" data-tab-size="8">
+                    <tbody><tr>
+                      <td id="file-templa-hbs-L1" class="blob-num js-line-number" data-line-number="1"></td>
+                      <td id="file-templa-hbs-LC1" class="blob-code blob-code-inner js-file-line"><span class="pl-c1">\{{</span><span class="pl-v">g-maps</span> heatmapMarkers=myMarkers<span class="pl-c1">}}</span></td>
+                    </tr>
+                  </tbody></table>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="gist-meta">
+            made with ❤ by <a href="https://github.com">GitHub</a>
+          </div>
+        </div>
+      </div>
+    </code>
+  </div>
+</p>
+
+<hr>
+
+<p id="heatmapRadius" class="medium-7">
+  <h3>heatmapRadius</h3>
+
+  <div class="-mb">
+    <small class="-db">Type</small>
+    Number
+  </div>
+
+  <div class="-mb">
+    <small class="-db">Default</small>
+    <div class="gmaps-inline-code -nml">10</div>
+  </div>
+
+  <div class="-mb">
+    <small class="-db">Description</small>
+    The radius of influence for each data point, in pixels.
+  </div>
+
+  <div class="gmaps-snippet -lmb">
+    <header>Adding</header>
+    <code>
+      <div class="gist">
+        <div class="gist-file">
+          <div class="gist-data">
+            <div class="js-gist-file-update-container js-task-list-container file-box">
+              <div id="file-templa-hbs" class="file">
+                <div class="blob-wrapper data type-handlebars">
+                  <table class="highlight tab-size js-file-line-container" data-tab-size="8">
+                    <tbody><tr>
+                      <td id="file-templa-hbs-L1" class="blob-num js-line-number" data-line-number="1"></td>
+                      <td id="file-templa-hbs-LC1" class="blob-code blob-code-inner js-file-line"><span class="pl-c1">\{{</span><span class="pl-v">g-maps</span> heatmapRadius=myRadius<span class="pl-c1">}}</span></td>
+                    </tr>
+                  </tbody></table>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="gist-meta">
+            made with ❤ by <a href="https://github.com">GitHub</a>
+          </div>
+        </div>
+      </div>
+    </code>
+  </div>
+</p>
+
+<hr>
+
+<p id="heatmapDissipating" class="medium-7">
+  <h3>heatmapDissipating</h3>
+
+  <div class="-mb">
+    <small class="-db">Type</small>
+    Boolean
+  </div>
+
+  <div class="-mb">
+    <small class="-db">Default</small>
+    <div class="gmaps-inline-code -nml">false</div>
+  </div>
+
+  <div class="-mb">
+    <small class="-db">Description</small>
+    Specifies whether heatmaps dissipate on zoom. When dissipating is false the radius of influence increases with zoom level to ensure that the color intensity is preserved at any given geographic location.
+  </div>
+
+  <div class="gmaps-snippet -lmb">
+    <header>Adding</header>
+    <code>
+      <div class="gist">
+        <div class="gist-file">
+          <div class="gist-data">
+            <div class="js-gist-file-update-container js-task-list-container file-box">
+              <div id="file-templa-hbs" class="file">
+                <div class="blob-wrapper data type-handlebars">
+                  <table class="highlight tab-size js-file-line-container" data-tab-size="8">
+                    <tbody><tr>
+                      <td id="file-templa-hbs-L1" class="blob-num js-line-number" data-line-number="1"></td>
+                      <td id="file-templa-hbs-LC1" class="blob-code blob-code-inner js-file-line"><span class="pl-c1">\{{</span><span class="pl-v">g-maps</span> heatmapDissipating=myDissipating<span class="pl-c1">}}</span></td>
+                    </tr>
+                  </tbody></table>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="gist-meta">
+            made with ❤ by <a href="https://github.com">GitHub</a>
+          </div>
+        </div>
+      </div>
+    </code>
+  </div>
+</p>
+
+<hr>
+
+<p id="heatmapOpacity" class="medium-7">
+  <h3>heatmapOpacity</h3>
+
+  <div class="-mb">
+    <small class="-db">Type</small>
+    Number
+  </div>
+
+  <div class="-mb">
+    <small class="-db">Default</small>
+    <div class="gmaps-inline-code -nml">1</div>
+  </div>
+
+  <div class="-mb">
+    <small class="-db">Description</small>
+    The opacity of the heatmap, expressed as a number between 0 and 1.
+  </div>
+
+  <div class="gmaps-snippet -lmb">
+    <header>Adding</header>
+    <code>
+      <div class="gist">
+        <div class="gist-file">
+          <div class="gist-data">
+            <div class="js-gist-file-update-container js-task-list-container file-box">
+              <div id="file-templa-hbs" class="file">
+                <div class="blob-wrapper data type-handlebars">
+                  <table class="highlight tab-size js-file-line-container" data-tab-size="8">
+                    <tbody><tr>
+                      <td id="file-templa-hbs-L1" class="blob-num js-line-number" data-line-number="1"></td>
+                      <td id="file-templa-hbs-LC1" class="blob-code blob-code-inner js-file-line"><span class="pl-c1">\{{</span><span class="pl-v">g-maps</span> heatmapOpacity=myOpacity<span class="pl-c1">}}</span></td>
+                    </tr>
+                  </tbody></table>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="gist-meta">
+            made with ❤ by <a href="https://github.com">GitHub</a>
+          </div>
+        </div>
+      </div>
+    </code>
+  </div>
+</p>
+
+<hr>
+
+<p id="heatmapGradient" class="medium-7">
+  <h3>heatmapGradient</h3>
+
+  <div class="-mb">
+    <small class="-db">Type</small>
+    Array
+  </div>
+
+  <div class="-mb">
+    <small class="-db">Default</small>
+    <div class="gmaps-inline-code -nml">null</div>
+  </div>
+
+  <div class="-mb">
+    <small class="-db">Example</small>
+    <div class="gmaps-inline-code -nml">['rgba(0, 255, 255, 0)', 'rgba(255, 0, 0, 1)']</div>
+  </div>
+
+  <div class="-mb">
+    <small class="-db">Description</small>
+    The color gradient of the heatmap, specified as an array of CSS color strings. All CSS3 colors — including RGBA — are supported except for extended named colors and HSL(A) values.
+  </div>
+
+  <div class="gmaps-snippet -lmb">
+    <header>Adding</header>
+    <code>
+      <div class="gist">
+        <div class="gist-file">
+          <div class="gist-data">
+            <div class="js-gist-file-update-container js-task-list-container file-box">
+              <div id="file-templa-hbs" class="file">
+                <div class="blob-wrapper data type-handlebars">
+                  <table class="highlight tab-size js-file-line-container" data-tab-size="8">
+                    <tbody><tr>
+                      <td id="file-templa-hbs-L1" class="blob-num js-line-number" data-line-number="1"></td>
+                      <td id="file-templa-hbs-LC1" class="blob-code blob-code-inner js-file-line"><span class="pl-c1">\{{</span><span class="pl-v">g-maps</span> heatmapGradient=myGradient<span class="pl-c1">}}</span></td>
+                    </tr>
+                  </tbody></table>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="gist-meta">
+            made with ❤ by <a href="https://github.com">GitHub</a>
+          </div>
+        </div>
+      </div>
+    </code>
+  </div>
+</p>
+
+<hr>
+
+<p id="heatmapVisible" class="medium-7">
+  <h3>heatmapVisible</h3>
+
+  <div class="-mb">
+    <small class="-db">Type</small>
+    Boolean
+  </div>
+
+  <div class="-mb">
+    <small class="-db">Default</small>
+    <div class="gmaps-inline-code -nml">true</div>
+  </div>
+
+  <div class="-mb">
+    <small class="-db">Description</small>
+    Show or hide the heatmap layer.
+  </div>
+
+  <div class="gmaps-snippet -lmb">
+    <header>Adding</header>
+    <code>
+      <div class="gist">
+        <div class="gist-file">
+          <div class="gist-data">
+            <div class="js-gist-file-update-container js-task-list-container file-box">
+              <div id="file-templa-hbs" class="file">
+                <div class="blob-wrapper data type-handlebars">
+                  <table class="highlight tab-size js-file-line-container" data-tab-size="8">
+                    <tbody><tr>
+                      <td id="file-templa-hbs-L1" class="blob-num js-line-number" data-line-number="1"></td>
+                      <td id="file-templa-hbs-LC1" class="blob-code blob-code-inner js-file-line"><span class="pl-c1">\{{</span><span class="pl-v">g-maps</span> heatmapVisible=myVisibility<span class="pl-c1">}}</span></td>
+                    </tr>
+                  </tbody></table>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="gist-meta">
+            made with ❤ by <a href="https://github.com">GitHub</a>
+          </div>
+        </div>
+      </div>
+    </code>
+  </div>
+</p>
