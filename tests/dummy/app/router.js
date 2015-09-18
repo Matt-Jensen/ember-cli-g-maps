@@ -42,8 +42,10 @@ Router.map(function() {
   });
   this.route('heatmap', function() {
     this.route('index');
+    this.route('properties');
+    this.route('marker');
   });
-  this.route('performance', function() {
+  this.route('misc', function() {
     this.route('index');
   });
 });
