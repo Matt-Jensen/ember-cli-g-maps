@@ -1,5 +1,10 @@
 .gmaps-slogan {
+  display: block;
   font-style: italic;
   font-size: rem-calc(14);
-  display: inline-block;
+
+  @include breakpoint(medium) {
+    display: inline-block;
+    margin-left: ($global-padding / 2);
+  }
 }

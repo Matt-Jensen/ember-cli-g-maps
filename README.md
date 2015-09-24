@@ -14,6 +14,8 @@ Built with the [GMaps-For-Apps.js library](https://github.com/Matt-Jensen/gmaps-
 Installation
 ------------
 
+[Full installation & configuration documentation.](http://matt-jensen.github.io/ember-cli-g-maps/#/basic-usage/index)
+
 Supports: 
 - Ember ~1.13
 - Google Maps v3
@@ -46,22 +48,67 @@ You wont see your map unless it has height. In `app/styles/app.css`:
 }
 ```
 
+Documentation
+----------------
+
+**Install and Configuration**
+
+- [Installation and Configuration](http://matt-jensen.github.io/ember-cli-g-maps/#/basic-usage/index)
+- [Setting Google API Key](http://matt-jensen.github.io/ember-cli-g-maps/#/setup/apiKey)
+- [Adding Libraries](http://matt-jensen.github.io/ember-cli-g-maps/#/setup/libraries)
+- [Misc Setup Options](http://matt-jensen.github.io/ember-cli-g-maps/#/setup/misc)
+
+**Component Properties and Events**
+
+- [Basic Map Example](http://matt-jensen.github.io/ember-cli-g-maps/#/basic-usage/index)
+- [Supported Component Properties](http://matt-jensen.github.io/ember-cli-g-maps/#/basic-usage/map-properties)
+- [Supported Component Events](http://matt-jensen.github.io/ember-cli-g-maps/#/basic-usage/map-events)
+
+**Elements**
+
+- [Marker Elements](http://matt-jensen.github.io/ember-cli-g-maps/#/basic-usage/markers)
+- [Circle Elements](http://matt-jensen.github.io/ember-cli-g-maps/#/basic-usage/circles)
+- [Polygon Elements](http://matt-jensen.github.io/ember-cli-g-maps/#/basic-usage/polygons)
+- [Polyline Elements](http://matt-jensen.github.io/ember-cli-g-maps/#/basic-usage/polylines)
+- [Rectangle Elements](http://matt-jensen.github.io/ember-cli-g-maps/#/basic-usage/rectangles)
+- [Overlay Elements](http://matt-jensen.github.io/ember-cli-g-maps/#/basic-usage/overlays)
+
+**Selections**
+
+- [Setup](http://matt-jensen.github.io/ember-cli-g-maps/#/selections/index)
+- [Properties](http://matt-jensen.github.io/ember-cli-g-maps/#/selections/properties)
+- [Events](http://matt-jensen.github.io/ember-cli-g-maps/#/selections/events)
+- [Marker Options](http://matt-jensen.github.io/ember-cli-g-maps/#/selections/marker)
+- [Rectangle Options](http://matt-jensen.github.io/ember-cli-g-maps/#/selections/rectangle)
+- [Circle Options](http://matt-jensen.github.io/ember-cli-g-maps/#/selections/circle)
+- [Polygon Options](http://matt-jensen.github.io/ember-cli-g-maps/#/selections/polygon)
+- [Polyline Options](http://matt-jensen.github.io/ember-cli-g-maps/#/selections/polyline)
+
+**Heatmap**
+
+- [Setup](http://matt-jensen.github.io/ember-cli-g-maps/#/heatmap/index)
+- [Properties](http://matt-jensen.github.io/ember-cli-g-maps/#/heatmap/properties)
+- [Marker](http://matt-jensen.github.io/ember-cli-g-maps/#/heatmap/marker)
+
+
 Currently Supports
 -------------------
 
 - [Polygons](http://hpneo.github.io/gmaps/documentation.html#GMaps-drawPolygon)
 - [Markers](http://hpneo.github.io/gmaps/documentation.html#GMaps-createMarker)
 - [Circles](http://hpneo.github.io/gmaps/documentation.html#GMaps-drawCircle)
-- [Polylines](https://developers.google.com/maps/documentation/javascript/3.exp/reference#CircleOptions#FusionTablesPolylineOptions)
+- [Polylines](https://developers.google.com/maps/documentation/javascript/3.exp/reference#Polyline)
 - [Rectangles](http://hpneo.github.io/gmaps/documentation.html#GMaps-drawRectangle)
-- [Overlays](https://developers.google.com/maps/documentation/javascript/3.exp/reference#CircleOptions#MapPanes)
-- Selections
+- [Overlays](https://developers.google.com/maps/documentation/javascript/3.exp/reference#OverlayView)
+- [Selections](http://matt-jensen.github.io/ember-cli-g-maps/#/selections/index)
 - [Heatmap Layer](https://developers.google.com/maps/documentation/javascript/examples/layer-heatmap)
 
 Usage
 ------
 
 **Simplest Possible G-Map**
+
+[Full simple map documentation](http://matt-jensen.github.io/ember-cli-g-maps/#/basic-usage/index)
 
 In your route:
 ```js
@@ -81,7 +128,10 @@ In your template:
 {{g-maps name="my-map" lat=lat lng=lng zoom=zoom}}
 ```
 
-**Add Markers**
+**Adding Markers**
+
+[Full marker documentation](http://matt-jensen.github.io/ember-cli-g-maps/#/basic-usage/markers)
+
 ```js
 export default Ember.Route.extend({
   setupController: function(controller) {
@@ -102,7 +152,10 @@ export default Ember.Route.extend({
           mouseover: function(event, marker) {},
           mouseout: function(event, marker) {},
           mouseup: function(event, marker) {},
-          mousedown: function(event, marker) {}
+          mousedown: function(event, marker) {},
+          drag: function(e, marker) {},
+          dragstart: function(e, marker) {},
+          dragend: function(e, marker) {}
         }
      ]);
     });
@@ -114,7 +167,10 @@ export default Ember.Route.extend({
 {{g-maps ... markers=markers}}
 ```
 
-**Add Polygons**
+**Adding Polygons**
+
+[Full polygon documentation](http://matt-jensen.github.io/ember-cli-g-maps/#/basic-usage/polygons)
+
 ```js
 export default Ember.Route.extend({
   setupController: function(controller) {
@@ -136,7 +192,13 @@ export default Ember.Route.extend({
           mouseout: function(event, polygon) {},
           mouseup: function(event, polygon) {},
           mousedown: function(event, polygon) {},
-          mousemove: function(event, polygon) {}
+          mousemove: function(event, polygon) {},
+          drag: function(event, polygon) {},
+          dragstart: function(event, polygon) {},
+          dragend: function(event, polygon) {},
+          set_at: function(polygonPath) {},
+          insert_at: function(polygonPath) {},
+          remove_at: function(polygonPath) {}
         }
       ])
     });
@@ -148,7 +210,10 @@ export default Ember.Route.extend({
 {{g-maps ... polygons=polygons}}
 ```
 
-**Add Polylines**
+**Adding Polylines**
+
+[Full polyline documentation](http://matt-jensen.github.io/ember-cli-g-maps/#/basic-usage/polylines)
+
 ```js
 export default Ember.Route.extend({
   setupController: function(controller) {
@@ -174,7 +239,10 @@ export default Ember.Route.extend({
           mouseout: function(event, polyline) {},
           mouseup: function(event, polyline) {},
           mousedown: function(event, polyline) {},
-          mousemove: function(event, polyline) {}
+          mousemove: function(event, polyline) {},
+          set_at: function(polylinePath) {},
+          insert_at: function(polylinePath) {},
+          remove_at: function(polylinePath) {}
         }
       ])
     });
@@ -186,7 +254,10 @@ export default Ember.Route.extend({
 {{g-maps ... polylines=polylines}}
 ```
 
-**Add Circles**
+**Adding Circles**
+
+[Full circle documentation](http://matt-jensen.github.io/ember-cli-g-maps/#/basic-usage/circles)
+
 ```js
 export default Ember.Route.extend({
   setupController: function(controller) {
@@ -205,7 +276,12 @@ export default Ember.Route.extend({
           mouseout: function(event, circle) {},
           mouseup: function(event, circle) {},
           mousedown: function(event, circle) {},
-          mousemove: function(event, circle) {}
+          mousemove: function(event, circle) {},
+          drag: function(e, circle) {},
+          dragstart: function(e, circle) {},
+          dragend: function(e, circle) {},
+          radius_changed: function(circle) {},
+          center_changed: function(circle) {}
         }
       ])
     });
@@ -217,7 +293,10 @@ export default Ember.Route.extend({
 {{g-maps ... circles=circles}}
 ```
 
-**Add Rectangles**
+**Adding Rectangles**
+
+[Full rectangle documentation](http://matt-jensen.github.io/ember-cli-g-maps/#/basic-usage/rectangles)
+
 ```js
 export default Ember.Route.extend({
   setupController: function(controller) {
@@ -227,8 +306,8 @@ export default Ember.Route.extend({
         {
           id: 'unique-rectangle-id',            // Recommended
           bounds: [
-            [40.300476079749465, -102.3046875], // lat, lng
-            [26.258936094468414, -73.828125]    // lat, lng
+            [40.300476079749465, -102.3046875], // NE lat, lng
+            [26.258936094468414, -73.828125]    // SW lat, lng
           ],
           strokeColor: 'green',
           strokeOpacity: 1,
@@ -242,7 +321,11 @@ export default Ember.Route.extend({
           mouseout: function(event, rectangle) {},
           mouseup: function(event, rectangle) {},
           mousedown: function(event, rectangle) {},
-          mousemove: function(event, rectangle) {}
+          mousemove: function(event, rectangle) {},
+          drag: function(e, rectangle) {},
+          dragstart: function(e, rectangle) {},
+          dragend: function(e, rectangle) {},
+          bounds_changed: function(rectangle) {}
         }
       ])
     });
@@ -254,7 +337,10 @@ export default Ember.Route.extend({
 {{g-maps ... rectangles=rectangles}}
 ```
 
-**Add Overlay**
+**Adding Overlays**
+
+[Full overlay documentation](http://matt-jensen.github.io/ember-cli-g-maps/#/basic-usage/overlays)
+
 ```js
 export default Ember.Route.extend({
   setupController: function(controller) {
@@ -286,7 +372,7 @@ export default Ember.Route.extend({
 {{g-maps ... rectangles=rectangles}}
 ```
 
-**Add G-Map Component Events**
+**Basic G-Map Component Event**
 ```js
 export default Ember.Route.extend({
   actions: {
@@ -318,30 +404,17 @@ export default Ember.Route.extend({
 {{g-maps ... click="onMapClick"}}
 ```
 
-**Set Map Type**
+**Setting Map Properties**
+
+[Full component properties documentation](http://matt-jensen.github.io/ember-cli-g-maps/#/basic-usage/map-properties)
+
 ```js
 export default Ember.Route.extend({
   setupController: function(controller) {
     controller.setProperties({
       lat: 32.75494243654723,
       lng: -86.8359375,
-      mapType: 'satellite' // Accepts 'roadmap', 'satellite', 'hybrid', or 'terrain'
-    });
-  }
-});
-```
-
-```handlebars
-{{g-maps ... mapType=mapType}}
-```
-
-**Set Draggable**
-```js
-export default Ember.Route.extend({
-  setupController: function(controller) {
-    controller.setProperties({
-      lat: 32.75494243654723,
-      lng: -86.8359375,
+      mapType: 'satellite', // Accepts 'roadmap', 'satellite', 'hybrid', or 'terrain'
       draggable: false // default = true
     });
   }
@@ -349,7 +422,7 @@ export default Ember.Route.extend({
 ```
 
 ```handlebars
-{{g-maps ... draggable=draggable}}
+{{g-maps ... mapType=mapType draggable=draggable}}
 ```
 
 **React to Map Loading Completion**
@@ -369,6 +442,9 @@ export default Ember.Route.extend({
 ```
 
 ## Supported G-Maps Events ##
+
+[Full component events documentation](http://matt-jensen.github.io/ember-cli-g-maps/#/basic-usage/map-events)
+
 - click
 - bounds_changed
 - center_changed
@@ -389,31 +465,10 @@ export default Ember.Route.extend({
 - tilt_changed
 - zoom_changed
 
-```handlebars
-{{g-maps
-    click="myClickAction"
-    bounds_changed="myBounds_changedAction"
-    center_changed="myCenter_changedAction"
-    dblclick="myDblclickAction"
-    drag="myDragAction"
-    dragend="myDragendAction"
-    dragstart="myDragstartAction"
-    heading_changed="myHeading_changedAction"
-    idle="myIdleAction"
-    maptypeid_changed="myMaptypeid_changedAction"
-    mousemove="myMousemoveAction"
-    mouseout="myMouseoutAction"
-    mouseover="myMouseoverAction"
-    projection_changed="myProjection_changedAction"
-    resize="myResizeAction"
-    rightclick="myRightclickAction"
-    tilesloaded="myTilesloadedAction"
-    tilt_changed="myTilt_changedAction"
-    zoom_changed="myZoom_changedAction"}}
-```
-
 Selections
 ------------
+
+[Full selections documentation](http://matt-jensen.github.io/ember-cli-g-maps/#/selections/index)
 
 Repurposed from the [Google Maps Drawing Manager](https://developers.google.com/maps/documentation/javascript/drawinglayer), Selections allow you to draw shapes on your map instance.  This allows users to select areas on the map to interact with.  Supported selection types include:
 
@@ -434,24 +489,8 @@ ENV.googleMap = {
 };
 ```
 
-**Main Configuration Property**
-Your g-maps component requires a truthy `selections` property to be set in order to instantiate. The `selections` object may contain the following:
-- visible // [boolean] Show or hide the selection controls. {default} true
-- markerOptions // [Object] Supports styling of [marker configuration options](https://developers.google.com/maps/documentation/javascript/reference?hl=en#MarkerOptions)
-- circleOptions // [Object] Supports styling of [circle configuration options](https://developers.google.com/maps/documentation/javascript/reference?hl=en#CircleOptions)
-- polygonOptions // [Object] Supports styling of [polygon configuration options](https://developers.google.com/maps/documentation/javascript/reference?hl=en#FusionTablesPolygonOptions)
-- polylineOptions // [Object] Supports styling of [polyline configuration options](https://developers.google.com/maps/documentation/javascript/reference?hl=en#FusionTablesPolylineOptions)
-- rectangleOptions // [Object] Supports styling of [rectangle configuration options](https://developers.google.com/maps/documentation/javascript/reference?hl=en#RectangleOptions)
-
-
-**Additional Configuration Properties**
-- selectionsDelay // [number] Time until selection is removed. {default} 400.
-- selectionsMode  // [string] Current selection tool. Accepts value 'marker', 'circle', 'rectangle', 'polygon', and 'polyline'. {default} ''.
-- selectionsModes // [array] Supported selection modes. Accpets string values: 'marker', 'circle', 'rectangle', 'polygon', and 'polyline'. {default} ['marker', 'circle', 'rectangle', 'polygon', 'polyline']
-- selectionsPosition // [string] Location of selection controls. Accepts values: 'top', 'top-left', 'top-right', 'left-top', 'right-top', 'left', 'left-center', 'right', 'right-center', 'left-bottom', 'right-bottom', 'bottom', 'bottom-center', 'bottom-left', 'bottom-right'. {default} 'top'.
-
-
 **Actions**
+
 Actions are fired when a selections are completed.  Available selections actions are:
 
 - selectionsMarker
@@ -460,26 +499,10 @@ Actions are fired when a selections are completed.  Available selections actions
 - selectionsPolygon
 - selectionsPolyline
 
-
-**Selections Example**
-
-```handlebars
-{{g-maps
-  ...
-  selections=selections
-  selectionsDelay=delay
-  selectionsMode=activeMode
-  selectionsModes=supportedModes
-  selectionsPosition=position
-  selectionsMarker="onMarkerSelect"
-  selectionsCircle="onCircleSelect"
-  selectionsRectangle="onRectangleSelect"
-  selectionsPolygon="onPolygonSelect"
-  selectionsPolyline="onPolylineSelect"}}
-```
-
 Heatmap
 --------
+
+[Full heatmap documentation](http://matt-jensen.github.io/ember-cli-g-maps/#/heatmap/index)
 
 Heatmap is an abstraction of the [Google Maps Heatmap Layer](https://developers.google.com/maps/documentation/javascript/examples/layer-heatmap).
 
@@ -494,22 +517,10 @@ ENV.googleMap = {
 };
 ```
 
-**Main Configuration Property**
-- heatmapMarkers // [Array] Required property to enable Heatmap. May contain array of [lat, lng], or heatmap-marker config object.
--- [1, 1] // lat, lng
--- { location: [1, 1], weight: 3 } // location: lat,lng array, optional weight parameter
---- [WeightedLocation](https://developers.google.com/maps/documentation/javascript/reference#WeightedLocation)
-- heatmapRadius [Number] Size of all heatmap markers {default} 0.
-- heatmapDissipating [Boolean] Specifies whether heatmaps dissipate on zoom. When dissipating is false the radius of influence increases with zoom level to ensure that the color intensity is preserved at any given geographic location. {default} false.
-- heatmapOpacity [Number] The opacity of the heatmap, expressed as a number between 0 and 1. {default} 1.
-- heatmapGradient [Array] The color gradient of the heatmap, specified as an array of CSS color strings.
--- Supports all CSS3 colors — including RGBA (except: extended named colors and HSL(A)).
-- heatmapVisible // [boolean] Show or hide the Heatmap Layer. {default} true.
-
-
 Planned Features
 ----------------
 
+- [Routes](https://hpneo.github.io/gmaps/documentation.html#GMaps-drawRoute)
 - [Controls](http://hpneo.github.io/gmaps/examples/custom_controls.html)
 - [Layers & KML Layers](https://developers.google.com/maps/documentation/javascript/3.exp/reference#CircleOptions#KmlLayerOptions)
 - [Routes](http://hpneo.github.io/gmaps/examples/routes.html)

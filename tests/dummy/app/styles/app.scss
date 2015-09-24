@@ -6,16 +6,23 @@
 @import 'extensions/foundation';
 
 @import 'classes/google';
+@import 'classes/gist';
 
 @import 'themes/google/button';
 @import 'themes/google/tabs';
 @import 'themes/google/navigation';
 @import 'themes/google/sidebar';
+@import 'themes/google/headers';
 
 @import 'layouts/main';
 @import 'layouts/g-maps';
 
 @import 'components/headers';
+@import 'components/snippet';
+@import 'components/inline-code';
+@import 'components/inline-file-path';
+@import 'components/hamburger-icon';
+@import 'components/fade-text';
 
 @import 'helpers/margin';
 @import 'helpers/padding';
@@ -26,7 +33,7 @@
     display: inline-block;
     font-size: 16px;
     padding: 4px 8px;
-    background: #337ab7;
+    background: $primary-color;
     color: #fff;
     border-radius: 3px;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.22);
@@ -39,8 +46,8 @@
     font-size: 20px;
     line-height: 30px;
     opacity: 0.8;
-    background: #4477aa;
-    border:solid 3px #336699;
+    background: $primary-color;
+    border: 3px solid $primary-color;
     border-radius: 4px;
     box-shadow: 2px 2px 10px #333;
     text-shadow: 1px 1px 1px #666;
@@ -59,12 +66,12 @@
     bottom: -15px;
     border-left: 16px solid transparent;
     border-right: 16px solid transparent;
-    border-top: 16px solid #336699;
+    border-top: 16px solid $primary-color;
   }
 
   .overlay_arrow.below {
     top: -15px;
     border-left: 16px solid transparent;
     border-right: 16px solid transparent;
-    border-bottom: 16px solid #336699;
+    border-bottom: 16px solid $primary-color;
   }

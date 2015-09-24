@@ -1,0 +1,127 @@
+<h2>Marker</h2>
+
+<p class="medium-7 large-5">
+  Each heatmap marker can be configured in one of two ways. First is the [lat,lng] array style which applies a default weight to the marker.  The more verbose object approach allows for specifying a unique weight.
+</p>
+
+<div class="gmaps-snippet">
+  <header>Simple Array Marker</header>
+  <code>
+    <div class="gist">
+      <div class="gist-file">
+        <div class="gist-data">
+          <div class="js-gist-file-update-container js-task-list-container file-box">
+            <div id="file-ember-cli-g-maps__app-js" class="file">
+              <div class="blob-wrapper data type-javascript">
+                <table class="highlight tab-size js-file-line-container" data-tab-size="8">
+                  <tbody><tr>
+                    <td id="file-ember-cli-g-maps__app-js-L1" class="blob-num js-line-number" data-line-number="1"></td>
+                    <td id="file-ember-cli-g-maps__app-js-LC1" class="blob-code blob-code-inner js-file-line"><span class="pl-k">export</span> <span class="pl-k">default</span> Ember.Route.extend({</td>
+                  </tr>
+                  <tr>
+                    <td id="file-ember-cli-g-maps__app-js-L2" class="blob-num js-line-number" data-line-number="2"></td>
+                    <td id="file-ember-cli-g-maps__app-js-LC2" class="blob-code blob-code-inner js-file-line">  <span class="pl-en">setupController</span><span class="pl-k">:</span> <span class="pl-k">function</span>(<span class="pl-smi">controller</span>) {</td>
+                  </tr>
+                  <tr>
+                    <td id="file-ember-cli-g-maps__app-js-L3" class="blob-num js-line-number" data-line-number="3"></td>
+                    <td id="file-ember-cli-g-maps__app-js-LC3" class="blob-code blob-code-inner js-file-line">    controller.setProperties({</td>
+                  </tr>
+                  <tr>
+                    <td id="file-ember-cli-g-maps__app-js-L4" class="blob-num js-line-number" data-line-number="4"></td>
+                    <td id="file-ember-cli-g-maps__app-js-LC4" class="blob-code blob-code-inner js-file-line">      heatmapMarkers<span class="pl-k">:</span> Ember.A([</td>
+                  </tr>
+                  <tr>
+                    <td id="file-ember-cli-g-maps__app-js-L5" class="blob-num js-line-number" data-line-number="5"></td>
+                    <td id="file-ember-cli-g-maps__app-js-LC5" class="blob-code blob-code-inner js-file-line">        [<span class="pl-c1">33.524796085610056</span>, <span class="pl-k">-</span><span class="pl-c1">86.81121826171875</span>]</td>
+                  </tr>
+                  <tr>
+                    <td id="file-ember-cli-g-maps__app-js-L6" class="blob-num js-line-number" data-line-number="6"></td>
+                    <td id="file-ember-cli-g-maps__app-js-LC6" class="blob-code blob-code-inner js-file-line">      ])</td>
+                  </tr>
+                  <tr>
+                    <td id="file-ember-cli-g-maps__app-js-L7" class="blob-num js-line-number" data-line-number="7"></td>
+                    <td id="file-ember-cli-g-maps__app-js-LC7" class="blob-code blob-code-inner js-file-line">    });</td>
+                  </tr>
+                  <tr>
+                    <td id="file-ember-cli-g-maps__app-js-L8" class="blob-num js-line-number" data-line-number="8"></td>
+                    <td id="file-ember-cli-g-maps__app-js-LC8" class="blob-code blob-code-inner js-file-line">  }</td>
+                  </tr>
+                  <tr>
+                    <td id="file-ember-cli-g-maps__app-js-L9" class="blob-num js-line-number" data-line-number="9"></td>
+                    <td id="file-ember-cli-g-maps__app-js-LC9" class="blob-code blob-code-inner js-file-line">});</td>
+                  </tr>
+                </tbody></table>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="gist-meta">
+          made with ❤ by <a href="https://github.com">GitHub</a>
+        </div>
+      </div>
+    </div>
+  </code>
+</div>
+
+<p class="medium-7 large-5">
+Or provide the marker with a unique weight:
+</p>
+
+<div class="gmaps-snippet">
+  <header>Weighted Object</header>
+  <code>
+    <div class="gist">
+      <div class="gist-file">
+        <div class="gist-data">
+          <div class="js-gist-file-update-container js-task-list-container file-box">
+            <div id="file-ember-cli-g-maps__app-js" class="file">
+              <div class="blob-wrapper data type-javascript">
+                <table class="highlight tab-size js-file-line-container" data-tab-size="8">
+                  <tbody><tr>
+                    <td id="file-ember-cli-g-maps__app-js-L1" class="blob-num js-line-number" data-line-number="1"></td>
+                    <td id="file-ember-cli-g-maps__app-js-LC1" class="blob-code blob-code-inner js-file-line"><span class="pl-k">export</span> <span class="pl-k">default</span> Ember.Route.extend({</td>
+                  </tr>
+                  <tr>
+                    <td id="file-ember-cli-g-maps__app-js-L2" class="blob-num js-line-number" data-line-number="2"></td>
+                    <td id="file-ember-cli-g-maps__app-js-LC2" class="blob-code blob-code-inner js-file-line">  <span class="pl-en">setupController</span><span class="pl-k">:</span> <span class="pl-k">function</span>(<span class="pl-smi">controller</span>) {</td>
+                  </tr>
+                  <tr>
+                    <td id="file-ember-cli-g-maps__app-js-L3" class="blob-num js-line-number" data-line-number="3"></td>
+                    <td id="file-ember-cli-g-maps__app-js-LC3" class="blob-code blob-code-inner js-file-line">    controller.setProperties({</td>
+                  </tr>
+                  <tr>
+                    <td id="file-ember-cli-g-maps__app-js-L4" class="blob-num js-line-number" data-line-number="4"></td>
+                    <td id="file-ember-cli-g-maps__app-js-LC4" class="blob-code blob-code-inner js-file-line">      heatmapMarkers<span class="pl-k">:</span> Ember.A([</td>
+                  </tr>
+                  <tr>
+                    <td id="file-ember-cli-g-maps__app-js-L5" class="blob-num js-line-number" data-line-number="5"></td>
+                    <td id="file-ember-cli-g-maps__app-js-LC5" class="blob-code blob-code-inner js-file-line">        { location<span class="pl-k">:</span> [<span class="pl-c1">33.524796085610056</span>, <span class="pl-k">-</span><span class="pl-c1">86.81121826171875</span>], weight<span class="pl-k">:</span> <span class="pl-c1">5</span> }</td>
+                  </tr>
+                  <tr>
+                    <td id="file-ember-cli-g-maps__app-js-L6" class="blob-num js-line-number" data-line-number="6"></td>
+                    <td id="file-ember-cli-g-maps__app-js-LC6" class="blob-code blob-code-inner js-file-line">      ])</td>
+                  </tr>
+                  <tr>
+                    <td id="file-ember-cli-g-maps__app-js-L7" class="blob-num js-line-number" data-line-number="7"></td>
+                    <td id="file-ember-cli-g-maps__app-js-LC7" class="blob-code blob-code-inner js-file-line">    });</td>
+                  </tr>
+                  <tr>
+                    <td id="file-ember-cli-g-maps__app-js-L8" class="blob-num js-line-number" data-line-number="8"></td>
+                    <td id="file-ember-cli-g-maps__app-js-LC8" class="blob-code blob-code-inner js-file-line">  }</td>
+                  </tr>
+                  <tr>
+                    <td id="file-ember-cli-g-maps__app-js-L9" class="blob-num js-line-number" data-line-number="9"></td>
+                    <td id="file-ember-cli-g-maps__app-js-LC9" class="blob-code blob-code-inner js-file-line">});</td>
+                  </tr>
+                </tbody></table>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="gist-meta">
+          made with ❤ by <a href="https://github.com">GitHub</a>
+        </div>
+      </div>
+    </div>
+  </code>
+</div>

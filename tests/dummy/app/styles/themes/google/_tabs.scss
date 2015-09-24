@@ -1,15 +1,28 @@
+$google-tabs-height: rem-calc(44);
+
 .th-google-tabs {
+  width: 100%;
   list-style-type: none;
   padding: 0;
   margin: 0;
-  white-space: nowrap;
-  display: inline-block;
+  height: $google-tabs-height;
+  overflow: hidden;
+
+  &.active {
+    height: auto;
+  }
+
+  @include breakpoint(medium-large) {
+    width: auto;
+    height: auto;
+    white-space: nowrap;
+    display: inline-block;
+  }
 }
 
 .th-google-tabs__tab,
 .title-bar .th-google-tabs__tab {
-  display: inline-block;
-  padding: 0;
+  display: block;
 
   > a {
     color: rgba($white-color, 0.6);
@@ -18,16 +31,44 @@
     text-transform: uppercase;
     font-size: rem-calc(14);
     font-weight: bold;
-    line-height: rem-calc(44);
+    line-height: $google-tabs-height;
 
     &.active {
       color: $white-color;
-      border-bottom: 2px solid $white-color;
+      background-color: rgba(255, 255, 255, 0.16);
+      box-shadow: inset 3px 0 0 $white-color;
     }
 
     &:hover {
       color: $white-color;
     }
   }
+
+  @include breakpoint(medium-large) {
+    display: inline-block;
+    padding: 0;
+
+    > a {
+      &.active {
+        border-left-width: 0;
+        background-color: rgba(0,0,0,0);
+        box-shadow: inset 0 -2px 0 $white-color;
+      }
+    }
+  }
 }
 
+.th-google-tabs__mobile-nav {
+  height: $google-tabs-height;
+  line-height: $google-tabs-height;
+  padding: 0 $global-padding;
+
+  button {
+    margin-top: -2px;
+    vertical-align: middle;
+  }
+
+  @include breakpoint(medium-large) {
+    display: none;
+  }
+}

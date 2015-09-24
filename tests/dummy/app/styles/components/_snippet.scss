@@ -1,0 +1,21 @@
+.gmaps-snippet {
+  max-width: 100%;
+
+  header {
+    margin-bottom: -1px;
+    padding: rem-calc(10);
+
+    background-color: #f7f7f7;
+    border-top-left-radius: 3px;
+    border-top-right-radius: 3px;
+    border: 1px solid #ddd;
+
+    font-family: $gist-font-family;
+    font-size: rem-calc(14);
+    font-weight: bold;
+    color: $gist-font-color;
+
+    position: relative;
+    z-index: 1;
+  }
+}

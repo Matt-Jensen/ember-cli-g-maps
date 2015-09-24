@@ -1,0 +1,19 @@
+@import 'settings';
+
+.th-google-chapter-header {
+  margin: 0 0 $global-padding;
+  padding: 0;
+  color: $google-gray;
+  letter-spacing: -.01em;
+
+  line-height: 1.4;
+
+  @include breakpoint(medium) {
+    margin-bottom: rem-calc(20);
+    border-bottom: 1px solid #E4E4E4;
+  }
+
+  @include breakpoint(large) {
+    margin-bottom: rem-calc(35);
+  }
+}

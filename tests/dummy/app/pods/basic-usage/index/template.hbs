@@ -1,1 +1,93 @@
-<h3>Docs Coming Soon!</h3>
+<p class="medium-7 large-4">
+  Once you've {{#link-to 'setup'}}installed and configured{{/link-to}} <strong>ember-cli-g-maps</strong> adding a basic map is simple. In your route/routable-component you only really need 3 properties: <span class="gmaps-inline-code">lat</span>, <span class="gmaps-inline-code">lng</span> and <span class="gmaps-inline-code">zoom</span> like so:
+</p>
+
+<article class="grid-block">
+
+  <div class="grid-content medium-6 gmaps-snippet">
+    <header>route.js / routable-component.js</header>
+    <code>
+      <div id="gist26218064" class="gist">
+        <div class="gist-file">
+          <div class="gist-data">
+            <div class="js-gist-file-update-container js-task-list-container file-box">
+              <div id="file-route-js" class="file">
+                <div class="blob-wrapper data type-javascript">
+                  <table class="highlight tab-size js-file-line-container" data-tab-size="8">
+                    <tbody><tr>
+                      <td id="file-route-js-L1" class="blob-num js-line-number" data-line-number="1"></td>
+                      <td id="file-route-js-LC1" class="blob-code blob-code-inner js-file-line"><span class="pl-k">export</span> <span class="pl-k">default</span> Ember.Route.extend({</td>
+                    </tr>
+                    <tr>
+                      <td id="file-route-js-L2" class="blob-num js-line-number" data-line-number="2"></td>
+                      <td id="file-route-js-LC2" class="blob-code blob-code-inner js-file-line">  <span class="pl-en">setupController</span><span class="pl-k">:</span> <span class="pl-k">function</span>(<span class="pl-smi">controller</span>) {</td>
+                    </tr>
+                    <tr>
+                      <td id="file-route-js-L3" class="blob-num js-line-number" data-line-number="3"></td>
+                      <td id="file-route-js-LC3" class="blob-code blob-code-inner js-file-line">    controller.setProperties({ </td>
+                    </tr>
+                    <tr>
+                      <td id="file-route-js-L4" class="blob-num js-line-number" data-line-number="4"></td>
+                      <td id="file-route-js-LC4" class="blob-code blob-code-inner js-file-line">      lat<span class="pl-k">:</span> <span class="pl-c1">32.75494243654723</span>,</td>
+                    </tr>
+                    <tr>
+                      <td id="file-route-js-L5" class="blob-num js-line-number" data-line-number="5"></td>
+                      <td id="file-route-js-LC5" class="blob-code blob-code-inner js-file-line">      lng<span class="pl-k">:</span> <span class="pl-k">-</span><span class="pl-c1">86.8359375</span>,</td>
+                    </tr>
+                    <tr>
+                      <td id="file-route-js-L6" class="blob-num js-line-number" data-line-number="6"></td>
+                      <td id="file-route-js-LC6" class="blob-code blob-code-inner js-file-line">      zoom<span class="pl-k">:</span> <span class="pl-c1">4</span></td>
+                    </tr>
+                    <tr>
+                      <td id="file-route-js-L7" class="blob-num js-line-number" data-line-number="7"></td>
+                      <td id="file-route-js-LC7" class="blob-code blob-code-inner js-file-line">    });</td>
+                    </tr>
+                    <tr>
+                      <td id="file-route-js-L8" class="blob-num js-line-number" data-line-number="8"></td>
+                      <td id="file-route-js-LC8" class="blob-code blob-code-inner js-file-line">  }</td>
+                    </tr>
+                    <tr>
+                      <td id="file-route-js-L9" class="blob-num js-line-number" data-line-number="9"></td>
+                      <td id="file-route-js-LC9" class="blob-code blob-code-inner js-file-line">});</td>
+                    </tr>
+                  </tbody></table>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="gist-meta">
+            made with ❤ by <a href="https://github.com">GitHub</a>
+          </div>
+        </div>
+      </div>
+    </code>
+  </div>
+
+  <div class="grid-content medium-6 gmaps-snippet">
+    <header>template.hbs</header>
+    <code>
+      <div id="gist26218064" class="gist">
+        <div class="gist-file">
+          <div class="gist-data">
+            <div class="js-gist-file-update-container js-task-list-container file-box">
+              <div id="file-templa-hbs" class="file">
+                <div class="blob-wrapper data type-handlebars">
+                  <table class="highlight tab-size js-file-line-container" data-tab-size="8">
+                    <tbody><tr>
+                      <td id="file-templa-hbs-L1" class="blob-num js-line-number" data-line-number="1"></td>
+                      <td id="file-templa-hbs-LC1" class="blob-code blob-code-inner js-file-line"><span class="pl-c1">\{{</span><span class="pl-v">g-maps</span> name=<span class="pl-s"><span class="pl-pds">"</span>my-map<span class="pl-pds">"</span></span> lat=lat lng=lng zoom=zoom<span class="pl-c1">}}</span></td>
+                    </tr>
+                  </tbody></table>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="gist-meta">
+            made with ❤ by <a href="https://github.com">GitHub</a>
+          </div>
+        </div>
+      </div>
+    </code>
+  </div>
+
+</article>

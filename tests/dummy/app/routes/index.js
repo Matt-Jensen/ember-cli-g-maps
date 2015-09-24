@@ -16,11 +16,10 @@ export default Ember.Route.extend({
       markers: Ember.A([
         {
           id: 'jdlkfajs22',
-          lat: 33.516674497188255,
-          lng: -86.80091857910156,
-          infoWindow: { content: '<p>Birmingham</p>',
-          visible: true },
-          click: function() {console.log('Boo Boo Boo'); }
+          lat: 34.24813554589754,
+          lng: -79.541015625,
+          infoWindow: { content: '<p class="-nmb">Info Window</p>', visible: true },
+          click: function() {console.log('You clicked the marker'); }
         }
       ]),
       heatmapMarkers: Ember.A([
@@ -40,15 +39,15 @@ export default Ember.Route.extend({
       circles: Ember.A([
         {
           id: 'lfkjasd23faj2f31',
-          lat: 32.75494243654723,
-          lng: -86.8359375,
-          radius: 500000,
+          lat: 39.92237576385938,
+          lng: -98.26171875,
+          radius: 400000,
           fillOpacity: '0.1',
           fillColor: '#D43029',
           strokeColor: '#D43029',
           zIndex: 9,
+          editable: true,
           click: bind(this, function(e, circle) { 
-            console.log('I miss \'ole\' \'bamy once again and I think it\'s a sin'); 
             console.log('Route context:', this);
             console.log('Event data:', e);
             console.log('Circle data:', circle);
@@ -62,11 +61,11 @@ export default Ember.Route.extend({
           strokeOpacity: 1,
           strokeWeight: 6,
           path: [
-            [34.22088697429015, -100.72265625],
-            [33.78371305547283, -92.8125],
-            [35.94688293218141, -94.833984375],
-            [32.45879106783458, -95.712890625],
-            [33.78371305547283, -92.8125]
+            [35.47409160773029, -110.302734375],
+            [31.667408317080916, -106.69921875],
+            [30.614277412827747, -100.810546875],
+            [33.07773395720986, -97.119140625],
+            [35.75988604933661, -95.80078125]
           ],
           editable: true,
           mouseup: function(e, polyline) {
@@ -76,7 +75,7 @@ export default Ember.Route.extend({
       ]),
       rectangles: Ember.A([
         {
-          bounds: [[40.300476079749465, -102.3046875],[26.258936094468414, -73.828125]],
+          bounds: [[42.1104489601222, -112.763671875], [38.49229419236133, -106.787109375]],
           strokeColor: '#1A954A',
           strokeOpacity: 1,
           strokeWeight: 3,
@@ -84,24 +83,13 @@ export default Ember.Route.extend({
           fillOpacity: 0.2,
           draggable: true,
           mouseup: function(e, rect) {
-            console.log('Big wheels keep on turnin\'', e);
             console.log('Rectangle NE corner:', rect.bounds.getNorthEast());
             console.log('Rectangle SW corner:', rect.bounds.getSouthWest());
           }
         }
       ]),
 
-      overlays: Ember.A([
-        { 
-          id: 'rj32faks09-adfkjhas-3hfds',
-          lat: 32.7,
-          lng: -86.8,
-          content: '<strong class="shaa-label shaa-label--draggable">Alabama</strong>',
-          mousedown: function(e, o) {
-            console.log('Where the skys are so blue', e, o);
-          }
-        }
-      ]),
+      overlays: Ember.A([]),
 
       // Extensions //
       selections: {
@@ -198,7 +186,7 @@ export default Ember.Route.extend({
         id: 'zafa3239-khafj32-dajfk332-'+Ember.uuid(),
         lat: e.latLng.lat(),
         lng: e.latLng.lng(),
-        content: '<div class="shaa-overlay">Alabama!<div class="overlay_arrow above"></div></div>',
+        content: '<div class="shaa-overlay">Overlay<div class="overlay_arrow above"></div></div>',
         verticalAlign: 'top',
         horizontalAlign: 'center',
         click: function(e, o) {

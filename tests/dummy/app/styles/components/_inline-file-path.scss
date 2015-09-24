@@ -1,0 +1,17 @@
+.gmaps-inline-file-path {
+  list-style: none;
+
+  @extend .gmaps-inline-code;
+
+  > * {
+    display: inline-block;
+    color: $gist-error;
+
+    &:before {
+      content: '/';
+      display: inline-block;
+      padding: rem-calc(0 1);
+      color: $gist-font-color;
+    }
+  }
+}

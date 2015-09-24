@@ -1,0 +1,44 @@
+<main class="grid-block l-main">
+  <aside class="grid-block medium-3 vertical show-for-medium">
+    <nav class="th-google-sidebar">
+      <ul class="th-google-sidebar__links">
+        {{#each routes as |route|}}
+          <li>
+            {{#if route.label}}<strong>{{route.label}}</strong>{{/if}}
+            {{#each route.links as |link|}}
+              {{#link-to link.href}}{{link.text}}{{/link-to}}
+            {{/each}}
+          </li>
+        {{/each}}
+      </ul>
+    </nav>
+  </aside>
+
+  <div class="grid-block small-12 medium-9 vertical -of-visible">
+    <h1 class="th-google-chapter-header">
+      <span class="gmaps-hamburger-icon show-for-small--inline" {{action 'toggleMobileNav'}}></span>
+      {{header}}
+    </h1>
+    <section class="grid-content -of-visible -np">
+      {{outlet}}
+    </section>
+  </div>
+
+  {{#gmaps-mobile-nav isActive=isMobileNavOpen as |mobile|}}
+    <aside class="panel panel-left panel--mobile-nav {{if isMobileNavOpen 'is-active'}}">
+      <nav>
+        <a class="close-button" {{action "closeMobileNav" target=mobile}}>×</a>
+        <ul class="th-google-sidebar__links">
+          {{#each routes as |route|}}
+            <li {{action "toggleMobileNav"}}>
+              {{#if route.label}}<strong>{{route.label}}</strong>{{/if}}
+              {{#each route.links as |link|}}
+                {{#link-to link.href}}{{link.text}}{{/link-to}}
+              {{/each}}
+            </li>
+          {{/each}}
+        </ul>
+      </nav>
+    </aside>
+  {{/gmaps-mobile-nav}}
+</main>
