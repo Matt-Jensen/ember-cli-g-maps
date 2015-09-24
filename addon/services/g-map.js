@@ -6,8 +6,6 @@ export default Ember.Service.extend({
     const maps = Ember.A([]);
 
     return {
-
-      // TODO: remove for 0.4.0 release
       select(name) {
         for(let i = 0, l = maps.length; i < l; i++) {
           if(maps[i].name === name){ return maps[i]; }
@@ -15,7 +13,6 @@ export default Ember.Service.extend({
         return undefined;
       },
 
-      // TODO: remove for 0.4.0 release
       add(name, map) {
         if(typeof name !== 'string') {
           throw new Error('GMap name must be a string');
@@ -44,7 +41,6 @@ export default Ember.Service.extend({
         return mapItem;
       },
 
-      // TODO: remove for 0.4.0 release
       remove(name) {
         for(let i = 0, l = maps.length; i < l; i++) {
           if(maps[i].name === name){ 
@@ -55,5 +51,12 @@ export default Ember.Service.extend({
         return false;
       }
     };
-  })()
+  })(),
+
+  geocode(options) {
+    return new Ember.RSVP.Promise(function(resolve) {
+      options.callback = resolve;
+      GMaps.prototype.geocode(options);
+    });
+  }
 });

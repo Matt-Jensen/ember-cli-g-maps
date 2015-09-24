@@ -5,7 +5,18 @@ let markers;
 let newGradient;
 
 export default Ember.Route.extend({
+  gMap: Ember.inject.service(),
+
   setupController(controller) {
+    // this.get('gMap').geocode({
+    //   address: '3136 Sprence Springs Rd'
+    // }).then((response) => {
+    //   controller.setProperties({
+    //     lat: response[0].geometry.location.lat(),
+    //     lng: response[0].geometry.location.lng()
+    //   });
+    // });
+
     controller.setProperties({
       lat: 33.524796085610056,
       lng: -86.81121826171875,
