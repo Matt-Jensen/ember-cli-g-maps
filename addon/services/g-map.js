@@ -54,8 +54,14 @@ export default Ember.Service.extend({
   })(),
 
   geocode(options) {
-    return new Ember.RSVP.Promise(function(resolve) {
-      options.callback = resolve;
+    return new Ember.RSVP.Promise(function(resolve, reject) {
+      options.callback = function(result, status) {
+        if (status === 'OK' || status === 'ZERO_RESULTS') {
+          resolve(result);
+        } else {
+          reject({ status, message: result.error_message });
+        }
+      };
       GMaps.prototype.geocode(options);
     });
   }
