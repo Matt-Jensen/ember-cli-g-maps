@@ -73,6 +73,9 @@ Documentation
 - [Rectangle Elements](http://matt-jensen.github.io/ember-cli-g-maps/#/basic-usage/rectangles)
 - [Overlay Elements](http://matt-jensen.github.io/ember-cli-g-maps/#/basic-usage/overlays)
 
+**Services**
+- [Geocoding](http://matt-jensen.github.io/ember-cli-g-maps/#/service/geocoding)
+
 **Selections**
 
 - [Setup](http://matt-jensen.github.io/ember-cli-g-maps/#/selections/index)
