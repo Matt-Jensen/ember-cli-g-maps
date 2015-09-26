@@ -1,5 +1,270 @@
-<h2>Feature Coming Soon!</h2>
+<h2>Geocoding</h2>
 
 <p class="medium-7 large-5">
-  The <span class="gmaps-inline-code">geocode</span> if given a human readable address will return a promise, that if successfully resolved, will return a [lat, lng] array.  If given both lat and lng coordinates will do reverse geocode returning a promise that, if successful, will resolve a human readable address or place. You can read more about the <a href="https://developers.google.com/maps/documentation/geocoding/intro" target="_blank">Google Maps Geocoding API here</a>
+  The <span class="gmaps-inline-code">geocode</span> service if given a human readable address will return a promise that resolves an array of possible desinations.  If given a lat and lng parameters will do reverse geocoding. This returns a promise that resolves an array of human readable addresses or places. You can read more about the <a href="https://developers.google.com/maps/documentation/geocoding/intro" target="_blank">Google Maps Geocoding API here</a>.
+</p>
+
+<div class="grid-block -pb">
+  <form class="grid-content small-12 medium-6 -smb" {{action "searchGeocode" geocode on="submit"}}>
+    <small class="-db -smb">Basic Geocode Lookup</small>
+    {{input 
+      class="-ilb -smb -full"
+      value=geocode
+      disabled=isRequesting}}
+    <br>
+    <button class="th-google-button--small">Search Geocode</button>
+  </form>
+  <div class="grid-content small-12 medium-6 -smb">
+    {{#each suggestions as |sug|}}
+      <small class="-db">{{sug}}</small>
+    {{/each}}
+  </div>
+</div>
+
+<p>Markers are geocode suggestions. Clicking the map will request a reverse geocode.</p>
+
+<div class="grid-content -np -mb">
+  {{g-maps class="gmaps-docs-map" lat=lat lng=lng zoom=zoom markers=markers click="click"}}
+</div>
+
+<div class="grid-block">
+
+  <div class="grid-content gmaps-snippet small-12 -mb">
+    <header>Geocode Example Usage</header>
+    <code>
+      <div class="gist">
+        <div class="gist-file">
+          <div class="gist-data">
+            <div class="js-gist-file-update-container js-task-list-container file-box">
+              <div id="file-g-map-service-js" class="file">
+                <div class="blob-wrapper data type-javascript">
+                  <table class="highlight tab-size js-file-line-container" data-tab-size="8">
+                    <tbody><tr>
+                      <td id="file-g-map-service-js-L1" class="blob-num js-line-number" data-line-number="1"></td>
+                      <td id="file-g-map-service-js-LC1" class="blob-code blob-code-inner js-file-line"><span class="pl-k">export</span> <span class="pl-k">default</span> Ember.Route.extend({</td>
+                    </tr>
+                    <tr>
+                      <td id="file-g-map-service-js-L2" class="blob-num js-line-number" data-line-number="2"></td>
+                      <td id="file-g-map-service-js-LC2" class="blob-code blob-code-inner js-file-line">  gMap<span class="pl-k">:</span> Ember.inject.service(),</td>
+                    </tr>
+                    <tr>
+                      <td id="file-g-map-service-js-L3" class="blob-num js-line-number" data-line-number="3"></td>
+                      <td id="file-g-map-service-js-LC3" class="blob-code blob-code-inner js-file-line">
+                      </td>
+                    </tr>
+                    <tr>
+                      <td id="file-g-map-service-js-L4" class="blob-num js-line-number" data-line-number="4"></td>
+                      <td id="file-g-map-service-js-LC4" class="blob-code blob-code-inner js-file-line">  <span class="pl-en">standardGeocode</span>(<span class="pl-smi">address</span>) {</td>
+                    </tr>
+                    <tr>
+                      <td id="file-g-map-service-js-L5" class="blob-num js-line-number" data-line-number="5"></td>
+                      <td id="file-g-map-service-js-LC5" class="blob-code blob-code-inner js-file-line">    <span class="pl-v">this</span>.get(<span class="pl-s"><span class="pl-pds">'</span>gMap<span class="pl-pds">'</span></span>)</td>
+                    </tr>
+                    <tr>
+                      <td id="file-g-map-service-js-L6" class="blob-num js-line-number" data-line-number="6"></td>
+                      <td id="file-g-map-service-js-LC6" class="blob-code blob-code-inner js-file-line">      .geocode({address})</td>
+                    </tr>
+                    <tr>
+                      <td id="file-g-map-service-js-L7" class="blob-num js-line-number" data-line-number="7"></td>
+                      <td id="file-g-map-service-js-LC7" class="blob-code blob-code-inner js-file-line">      .then((<span class="pl-smi">geocodes</span>)<span class="pl-k"> =&gt;</span> {</td>
+                    </tr>
+                    <tr>
+                      <td id="file-g-map-service-js-L8" class="blob-num js-line-number" data-line-number="8"></td>
+                      <td id="file-g-map-service-js-LC8" class="blob-code blob-code-inner js-file-line">        <span class="pl-c">// Get first geocode latitude</span></td>
+                    </tr>
+                    <tr>
+                      <td id="file-g-map-service-js-L9" class="blob-num js-line-number" data-line-number="9"></td>
+                      <td id="file-g-map-service-js-LC9" class="blob-code blob-code-inner js-file-line">        <span class="pl-en">console</span>.<span class="pl-c1">log</span>(geocodes[<span class="pl-c1">0</span>].geometry.<span class="pl-c1">location</span>.lat());</td>
+                    </tr>
+                    <tr>
+                      <td id="file-g-map-service-js-L10" class="blob-num js-line-number" data-line-number="10"></td>
+                      <td id="file-g-map-service-js-LC10" class="blob-code blob-code-inner js-file-line">      })</td>
+                    </tr>
+                    <tr>
+                      <td id="file-g-map-service-js-L11" class="blob-num js-line-number" data-line-number="11"></td>
+                      <td id="file-g-map-service-js-LC11" class="blob-code blob-code-inner js-file-line">      .catch((<span class="pl-smi">err</span>)<span class="pl-k"> =&gt;</span> <span class="pl-en">console</span>.<span class="pl-c1">error</span>(err));</td>
+                    </tr>
+                    <tr>
+                      <td id="file-g-map-service-js-L12" class="blob-num js-line-number" data-line-number="12"></td>
+                      <td id="file-g-map-service-js-LC12" class="blob-code blob-code-inner js-file-line">  },</td>
+                    </tr>
+                    <tr>
+                      <td id="file-g-map-service-js-L13" class="blob-num js-line-number" data-line-number="13"></td>
+                      <td id="file-g-map-service-js-LC13" class="blob-code blob-code-inner js-file-line">
+                      </td>
+                    </tr>
+                    <tr>
+                      <td id="file-g-map-service-js-L14" class="blob-num js-line-number" data-line-number="14"></td>
+                      <td id="file-g-map-service-js-LC14" class="blob-code blob-code-inner js-file-line">  <span class="pl-en">reverseGeocode</span>(<span class="pl-smi">lat</span>, <span class="pl-smi">lng</span>) {</td>
+                    </tr>
+                    <tr>
+                      <td id="file-g-map-service-js-L15" class="blob-num js-line-number" data-line-number="15"></td>
+                      <td id="file-g-map-service-js-LC15" class="blob-code blob-code-inner js-file-line">    <span class="pl-v">this</span>.get(<span class="pl-s"><span class="pl-pds">'</span>gMap<span class="pl-pds">'</span></span>)</td>
+                    </tr>
+                    <tr>
+                      <td id="file-g-map-service-js-L16" class="blob-num js-line-number" data-line-number="16"></td>
+                      <td id="file-g-map-service-js-LC16" class="blob-code blob-code-inner js-file-line">      .geocode({lat, lng})</td>
+                    </tr>
+                    <tr>
+                      <td id="file-g-map-service-js-L17" class="blob-num js-line-number" data-line-number="17"></td>
+                      <td id="file-g-map-service-js-LC17" class="blob-code blob-code-inner js-file-line">      .then((<span class="pl-smi">geocodes</span>)<span class="pl-k"> =&gt;</span> {</td>
+                    </tr>
+                    <tr>
+                      <td id="file-g-map-service-js-L18" class="blob-num js-line-number" data-line-number="18"></td>
+                      <td id="file-g-map-service-js-LC18" class="blob-code blob-code-inner js-file-line">        <span class="pl-c">// Get first geocode address</span></td>
+                    </tr>
+                    <tr>
+                      <td id="file-g-map-service-js-L19" class="blob-num js-line-number" data-line-number="19"></td>
+                      <td id="file-g-map-service-js-LC19" class="blob-code blob-code-inner js-file-line">        <span class="pl-en">console</span>.<span class="pl-c1">log</span>(geocodes[<span class="pl-c1">0</span>].formatted_address);</td>
+                    </tr>
+                    <tr>
+                      <td id="file-g-map-service-js-L20" class="blob-num js-line-number" data-line-number="20"></td>
+                      <td id="file-g-map-service-js-LC20" class="blob-code blob-code-inner js-file-line">      })</td>
+                    </tr>
+                    <tr>
+                      <td id="file-g-map-service-js-L21" class="blob-num js-line-number" data-line-number="21"></td>
+                      <td id="file-g-map-service-js-LC21" class="blob-code blob-code-inner js-file-line">      .catch((<span class="pl-smi">err</span>)<span class="pl-k"> =&gt;</span> <span class="pl-en">console</span>.<span class="pl-c1">error</span>(err));</td>
+                    </tr>
+                    <tr>
+                      <td id="file-g-map-service-js-L22" class="blob-num js-line-number" data-line-number="22"></td>
+                      <td id="file-g-map-service-js-LC22" class="blob-code blob-code-inner js-file-line">  }</td>
+                    </tr>
+                    <tr>
+                      <td id="file-g-map-service-js-L23" class="blob-num js-line-number" data-line-number="23"></td>
+                      <td id="file-g-map-service-js-LC23" class="blob-code blob-code-inner js-file-line">});</td>
+                    </tr>
+                  </tbody></table>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="gist-meta">
+            made with ❤ by <a href="https://github.com">GitHub</a>
+          </div>
+        </div>
+      </div>
+    </code>
+  </div>
+
+  <div class="grid-content gmaps-snippet small-12">
+    <header>Geocode Config Options</header>
+    <code>
+      <div class="gist">
+        <div class="gist-file">
+          <div class="gist-data">
+            <div class="js-gist-file-update-container js-task-list-container file-box">
+              <div id="file-g-map-service-js" class="file">
+                <div class="blob-wrapper data type-javascript">
+                  <table class="highlight tab-size js-file-line-container" data-tab-size="8">
+                    <tbody><tr>
+                      <td id="file-g-map-service-js-L1" class="blob-num js-line-number" data-line-number="1"></td>
+                      <td id="file-g-map-service-js-LC1" class="blob-code blob-code-inner js-file-line"><span class="pl-k">export</span> <span class="pl-k">default</span> Ember.Route.extend({</td>
+                    </tr>
+                    <tr>
+                      <td id="file-g-map-service-js-L2" class="blob-num js-line-number" data-line-number="2"></td>
+                      <td id="file-g-map-service-js-LC2" class="blob-code blob-code-inner js-file-line">  gMap<span class="pl-k">:</span> Ember.inject.service(),</td>
+                    </tr>
+                    <tr>
+                      <td id="file-g-map-service-js-L3" class="blob-num js-line-number" data-line-number="3"></td>
+                      <td id="file-g-map-service-js-LC3" class="blob-code blob-code-inner js-file-line">
+                      </td>
+                    </tr>
+                    <tr>
+                      <td id="file-g-map-service-js-L4" class="blob-num js-line-number" data-line-number="4"></td>
+                      <td id="file-g-map-service-js-LC4" class="blob-code blob-code-inner js-file-line">  <span class="pl-en">geocodeSupported</span>(<span class="pl-smi">address</span>) {</td>
+                    </tr>
+                    <tr>
+                      <td id="file-g-map-service-js-L5" class="blob-num js-line-number" data-line-number="5"></td>
+                      <td id="file-g-map-service-js-LC5" class="blob-code blob-code-inner js-file-line">    <span class="pl-v">this</span>.get(<span class="pl-s"><span class="pl-pds">'</span>gMap<span class="pl-pds">'</span></span>)</td>
+                    </tr>
+                    <tr>
+                      <td id="file-g-map-service-js-L6" class="blob-num js-line-number" data-line-number="6"></td>
+                      <td id="file-g-map-service-js-LC6" class="blob-code blob-code-inner js-file-line">      .geocode({</td>
+                    </tr>
+                    <tr>
+                      <td id="file-g-map-service-js-L7" class="blob-num js-line-number" data-line-number="7"></td>
+                      <td id="file-g-map-service-js-LC7" class="blob-code blob-code-inner js-file-line">        address<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>1234 street address, City, State<span class="pl-pds">'</span></span>,</td>
+                    </tr>
+                    <tr>
+                      <td id="file-g-map-service-js-L8" class="blob-num js-line-number" data-line-number="8"></td>
+                      <td id="file-g-map-service-js-LC8" class="blob-code blob-code-inner js-file-line">
+                      </td>
+                    </tr>
+                    <tr>
+                      <td id="file-g-map-service-js-L9" class="blob-num js-line-number" data-line-number="9"></td>
+                      <td id="file-g-map-service-js-LC9" class="blob-code blob-code-inner js-file-line">        <span class="pl-c">// OR reverse</span></td>
+                    </tr>
+                    <tr>
+                      <td id="file-g-map-service-js-L10" class="blob-num js-line-number" data-line-number="10"></td>
+                      <td id="file-g-map-service-js-LC10" class="blob-code blob-code-inner js-file-line">        lat<span class="pl-k">:</span> <span class="pl-c1">32.75494243654723</span>,</td>
+                    </tr>
+                    <tr>
+                      <td id="file-g-map-service-js-L11" class="blob-num js-line-number" data-line-number="11"></td>
+                      <td id="file-g-map-service-js-LC11" class="blob-code blob-code-inner js-file-line">        lng<span class="pl-k">:</span> <span class="pl-k">-</span><span class="pl-c1">86.8359375</span>,</td>
+                    </tr>
+                    <tr>
+                      <td id="file-g-map-service-js-L12" class="blob-num js-line-number" data-line-number="12"></td>
+                      <td id="file-g-map-service-js-LC12" class="blob-code blob-code-inner js-file-line">
+                      </td>
+                    </tr>
+                    <tr>
+                      <td id="file-g-map-service-js-L13" class="blob-num js-line-number" data-line-number="13"></td>
+                      <td id="file-g-map-service-js-LC13" class="blob-code blob-code-inner js-file-line">        <span class="pl-c">// options</span></td>
+                    </tr>
+                    <tr>
+                      <td id="file-g-map-service-js-L14" class="blob-num js-line-number" data-line-number="14"></td>
+                      <td id="file-g-map-service-js-LC14" class="blob-code blob-code-inner js-file-line">        bounds<span class="pl-k">:</span> <span class="pl-k">new</span> <span class="pl-en">google.maps</span>.LatLngBounds(</td>
+                    </tr>
+                    <tr>
+                      <td id="file-g-map-service-js-L15" class="blob-num js-line-number" data-line-number="15"></td>
+                      <td id="file-g-map-service-js-LC15" class="blob-code blob-code-inner js-file-line">          <span class="pl-k">new</span> <span class="pl-en">google.maps</span>.LatLng(<span class="pl-c1">42.1282269</span>, <span class="pl-k">-</span><span class="pl-c1">87.7108162</span>), <span class="pl-c">// northeast</span></td>
+                    </tr>
+                    <tr>
+                      <td id="file-g-map-service-js-L16" class="blob-num js-line-number" data-line-number="16"></td>
+                      <td id="file-g-map-service-js-LC16" class="blob-code blob-code-inner js-file-line">          <span class="pl-k">new</span> <span class="pl-en">google.maps</span>.LatLng(<span class="pl-c1">42.0886089</span>, <span class="pl-k">-</span><span class="pl-c1">87.7708629</span>)  <span class="pl-c">// southwest</span></td>
+                    </tr>
+                    <tr>
+                      <td id="file-g-map-service-js-L17" class="blob-num js-line-number" data-line-number="17"></td>
+                      <td id="file-g-map-service-js-LC17" class="blob-code blob-code-inner js-file-line">        ),</td>
+                    </tr>
+                    <tr>
+                      <td id="file-g-map-service-js-L18" class="blob-num js-line-number" data-line-number="18"></td>
+                      <td id="file-g-map-service-js-LC18" class="blob-code blob-code-inner js-file-line">        language<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>ja<span class="pl-pds">'</span></span>, <span class="pl-c">// language code "Japanese"</span></td>
+                    </tr>
+                    <tr>
+                      <td id="file-g-map-service-js-L19" class="blob-num js-line-number" data-line-number="19"></td>
+                      <td id="file-g-map-service-js-LC19" class="blob-code blob-code-inner js-file-line">        region<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>.co.uk<span class="pl-pds">'</span></span>,  <span class="pl-c">// region biasing</span></td>
+                    </tr>
+                    <tr>
+                      <td id="file-g-map-service-js-L20" class="blob-num js-line-number" data-line-number="20"></td>
+                      <td id="file-g-map-service-js-LC20" class="blob-code blob-code-inner js-file-line">        components<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>route|locality<span class="pl-pds">'</span></span></td>
+                    </tr>
+                    <tr>
+                      <td id="file-g-map-service-js-L21" class="blob-num js-line-number" data-line-number="21"></td>
+                      <td id="file-g-map-service-js-LC21" class="blob-code blob-code-inner js-file-line">      })</td>
+                    </tr>
+                    <tr>
+                      <td id="file-g-map-service-js-L22" class="blob-num js-line-number" data-line-number="22"></td>
+                      <td id="file-g-map-service-js-LC22" class="blob-code blob-code-inner js-file-line">  }</td>
+                    </tr>
+                    <tr>
+                      <td id="file-g-map-service-js-L23" class="blob-num js-line-number" data-line-number="23"></td>
+                      <td id="file-g-map-service-js-LC23" class="blob-code blob-code-inner js-file-line">});</td>
+                    </tr>
+                  </tbody></table>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="gist-meta">
+            made with ❤ by <a href="https://github.com">GitHub</a>
+          </div>
+        </div>
+      </div>
+    </code>
+  </div>
+</div>
+
+<p class="medium-7 large-5">
+  For in depth documentation and further customization you can read more in <a href="https://developers.google.com/maps/documentation/geocoding/intro" target="_blank">the Google Maps Geocoding API Docs.</a>
 </p>
