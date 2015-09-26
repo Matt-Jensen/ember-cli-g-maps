@@ -94,6 +94,6 @@ export default Ember.Route.extend({
 
   _handleGeocodeError(err) {
     console.error(err);
-    alert(err.status);
+    window.alert(err.status);
   }
 });

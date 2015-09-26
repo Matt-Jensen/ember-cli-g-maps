@@ -59,7 +59,7 @@ export default Ember.Service.extend({
         if (status === 'OK' || status === 'ZERO_RESULTS') {
           resolve(result);
         } else {
-          const err = { status }
+          const err = { status };
 
           // Add any available error_message
           if(result && result.error_message) {
