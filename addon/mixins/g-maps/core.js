@@ -7,6 +7,7 @@ export default Ember.Mixin.create({
   map: null,
   name: null,
   draggable: true,
+  disableDefaultUI: false,
   isMapLoaded: false,
   classNames: ['ember-cli-g-map'], 
   gMap: Ember.inject.service(),
@@ -43,11 +44,12 @@ export default Ember.Mixin.create({
   },
 
   _initGMap: on('didInsertElement', function() {
-    const events      = this.get('_gmapEvents');
-    const configProps = ['lat', 'lng', 'zoom'];
-    let config        = this.getProperties.apply(this, configProps);
-    config            = merge(this._requiredProperties, config);
-    config.div        = `#${this.element.id}`;
+    const events            = this.get('_gmapEvents');
+    const configProps       = ['lat', 'lng', 'zoom'];
+    let config              = this.getProperties.apply(this, configProps);
+    config                  = merge(this._requiredProperties, config);
+    config.div              = `#${this.element.id}`;
+    config.disableDefaultUI = this.get('disableDefaultUI');
 
     const map = new GMaps( config );
     this.set('map', map);
