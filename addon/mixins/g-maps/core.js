@@ -5,13 +5,19 @@ const { on, merge, uuid, computed, observer } = Ember;
 
 export default Ember.Mixin.create({
   map: null,
+  googleMap: computed.oneWay('map.map'),
   name: null,
+  lat: 0,
+  lng: 0,
+  zoom: 0,
+  mapType: 'ROADMAP',
+  mapTypeControl: true,
   draggable: true,
   disableDefaultUI: false,
   disableDoubleClickZoom: false,
   scrollwheel: true,
-  hideZoomControl: false,
-  hideScaleControl: false,
+  zoomControl: true,
+  scaleControl: true,
   isMapLoaded: false,
   classNames: ['ember-cli-g-map'], 
   gMap: Ember.inject.service(),
@@ -39,44 +45,42 @@ export default Ember.Mixin.create({
     'projection_changed'
   ],
 
-  _requiredProperties: {
-    lat: 0,
-    lng: 0,
-    zoom: 0,
-    mapType: 'ROADMAP',
-    mapTypeControl: false,
-  },
-
   _initGMap: on('didInsertElement', function() {
-    const events            = this.get('_gmapEvents');
-    const configProps       = ['lat', 'lng', 'zoom'];
-    let config              = this.getProperties.apply(this, configProps);
-    config                  = merge(this._requiredProperties, config);
-    config.div              = `#${this.element.id}`;
-    config.disableDefaultUI = this.get('disableDefaultUI');
+    const events = this.get('_gmapEvents');
+    const config = this.getProperties(
+      'lat',
+      'lng',
+      'zoom',
+      'mapType',
+      'mapTypeControl',
+      'scaleControl',
+      'showScaleControl',
+      'disableDefaultUI'
+    );
+    config.div = `#${this.element.id}`;
 
     const map = new GMaps( config );
     this.set('map', map);
 
     // Set GMap events
-    for(let i = 0, l = events.length; i < l; i++ ) {
+    for (let i = 0, l = events.length; i < l; i++ ) {
 
       // If map event defined on component
-      if( !this.get(events[i]) ) { continue; }
+      if (!this.get(events[i])) { continue; }
 
       // Add GMaps event listener on google map instance
       GMaps.on(events[i], map.map, (e) => this.send(events[i], e));
     }
 
-    if( !this.get('name') ) {
+    if (!this.get('name')) {
       this.set('name', `ember-cli-g-map-${uuid()}`);
     }
 
-    // TODO: remove for v0.4.0
     this.get('gMap').maps.add(this.get('name'), map.map);
 
     // When map instance has finished loading
     google.maps.event.addListenerOnce(map.map, 'idle', (e) => {
+      if (this.get('isDestroyed')) { return; }
       this.set('isMapLoaded', true);
       this.trigger('ember-cli-g-map-loaded');
       this.send('loaded', e);
@@ -127,44 +131,56 @@ export default Ember.Mixin.create({
 
   _syncDraggable: observer('isMapLoaded', 'draggable', function() {
     if(!this.get('isMapLoaded')) { return false; }
-    const map = this.get('map').map;
-    map.setOptions({ draggable: this.get('draggable') });
+    this.get('googleMap').setOptions({
+      draggable: (this.get('draggable') ? true : false)
+    });
   }),
 
   _syncDisableDoubleClickZoom: observer('isMapLoaded', 'disableDoubleClickZoom', function() {
     if(!this.get('isMapLoaded')) { return false; }
-    const map = this.get('map').map;
-    map.setOptions({ disableDoubleClickZoom: this.get('disableDoubleClickZoom') });
+    this.get('googleMap').setOptions({ 
+      disableDoubleClickZoom: (this.get('disableDoubleClickZoom') ? true : false)
+    });
   }),
 
   _syncScrollwheel: observer('isMapLoaded', 'scrollwheel', function() {
     if(!this.get('isMapLoaded')) { return false; }
-    const map = this.get('map').map;
-    map.setOptions({ scrollwheel: this.get('scrollwheel') });
+    this.get('googleMap').setOptions({
+      scrollwheel: (this.get('scrollwheel') ? true : false)
+    });
   }),
 
-  _syncHideZoomControl: observer('isMapLoaded', 'hideZoomControl', function() {
+  _syncZoomControl: observer('isMapLoaded', 'zoomControl', function() {
     if(!this.get('isMapLoaded')) { return false; }
-    const map = this.get('map').map;
-    map.setOptions({ zoomControl: this.get('hideZoomControl') });
+    this.get('googleMap').setOptions({
+      zoomControl: (this.get('zoomControl') ? true : false)
+    });
   }),
 
-  _syncHideScaleControl: observer('isMapLoaded', 'hideScaleControl', function() {
+  _syncScaleControl: observer('isMapLoaded', 'scaleControl', function() {
     if(!this.get('isMapLoaded')) { return false; }
-    const map = this.get('map').map;
-    map.setOptions({ scaleControl: this.get('hideScaleControl') });
+    this.get('googleMap').setOptions({
+      scaleControl: (this.get('scaleControl') ? true : false)
+    });
   }),
 
   _syncMapType: observer('isMapLoaded', 'mapType', function() {
     if(!this.get('isMapLoaded')) { return false; }
-    const map     = this.get('map').map;
+    const googleMap = this.get('googleMap');
     const mapType = `${this.get('mapType')}`;
 
     if(mapType === 'undefined') { return false; }
 
-    if(mapType.toLowerCase() !== map.getMapTypeId()) {
-      map.setMapTypeId( google.maps.MapTypeId[mapType.toUpperCase()] );
+    if(mapType.toLowerCase() !== googleMap.getMapTypeId()) {
+      googleMap.setMapTypeId( google.maps.MapTypeId[mapType.toUpperCase()] );
     }
+  }),
+
+  _syncMapTypeControl: observer('isMapLoaded', 'mapTypeControl', function() {
+    if(!this.get('isMapLoaded')) { return false; }
+    this.get('googleMap').setOptions({
+      mapTypeControl: (this.get('mapTypeControl') ? true : false)
+    });
   }),
 
 
@@ -299,7 +315,12 @@ export default Ember.Mixin.create({
       this.sendAction('heading_changed', merge(this.get('defaultGMapState'), ...arguments));
     },
     maptypeid_changed: function() {
-      this.sendAction('maptypeid_changed', merge(this.get('defaultGMapState'), ...arguments));
+      const googleMap = this.get('googleMap');
+      this.sendAction('maptypeid_changed', merge(
+        this.get('defaultGMapState'),
+        { mapType: googleMap.getMapTypeId() },
+        ...arguments
+      ));
     },
     projection_changed: function() {
       this.sendAction('projection_changed', merge(this.get('defaultGMapState'), ...arguments));

@@ -98,21 +98,41 @@ test('`_initGMap` should invoke on `didInsertElement` event', function(assert) {
 
 test('`_initGMap` should create a GMap instance with main config properties', function(assert) {
   const subject = createSubject();
-  const config = { lat: 1, lng: 1, zoom: 10 };
+  const config = {
+    lat: 1,
+    lng: 1,
+    zoom: 10,
+    mapType: 'satellite',
+    mapTypeControl: false,
+    zoomControl: false,
+    scaleControl: false,
+    disableDefaultUI: true
+  };
 
   subject.setProperties(config);
   subject._initGMap();
 
-  const zoom = subject.get('map').map.zoom;
-  const center = subject.get('map').map.getCenter();
+  const googleMap = subject.get('googleMap');
 
-  assert.equal(center.lat(), config.lat);
-  assert.equal(center.lng(), config.lng);
-  assert.equal(zoom, config.zoom);
+  const zoom = googleMap.zoom;
+  const center = googleMap.getCenter();
+  const mapType = googleMap.getMapTypeId();
+  const mapTypeControl = googleMap.mapTypeControl;
+  const zoomControl = googleMap.zoomControl;
+  const scaleControl = googleMap.scaleControl;
+  const disableDefaultUI = googleMap.disableDefaultUI;
+
+  assert.equal(center.lat(), config.lat, 'Map lat should be same as config');
+  assert.equal(center.lng(), config.lng, 'Map lng should be same as config');
+  assert.equal(zoom, config.zoom, 'Map zoom should be same as config');
+  assert.equal(mapType, config.mapType, 'Map type should be same as config');
+  assert.equal(mapTypeControl, config.mapTypeControl, 'Map Type Control should be same as config');
+  assert.equal(zoomControl, config.zoomControl, 'Map Zoom Control should be same as config');
+  assert.equal(scaleControl, config.scaleControl, 'Map Scale Control should be same as config');
+  assert.equal(disableDefaultUI, config.disableDefaultUI, 'Map disable default UI should be same as config');
 
   window.setTimeout(() => removeSubject(subject));
 });
-
 
 test('`_initGMap` should set all configured gmap events', function(assert) {
   const subject = createSubject();
@@ -397,6 +417,158 @@ test('`_syncDraggable` should sync `draggable` if `isMapLoaded` is true', functi
 });
 
 
+////////////////////////////////////
+// Sync Disable Double Click Zoom
+///////////////////////////////////
+
+test('`_syncDisableDoubleClickZoom` should not sync `disableDoubleClickZoom` if `isMapLoaded` is false', function(assert) {
+  const subject = createSubject();
+
+  subject.setProperties({ disableDoubleClickZoom: true, isMapLoaded: false });
+  assert.equal(subject._syncDisableDoubleClickZoom(), false, 'should return false if cannot sync');
+
+  window.setTimeout(() => removeSubject(subject));
+});
+
+test('`_syncDisableDoubleClickZoom` should sync `disableDoubleClickZoom` if `isMapLoaded` is true', function(assert) {
+  assert.expect(1);
+
+  const subject = createSubject();
+
+  const config = { disableDoubleClickZoom: true, isMapLoaded: false };
+  subject.setProperties(config);
+
+  subject._initGMap();
+  subject.setProperties({
+    isMapLoaded: true,
+    map: merge(subject.get('map'), {
+      map: {
+        setOptions: function(option) {
+          assert.equal(option.disableDoubleClickZoom, config.disableDoubleClickZoom, 'should recieve configured disableDoubleClickZoom');
+          removeSubject(subject);
+        }
+      }
+    })
+  });
+
+  subject._syncDisableDoubleClickZoom();
+});
+
+
+////////////////////////
+// Sync Scroll Wheel
+//////////////////////
+
+test('`_syncScrollwheel` should not sync `scrollwheel` if `isMapLoaded` is false', function(assert) {
+  const subject = createSubject();
+
+  subject.setProperties({ scrollwheel: true, isMapLoaded: false });
+  assert.equal(subject._syncScrollwheel(), false, 'should return false if cannot sync');
+
+  window.setTimeout(() => removeSubject(subject));
+});
+
+test('`_syncScrollwheel` should sync `scrollwheel` if `isMapLoaded` is true', function(assert) {
+  assert.expect(1);
+
+  const subject = createSubject();
+
+  const config = { scrollwheel: true, isMapLoaded: false };
+  subject.setProperties(config);
+
+  subject._initGMap();
+  subject.setProperties({
+    isMapLoaded: true,
+    map: merge(subject.get('map'), {
+      map: {
+        setOptions: function(option) {
+          assert.equal(option.scrollwheel, config.scrollwheel, 'should recieve configured scrollwheel');
+          removeSubject(subject);
+        }
+      }
+    })
+  });
+
+  subject._syncScrollwheel();
+});
+
+
+////////////////////////////
+// Sync Hide Zoom Control
+///////////////////////////
+
+test('`_syncZoomControl` should not sync `zoomControl` if `isMapLoaded` is false', function(assert) {
+  const subject = createSubject();
+
+  subject.setProperties({ zoomControl: false, isMapLoaded: false });
+  assert.equal(subject._syncZoomControl(), false, 'should return false if cannot sync');
+
+  window.setTimeout(() => removeSubject(subject));
+});
+
+test('`_syncZoomControl` should sync `zoomControl` if `isMapLoaded` is true', function(assert) {
+  assert.expect(1);
+
+  const subject = createSubject();
+
+  const config = { zoomControl: false, isMapLoaded: false };
+  subject.setProperties(config);
+
+  subject._initGMap();
+  subject.setProperties({
+    isMapLoaded: true,
+    map: merge(subject.get('map'), {
+      map: {
+        setOptions: function(option) {
+          assert.equal(option.zoomControl, config.zoomControl, 'should recieve configured zoomControl');
+          removeSubject(subject);
+        }
+      }
+    })
+  });
+
+  subject._syncZoomControl();
+});
+
+
+/////////////////////////
+// Sync Scale Control
+///////////////////////
+
+test('`_syncScaleControl` should not sync `scaleControl` if `isMapLoaded` is false', function(assert) {
+  const subject = createSubject();
+
+  subject.setProperties({ scaleControl: true, isMapLoaded: false });
+  assert.equal(subject._syncScaleControl(), false, 'should return false if cannot sync');
+
+  window.setTimeout(() => removeSubject(subject));
+});
+
+test('`_syncScaleControl` should sync `scaleControl` if `isMapLoaded` is true', function(assert) {
+  assert.expect(1);
+
+  const subject = createSubject();
+
+  const config = { scaleControl: true, isMapLoaded: false };
+  subject.setProperties(config);
+
+  subject._initGMap();
+  subject.setProperties({
+    isMapLoaded: true,
+    map: merge(subject.get('map'), {
+      map: {
+        setOptions: function(option) {
+          assert.equal(option.scaleControl, config.scaleControl, 'should recieve configured scaleControl');
+          removeSubject(subject);
+        }
+      }
+    })
+  });
+
+  subject._syncScaleControl();
+});
+
+
 ///////////////////
 // Sync Map Type
 //////////////////
@@ -449,6 +621,44 @@ test('`_syncMapType` should sync set `mapType` if `isMapLoaded` is true', functi
   assert.ok(subject.get('map').map.setMapTypeId.called);
 
   window.setTimeout(() => removeSubject(subject));
+});
+
+
+////////////////////////////
+// Sync Map Type Controls
+///////////////////////////
+
+test('`_syncMapTypeControl` should not sync `mapTypeControl` if `isMapLoaded` is false', function(assert) {
+  const subject = createSubject();
+
+  subject.setProperties({ mapTypeControl: false, isMapLoaded: false });
+  assert.equal(subject._syncMapTypeControl(), false, 'should return false if cannot sync');
+
+  window.setTimeout(() => removeSubject(subject));
+});
+
+test('`_syncMapTypeControl` should sync `mapTypeControl` if `isMapLoaded` is true', function(assert) {
+  assert.expect(1);
+
+  const subject = createSubject();
+
+  const config = { mapTypeControl: false, isMapLoaded: false };
+  subject.setProperties(config);
+
+  subject._initGMap();
+  subject.setProperties({
+    isMapLoaded: true,
+    map: merge(subject.get('map'), {
+      map: {
+        setOptions: function(option) {
+          assert.equal(option.mapTypeControl, config.mapTypeControl, 'should recieve configured showMapTypeControl');
+          removeSubject(subject);
+        }
+      }
+    })
+  });
+
+  subject._syncMapTypeControl();
 });
 
 

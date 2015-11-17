@@ -3,15 +3,14 @@ import Ember               from 'ember';
 import { moduleFor, test } from 'ember-qunit';
 import sinon               from 'sinon';
 
-let service;
-
 moduleFor('service:g-map', 'Unit | Service | g map', {
-  beforeEach: function() {
-    service = this.subject();
-  }
+  // Specify the other units that are required for this test.
+  // needs: ['service:foo']
 });
 
 test('it should throw an error if name is not a string', function(a) {
+  const service = this.subject();
+
   a.throws(
     function() { return service.maps.add(2, {}); },
     new Error('GMap name must be a string')
@@ -19,6 +18,8 @@ test('it should throw an error if name is not a string', function(a) {
 });
 
 test('it should throw an error if a map with the same name exists', function(a) {
+  const service = this.subject();
+
   service.maps.add('test-2', {});
   a.throws(
     function() { return service.maps.add('test-2', {}); },
@@ -27,17 +28,23 @@ test('it should throw an error if a map with the same name exists', function(a) 
 });
 
 test('it should add,select a map to,from a private array', function(a) {
+  const service = this.subject();
+
   service.maps.add('test-3', {});
   a.equal(service.maps.select('test-3').name, 'test-3');
 });
 
 test('it should provide an onLoad promise', function(a) {
+  const service = this.subject();
+
   service.maps.add('test-4', {});
   a.ok(service.maps.select('test-4').onLoad instanceof Ember.RSVP.Promise);
 });
 
 test('it should create a deprecation warning when onLoad is invoked', function(a) {
   a.expect(1);
+  
+  const service = this.subject();
   const originalEmberWarning = Ember.Logger.warn;
   const originalAddListenerOnce = google.maps.event.addListenerOnce;
 
@@ -56,6 +63,8 @@ test('it should create a deprecation warning when onLoad is invoked', function(a
 });
 
 test('it should successfully remove map instance with `remove`', function(a) {
+  const service = this.subject();
+
   service.maps.add('test-6', {});
   service.maps.remove('test-6');
   a.equal(service.maps.select('test-6'), undefined);

@@ -16,7 +16,7 @@ Installation
 
 [Full installation & configuration documentation.](http://matt-jensen.github.io/ember-cli-g-maps/#/basic-usage/index)
 
-Supports: 
+Supports:
 - Ember ~1.13
 - Google Maps v3
 
@@ -564,6 +564,10 @@ ENV.googleMap = {
   apiKey: 'your-unique-google-map-api-key'
 }
 ```
+
+Contributors
+-------------
+@LauLaman
 
 Changelog
 ---------

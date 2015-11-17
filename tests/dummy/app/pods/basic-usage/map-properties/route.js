@@ -7,6 +7,9 @@ export default Ember.Route.extend({
       lng: -86.8359375,
       zoom: 5,
       type: 'roadmap',
+      typeControl: false,
+      zoomControl: true,
+      scaleControl: true,
       drag: true,
 
       types: ['roadmap', 'satellite', 'hybrid', 'terrain'],
@@ -20,6 +23,22 @@ export default Ember.Route.extend({
 
     toggleDrag() {
       this.controller.set('drag', !this.controller.get('drag'));
+    },
+
+    toggleTypeControls() {
+      this.controller.set('typeControl', !this.controller.get('typeControl'));
+    },
+
+    toggleZoomControls() {
+      this.controller.set('zoomControl', !this.controller.get('zoomControl'));
+    },
+
+    toggleScaleControls() {
+      this.controller.set('scaleControl', !this.controller.get('scaleControl'));
+    },
+
+    onMapTypeIdChange(conf) {
+      this.controller.set('type', conf.mapType);
     }
   }
 });

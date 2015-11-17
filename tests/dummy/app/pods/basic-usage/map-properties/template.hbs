@@ -2,8 +2,8 @@
 
 <ul>
   <li><a {{action "scrollToId" 'mapType'}}>mapType</a></li>
+  <li><a {{action "scrollToId" 'showMapTypeControl'}}>showMapTypeControl</a></li>
   <li><a {{action "scrollToId" 'draggable'}}>draggable</a></li>
-  {{!-- <li><a {{action "scrollToId" 'mapTypeControl'}}>mapTypeControl</a></li> --}}
 </ul>
 
 
@@ -14,8 +14,23 @@
   </div>
 
   <div class="grid-content small-12 medium-3 -smb">
-    <small class="-db">Is Draggable</small>
+    <small class="-db">Show Map Type Controls</small>
+    <input type="checkbox" value=typeControl {{action "toggleTypeControls" on="change"}}>
+  </div>
+
+  <div class="grid-content small-12 medium-3 -smb">
+    <small class="-db">Disable Draggable</small>
     <input type="checkbox" value=drag {{action "toggleDrag" on="change"}}>
+  </div>
+
+  <div class="grid-content small-12 medium-3 -smb">
+    <small class="-db">Hide Zoom Controls</small>
+    <input type="checkbox" value=zoomControl {{action "toggleZoomControls" on="change"}}>
+  </div>
+
+  <div class="grid-content small-12 medium-3 -smb">
+    <small class="-db">Hide Scale Controls</small>
+    <input type="checkbox" value=scaleControl {{action "toggleScaleControls" on="change"}}>
   </div>
 </div>
 
@@ -32,7 +47,16 @@
 </div>
 
 <div class="grid-content -np -mb">
-  {{g-maps class="gmaps-docs-map" lat=lat lng=lng zoom=zoom mapType=type draggable=drag}}
+  {{g-maps class="gmaps-docs-map" 
+    lat=lat 
+    lng=lng 
+    zoom=zoom 
+    mapType=type 
+    draggable=drag
+    mapTypeControl=typeControl 
+    zoomControl=zoomControl
+    scaleControl=scaleControl
+    maptypeid_changed="onMapTypeIdChange"}}
 </div>
 
 <hr>
@@ -93,6 +117,54 @@
 
 <hr>
 
+<p id="showMapTypeControl" class="medium-7">
+  <h3>showMapTypeControl</h3>
+
+  <div class="-mb">
+    <small class="-db">Type</small>
+    Boolean
+  </div>
+
+  <div class="-mb">
+    <small class="-db">Default</small>
+    <span class="gmaps-inline-code -nml">true</span>
+  </div>
+
+  <div class="-mb">
+    <small class="-db">Resources</small>
+    <a href="https://developers.google.com/maps/documentation/javascript/3.20/reference#MapOptions" target="_blank">Google Map Type Control Docs</a>
+  </div>
+
+  <div class="gmaps-snippet">
+    <header>Example</header>
+    <code>
+      <div class="gist">
+        <div class="gist-file">
+          <div class="gist-data">
+            <div class="js-gist-file-update-container js-task-list-container file-box">
+              <div id="file-templa-hbs" class="file">
+                <div class="blob-wrapper data type-handlebars">
+                  <table class="highlight tab-size js-file-line-container" data-tab-size="8">
+                    <tbody><tr>
+                      <td id="file-templa-hbs-L1" class="blob-num js-line-number" data-line-number="1"></td>
+                      <td id="file-templa-hbs-LC1" class="blob-code blob-code-inner js-file-line"><span class="pl-c1">\{{</span><span class="pl-v">g-maps</span> showMapTypeControl=myMapTypeControl<span class="pl-c1">}}</span></td>
+                    </tr>
+                  </tbody></table>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="gist-meta">
+            made with ❤ by <a href="https://github.com">GitHub</a>
+          </div>
+        </div>
+      </div>
+    </code>
+  </div>
+</p>
+
+<hr>
+
 <p id="draggable" class="medium-7">
   <h3>draggable</h3>
 
@@ -136,76 +208,3 @@
   </div>
 </p>
 
-{{!--
-<hr>
-
-<p id="mapTypeControl" class="medium-7">
-  <h3>mapTypeControl</h3>
-
-  <div class="-mb">
-    <small class="-db">Type</small>
-    Boolean
-  </div>
-  <div class="-mb">
-    <small class="-db">Default</small>
-    false
-  </div>
-  <div class="-mb">
-    <small class="-db">Resources</small>
-    <a href="https://developers.google.com/maps/documentation/javascript/3.20/reference#MapOptions" target="_blank">Google Map Options</a>
-  </div>
-  <div class="gmaps-snippet">
-    <header>Example</header>
-    <code>
-      <div class="gist">
-        <div class="gist-file">
-          <div class="gist-data">
-            <div class="js-gist-file-update-container js-task-list-container file-box">
-              <div id="file-templa-hbs" class="file">
-                <div class="blob-wrapper data type-handlebars">
-                  <table class="highlight tab-size js-file-line-container" data-tab-size="8">
-                    <tbody><tr>
-                      <td id="file-templa-hbs-L1" class="blob-num js-line-number" data-line-number="1"></td>
-                      <td id="file-templa-hbs-LC1" class="blob-code blob-code-inner js-file-line"><span class="pl-c1">\{{</span><span class="pl-v">g-maps</span> draggable=setMapDrag<span class="pl-c1">}}</span></td>
-                    </tr>
-                  </tbody></table>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="gist-meta">
-            made with ❤ by <a href="https://github.com">GitHub</a>
-          </div>
-        </div>
-      </div>
-    </code>
-  </div> 
-</p>
---}}
-
-{{!-- <div class="grid-block -spb">
-  <div class="grid-content small-12 medium-3 -smb">
-    <small class="-db">Latitude</small>
-    {{circle.lat}}
-  </div>
-
-  <div class="grid-content small-12 medium-3 -smb">
-    <small class="-db">Longitude</small>
-    {{circle.lng}}
-  </div>
-
-  <div class="grid-content small-12 medium-3 -smb">
-    <small class="-db">Radius</small>
-    {{circle.radius}}
-  </div>
-
-  <div class="grid-content small-12 medium-3 -smb">
-    <small class="-db">Is Dragging</small>
-    {{isCircleDragging}}
-  </div>
-</div>
-
-<div class="grid-content -np -lmb">
-  {{g-maps class="gmaps-docs-map" lat=lat lng=lng zoom=zoom circles=circles}}
-</div>
- --}}
