@@ -7,6 +7,11 @@ export default Ember.Mixin.create({
   map: null,
   name: null,
   draggable: true,
+  disableDefaultUI: false,
+  disableDoubleClickZoom: false,
+  scrollwheel: true,
+  hideZoomControl: false,
+  hideScaleControl: false,
   isMapLoaded: false,
   classNames: ['ember-cli-g-map'], 
   gMap: Ember.inject.service(),
@@ -43,11 +48,12 @@ export default Ember.Mixin.create({
   },
 
   _initGMap: on('didInsertElement', function() {
-    const events      = this.get('_gmapEvents');
-    const configProps = ['lat', 'lng', 'zoom'];
-    let config        = this.getProperties.apply(this, configProps);
-    config            = merge(this._requiredProperties, config);
-    config.div        = `#${this.element.id}`;
+    const events            = this.get('_gmapEvents');
+    const configProps       = ['lat', 'lng', 'zoom'];
+    let config              = this.getProperties.apply(this, configProps);
+    config                  = merge(this._requiredProperties, config);
+    config.div              = `#${this.element.id}`;
+    config.disableDefaultUI = this.get('disableDefaultUI');
 
     const map = new GMaps( config );
     this.set('map', map);
@@ -123,6 +129,30 @@ export default Ember.Mixin.create({
     if(!this.get('isMapLoaded')) { return false; }
     const map = this.get('map').map;
     map.setOptions({ draggable: this.get('draggable') });
+  }),
+
+  _syncDisableDoubleClickZoom: observer('isMapLoaded', 'disableDoubleClickZoom', function() {
+    if(!this.get('isMapLoaded')) { return false; }
+    const map = this.get('map').map;
+    map.setOptions({ disableDoubleClickZoom: this.get('disableDoubleClickZoom') });
+  }),
+
+  _syncScrollwheel: observer('isMapLoaded', 'scrollwheel', function() {
+    if(!this.get('isMapLoaded')) { return false; }
+    const map = this.get('map').map;
+    map.setOptions({ scrollwheel: this.get('scrollwheel') });
+  }),
+
+  _syncHideZoomControl: observer('isMapLoaded', 'hideZoomControl', function() {
+    if(!this.get('isMapLoaded')) { return false; }
+    const map = this.get('map').map;
+    map.setOptions({ zoomControl: this.get('hideZoomControl') });
+  }),
+
+  _syncHideScaleControl: observer('isMapLoaded', 'hideScaleControl', function() {
+    if(!this.get('isMapLoaded')) { return false; }
+    const map = this.get('map').map;
+    map.setOptions({ scaleControl: this.get('hideScaleControl') });
   }),
 
   _syncMapType: observer('isMapLoaded', 'mapType', function() {
