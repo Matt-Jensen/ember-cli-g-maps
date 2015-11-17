@@ -433,6 +433,22 @@ export default Ember.Route.extend({
 {{g-maps ... mapType=mapType disableDefaultUI=disableDefaultUI}}
 ```
 
+```handlebars
+{{g-maps ... mapType=mapType disableDoubleClickZoom=disableDoubleClickZoom}}
+```
+
+```handlebars
+{{g-maps ... mapType=mapType scrollwheel=scrollwheel}}
+```
+
+```handlebars
+{{g-maps ... mapType=mapType hideZoomControl=hideZoomControl}}
+```
+
+```handlebars
+{{g-maps ... mapType=mapType hideScaleControl=hideScaleControl}}
+```
+
 **React to Map Loading Completion**
 ```js
 export default Ember.Route.extend({

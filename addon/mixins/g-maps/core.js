@@ -8,6 +8,10 @@ export default Ember.Mixin.create({
   name: null,
   draggable: true,
   disableDefaultUI: false,
+  disableDoubleClickZoom: false,
+  scrollwheel: true,
+  hideZoomControl: false,
+  hideScaleControl: false,
   isMapLoaded: false,
   classNames: ['ember-cli-g-map'], 
   gMap: Ember.inject.service(),
@@ -125,6 +129,30 @@ export default Ember.Mixin.create({
     if(!this.get('isMapLoaded')) { return false; }
     const map = this.get('map').map;
     map.setOptions({ draggable: this.get('draggable') });
+  }),
+
+  _syncDisableDoubleClickZoom: observer('isMapLoaded', 'disableDoubleClickZoom', function() {
+    if(!this.get('isMapLoaded')) { return false; }
+    const map = this.get('map').map;
+    map.setOptions({ disableDoubleClickZoom: this.get('disableDoubleClickZoom') });
+  }),
+
+  _syncScrollwheel: observer('isMapLoaded', 'scrollwheel', function() {
+    if(!this.get('isMapLoaded')) { return false; }
+    const map = this.get('map').map;
+    map.setOptions({ scrollwheel: this.get('scrollwheel') });
+  }),
+
+  _syncHideZoomControl: observer('isMapLoaded', 'hideZoomControl', function() {
+    if(!this.get('isMapLoaded')) { return false; }
+    const map = this.get('map').map;
+    map.setOptions({ zoomControl: this.get('hideZoomControl') });
+  }),
+
+  _syncHideScaleControl: observer('isMapLoaded', 'hideScaleControl', function() {
+    if(!this.get('isMapLoaded')) { return false; }
+    const map = this.get('map').map;
+    map.setOptions({ scaleControl: this.get('hideScaleControl') });
   }),
 
   _syncMapType: observer('isMapLoaded', 'mapType', function() {
