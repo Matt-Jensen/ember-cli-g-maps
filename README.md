@@ -419,6 +419,7 @@ export default Ember.Route.extend({
       lng: -86.8359375,
       mapType: 'satellite', // Accepts 'roadmap', 'satellite', 'hybrid', or 'terrain'
       draggable: false // default = true
+      disableDefaultUI: false // default = false
     });
   }
 });
@@ -426,6 +427,10 @@ export default Ember.Route.extend({
 
 ```handlebars
 {{g-maps ... mapType=mapType draggable=draggable}}
+```
+
+```handlebars
+{{g-maps ... mapType=mapType disableDefaultUI=disableDefaultUI}}
 ```
 
 **React to Map Loading Completion**
