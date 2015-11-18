@@ -1,4 +1,3 @@
-/* globals google: true */
 import Ember from 'ember';
 
 export default Ember.Service.extend({
@@ -8,7 +7,9 @@ export default Ember.Service.extend({
     return {
       select(name) {
         for(let i = 0, l = maps.length; i < l; i++) {
-          if(maps[i].name === name){ return maps[i]; }
+          if(maps[i].name === name){
+            return maps[i];
+          }
         }
         return undefined;
       },

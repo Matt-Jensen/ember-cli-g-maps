@@ -1,4 +1,3 @@
-/* globals GMaps: true, google: true */
 import Ember from 'ember';
 
 const { on, merge, uuid, computed, observer } = Ember;
@@ -124,13 +123,13 @@ export default Ember.Mixin.create({
   }),
 
   _syncZoom: observer('isMapLoaded', 'zoom', function() {
-    if(!this.get('isMapLoaded')) { return false; }
+    if (!this.get('isMapLoaded')) { return false; }
     const { map, zoom } = this.getProperties('map', 'zoom');
     map.setZoom(zoom);
   }),
 
   _syncDraggable: observer('isMapLoaded', 'draggable', function() {
-    if(!this.get('isMapLoaded')) { return false; }
+    if (!this.get('isMapLoaded')) { return false; }
     this.get('googleMap').setOptions({
       draggable: (this.get('draggable') ? true : false)
     });
@@ -144,40 +143,43 @@ export default Ember.Mixin.create({
   }),
 
   _syncScrollwheel: observer('isMapLoaded', 'scrollwheel', function() {
-    if(!this.get('isMapLoaded')) { return false; }
+    if (!this.get('isMapLoaded')) { return false; }
     this.get('googleMap').setOptions({
       scrollwheel: (this.get('scrollwheel') ? true : false)
     });
   }),
 
   _syncZoomControl: observer('isMapLoaded', 'zoomControl', function() {
-    if(!this.get('isMapLoaded')) { return false; }
+    if (!this.get('isMapLoaded')) { return false; }
     this.get('googleMap').setOptions({
       zoomControl: (this.get('zoomControl') ? true : false)
     });
   }),
 
   _syncScaleControl: observer('isMapLoaded', 'scaleControl', function() {
-    if(!this.get('isMapLoaded')) { return false; }
+    if (!this.get('isMapLoaded')) { return false; }
     this.get('googleMap').setOptions({
       scaleControl: (this.get('scaleControl') ? true : false)
     });
   }),
 
   _syncMapType: observer('isMapLoaded', 'mapType', function() {
-    if(!this.get('isMapLoaded')) { return false; }
+    if (!this.get('isMapLoaded')) { return false; }
     const googleMap = this.get('googleMap');
     const mapType = `${this.get('mapType')}`;
 
-    if(mapType === 'undefined') { return false; }
+    // If invalid mapType
+    if (google.maps.MapTypeId[mapType.toUpperCase()] === undefined) {
+      return false;
+    }
 
-    if(mapType.toLowerCase() !== googleMap.getMapTypeId()) {
+    if (mapType.toLowerCase() !== googleMap.getMapTypeId()) {
       googleMap.setMapTypeId( google.maps.MapTypeId[mapType.toUpperCase()] );
     }
   }),
 
   _syncMapTypeControl: observer('isMapLoaded', 'mapTypeControl', function() {
-    if(!this.get('isMapLoaded')) { return false; }
+    if (!this.get('isMapLoaded')) { return false; }
     this.get('googleMap').setOptions({
       mapTypeControl: (this.get('mapTypeControl') ? true : false)
     });

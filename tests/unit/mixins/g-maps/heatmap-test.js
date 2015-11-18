@@ -1,4 +1,3 @@
-/* globals google: true */
 import Ember             from 'ember';
 import GMapsHeatmapMixin from 'ember-cli-g-maps/mixins/g-maps/heatmap';
 import { module, test }  from 'qunit';

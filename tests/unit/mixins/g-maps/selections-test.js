@@ -1,4 +1,3 @@
-/* globals google: true */
 import Ember                from 'ember';
 import GMapsSelectionsMixin from 'ember-cli-g-maps/mixins/g-maps/selections';
 import { module, test }     from 'qunit';
