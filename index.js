@@ -30,7 +30,8 @@ module.exports = {
 
       // grab either API key or client ID
       if(googleMapConfig.apiKey) {
-        params.push('key='+ encodeURIComponent( googleMapConfig.apiKey ));
+        var isClient = googleMapConfig.apiKey.substr(0, 4) === 'gme-';
+        params.push((isClient ? 'client' : 'key') +'='+ encodeURIComponent( googleMapConfig.apiKey ));
       }
 
       // add any optional libraries
