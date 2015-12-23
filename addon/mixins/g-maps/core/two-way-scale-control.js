@@ -5,18 +5,18 @@ const { observer } = Ember;
 export default Ember.Mixin.create({
 
   /**
-   * [observer for component attribute's `scaleControl` updates]
+   * [observer for component attribute's `showScaleControl` updates]
    * @param  {Boolean} 'isMapLoaded'
-   * @param  {[Boolean]}  'scaleControl'
+   * @param  {[Boolean]}  'showScaleControl'
    * @return {[Boolean]} [returns false if map not updated]
    */
-  _bindScaleControlToMap: observer('isMapLoaded', 'scaleControl', function() {
+  _bindScaleControlToMap: observer('isMapLoaded', 'showScaleControl', function() {
     if (!this.get('isMapLoaded')) {
       return false;
     }
 
     this.get('map.map').setOptions({
-      scaleControl: (this.get('scaleControl') ? true : false)
+      scaleControl: (this.get('showScaleControl') ? true : false)
     });
   })
 });

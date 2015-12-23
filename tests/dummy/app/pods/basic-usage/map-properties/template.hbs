@@ -4,6 +4,11 @@
   <li><a {{action "scrollToId" 'mapType'}}>mapType</a></li>
   <li><a {{action "scrollToId" 'showMapTypeControl'}}>showMapTypeControl</a></li>
   <li><a {{action "scrollToId" 'draggable'}}>draggable</a></li>
+  <li><a {{action "scrollToId" 'showZoomControl'}}>showZoomControl</a></li>
+  <li><a {{action "scrollToId" 'showScaleControl'}}>showScaleControl</a></li>
+  <li><a {{action "scrollToId" 'disableDefaultUI'}}>disableDefaultUI</a></li>
+  <li><a {{action "scrollToId" 'disableDoubleClickZoom'}}>disableDoubleClickZoom</a></li>
+  <li><a {{action "scrollToId" 'scrollwheel'}}>scrollwheel</a></li>
 </ul>
 
 
@@ -15,7 +20,7 @@
 
   <div class="grid-content small-12 medium-3 -smb">
     <small class="-db">Show Map Type Controls</small>
-    <input type="checkbox" value=typeControl {{action "toggleTypeControls" on="change"}}>
+    <input type="checkbox" value=showMaptypeControl checked {{action "toggleTypeControls" on="change"}}>
   </div>
 
   <div class="grid-content small-12 medium-3 -smb">
@@ -24,13 +29,13 @@
   </div>
 
   <div class="grid-content small-12 medium-3 -smb">
-    <small class="-db">Hide Zoom Controls</small>
-    <input type="checkbox" value=zoomControl {{action "toggleZoomControls" on="change"}}>
+    <small class="-db">Show Zoom Controls</small>
+    <input type="checkbox" value=showZoomControl checked {{action "toggleZoomControls" on="change"}}>
   </div>
 
   <div class="grid-content small-12 medium-3 -smb">
-    <small class="-db">Hide Scale Controls</small>
-    <input type="checkbox" value=scaleControl {{action "toggleScaleControls" on="change"}}>
+    <small class="-db">Show Scale Controls</small>
+    <input type="checkbox" value=showScaleControl checked {{action "toggleScaleControls" on="change"}}>
   </div>
 </div>
 
@@ -47,15 +52,15 @@
 </div>
 
 <div class="grid-content -np -mb">
-  {{g-maps class="gmaps-docs-map" 
-    lat=lat 
-    lng=lng 
-    zoom=zoom 
-    mapType=type 
+  {{g-maps class="gmaps-docs-map"
+    lat=lat
+    lng=lng
+    zoom=zoom
+    mapType=type
     draggable=drag
-    mapTypeControl=typeControl 
-    zoomControl=zoomControl
-    scaleControl=scaleControl
+    showMapTypeControl=showMapTypeControl
+    showZoomControl=showZoomControl
+    showScaleControl=showScaleControl
     maptypeid_changed="onMapTypeIdChange"}}
 </div>
 
@@ -132,7 +137,7 @@
 
   <div class="-mb">
     <small class="-db">Resources</small>
-    <a href="https://developers.google.com/maps/documentation/javascript/3.20/reference#MapOptions" target="_blank">Google Map Type Control Docs</a>
+    <a href="https://developers.google.com/maps/documentation/javascript/reference#MapOptions" target="_blank">Google Map Type Control Docs</a>
   </div>
 
   <div class="gmaps-snippet">
@@ -147,7 +152,7 @@
                   <table class="highlight tab-size js-file-line-container" data-tab-size="8">
                     <tbody><tr>
                       <td id="file-templa-hbs-L1" class="blob-num js-line-number" data-line-number="1"></td>
-                      <td id="file-templa-hbs-LC1" class="blob-code blob-code-inner js-file-line"><span class="pl-c1">\{{</span><span class="pl-v">g-maps</span> showMapTypeControl=myMapTypeControl<span class="pl-c1">}}</span></td>
+                      <td id="file-templa-hbs-LC1" class="blob-code blob-code-inner js-file-line"><span class="pl-c1">\{{</span><span class="pl-v">g-maps</span> showMapTypeControl=true<span class="pl-c1">}}</span></td>
                     </tr>
                   </tbody></table>
                 </div>
@@ -178,7 +183,7 @@
   </div>
   <div class="-mb">
     <small class="-db">Resources</small>
-    <a href="https://developers.google.com/maps/documentation/javascript/3.20/reference#MapOptions" target="_blank">Google Map Options</a>
+    <a href="https://developers.google.com/maps/documentation/javascript/reference#MapOptions" target="_blank">Google Map Options</a>
   </div>
   <div class="gmaps-snippet">
     <header>Example</header>
@@ -192,7 +197,7 @@
                   <table class="highlight tab-size js-file-line-container" data-tab-size="8">
                     <tbody><tr>
                       <td id="file-templa-hbs-L1" class="blob-num js-line-number" data-line-number="1"></td>
-                      <td id="file-templa-hbs-LC1" class="blob-code blob-code-inner js-file-line"><span class="pl-c1">\{{</span><span class="pl-v">g-maps</span> draggable=setMapDrag<span class="pl-c1">}}</span></td>
+                      <td id="file-templa-hbs-LC1" class="blob-code blob-code-inner js-file-line"><span class="pl-c1">\{{</span><span class="pl-v">g-maps</span> draggable=true<span class="pl-c1">}}</span></td>
                     </tr>
                   </tbody></table>
                 </div>
@@ -208,3 +213,227 @@
   </div>
 </p>
 
+<hr>
+
+<p id="showZoomControl" class="medium-7">
+  <h3>showZoomControl</h3>
+
+  <div class="-mb">
+    <small class="-db">Type</small>
+    Boolean
+  </div>
+  <div class="-mb">
+    <small class="-db">Default</small>
+    <div class="gmaps-inline-code -nml">true</div>
+  </div>
+  <div class="-mb">
+    <small class="-db">Resources</small>
+    <a href="https://developers.google.com/maps/documentation/javascript/reference#MapOptions" target="_blank">Google Map Options</a>
+  </div>
+  <div class="gmaps-snippet">
+    <header>Example</header>
+    <code>
+      <div class="gist">
+        <div class="gist-file">
+          <div class="gist-data">
+            <div class="js-gist-file-update-container js-task-list-container file-box">
+              <div id="file-templa-hbs" class="file">
+                <div class="blob-wrapper data type-handlebars">
+                  <table class="highlight tab-size js-file-line-container" data-tab-size="8">
+                    <tbody><tr>
+                      <td id="file-templa-hbs-L1" class="blob-num js-line-number" data-line-number="1"></td>
+                      <td id="file-templa-hbs-LC1" class="blob-code blob-code-inner js-file-line"><span class="pl-c1">\{{</span><span class="pl-v">g-maps</span> showZoomControl=true<span class="pl-c1">}}</span></td>
+                    </tr>
+                  </tbody></table>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="gist-meta">
+            made with ❤ by <a href="https://github.com">GitHub</a>
+          </div>
+        </div>
+      </div>
+    </code>
+  </div>
+</p>
+
+<hr>
+
+<p id="showScaleControl" class="medium-7">
+  <h3>showScaleControl</h3>
+
+  <div class="-mb">
+    <small class="-db">Type</small>
+    Boolean
+  </div>
+  <div class="-mb">
+    <small class="-db">Default</small>
+    <div class="gmaps-inline-code -nml">true</div>
+  </div>
+  <div class="-mb">
+    <small class="-db">Resources</small>
+    <a href="https://developers.google.com/maps/documentation/javascript/reference#MapOptions" target="_blank">Google Map Options</a>
+  </div>
+  <div class="gmaps-snippet">
+    <header>Example</header>
+    <code>
+      <div class="gist">
+        <div class="gist-file">
+          <div class="gist-data">
+            <div class="js-gist-file-update-container js-task-list-container file-box">
+              <div id="file-templa-hbs" class="file">
+                <div class="blob-wrapper data type-handlebars">
+                  <table class="highlight tab-size js-file-line-container" data-tab-size="8">
+                    <tbody><tr>
+                      <td id="file-templa-hbs-L1" class="blob-num js-line-number" data-line-number="1"></td>
+                      <td id="file-templa-hbs-LC1" class="blob-code blob-code-inner js-file-line"><span class="pl-c1">\{{</span><span class="pl-v">g-maps</span> showScaleControl=true<span class="pl-c1">}}</span></td>
+                    </tr>
+                  </tbody></table>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="gist-meta">
+            made with ❤ by <a href="https://github.com">GitHub</a>
+          </div>
+        </div>
+      </div>
+    </code>
+  </div>
+</p>
+
+<hr>
+
+<p id="disableDefaultUI" class="medium-7">
+  <h3>disableDefaultUI</h3>
+
+  <div class="-mb">
+    <small class="-db">Type</small>
+    Boolean
+  </div>
+  <div class="-mb">
+    <small class="-db">Default</small>
+    <div class="gmaps-inline-code -nml">false</div>
+  </div>
+  <div class="-mb">
+    <small class="-db">Resources</small>
+    <a href="https://developers.google.com/maps/documentation/javascript/reference#MapOptions" target="_blank">Google Map Options</a>
+  </div>
+  <div class="gmaps-snippet">
+    <header>Example</header>
+    <code>
+      <div class="gist">
+        <div class="gist-file">
+          <div class="gist-data">
+            <div class="js-gist-file-update-container js-task-list-container file-box">
+              <div id="file-templa-hbs" class="file">
+                <div class="blob-wrapper data type-handlebars">
+                  <table class="highlight tab-size js-file-line-container" data-tab-size="8">
+                    <tbody><tr>
+                      <td id="file-templa-hbs-L1" class="blob-num js-line-number" data-line-number="1"></td>
+                      <td id="file-templa-hbs-LC1" class="blob-code blob-code-inner js-file-line"><span class="pl-c1">\{{</span><span class="pl-v">g-maps</span> disableDefaultUI=false<span class="pl-c1">}}</span></td>
+                    </tr>
+                  </tbody></table>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="gist-meta">
+            made with ❤ by <a href="https://github.com">GitHub</a>
+          </div>
+        </div>
+      </div>
+    </code>
+  </div>
+</p>
+
+<hr>
+
+<p id="disableDoubleClickZoom" class="medium-7">
+  <h3>disableDoubleClickZoom</h3>
+
+  <div class="-mb">
+    <small class="-db">Type</small>
+    Boolean
+  </div>
+  <div class="-mb">
+    <small class="-db">Default</small>
+    <div class="gmaps-inline-code -nml">false</div>
+  </div>
+  <div class="-mb">
+    <small class="-db">Resources</small>
+    <a href="https://developers.google.com/maps/documentation/javascript/reference#MapOptions" target="_blank">Google Map Options</a>
+  </div>
+  <div class="gmaps-snippet">
+    <header>Example</header>
+    <code>
+      <div class="gist">
+        <div class="gist-file">
+          <div class="gist-data">
+            <div class="js-gist-file-update-container js-task-list-container file-box">
+              <div id="file-templa-hbs" class="file">
+                <div class="blob-wrapper data type-handlebars">
+                  <table class="highlight tab-size js-file-line-container" data-tab-size="8">
+                    <tbody><tr>
+                      <td id="file-templa-hbs-L1" class="blob-num js-line-number" data-line-number="1"></td>
+                      <td id="file-templa-hbs-LC1" class="blob-code blob-code-inner js-file-line"><span class="pl-c1">\{{</span><span class="pl-v">g-maps</span> disableDoubleClickZoom=false<span class="pl-c1">}}</span></td>
+                    </tr>
+                  </tbody></table>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="gist-meta">
+            made with ❤ by <a href="https://github.com">GitHub</a>
+          </div>
+        </div>
+      </div>
+    </code>
+  </div>
+</p>
+
+<hr>
+
+<p id="scrollwheel" class="medium-7">
+  <h3>scrollwheel</h3>
+
+  <div class="-mb">
+    <small class="-db">Type</small>
+    Boolean
+  </div>
+  <div class="-mb">
+    <small class="-db">Default</small>
+    <div class="gmaps-inline-code -nml">true</div>
+  </div>
+  <div class="-mb">
+    <small class="-db">Resources</small>
+    <a href="https://developers.google.com/maps/documentation/javascript/reference#MapOptions" target="_blank">Google Map Options</a>
+  </div>
+  <div class="gmaps-snippet">
+    <header>Example</header>
+    <code>
+      <div class="gist">
+        <div class="gist-file">
+          <div class="gist-data">
+            <div class="js-gist-file-update-container js-task-list-container file-box">
+              <div id="file-templa-hbs" class="file">
+                <div class="blob-wrapper data type-handlebars">
+                  <table class="highlight tab-size js-file-line-container" data-tab-size="8">
+                    <tbody><tr>
+                      <td id="file-templa-hbs-L1" class="blob-num js-line-number" data-line-number="1"></td>
+                      <td id="file-templa-hbs-LC1" class="blob-code blob-code-inner js-file-line"><span class="pl-c1">\{{</span><span class="pl-v">g-maps</span> scrollwheel=true<span class="pl-c1">}}</span></td>
+                    </tr>
+                  </tbody></table>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="gist-meta">
+            made with ❤ by <a href="https://github.com">GitHub</a>
+          </div>
+        </div>
+      </div>
+    </code>
+  </div>
+</p>

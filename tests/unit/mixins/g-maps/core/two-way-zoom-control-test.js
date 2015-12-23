@@ -8,7 +8,7 @@ test('_bindZoomControlToMap should not update map if `isMapLoaded` = false', fun
   const twoWayZoomControlObject = Ember.Object.extend(twoWayZoomControlMixin);
   const subject = twoWayZoomControlObject.create();
 
-  subject.setProperties({ zoomControl: false, isMapLoaded: false });
+  subject.setProperties({ showZoomControl: false, isMapLoaded: false });
   assert.equal(subject._bindZoomControlToMap(), false, 'should not update the map');
 });
 
@@ -19,12 +19,12 @@ test('_bindZoomControlToMap observer should update map if `isMapLoaded` = true',
   const subject = twoWayZoomControlObject.create();
 
   subject.setProperties({
-    zoomControl: false,
+    showZoomControl: false,
     isMapLoaded: false,
     map: {
       map: {
         setOptions: function(option) {
-          assert.equal(option.zoomControl, subject.get('zoomControl'), 'should recieve `subject.zoomControl`');
+          assert.equal(option.zoomControl, subject.get('showZoomControl'), 'should recieve `subject.showZoomControl`');
         }
       }
     }

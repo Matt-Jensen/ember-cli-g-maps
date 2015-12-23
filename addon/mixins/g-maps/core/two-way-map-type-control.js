@@ -5,18 +5,18 @@ const { observer } = Ember;
 export default Ember.Mixin.create({
 
   /**
-   * [observer for component attribute's `mapTypeControl` updates]
+   * [observer for component attribute's `showMapTypeControl` updates]
    * @param  {Boolean} 'isMapLoaded'
-   * @param  {[Boolean]}  'mapTypeControl'
+   * @param  {[Boolean]}  'showMapTypeControl'
    * @return {[Boolean]} [returns false if map not updated]
    */
-  _bindMapTypeControlToMap: observer('isMapLoaded', 'mapTypeControl', function() {
+  _bindMapTypeControlToMap: observer('isMapLoaded', 'showMapTypeControl', function() {
     if (!this.get('isMapLoaded')) {
       return false;
     }
 
     this.get('map.map').setOptions({
-      mapTypeControl: (this.get('mapTypeControl') ? true : false)
+      mapTypeControl: (this.get('showMapTypeControl') ? true : false)
     });
   })
 });

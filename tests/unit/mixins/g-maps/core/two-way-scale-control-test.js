@@ -8,7 +8,7 @@ test('_bindScaleControlToMap should not update map if `isMapLoaded` = false', fu
   const twoWayScaleControlObject = Ember.Object.extend(twoWayScaleControlMixin);
   const subject = twoWayScaleControlObject.create();
 
-  subject.setProperties({ scaleControl: true, isMapLoaded: false });
+  subject.setProperties({ showScaleControl: true, isMapLoaded: false });
   assert.equal(subject._bindScaleControlToMap(), false, 'should not updat map');
 });
 
@@ -19,12 +19,12 @@ test('_bindScaleControlToMap observer should update map if `isMapLoaded` = true'
   const subject = twoWayScaleControlObject.create();
 
   subject.setProperties({
-    scaleControl: false,
+    showScaleControl: false,
     isMapLoaded: false,
     map: {
       map: {
         setOptions: function(option) {
-          assert.equal(option.scaleControl, subject.get('scaleControl'), 'should recieve `subject.scaleControl`');
+          assert.equal(option.scaleControl, subject.get('showScaleControl'), 'should recieve `subject.scaleControl`');
         }
       }
     }

@@ -8,7 +8,7 @@ test('_bindMapTypeControlToMap should not update map if `isMapLoaded` = false', 
   const twoWayMapTypeControlObject = Ember.Object.extend(twoWayMapTypeControlMixin);
   const subject = twoWayMapTypeControlObject.create();
 
-  subject.setProperties({ mapTypeControl: false, isMapLoaded: false });
+  subject.setProperties({ showMapTypeControl: false, isMapLoaded: false });
   assert.equal(subject._bindMapTypeControlToMap(), false, 'should return false if cannot sync');
 });
 
@@ -19,12 +19,12 @@ test('_bindMapTypeControlToMap observer should update map if `isMapLoaded` = tru
   const subject = twoWayMapTypeControlObject.create();
 
   subject.setProperties({
-    mapTypeControl: false,
+    showMapTypeControl: false,
     isMapLoaded: false,
     map: {
       map: {
         setOptions: function(option) {
-          assert.equal(option.mapTypeControl, subject.get('mapTypeControl'), 'should recieve `subject.showMapTypeControl`');
+          assert.equal(option.mapTypeControl, subject.get('showMapTypeControl'), 'should recieve `subject.showMapTypeControl`');
         }
       }
     }

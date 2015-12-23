@@ -9,13 +9,13 @@ export default Ember.Mixin.create(Ember.Evented, {
   lng: 0,
   zoom: 0,
   mapType: 'ROADMAP',
-  mapTypeControl: true,
+  showMapTypeControl: true,
   draggable: true,
   disableDefaultUI: false,
   disableDoubleClickZoom: false,
   scrollwheel: true,
-  zoomControl: true,
-  scaleControl: true,
+  showZoomControl: true,
+  showScaleControl: true,
   isMapLoaded: false,
   classNames: ['ember-cli-g-map'],
   gMap: Ember.inject.service(),
@@ -47,18 +47,25 @@ export default Ember.Mixin.create(Ember.Evented, {
   didInsertElement() {
     this._super(...arguments);
 
+    const config = this.getProperties(
+      'lat',
+      'lng',
+      'zoom',
+      'mapType',
+      'showMapTypeControl',
+      'scaleControl',
+      'showScaleControl',
+      'disableDefaultUI'
+    );
+
+    // Map symantic names to Google Map Options
+    config.zoomControl = config.showZoomControl;
+    config.mapTypeControl = config.showMapTypeControl;
+    config.scaleControl = config.showScaleControl;
+
     // Create Gmap Instance
     const map = new GMaps(
-      merge(this.getProperties(
-        'lat',
-        'lng',
-        'zoom',
-        'mapType',
-        'mapTypeControl',
-        'scaleControl',
-        'showScaleControl',
-        'disableDefaultUI'
-      ), {
+      merge(config, {
         div: `#${this.element.id}`
       })
     );
