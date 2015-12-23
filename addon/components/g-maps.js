@@ -1,7 +1,7 @@
 import Ember from 'ember';
 
 // Core //
-import gMapCore from 'ember-cli-g-maps/mixins/g-maps/core';
+import coreMain from 'ember-cli-g-maps/mixins/g-maps/core/main';
 import twoWayLatLng from 'ember-cli-g-maps/mixins/g-maps/core/two-way-lat-lng';
 import twoWayZoom from 'ember-cli-g-maps/mixins/g-maps/core/two-way-zoom';
 import twoWayDraggable from 'ember-cli-g-maps/mixins/g-maps/core/two-way-draggable';
@@ -11,7 +11,6 @@ import twoWayZoomControl from 'ember-cli-g-maps/mixins/g-maps/core/two-way-zoom-
 import twoWayScaleControl from 'ember-cli-g-maps/mixins/g-maps/core/two-way-scale-control';
 import twoWayMapType from 'ember-cli-g-maps/mixins/g-maps/core/two-way-map-type';
 import twoWayMapTypeControl from 'ember-cli-g-maps/mixins/g-maps/core/two-way-map-type-control';
-
 
 // Map Childs //
 import gMapCircles from 'ember-cli-g-maps/mixins/g-maps/circles';
@@ -26,7 +25,6 @@ import gMapHeatmap from 'ember-cli-g-maps/mixins/g-maps/heatmap';
 import gMapSelections from 'ember-cli-g-maps/mixins/g-maps/selections';
 
 export default Ember.Component.extend(
-  Ember.Evented,
   gMapCircles,
   gMapMarkers,
   gMapPolygons,
@@ -44,6 +42,5 @@ export default Ember.Component.extend(
   twoWayScaleControl,
   twoWayMapType,
   twoWayMapTypeControl,
-
-  gMapCore
+  coreMain
 );

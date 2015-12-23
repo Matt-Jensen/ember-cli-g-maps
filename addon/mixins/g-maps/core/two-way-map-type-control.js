@@ -10,7 +10,7 @@ export default Ember.Mixin.create({
    * @param  {[Boolean]}  'mapTypeControl'
    * @return {[Boolean]} [returns false if map not updated]
    */
-  _bindMapTypeToMap: observer('isMapLoaded', 'mapTypeControl', function() {
+  _bindMapTypeControlToMap: observer('isMapLoaded', 'mapTypeControl', function() {
     if (!this.get('isMapLoaded')) {
       return false;
     }

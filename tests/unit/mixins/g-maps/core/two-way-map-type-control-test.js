@@ -4,15 +4,15 @@ import { module, test } from 'qunit';
 
 module('Unit | Mixin | g maps/core/two way map type control');
 
-test('_bindMapTypeToMap should not update map if `isMapLoaded` = false', function(assert) {
+test('_bindMapTypeControlToMap should not update map if `isMapLoaded` = false', function(assert) {
   const twoWayMapTypeControlObject = Ember.Object.extend(twoWayMapTypeControlMixin);
   const subject = twoWayMapTypeControlObject.create();
 
   subject.setProperties({ mapTypeControl: false, isMapLoaded: false });
-  assert.equal(subject._bindMapTypeToMap(), false, 'should return false if cannot sync');
+  assert.equal(subject._bindMapTypeControlToMap(), false, 'should return false if cannot sync');
 });
 
-test('_bindMapTypeToMap observer should update map if `isMapLoaded` = true', function(assert) {
+test('_bindMapTypeControlToMap observer should update map if `isMapLoaded` = true', function(assert) {
   assert.expect(1);
 
   const twoWayMapTypeControlObject = Ember.Object.extend(twoWayMapTypeControlMixin);

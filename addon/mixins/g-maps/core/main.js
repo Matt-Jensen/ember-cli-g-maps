@@ -1,10 +1,9 @@
 import Ember from 'ember';
 
-const { on, merge, uuid, computed } = Ember;
+const { merge, uuid, computed } = Ember;
 
-export default Ember.Mixin.create({
+export default Ember.Mixin.create(Ember.Evented, {
   map: null,
-  googleMap: computed.oneWay('map.map'),
   name: null,
   lat: 0,
   lng: 0,
@@ -44,66 +43,94 @@ export default Ember.Mixin.create({
     'projection_changed'
   ],
 
-  _initGMap: on('didInsertElement', function() {
-    const events = this.get('_gmapEvents');
-    const config = this.getProperties(
-      'lat',
-      'lng',
-      'zoom',
-      'mapType',
-      'mapTypeControl',
-      'scaleControl',
-      'showScaleControl',
-      'disableDefaultUI'
-    );
-    config.div = `#${this.element.id}`;
+  // TODO write integration test coverage
+  didInsertElement() {
+    this._super(...arguments);
 
-    const map = new GMaps( config );
+    // Create Gmap Instance
+    const map = new GMaps(
+      merge(this.getProperties(
+        'lat',
+        'lng',
+        'zoom',
+        'mapType',
+        'mapTypeControl',
+        'scaleControl',
+        'showScaleControl',
+        'disableDefaultUI'
+      ), {
+        div: `#${this.element.id}`
+      })
+    );
+
     this.set('map', map);
 
-    // Set GMap events
-    for (let i = 0, l = events.length; i < l; i++ ) {
-
-      // If map event defined on component
-      if (!this.get(events[i])) { continue; }
-
-      // Add GMaps event listener on google map instance
-      GMaps.on(events[i], map.map, (e) => this.send(events[i], e));
-    }
+    this._addMapEvents();
 
     if (!this.get('name')) {
       this.set('name', `ember-cli-g-map-${uuid()}`);
     }
 
+    // Register gMap instance in gMap service
     this.get('gMap').maps.add(this.get('name'), map.map);
 
     // When map instance has finished loading
-    google.maps.event.addListenerOnce(map.map, 'idle', (e) => {
-      if (this.get('isDestroyed')) { return; }
-      this.set('isMapLoaded', true);
-      this.trigger('ember-cli-g-map-loaded');
-      this.send('loaded', e);
-    });
-  }),
+    google.maps.event.addListenerOnce(map.map, 'idle', Ember.run.bind(this, this._onMapLoad));
+  },
 
-  _destroyGMap: on('willDestroyElement', function destroyGMap() {
-    const events = this.get('_gmapEvents');
-    const map    = this.get('map');
+  // TODO write integration test coverage
+  willDestroyElement() {
+    this._super(...arguments);
 
-    // Remove GMap events
-    for(let i = 0, l = events.length; i < l; i++ ) {
-
-      // If map event defined on component
-      if( !this.get(events[i]) ) { continue; }
-      GMaps.off(events[i], map.map);
-    }
+    this._removeMapEvents();
 
     // TODO: remove for v0.4.0
     this.get('gMap').maps.remove(this.get('name'));
 
     // Run after Mixin willDestroyElement
     Ember.run.later(() => this.get('map').destroy());
-  }),
+  },
+
+  _addMapEvents() {
+    const events = this.get('_gmapEvents');
+
+    for (let i = 0, l = events.length; i < l; i++ ) {
+
+      // If map event NOT defined on component continue
+      if (!this.get(events[i])) {
+        continue;
+      }
+
+      // Add GMaps event listener on google map instance
+      GMaps.on(events[i], this.get('map.map'), (e) => {
+        return this.send(events[i], e);
+      });
+    }
+  },
+
+  _removeMapEvents() {
+    const events = this.get('_gmapEvents');
+
+    for(let i = 0, l = events.length; i < l; i++ ) {
+
+      // If map event NOT defined on component continue
+      if( !this.get(events[i]) ) {
+        continue;
+      }
+
+      GMaps.off(events[i], this.get('map.map'));
+    }
+  },
+
+  _onMapLoad(e) {
+    if (this.get('isDestroyed')) {
+      return false;
+    }
+
+    this.set('isMapLoaded', true);
+    this.trigger('ember-cli-g-map-loaded');
+    this.send('loaded', e);
+  },
 
   /////////////////////////////////////////////////////////////
   // Map state info, generally required info to make requests
@@ -133,72 +160,86 @@ export default Ember.Mixin.create({
     };
   }),
 
-
   // Supported g-map Actions
 
   actions: {
     idle: function() {
       this.sendAction('idle', merge(this.get('defaultGMapState'), ...arguments));
     },
+
     drag: function() {
       this.sendAction('drag', merge(this.get('defaultGMapState'), ...arguments));
     },
+
     click: function() {
       this.sendAction('click', merge(this.get('defaultGMapState'), ...arguments));
     },
+
     resize: function() {
       this.sendAction('resize', merge(this.get('defaultGMapState'), ...arguments));
     },
+
     loaded: function() {
       this.sendAction('loaded', merge(this.get('defaultGMapState'), ...arguments));
     },
+
     dragend: function() {
       this.sendAction('dragend', merge(this.get('defaultGMapState'), ...arguments));
     },
+
     dblclick: function() {
       this.sendAction('dblclick', merge(this.get('defaultGMapState'), ...arguments));
     },
+
     mouseout: function() {
       this.sendAction('mouseout', merge(this.get('defaultGMapState'), ...arguments));
     },
+
     dragstart: function() {
       this.sendAction('dragstart', merge(this.get('defaultGMapState'), ...arguments));
     },
+
     mousemove: function() {
       this.sendAction('mousemove', merge(this.get('defaultGMapState'), ...arguments));
     },
+
     mouseover: function() {
       this.sendAction('mouseover', merge(this.get('defaultGMapState'), ...arguments));
     },
+
     rightclick: function() {
       this.sendAction('rightclick', merge(this.get('defaultGMapState'), ...arguments));
     },
+
     tilesloaded: function() {
       this.sendAction('tilesloaded', merge(this.get('defaultGMapState'), ...arguments));
     },
+
     tilt_changed: function() {
       this.sendAction('tilt_changed', ...arguments);
     },
+
     zoom_changed: function() {
       this.sendAction('zoom_changed', merge(this.get('defaultGMapState'), ...arguments));
     },
+
     bounds_changed: function() {
       this.sendAction('bounds_changed', merge(this.get('defaultGMapState'), ...arguments));
     },
+
     center_changed: function() {
       this.sendAction('center_changed', merge(this.get('defaultGMapState'), ...arguments));
     },
+
     heading_changed: function() {
       this.sendAction('heading_changed', merge(this.get('defaultGMapState'), ...arguments));
     },
+
     maptypeid_changed: function() {
-      const googleMap = this.get('googleMap');
-      this.sendAction('maptypeid_changed', merge(
-        this.get('defaultGMapState'),
-        { mapType: googleMap.getMapTypeId() },
-        ...arguments
-      ));
+      const googleMapInstance = this.get('map.map');
+      this.sendAction('maptypeid_changed', merge(this.get('defaultGMapState'), { mapType: googleMapInstance.getMapTypeId() }, ...arguments));
     },
+
     projection_changed: function() {
       this.sendAction('projection_changed', merge(this.get('defaultGMapState'), ...arguments));
     }

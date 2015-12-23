@@ -1,4 +1,4 @@
-import Ember        from 'ember';
+import Ember from 'ember';
 
 const { capitalize } = Ember.String;
 const { merge, uuid, on, observer } = Ember;
@@ -128,7 +128,7 @@ export default {
         // Only diff one level deep on parent model
         if(typeof model[p] === 'object') { continue; }
 
-        if(model[p] !== mapChild[p]) { 
+        if(model[p] !== mapChild[p]) {
           return true;
         }
       }
