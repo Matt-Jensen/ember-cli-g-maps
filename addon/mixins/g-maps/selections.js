@@ -1,4 +1,3 @@
-/* globals google: true */
 import Ember from 'ember';
 
 const { later } = Ember.run;

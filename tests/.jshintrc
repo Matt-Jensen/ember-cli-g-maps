@@ -21,7 +21,9 @@
     "andThen",
     "currentURL",
     "currentPath",
-    "currentRouteName"
+    "currentRouteName",
+    "GMaps",
+    "google"
   ],
   "node": false,
   "browser": false,
