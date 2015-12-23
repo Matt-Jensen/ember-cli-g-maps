@@ -1,6 +1,6 @@
 import Ember from 'ember';
 
-const { on, merge, uuid, computed, observer } = Ember;
+const { on, merge, uuid, computed } = Ember;
 
 export default Ember.Mixin.create({
   map: null,
@@ -18,7 +18,7 @@ export default Ember.Mixin.create({
   zoomControl: true,
   scaleControl: true,
   isMapLoaded: false,
-  classNames: ['ember-cli-g-map'], 
+  classNames: ['ember-cli-g-map'],
   gMap: Ember.inject.service(),
 
   // Map Events
@@ -104,131 +104,6 @@ export default Ember.Mixin.create({
     // Run after Mixin willDestroyElement
     Ember.run.later(() => this.get('map').destroy());
   }),
-
-
-  /////////////////////////////
-  // Parent -> GMap Bindings
-  /////////////////////////////
-
-  _syncCenter: observer('isMapLoaded', 'lat', 'lng', function() {
-    if(!this.get('isMapLoaded')) { return false; }
-    const { map, lat, lng } = this.getProperties('map', 'lng', 'lat');
-    const center = map.getCenter();
-    const areCoordsEqual = this._areCoordsEqual;
-
-    // If map is out of sync with app state
-    if(!areCoordsEqual(center.lat(), lat) || !areCoordsEqual(center.lng(), lng)) {
-      map.setCenter(lat, lng);
-    }
-  }),
-
-  _syncZoom: observer('isMapLoaded', 'zoom', function() {
-    if (!this.get('isMapLoaded')) { return false; }
-    const { map, zoom } = this.getProperties('map', 'zoom');
-    map.setZoom(zoom);
-  }),
-
-  _syncDraggable: observer('isMapLoaded', 'draggable', function() {
-    if (!this.get('isMapLoaded')) { return false; }
-    this.get('googleMap').setOptions({
-      draggable: (this.get('draggable') ? true : false)
-    });
-  }),
-
-  _syncDisableDoubleClickZoom: observer('isMapLoaded', 'disableDoubleClickZoom', function() {
-    if(!this.get('isMapLoaded')) { return false; }
-    this.get('googleMap').setOptions({ 
-      disableDoubleClickZoom: (this.get('disableDoubleClickZoom') ? true : false)
-    });
-  }),
-
-  _syncScrollwheel: observer('isMapLoaded', 'scrollwheel', function() {
-    if (!this.get('isMapLoaded')) { return false; }
-    this.get('googleMap').setOptions({
-      scrollwheel: (this.get('scrollwheel') ? true : false)
-    });
-  }),
-
-  _syncZoomControl: observer('isMapLoaded', 'zoomControl', function() {
-    if (!this.get('isMapLoaded')) { return false; }
-    this.get('googleMap').setOptions({
-      zoomControl: (this.get('zoomControl') ? true : false)
-    });
-  }),
-
-  _syncScaleControl: observer('isMapLoaded', 'scaleControl', function() {
-    if (!this.get('isMapLoaded')) { return false; }
-    this.get('googleMap').setOptions({
-      scaleControl: (this.get('scaleControl') ? true : false)
-    });
-  }),
-
-  _syncMapType: observer('isMapLoaded', 'mapType', function() {
-    if (!this.get('isMapLoaded')) { return false; }
-    const googleMap = this.get('googleMap');
-    const mapType = `${this.get('mapType')}`;
-
-    // If invalid mapType
-    if (google.maps.MapTypeId[mapType.toUpperCase()] === undefined) {
-      return false;
-    }
-
-    if (mapType.toLowerCase() !== googleMap.getMapTypeId()) {
-      googleMap.setMapTypeId( google.maps.MapTypeId[mapType.toUpperCase()] );
-    }
-  }),
-
-  _syncMapTypeControl: observer('isMapLoaded', 'mapTypeControl', function() {
-    if (!this.get('isMapLoaded')) { return false; }
-    this.get('googleMap').setOptions({
-      mapTypeControl: (this.get('mapTypeControl') ? true : false)
-    });
-  }),
-
-
-  /////////////////////////////
-  // GMap -> Parent Bindings
-  ////////////////////////////
-
-  _addGMapPersisters: on('ember-cli-g-map-loaded', function() {
-    const map = this.get('map');
-
-    GMaps.on('center_changed', map.map, () => {
-      Ember.run.debounce(this, this._onCenterChanged, 100);
-    });
-
-    GMaps.on('zoom_changed', map.map, () => {
-      Ember.run.later(() => this._onZoomChanged());
-    });
-  }),
-
-  _onCenterChanged: function() {
-    const map = this.get('map');
-    const areCoordsEqual = this._areCoordsEqual;
-    const { lat, lng } = this.getProperties('lat', 'lng');
-    const center = map.getCenter();
-
-    // Still in sync
-    if(areCoordsEqual(center.lat(), lat) || areCoordsEqual(center.lng(), lng)) { return false; }
-
-    // Out of sync
-    this.setProperties({ lat: center.lat(), lng: center.lng() });
-  },
-
-  _onZoomChanged: function() {
-    const map = this.get('map');
-    const zoom = this.get('zoom');
-
-    // Zoom still in sync
-    if(zoom === map.map.zoom) { return false; }
-
-    // Zooming changes lat,lng state
-    const center = map.getCenter();
-
-    // Zoom out of sync
-    this.setProperties({ zoom: map.map.zoom, lat: center.lat(), lng: center.lng() });
-  },
-
 
   /////////////////////////////////////////////////////////////
   // Map state info, generally required info to make requests
@@ -327,12 +202,5 @@ export default Ember.Mixin.create({
     projection_changed: function() {
       this.sendAction('projection_changed', merge(this.get('defaultGMapState'), ...arguments));
     }
-  },
-
-
-  /////////////
-  // Helpers
-  ////////////
-  
-  _areCoordsEqual: (a, b) => parseFloat(a).toFixed(12) === parseFloat(b).toFixed(12)
+  }
 });

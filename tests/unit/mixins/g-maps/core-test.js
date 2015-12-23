@@ -1,7 +1,7 @@
-import Ember            from 'ember';
-import GMapsCoreMixin   from 'ember-cli-g-maps/mixins/g-maps/core';
+import Ember from 'ember';
+import GMapsCoreMixin from 'ember-cli-g-maps/mixins/g-maps/core';
 import { module, test } from 'qunit';
-import sinon            from 'sinon';
+import sinon from 'sinon';
 
 const { merge } = Ember;
 
@@ -12,7 +12,7 @@ function createSubject() {
   let mapDiv = document.createElement('div');
   mapDiv.id = `map-id-${Ember.uuid()}`;
   emberTestingDiv.appendChild(mapDiv);
-  
+
   const GMapsCoreObject = Ember.Object.extend(GMapsCoreMixin, Ember.Evented, {
     element: mapDiv,
 
@@ -20,7 +20,7 @@ function createSubject() {
 
     // Mock gMap service
     gMap: {
-      maps: { 
+      maps: {
         add: function() {
           return {
             onLoad: new Ember.RSVP.Promise(() => {})
@@ -34,7 +34,7 @@ function createSubject() {
       map: {
         getBounds: function() {
           return {
-            getNorthEast: function() { 
+            getNorthEast: function() {
               return {
                 lat: function() { return 1; },
                 lng: function() { return 1; }
@@ -282,541 +282,56 @@ test('`_destroyGMap` should remove gMap instance added to gMap service', functio
   subject._destroyGMap();
 });
 
-
-//////////////////
-// Sync Lat Lng
-/////////////////
-
-test('`_syncCenter` should not sync `lat` & `lng` if `isMapLoaded` is false', function(assert) {
-  const subject = createSubject();
-
-  subject.setProperties({ lat: 1, lng: 1, isMapLoaded: false });
-  assert.equal(subject._syncCenter(), false);
-
-  Ember.run.later(() => removeSubject(subject));
-});
-
-test('`_syncCenter` shouldn\'t sync if `map.{lat,lng}` = `subject.{lat,lng}`', function(assert) {
-  const subject = createSubject();
-
-  const config = { lat: 1, lng: 1, isMapLoaded: false };
-  subject.setProperties(config);
-  subject._initGMap();
-  subject.setProperties({
-    isMapLoaded: true,
-    map: merge(subject.get('map'), {
-      getCenter: function() { 
-        return { 
-          lat: function() { return config.lat; }, 
-          lng: function() { return config.lng; }
-        }; 
-      },
-      setCenter: sinon.spy()
-    })
-  });
-  subject._syncCenter();
-  assert.equal(subject.map.setCenter.called, false);
-  Ember.run.later(() => removeSubject(subject));
-});
-
-test('`_syncCenter` should sync map instance if out of sync with subject', function(assert) {
-  const subject = createSubject();
-
-  const config = { lat: 1, lng: 1, isMapLoaded: false };
-  subject.setProperties(config);
-  subject._initGMap();
-  subject.setProperties({
-    isMapLoaded: true,
-    map: merge(subject.get('map'), {
-      getCenter: function() {
-        return { 
-          lat: function() { return 2; }, 
-          lng: function() { return 2; }
-        };
-      },
-      setCenter: sinon.spy()
-    })
-  });
-  subject._syncCenter();
-  assert.ok(subject.map.setCenter.called);
-  Ember.run.later(() => removeSubject(subject));
-});
-
-
-///////////////
-// Sync Zoom
-//////////////
-
-test('`_syncZoom` should not sync `zoom` if `isMapLoaded` is false', function(assert) {
-  const subject = createSubject();
-
-  subject.setProperties({ zoom: 10, isMapLoaded: false });
-  assert.equal(subject._syncZoom(), false);
-
-  Ember.run.later(() => removeSubject(subject));
-});
-
-test('`_syncZoom` should sync zoom if `isMapLoaded` is true', function(assert) {
-  const subject = createSubject();
-
-  const config = { zoom: 10, isMapLoaded: false };
-  subject.setProperties(config);
-  subject._syncCenter = function() {}; // avoid bindings
-  subject._initGMap();
-  subject.setProperties({
-    isMapLoaded: true,
-    map: merge(subject.get('map'), {
-      setZoom: sinon.spy()
-    })
-  });
-  subject._syncZoom();
-  assert.ok(subject.map.setZoom.called);
-
-  Ember.run.later(() => removeSubject(subject));
-});
-
-
-////////////////////
-// Sync Draggable
-///////////////////
-
-test('`_syncDraggable` should not sync `draggable` if `isMapLoaded` is false', function(assert) {
-  const subject = createSubject();
-
-  subject.setProperties({ draggable: false, isMapLoaded: false });
-  assert.equal(subject._syncDraggable(), false);
-
-  Ember.run.later(() => removeSubject(subject));
-});
-
-test('`_syncDraggable` should sync `draggable` if `isMapLoaded` is true', function(assert) {
-  assert.expect(1);
-
-  const subject = createSubject();
-
-  const config = { draggable: false, isMapLoaded: false };
-  subject.setProperties(config);
-  subject._syncCenter = subject._syncZoom = subject._syncMapType = function() {}; // avoid bindings
-
-  subject._initGMap();
-  subject.setProperties({
-    isMapLoaded: true,
-    map: merge(subject.get('map'), {
-      map: {
-        setOptions: function(option) {
-          assert.equal(option.draggable, config.draggable);
-          removeSubject(subject);
-        }
-      }
-    })
-  });
-
-  subject._syncDraggable();
-});
-
-
-////////////////////////////////////
-// Sync Disable Double Click Zoom
-///////////////////////////////////
-
-test('`_syncDisableDoubleClickZoom` should not sync `disableDoubleClickZoom` if `isMapLoaded` is false', function(assert) {
-  const subject = createSubject();
-
-  subject.setProperties({ disableDoubleClickZoom: true, isMapLoaded: false });
-  assert.equal(subject._syncDisableDoubleClickZoom(), false, 'should return false if cannot sync');
-
-  Ember.run.later(() => removeSubject(subject));
-});
-
-test('`_syncDisableDoubleClickZoom` should sync `disableDoubleClickZoom` if `isMapLoaded` is true', function(assert) {
-  assert.expect(1);
-
-  const subject = createSubject();
-
-  const config = { disableDoubleClickZoom: true, isMapLoaded: false };
-  subject.setProperties(config);
-
-  subject._initGMap();
-  subject.setProperties({
-    isMapLoaded: true,
-    map: merge(subject.get('map'), {
-      map: {
-        setOptions: function(option) {
-          assert.equal(option.disableDoubleClickZoom, config.disableDoubleClickZoom, 'should recieve configured disableDoubleClickZoom');
-          removeSubject(subject);
-        }
-      }
-    })
-  });
-
-  subject._syncDisableDoubleClickZoom();
-});
-
-
-////////////////////////
-// Sync Scroll Wheel
-//////////////////////
-
-test('`_syncScrollwheel` should not sync `scrollwheel` if `isMapLoaded` is false', function(assert) {
-  const subject = createSubject();
-
-  subject.setProperties({ scrollwheel: true, isMapLoaded: false });
-  assert.equal(subject._syncScrollwheel(), false, 'should return false if cannot sync');
-
-  Ember.run.later(() => removeSubject(subject));
-});
-
-test('`_syncScrollwheel` should sync `scrollwheel` if `isMapLoaded` is true', function(assert) {
-  assert.expect(1);
-
-  const subject = createSubject();
-
-  const config = { scrollwheel: true, isMapLoaded: false };
-  subject.setProperties(config);
-
-  subject._initGMap();
-  subject.setProperties({
-    isMapLoaded: true,
-    map: merge(subject.get('map'), {
-      map: {
-        setOptions: function(option) {
-          assert.equal(option.scrollwheel, config.scrollwheel, 'should recieve configured scrollwheel');
-          removeSubject(subject);
-        }
-      }
-    })
-  });
-
-  subject._syncScrollwheel();
-});
-
-
-////////////////////////////
-// Sync Hide Zoom Control
-///////////////////////////
-
-test('`_syncZoomControl` should not sync `zoomControl` if `isMapLoaded` is false', function(assert) {
-  const subject = createSubject();
-
-  subject.setProperties({ zoomControl: false, isMapLoaded: false });
-  assert.equal(subject._syncZoomControl(), false, 'should return false if cannot sync');
-
-  Ember.run.later(() => removeSubject(subject));
-});
-
-test('`_syncZoomControl` should sync `zoomControl` if `isMapLoaded` is true', function(assert) {
-  assert.expect(1);
-
-  const subject = createSubject();
-
-  const config = { zoomControl: false, isMapLoaded: false };
-  subject.setProperties(config);
-
-  subject._initGMap();
-  subject.setProperties({
-    isMapLoaded: true,
-    map: merge(subject.get('map'), {
-      map: {
-        setOptions: function(option) {
-          assert.equal(option.zoomControl, config.zoomControl, 'should recieve configured zoomControl');
-          removeSubject(subject);
-        }
-      }
-    })
-  });
-
-  subject._syncZoomControl();
-});
-
-
-/////////////////////////
-// Sync Scale Control
-///////////////////////
-
-test('`_syncScaleControl` should not sync `scaleControl` if `isMapLoaded` is false', function(assert) {
-  const subject = createSubject();
-
-  subject.setProperties({ scaleControl: true, isMapLoaded: false });
-  assert.equal(subject._syncScaleControl(), false, 'should return false if cannot sync');
-
-  Ember.run.later(() => removeSubject(subject));
-});
-
-test('`_syncScaleControl` should sync `scaleControl` if `isMapLoaded` is true', function(assert) {
-  assert.expect(1);
-
-  const subject = createSubject();
-
-  const config = { scaleControl: true, isMapLoaded: false };
-  subject.setProperties(config);
-
-  subject._initGMap();
-  subject.setProperties({
-    isMapLoaded: true,
-    map: merge(subject.get('map'), {
-      map: {
-        setOptions: function(option) {
-          assert.equal(option.scaleControl, config.scaleControl, 'should recieve configured scaleControl');
-          removeSubject(subject);
-        }
-      }
-    })
-  });
-
-  subject._syncScaleControl();
-});
-
-
-///////////////////
-// Sync Map Type
-//////////////////
-
-test('`_syncMapType` should not sync `mapType` if `isMapLoaded` is false', function(assert) {
-  const subject = createSubject();
-
-  subject.setProperties({ mapType: 'SATELITE', isMapLoaded: false });
-  assert.equal(subject._syncMapType(), false);
-
-  Ember.run.later(() => removeSubject(subject));
-});
-
-test('`_syncMapType` should not sync `mapType` if `mapType` is not a valid map type id', function(assert) {
-  const subject = createSubject();
-
-  subject.set('isMapLoaded', false);
-  subject._syncCenter = function() {};
-  subject._initGMap();
-  subject.setProperties({
-    mapType: undefined,
-    isMapLoaded: true,
-    map: merge(subject.get('map'), {
-      getCenter: function() { return { A: 1, F: 1 }; }
-    })
-  });
-
-  assert.equal(subject.get('googleMap').mapTypeId, 'roadmap', 'mapType is unchanged');
-
-  Ember.run.later(() => removeSubject(subject));
-});
-
-test('`_syncMapType` should sync set `mapType` if `isMapLoaded` is true', function(assert) {
-  const subject = createSubject();
-
-  subject.set('isMapLoaded', false);
-  subject._syncCenter = function() {};
-  subject._initGMap();
-  subject.setProperties({
-    mapType: 'SATELITE',
-    isMapLoaded: true,
-    googleMap: merge(subject.get('googleMap'), {
-      setOptions: function() {},
-      getMapTypeId: function() { return 'roadmap'; }
-    })
-  });
-
-  assert.ok(subject.get('googleMap').mapTypeId, 'satelite', 'set new mapType');
-
-  Ember.run.later(() => removeSubject(subject));
-});
-
-
-////////////////////////////
-// Sync Map Type Controls
-///////////////////////////
-
-test('`_syncMapTypeControl` should not sync `mapTypeControl` if `isMapLoaded` is false', function(assert) {
-  const subject = createSubject();
-
-  subject.setProperties({ mapTypeControl: false, isMapLoaded: false });
-  assert.equal(subject._syncMapTypeControl(), false, 'should return false if cannot sync');
-
-  Ember.run.later(() => removeSubject(subject));
-});
-
-test('`_syncMapTypeControl` should sync `mapTypeControl` if `isMapLoaded` is true', function(assert) {
-  assert.expect(1);
-
-  const subject = createSubject();
-
-  const config = { mapTypeControl: false, isMapLoaded: false };
-  subject.setProperties(config);
-
-  subject._initGMap();
-  subject.setProperties({
-    isMapLoaded: true,
-    map: merge(subject.get('map'), {
-      map: {
-        setOptions: function(option) {
-          assert.equal(option.mapTypeControl, config.mapTypeControl, 'should recieve configured showMapTypeControl');
-          removeSubject(subject);
-        }
-      }
-    })
-  });
-
-  subject._syncMapTypeControl();
-});
-
-
 /////////////////////////////
 // GMap Persistence Events
 ////////////////////////////
 
-test('`_addGMapPersisters` should add GMap events on `ember-cli-g-map-loaded`', function(assert) {
-  const subject = createSubject();
+// // TODO: Replace with integration test
+// test('`_addGMapPersisters` should call `_onCenterChanged` on GMap event: `center_changed` fire', function(assert) {
+//   assert.expect(1);
+//
+//   const subject = createSubject();
+//   const originalRunDebounce = Ember.run.debounce;
+//
+//   subject.trigger = function() {};
+//   Ember.run.debounce = function(target, func) {
+//     func.call(target);
+//   };
+//
+//   subject._initGMap();
+//   subject._onCenterChanged = function() {
+//     assert.ok(true);
+//     removeSubject(subject);
+//   };
+//   subject._addGMapPersisters();
+//   GMaps.fire('center_changed', subject.get('map').map);
+//
+//   Ember.run.debounce = originalRunDebounce;
+// });
 
-  const addedEvents = [];
-  const persistEvents = ['center_changed', 'zoom_changed'];
-  const originalGMapsOn = GMaps.on;
-  subject.set('map', { map: {} });
-
-  GMaps.on = function(e) {
-    addedEvents.push(e);
-  };
-
-  subject.trigger('ember-cli-g-map-loaded');
-  assert.deepEqual(addedEvents, persistEvents);
-
-  GMaps.on = originalGMapsOn;
-  Ember.run.later(() => removeSubject(subject));
-});
-
-test('`_addGMapPersisters` should call `_onCenterChanged` on GMap event: `center_changed` fire', function(assert) {
-  assert.expect(1);
-
-  const subject = createSubject();
-  const originalRunDebounce = Ember.run.debounce;
-
-  subject.trigger = function() {};
-  Ember.run.debounce = function(target, func) {
-    func.call(target);
-  };
-
-  subject._initGMap();
-  subject._onCenterChanged = function() {
-    assert.ok(true);
-    removeSubject(subject);
-  };
-  subject._addGMapPersisters();
-  GMaps.fire('center_changed', subject.get('map').map);
-
-  Ember.run.debounce = originalRunDebounce;
-});
-
-test('`_addGMapPersisters` should call `_onZoomChanged` on GMap event: `zoom_changed` fire', function(assert) {
-  assert.expect(1);
-
-  const subject = createSubject();
-  const originalRunLater = Ember.run.later;
-  Ember.run.later = function(func) { return func(); };
-
-  subject._initGMap();
-  subject._onZoomChanged = function() {
-    assert.ok(true);
-    removeSubject(subject);
-  };
-  subject._addGMapPersisters();
-  GMaps.fire('zoom_changed', subject.get('map').map);
-
-  Ember.run.later = originalRunLater;
-});
-
-
-///////////////////////
-// On Center Changed
-//////////////////////
-
-test('`_onCenterChanged` should not sync if same as subject `lat`,`lng`', function(assert) {
-  const subject = createSubject();
-
-  subject.setProperties({
-    lat: 1, lng: 1, isMapLoaded: false,
-    map: {
-      getCenter: function() {
-        return { 
-          lat: function() { return 1; },
-          lng: function() { return 1; }
-        }; 
-      }
-    }
-  });
-
-  assert.equal(subject._onCenterChanged(), false);
-
-  Ember.run.later(() => removeSubject(subject));
-});
-
-test('`_onCenterChanged` should sync new `lat` & `lng` to subject', function(assert) {
-  const subject = createSubject();
-
-  subject.setProperties({
-    lat: 1, lng: 1, isMapLoaded: false,
-    map: {
-      getCenter: function() {
-        return { 
-          lat: function() { return 2; },
-          lng: function() { return 2; }
-        }; 
-      }
-    }
-  });
-
-  subject.setProperties = sinon.spy();
-
-  subject._onCenterChanged();
-  assert.ok(subject.setProperties.called);
-
-  Ember.run.later(() => removeSubject(subject));
-});
-
-
-/////////////////////
-// On Zoom Changed
-////////////////////
-
-test('`_onZoomChanged` should not sync if same as subject `zoom`', function(assert) {
-  const subject = createSubject();
-
-  subject.setProperties({
-    zoom: 10, isMapLoaded: false,
-    map: { map: { zoom: 10 } }
-  });
-
-  assert.equal(subject._onZoomChanged(), false);
-
-  Ember.run.later(() => removeSubject(subject));
-});
-
-test('`_onZoomChanged` should sync new `zoom`, `lat`, and `zoom` to subject', function(assert) {
-  const subject = createSubject();
-
-  subject.setProperties({
-    lat: 1, lng: 1, zoom: 1, 
-    isMapLoaded: false,
-    map: { 
-      map: { zoom: 10 },
-      getCenter: function() { 
-        return { 
-          lat: function() { return 2; },
-          lng: function() { return 2; }
-        };
-      }
-    }
-  });
-
-  subject._onZoomChanged();
-
-  assert.equal(subject.get('lat'), 2);
-  assert.equal(subject.get('lng'), 2);
-  assert.equal(subject.get('zoom'), 10);
-
-  Ember.run.later(() => removeSubject(subject));
-});
+// TODO: Replace with integration test
+// test('`_addGMapPersisters` should call `_onZoomChanged` on GMap event: `zoom_changed` fire', function(assert) {
+//   assert.expect(1);
+//
+//   const subject = createSubject();
+//   const originalRunLater = Ember.run.later;
+//   Ember.run.later = function(func) { return func(); };
+//
+//   subject._initGMap();
+//   subject._onZoomChanged = function() {
+//     assert.ok(true);
+//     removeSubject(subject);
+//   };
+//   subject._addGMapPersisters();
+//   GMaps.fire('zoom_changed', subject.get('map').map);
+//
+//   Ember.run.later = originalRunLater;
+// });
 
 
 ////////////////////////
 // Default GMap State
-/////////////////////// 
+///////////////////////
 
 test('`defaultGMapState` should return the current map bounds', function(assert) {
   const subject = createSubject();
@@ -826,7 +341,7 @@ test('`defaultGMapState` should return the current map bounds', function(assert)
       map: {
         getBounds: function() {
           return {
-            getNorthEast: function() { 
+            getNorthEast: function() {
               return {
                 lat: function() { return 1; },
                 lng: function() { return 1; }
@@ -1126,13 +641,3 @@ test('it should sendAction `projection_changed` on GMap event: `projection_chang
   GMaps.fire('projection_changed', subject.get('map').map);
 });
 */
-
-/////////////
-// Helpers
-////////////
-
-test('`_areCoordsEqual` should correctly compare 2 numbers within 12 digits', function(assert) {
-  const subject = createSubject();
-  assert.ok(subject._areCoordsEqual(4.234234232324, 4.2342342323235555));
-  Ember.run.later(() => removeSubject(subject));
-});
