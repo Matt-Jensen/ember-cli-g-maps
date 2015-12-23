@@ -20,7 +20,7 @@ module.exports = {
     var content = '';
     var googleMapSrc;
 
-    if(type === 'head') {
+    if (type === 'head') {
       googleMapSrc = '//maps.googleapis.com/maps/api/js';
       // let googleMapsScript = 'http://maps.google.com/maps/api/js?sensor=true'
 
@@ -29,8 +29,9 @@ module.exports = {
       params.push('v='+ encodeURIComponent(googleMapConfig.version));
 
       // grab either API key or client ID
-      if(googleMapConfig.apiKey) {
-        params.push('key='+ encodeURIComponent( googleMapConfig.apiKey ));
+      if (googleMapConfig.apiKey) {
+        var isClient = googleMapConfig.apiKey.substr(0, 4) === 'gme-';
+        params.push((isClient ? 'client' : 'key') +'='+ encodeURIComponent( googleMapConfig.apiKey ));
       }
 
       // add any optional libraries
