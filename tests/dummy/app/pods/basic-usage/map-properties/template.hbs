@@ -37,6 +37,16 @@
     <small class="-db">Show Scale Controls</small>
     <input type="checkbox" value=showScaleControl checked {{action "toggleScaleControls" on="change"}}>
   </div>
+
+  <div class="grid-content small-12 medium-3 -smb">
+    <small class="-db">Disable Double Click Zoom</small>
+    <input type="checkbox" value=disableDoubleClickZoom {{action "toggleDisableDoubleClickZoom" on="change"}}>
+  </div>
+
+  <div class="grid-content small-12 medium-3 -smb">
+    <small class="-db">Disable Scrollwheel</small>
+    <input type="checkbox" value=scrollwheel {{action "toggleScrollwheel" on="change"}}>
+  </div>
 </div>
 
 <div class="grid-block">
@@ -61,6 +71,8 @@
     showMapTypeControl=showMapTypeControl
     showZoomControl=showZoomControl
     showScaleControl=showScaleControl
+    disableDoubleClickZoom=disableDoubleClickZoom
+    scrollwheel=scrollwheel
     maptypeid_changed="onMapTypeIdChange"}}
 </div>
 

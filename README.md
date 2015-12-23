@@ -412,41 +412,55 @@ export default Ember.Route.extend({
 [Full component properties documentation](http://matt-jensen.github.io/ember-cli-g-maps/#/basic-usage/map-properties)
 
 ```js
+// Default settings
 export default Ember.Route.extend({
   setupController: function(controller) {
     controller.setProperties({
-      lat: 32.75494243654723,
-      lng: -86.8359375,
+      lat: 33.5205556,
+      lng: -86.8025,
       mapType: 'satellite', // Accepts 'roadmap', 'satellite', 'hybrid', or 'terrain'
-      draggable: false // default = true
-      disableDefaultUI: false // default = false
+      showMapTypeControl: true,
+      draggable: true,
+      disableDefaultUI: false,
+      disableDoubleClickZoom: false,
+      scrollwheel: true,
+      showZoomControl: true,
+      showScaleControl: true
     });
   }
 });
 ```
 
 ```handlebars
-{{g-maps ... mapType=mapType draggable=draggable}}
+{{g-maps ... mapType=myMapType}}
 ```
 
 ```handlebars
-{{g-maps ... mapType=mapType disableDefaultUI=disableDefaultUI}}
+{{g-maps ... showMapTypeControl=true}}
 ```
 
 ```handlebars
-{{g-maps ... mapType=mapType disableDoubleClickZoom=disableDoubleClickZoom}}
+{{g-maps ... draggable=true}}
 ```
 
 ```handlebars
-{{g-maps ... mapType=mapType scrollwheel=scrollwheel}}
+{{g-maps ... disableDefaultUI=true}}
 ```
 
 ```handlebars
-{{g-maps ... mapType=mapType hideZoomControl=hideZoomControl}}
+{{g-maps ... disableDoubleClickZoom=true}}
 ```
 
 ```handlebars
-{{g-maps ... mapType=mapType hideScaleControl=hideScaleControl}}
+{{g-maps ... scrollwheel=true}}
+```
+
+```handlebars
+{{g-maps ... showZoomControl=true}}
+```
+
+```handlebars
+{{g-maps ... showScaleControl=true}}
 ```
 
 **React to Map Loading Completion**
@@ -567,8 +581,8 @@ ENV.googleMap = {
 
 Contributors
 -------------
-@LauLaman
-@sukima
+- :star2: [@LauLaman](https://github.com/LauLaman)
+- :fire: [@sukima](https://github.com/sukima)
 
 Changelog
 ---------

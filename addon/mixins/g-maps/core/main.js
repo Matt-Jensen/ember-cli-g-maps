@@ -5,8 +5,8 @@ const { merge, uuid, computed } = Ember;
 export default Ember.Mixin.create(Ember.Evented, {
   map: null,
   name: null,
-  lat: 0,
-  lng: 0,
+  lat: 33.5205556,
+  lng: -86.8025,
   zoom: 0,
   mapType: 'ROADMAP',
   showMapTypeControl: true,

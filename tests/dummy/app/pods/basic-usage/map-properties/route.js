@@ -7,11 +7,12 @@ export default Ember.Route.extend({
       lng: -86.8359375,
       zoom: 5,
       type: 'roadmap',
-      showMaptypeControl: true,
+      showMapTypeControl: true,
       showZoomControl: true,
       showScaleControl: true,
       drag: true,
-
+      disableDoubleClickZoom: false,
+      scrollwheel: true,
       types: ['roadmap', 'satellite', 'hybrid', 'terrain'],
     });
   },
@@ -26,7 +27,7 @@ export default Ember.Route.extend({
     },
 
     toggleTypeControls() {
-      this.controller.set('showMaptypeControl', !this.controller.get('showMaptypeControl'));
+      this.controller.set('showMapTypeControl', !this.controller.get('showMapTypeControl'));
     },
 
     toggleZoomControls() {
@@ -39,6 +40,14 @@ export default Ember.Route.extend({
 
     onMapTypeIdChange(conf) {
       this.controller.set('type', conf.mapType);
+    },
+
+    toggleDisableDoubleClickZoom() {
+      this.controller.set('disableDoubleClickZoom', !this.controller.get('disableDoubleClickZoom'));
+    },
+
+    toggleScrollwheel() {
+      this.controller.set('scrollwheel', !this.controller.get('scrollwheel'));
     }
   }
 });

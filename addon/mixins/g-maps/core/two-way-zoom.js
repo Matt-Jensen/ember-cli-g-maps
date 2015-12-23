@@ -5,13 +5,13 @@ const { observer, on } = Ember;
 export default Ember.Mixin.create(Ember.Evented, {
 
   /**
-   * [on map load bind map `zoom_changed` event to `_onZoomChanged`]]
+   * [on map load bind map `zoom_changed` event to `_bindZoomToModel`]]
    */
   _addZoomChangedEvent: on('ember-cli-g-map-loaded', function() {
     const map = this.get('map');
 
     GMaps.on('zoom_changed', map.map, () => {
-      Ember.run.later(() => this._onZoomChanged());
+      Ember.run.later(() => this._bindZoomToModel());
     });
   }),
 
