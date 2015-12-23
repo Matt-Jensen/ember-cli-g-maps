@@ -117,7 +117,7 @@ In your route:
 ```js
 export default Ember.Route.extend({
   setupController: function(controller) {
-    controller.setProperties({ 
+    controller.setProperties({
       lat: 32.75494243654723,
       lng: -86.8359375,
       zoom: 4
@@ -145,10 +145,10 @@ export default Ember.Route.extend({
           id: 'unique-marker-id',  // Recommended
           lat: 33.516674497188255, // Required
           lng: -86.80091857910156, // Required
-          infoWindow: { 
+          infoWindow: {
             content: '<p>Birmingham</p>',
             visible: true
-          }, 
+          },
           click: function(event, marker) {},
           rightclick: function(event, marker) {},
           dblclick: function(event, marker) {},
@@ -380,7 +380,7 @@ export default Ember.Route.extend({
 export default Ember.Route.extend({
   actions: {
     onMapEvent: function(event) {
-      console.info('Click coordinate', 
+      console.info('Click coordinate',
         event.latLng.lat(), // Latitude
         event.latLng.lng()  // Longitude
       );
@@ -388,12 +388,12 @@ export default Ember.Route.extend({
         event.bounds[0], // Northeast map coordinate
         event.bounds[1]  // Southwest map coordinate
       );
-      console.info('Map\'s center', 
-        this.controller.lat, 
+      console.info('Map\'s center',
+        this.controller.lat,
         this.controller.lng
       );
       event.mapIdle.then(function() { // Promise
-        console.log('maps done loading tiles and user is not interacting with map'); 
+        console.log('maps done loading tiles and user is not interacting with map');
       });
       event.mapTilesLoaded.then(function() { // Promise
         console.log('Map tiles have finished loading');
@@ -568,9 +568,17 @@ ENV.googleMap = {
 Contributors
 -------------
 @LauLaman
+@sukima
 
 Changelog
 ---------
+
+0.3.3
+------------
+* Adds scale control support
+* Adds work client api-key support
+* Unit test refactor
+* Restructures g-maps core functionality
 
 0.3.2
 ------------
