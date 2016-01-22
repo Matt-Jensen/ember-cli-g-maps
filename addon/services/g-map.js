@@ -1,4 +1,5 @@
 import Ember from 'ember';
+import WeakMap from 'ember-weakmap/weak-map';
 
 export default Ember.Service.extend({
   maps: (function() {
@@ -44,7 +45,7 @@ export default Ember.Service.extend({
 
       remove(name) {
         for(let i = 0, l = maps.length; i < l; i++) {
-          if(maps[i].name === name){ 
+          if(maps[i].name === name){
             maps.removeAt(i);
             return true;
           }
@@ -72,5 +73,41 @@ export default Ember.Service.extend({
       };
       GMaps.prototype.geocode(options);
     });
+  },
+
+  autocompletes: Ember.computed({
+    get() {
+      return new WeakMap();
+    }
+  }),
+
+  setupAutocomplete({input, component, callback}) {
+    // setup input field using Google Maps API
+    // setup event binding for when autocomplete
+    // trigger callback on component when on autocomplete
+    // unregister
+    let autocompletes = this.get('autocompletes');
+
+    let autocomplete = new google.maps.places.Autocomplete(input);
+    let listener = autocomplete.addListener('place_changed', Ember.run.bind(this, ()=>{
+      let place = autocomplete.getPlace();
+      this.notifyAutocomplete(component, callback, place);
+    }));
+
+    autocompletes.set(component, {autocomplete, listener});
+  },
+
+  notifyAutocomplete(component, callback, place) {
+    callback.call(component, place);
+  },
+
+  teardownAutocomplete(component) {
+    let autocompletes = this.get('autocompletes');
+    let { autocomplete, listener } = autocompletes.get(component);
+
+    google.maps.event.removeListener(listener);
+    google.maps.event.clearInstanceListeners(autocomplete);
+
+    autocompletes.delete(component);
   }
 });
