@@ -7,7 +7,7 @@ moduleForComponent('g-autocomplete', 'Integration | Component | g autocomplete',
 });
 
 test('it passes lat long to on-select action handler', function(assert) {
-  assert.expect(4);
+  assert.expect(5);
 
   let gMap, _component, _callback;
 
@@ -16,6 +16,9 @@ test('it passes lat long to on-select action handler', function(assert) {
       gMap = this;
       _component = component;
       _callback = callback;
+    },
+    teardownAutocomplete(component) {
+      assert.ok(component, 'component is passed on teardown');
     }
   });
 

@@ -31,6 +31,7 @@ export default Ember.Component.extend({
 
   willDestroyElement() {
     this._super(...arguments);
+    this.get('GMap').teardownAutocomplete(this);
   },
 
   actions: {
