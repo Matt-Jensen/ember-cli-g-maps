@@ -32,7 +32,7 @@ module.exports = function(environment) {
   };
 
   ENV.googleMap = {
-    libraries: ['drawing', 'visualization']
+    libraries: ['drawing', 'visualization', 'places']
   };
 
   if (environment === 'development') {
