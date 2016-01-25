@@ -22,6 +22,7 @@ Router.map(function() {
     this.route('polylines');
     this.route('rectangles');
     this.route('overlays');
+    this.route('autocomplete');
   });
   this.route('service', function() {
     this.route('index');

@@ -4,6 +4,7 @@ import layout from '../templates/components/g-autocomplete';
 export default Ember.Component.extend({
   layout: layout,
   GMap: Ember.inject.service('g-map'),
+  classNames: ['g-autocomplete'],
 
   didInsertElement() {
     this._super(...arguments);

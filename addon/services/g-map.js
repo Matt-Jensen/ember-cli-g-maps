@@ -1,5 +1,9 @@
 import Ember from 'ember';
-import WeakMap from 'ember-weakmap/weak-map';
+
+const {
+  get,
+  typeOf
+} = Ember;
 
 export default Ember.Service.extend({
   maps: (function() {
@@ -77,7 +81,24 @@ export default Ember.Service.extend({
 
   autocompletes: Ember.computed({
     get() {
-      return new WeakMap();
+      let autocompletes = {};
+      return {
+        add(item) {
+          let id = get(item.component, 'elementId');
+          autocompletes[id] = item;
+        },
+        remove(component) {
+          let id = get(component, 'elementId');
+          delete autocompletes[id];
+        },
+        get(component) {
+          if (typeOf(component) === 'string') {
+            return autocompletes[component];
+          }
+          let id = get(component, 'elementId');
+          return autocompletes[id];
+        }
+      };
     }
   }),
 
@@ -94,11 +115,17 @@ export default Ember.Service.extend({
       this.notifyAutocomplete(component, callback, place);
     }));
 
-    autocompletes.set(component, {autocomplete, listener});
+    autocompletes.add({component, callback, autocomplete, listener});
   },
 
-  notifyAutocomplete(component, callback, place) {
-    callback.call(component, place);
+  notifyAutocomplete(component, callback, data) {
+    if (typeOf(component) === 'string') {
+      let autocompletes = this.get('autocompletes');
+      let item = autocompletes.get(component);
+      component = item.component;
+      callback = item.callback;
+    }
+    callback.call(component, data);
   },
 
   teardownAutocomplete(component) {
@@ -108,6 +135,6 @@ export default Ember.Service.extend({
     google.maps.event.removeListener(listener);
     google.maps.event.clearInstanceListeners(autocomplete);
 
-    autocompletes.delete(component);
+    autocompletes.remove(component);
   }
 });

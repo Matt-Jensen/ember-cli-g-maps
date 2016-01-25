@@ -40,8 +40,7 @@
     "ember-export-application-global": "^1.0.4",
     "ember-sinon": "^0.3.0",
     "ember-truth-helpers": "1.1.0",
-    "ember-try": "~0.0.8",
-    "ember-weakmap": "0.4.0"
+    "ember-try": "~0.0.8"
   },
   "keywords": [
     "ember-addon",
