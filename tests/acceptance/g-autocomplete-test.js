@@ -1,11 +1,10 @@
 import { test } from 'qunit';
 import moduleForAcceptance from '../../tests/helpers/module-for-acceptance';
-import Ember from 'ember';
 
 moduleForAcceptance('Acceptance | basic-usage/autocomplete');
 
 test('visiting /basic-usage/autocomplete', function(assert) {
-  stubAutocomplete(this);
+  stubGMapAutocomplete(this);
   visit('/basic-usage/autocomplete');
 
   andThen(function() {
@@ -13,7 +12,7 @@ test('visiting /basic-usage/autocomplete', function(assert) {
     assert.ok(find('.g-autocomplete').length > 0, 'g-autocomplete component was rendered');
   });
 
-  notifyAutocomplete(this, 'basic-autocomplete', {lat: '123', long: '456'});
+  notifyGMapAutocomplete(this, 'basic-autocomplete', {lat: '123', long: '456'});
 
   andThen(() => {
     assert.equal($('.lat').text().trim(), '123', 'showing correct latitude');

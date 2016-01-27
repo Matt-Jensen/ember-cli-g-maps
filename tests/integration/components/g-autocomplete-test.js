@@ -11,7 +11,7 @@ test('it passes lat long to on-select action handler', function(assert) {
 
   let gMap, _component, _callback;
 
-  stubAutocomplete(this, {
+  stubGMapAutocomplete(this, {
     setupAutocomplete({component, callback}) {
       gMap = this;
       _component = component;
@@ -39,6 +39,6 @@ test('it passes lat long to on-select action handler', function(assert) {
   gMap.notifyAutocomplete(_component, _callback, { lat: 'foo', long: 'bar'});
 });
 
-function stubAutocomplete(test, attrs) {
+function stubGMapAutocomplete(test, attrs) {
   test.registry.register('service:g-map', gMapService.extend(attrs));
 }

@@ -1,10 +1,10 @@
 import Ember from 'ember';
 
-export default Ember.Test.registerAsyncHelper('stubAutocomplete', function(app, test) {
+export default function(app, test) {
   app.instanceInitializer({
-    name: 'stubAutocomplete',
+    name: 'stubGMapAutocomplete',
     initialize(application) {
       test.gMapService = application.registry.lookup('service:g-map');
     }
   });
-});
+};
