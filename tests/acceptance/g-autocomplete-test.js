@@ -16,9 +16,7 @@ test('visiting /basic-usage/autocomplete', function(assert) {
   notifyAutocomplete(this, 'basic-autocomplete', {lat: '123', long: '456'});
 
   andThen(() => {
-    Ember.run.later(() => {
-      assert.equal($('.lat').text().trim(), '123', 'showing correct latitude');
-      assert.equal($('.long').text().trim(), '456', 'showing correct longitude');
-    });
+    assert.equal($('.lat').text().trim(), '123', 'showing correct latitude');
+    assert.equal($('.long').text().trim(), '456', 'showing correct longitude');
   });
 });

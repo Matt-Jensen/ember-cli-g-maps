@@ -102,6 +102,11 @@ export default Ember.Service.extend({
     }
   }),
 
+  googleAPI: Ember.computed({
+    get() {
+    }
+  }),
+
   setupAutocomplete({input, component, callback}) {
     // setup input field using Google Maps API
     // setup event binding for when autocomplete
@@ -110,7 +115,7 @@ export default Ember.Service.extend({
     let autocompletes = this.get('autocompletes');
 
     let autocomplete = new google.maps.places.Autocomplete(input);
-    let listener = autocomplete.addListener('place_changed', Ember.run.bind(this, ()=>{
+    let listener = autocomplete.addListener('place_changed', Ember.run.bind(this, () => {
       let place = autocomplete.getPlace();
       this.notifyAutocomplete(component, callback, place);
     }));
