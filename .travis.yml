@@ -8,7 +8,9 @@ sudo: false
 cache:
   directories:
     - node_modules
-
+branches:
+  only:
+    - master
 env:
   - EMBER_TRY_SCENARIO=default
   - EMBER_TRY_SCENARIO=ember-release
