@@ -18,7 +18,6 @@ test('it should trigger validate on `didInsertElement` event', function(assert) 
   assert.ok(subject._gmapMarkerValidate.calledOnce);
 });
 
-
 test('it should throw an error when `markers` property is not an Ember array', function(assert) {
   subject.set('markers', {});
 
@@ -27,21 +26,6 @@ test('it should throw an error when `markers` property is not an Ember array', f
     new Error('g-maps component expects markers to be an Ember Array')
   );
 });
-
-
-test('it should sync on `isMapLoaded` and updates to `markers` model', function(assert) {
-  subject.set('markers', Ember.A());
-  
-  // Replace sync with spy
-  subject._gmapMarkerSync = Ember.observer(subject._gmapMarkerSync.__ember_observes__, sinon.spy());
-
-  subject.set('isMapLoaded', true);
-  assert.equal(subject._gmapMarkerSync.callCount, 1);
-
-  subject.get('markers').pushObject({ lat: 0, lng: 0 });
-  assert.equal(subject._gmapMarkerSync.callCount, 2);
-});
-
 
 test('it should not add marker when map is not loaded', function(assert) {
   const conf = {
@@ -57,7 +41,6 @@ test('it should not add marker when map is not loaded', function(assert) {
 
   assert.equal(conf.map.addMarker.called, false);
 });
-
 
 test('it should call `map.addMarker` with marker when map child index does not exist yet', function(assert) {
   const marker = { lat: 0, lng: 0, radius: 1 };
@@ -86,7 +69,6 @@ test('it should call `map.addMarker` with marker when map child index does not e
   assert.ok(subject._gmapMarkerAfterAddChild.called);
 });
 
-
 test('it should NOT call `map.addMarker` when map child at index equals marker at same index', function(assert) {
   const marker = { lat: 0, lng: 0 };
   const conf = {
@@ -106,7 +88,6 @@ test('it should NOT call `map.addMarker` when map child at index equals marker a
 
   assert.equal(conf.map.addMarker.called, false);
 });
-
 
 test('it should call `map.removeMarker` & `map.addMarker` when new marker at exsiting index', function(assert) {
   const markerOne = { lat: 1, lng: 1, radius: 1 };

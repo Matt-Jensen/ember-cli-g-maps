@@ -18,7 +18,6 @@ test('it should trigger validate on `didInsertElement` event', function(assert) 
   assert.ok(subject._gmapRectangleValidate.calledOnce);
 });
 
-
 test('it should throw an error when `rectangles` property is not an Ember array', function(assert) {
   subject.set('rectangles', {});
 
@@ -37,20 +36,6 @@ test('it should throw an error when `rectangles.[].0.bounds` property is not an 
   );
 });
 
-test('it should sync on `isMapLoaded` and updates to `rectangles` model', function(assert) {
-  subject.set('rectangles', Ember.A());
-  
-  // Replace sync with spy
-  subject._gmapRectangleSync = Ember.observer(subject._gmapRectangleSync.__ember_observes__, sinon.spy());
-
-  subject.set('isMapLoaded', true);
-  assert.equal(subject._gmapRectangleSync.callCount, 1);
-
-  subject.get('rectangles').pushObject({ bounds: [[1, 1]] });
-  assert.equal(subject._gmapRectangleSync.callCount, 2);
-});
-
-
 test('it should not add rectangle when map is not loaded', function(assert) {
   const conf = {
     isMapLoaded: false, // Map is not loaded
@@ -65,7 +50,6 @@ test('it should not add rectangle when map is not loaded', function(assert) {
 
   assert.equal(conf.map.addRectangle.called, false);
 });
-
 
 test('it should call `map.addRectangle` with rectangle when map child index does not exist yet', function(assert) {
   const rectangle = { bounds: [[1, 1]] };
@@ -88,7 +72,6 @@ test('it should call `map.addRectangle` with rectangle when map child index does
 
   assert.ok(conf.map.addRectangle.calledWith(rectangle));
 });
-
 
 test('it should NOT call `map.addRectangle` when map child at index equals rectangle at same index', function(assert) {
   const rectangle = { bounds: [[1, 1]] };

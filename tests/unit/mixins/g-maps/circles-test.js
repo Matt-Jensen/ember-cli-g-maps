@@ -29,21 +29,6 @@ test('it should throw an error when `circles` property is not an Ember array', f
   );
 });
 
-
-test('it should sync on `isMapLoaded` and updates to `circles` model', function(assert) {
-  subject.set('circles', Ember.A());
-  
-  // Replace sync with spy
-  subject._gmapCircleSync = Ember.observer(subject._gmapCircleSync.__ember_observes__, sinon.spy());
-
-  subject.set('isMapLoaded', true);
-  assert.equal(subject._gmapCircleSync.callCount, 1);
-
-  subject.get('circles').pushObject({ lat: 0, lng: 0, radius: 1 });
-  assert.equal(subject._gmapCircleSync.callCount, 2);
-});
-
-
 test('it should not add circle when map is not loaded', function(assert) {
   const conf = {
     isMapLoaded: false, // Map is not loaded
