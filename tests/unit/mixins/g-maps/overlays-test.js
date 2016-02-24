@@ -37,20 +37,6 @@ test('it should throw an error when `overlays.[].0` property is not an object', 
   );
 });
 
-test('it should sync on `isMapLoaded` and updates to `overlays` model', function(assert) {
-  subject.set('overlays', Ember.A());
-  
-  // Replace sync with spy
-  subject._gmapOverlaySync = Ember.observer(subject._gmapOverlaySync.__ember_observes__, sinon.spy());
-
-  subject.set('isMapLoaded', true);
-  assert.equal(subject._gmapOverlaySync.callCount, 1);
-
-  subject.get('overlays').pushObject({ lat: 1, lng: 1, content: 'test' });
-  assert.equal(subject._gmapOverlaySync.callCount, 2);
-});
-
-
 test('it should not add overlay when map is not loaded', function(assert) {
   const conf = {
     isMapLoaded: false, // Map is not loaded

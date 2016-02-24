@@ -43,7 +43,6 @@ export default Ember.Mixin.create(Ember.Evented, {
     'projection_changed'
   ],
 
-  // TODO write integration test coverage
   didInsertElement() {
     this._super(...arguments);
 
@@ -91,7 +90,7 @@ export default Ember.Mixin.create(Ember.Evented, {
 
     this._removeMapEvents();
 
-    // TODO: remove for v0.4.0
+    // TODO: remove for v1.x
     this.get('gMap').maps.remove(this.get('name'));
 
     // Run after Mixin willDestroyElement

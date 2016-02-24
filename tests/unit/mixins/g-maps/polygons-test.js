@@ -37,20 +37,6 @@ test('it should throw an error when `polygons.[].0.paths` property is not an arr
   );
 });
 
-test('it should sync on `isMapLoaded` and updates to `polygons` model', function(assert) {
-  subject.set('polygons', Ember.A());
-  
-  // Replace sync with spy
-  subject._gmapPolygonSync = Ember.observer(subject._gmapPolygonSync.__ember_observes__, sinon.spy());
-
-  subject.set('isMapLoaded', true);
-  assert.equal(subject._gmapPolygonSync.callCount, 1);
-
-  subject.get('polygons').pushObject({ paths: [[1, 1]] });
-  assert.equal(subject._gmapPolygonSync.callCount, 2);
-});
-
-
 test('it should not add polygon when map is not loaded', function(assert) {
   const conf = {
     isMapLoaded: false, // Map is not loaded
