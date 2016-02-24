@@ -133,18 +133,18 @@ test('it should sync on `isMapLoaded` and updates to bound `rectangles.[]`', fun
   assert.equal(this.get('map.rectangles.length'), '1', 'should have `1` rectangles length');
 });
 
-test('it should sync on `isMapLoaded` and updates to bound `overlays.[]`', function(assert) {
-  this.setProperties({
-    overlays: Ember.A(),
-    map: null
-  });
-
-  // *Warning* causes console warning: "was modified inside the didInsertElement hook"
-  this.render(hbs`{{g-maps overlays=overlays isMapLoaded=true map=(mut map)}}`);
-
-  assert.equal(this.get('map.overlays.length'), '0', 'should have `0` overlays length');
-
-  this.get('overlays').pushObject({ id: 123, lat: 1, lng: 1});
-
-  assert.equal(this.get('map.overlays.length'), '1', 'should have `1` overlays length');
-});
+// test('it should sync on `isMapLoaded` and updates to bound `overlays.[]`', function(assert) {
+//   this.setProperties({
+//     overlays: Ember.A(),
+//     map: null
+//   });
+//
+//   // *Warning* causes console warning: "was modified inside the didInsertElement hook"
+//   this.render(hbs`{{g-maps overlays=overlays isMapLoaded=true map=(mut map)}}`);
+//
+//   assert.equal(this.get('map.overlays.length'), '0', 'should have `0` overlays length');
+//
+//   this.get('overlays').pushObject({ id: 123, lat: 1, lng: 1});
+//
+//   assert.equal(this.get('map.overlays.length'), '1', 'should have `1` overlays length');
+// });
