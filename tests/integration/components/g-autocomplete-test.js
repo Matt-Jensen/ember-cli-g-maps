@@ -2,6 +2,10 @@ import { moduleForComponent, test } from 'ember-qunit';
 import hbs from 'htmlbars-inline-precompile';
 import gMapService from 'ember-cli-g-maps/services/g-map';
 
+function stubGMapAutocomplete(test, attrs) {
+  test.registry.register('service:g-map', gMapService.extend(attrs));
+}
+
 moduleForComponent('g-autocomplete', 'Integration | Component | g autocomplete', {
   integration: true
 });
@@ -23,13 +27,10 @@ test('it passes lat long to on-select action handler', function(assert) {
   });
 
   this.on('select', function(place){
-      let { lat, long } = place;
-      assert.equal(lat, 'foo');
-      assert.equal(long, 'bar');
+    let { lat, long } = place;
+    assert.equal(lat, 'foo');
+    assert.equal(long, 'bar');
   });
-
-  // Set any properties with this.set('myProperty', 'value');
-  // Handle any actions with this.on('myAction', function(val) { ... });" + EOL + EOL +
 
   this.render(hbs`{{g-autocomplete on-select="select"}}`);
 
@@ -38,7 +39,3 @@ test('it passes lat long to on-select action handler', function(assert) {
 
   gMap.notifyAutocomplete(_component, _callback, { lat: 'foo', long: 'bar'});
 });
-
-function stubGMapAutocomplete(test, attrs) {
-  test.registry.register('service:g-map', gMapService.extend(attrs));
-}

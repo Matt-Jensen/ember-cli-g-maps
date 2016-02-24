@@ -1,6 +1,7 @@
 import Ember from 'ember';
 
 const { merge, uuid, computed } = Ember;
+const { bind } = Ember.run;
 
 export default Ember.Mixin.create(Ember.Evented, {
   map: null,
@@ -100,6 +101,7 @@ export default Ember.Mixin.create(Ember.Evented, {
 
   _addMapEvents() {
     const events = this.get('_gmapEvents');
+    const sendEvent = (name, evt) => this.send(name, evt);
 
     for (let i = 0, l = events.length; i < l; i++ ) {
 
@@ -109,9 +111,7 @@ export default Ember.Mixin.create(Ember.Evented, {
       }
 
       // Add GMaps event listener on google map instance
-      GMaps.on(events[i], this.get('map.map'), (e) => {
-        return this.send(events[i], e);
-      });
+      GMaps.on(events[i], this.get('map.map'), bind(this, sendEvent, events[i]));
     }
   },
 
