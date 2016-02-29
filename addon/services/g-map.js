@@ -105,41 +105,5 @@ export default Ember.Service.extend({
   googleAPI: Ember.computed({
     get() {
     }
-  }),
-
-  setupAutocomplete({input, component, callback}) {
-    // setup input field using Google Maps API
-    // setup event binding for when autocomplete
-    // trigger callback on component when on autocomplete
-    // unregister
-    let autocompletes = this.get('autocompletes');
-
-    let autocomplete = new google.maps.places.Autocomplete(input);
-    let listener = autocomplete.addListener('place_changed', Ember.run.bind(this, () => {
-      let place = autocomplete.getPlace();
-      this.notifyAutocomplete(component, callback, place);
-    }));
-
-    autocompletes.add({component, callback, autocomplete, listener});
-  },
-
-  notifyAutocomplete(component, callback, data) {
-    if (typeOf(component) === 'string') {
-      let autocompletes = this.get('autocompletes');
-      let item = autocompletes.get(component);
-      component = item.component;
-      callback = item.callback;
-    }
-    callback.call(component, data);
-  },
-
-  teardownAutocomplete(component) {
-    let autocompletes = this.get('autocompletes');
-    let { autocomplete, listener } = autocompletes.get(component);
-
-    google.maps.event.removeListener(listener);
-    google.maps.event.clearInstanceListeners(autocomplete);
-
-    autocompletes.remove(component);
-  }
+  })
 });

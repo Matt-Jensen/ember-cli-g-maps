@@ -1,8 +1,6 @@
 import Ember from 'ember';
-import notifyGMapAutocomplete from './notify-autocomplete';
-import stubGMapAutocomplete from './stub-autocomplete';
+import selectPlaceHelper from './select-place';
 
 export default function() {
-  Ember.Test.registerAsyncHelper('notifyGMapAutocomplete', notifyGMapAutocomplete);
-  Ember.Test.registerAsyncHelper('stubGMapAutocomplete', stubGMapAutocomplete);
+  Ember.Test.registerAsyncHelper('selectPlace', selectPlaceHelper);
 }

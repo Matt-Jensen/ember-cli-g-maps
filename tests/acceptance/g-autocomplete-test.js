@@ -1,10 +1,14 @@
 import { test } from 'qunit';
 import moduleForAcceptance from '../../tests/helpers/module-for-acceptance';
+import TestPlacesAutocomplete from 'ember-cli-g-maps/services/places-autocomplete';
 
-moduleForAcceptance('Acceptance | basic-usage/autocomplete');
+moduleForAcceptance('Acceptance | basic-usage/autocomplete', {
+  beforeEach() {
+    this.application.register('service:test-places-autocomplete', TestPlacesAutocomplete);
+  }
+});
 
 test('visiting /basic-usage/autocomplete', function(assert) {
-  stubGMapAutocomplete(this);
   visit('/basic-usage/autocomplete');
 
   andThen(function() {
@@ -12,7 +16,7 @@ test('visiting /basic-usage/autocomplete', function(assert) {
     assert.ok(find('.g-autocomplete').length > 0, 'g-autocomplete component was rendered');
   });
 
-  notifyGMapAutocomplete(this, 'basic-autocomplete', {lat: '123', long: '456'});
+  selectPlace({ lat: '123', long: '456' });
 
   andThen(() => {
     assert.equal($('.lat').text().trim(), '123', 'showing correct latitude');

@@ -1,44 +1,26 @@
 import { moduleForComponent, test } from 'ember-qunit';
 import hbs from 'htmlbars-inline-precompile';
-import gMapService from 'ember-cli-g-maps/services/g-map';
+// import gMapService from 'ember-cli-g-maps/services/g-map';
+import TestPlacesAutocomplete from 'ember-cli-g-maps/services/places-autocomplete';
 
 moduleForComponent('g-autocomplete', 'Integration | Component | g autocomplete', {
   integration: true
 });
 
-test('it passes lat long to on-select action handler', function(assert) {
-  assert.expect(5);
+test('should receive data when service is notified', function(assert) {
+  assert.expect(1);
+  this.register('service:test-places-autocomplete', TestPlacesAutocomplete);
+  this.inject.service('test-places-autocomplete');
+  let service = this.get('test-places-autocomplete');
 
-  let gMap, _component, _callback;
-
-  stubGMapAutocomplete(this, {
-    setupAutocomplete({component, callback}) {
-      gMap = this;
-      _component = component;
-      _callback = callback;
-    },
-    teardownAutocomplete(component) {
-      assert.ok(component, 'component is passed on teardown');
-    }
+  let receivedData;
+  this.on('showLocation', function(data) {
+    receivedData = data;
   });
 
-  this.on('select', function(place){
-      let { lat, long } = place;
-      assert.equal(lat, 'foo');
-      assert.equal(long, 'bar');
-  });
+  this.render(hbs`{{g-autocomplete on-select="showLocation"}}`);
 
-  // Set any properties with this.set('myProperty', 'value');
-  // Handle any actions with this.on('myAction', function(val) { ... });" + EOL + EOL +
+  service.notify({ lat: '123', long: '456' });
 
-  this.render(hbs`{{g-autocomplete on-select="select"}}`);
-
-  assert.ok(_component);
-  assert.ok(_callback);
-
-  gMap.notifyAutocomplete(_component, _callback, { lat: 'foo', long: 'bar'});
+  assert.deepEqual(receivedData, { lat: '123', long: '456' });
 });
-
-function stubGMapAutocomplete(test, attrs) {
-  test.registry.register('service:g-map', gMapService.extend(attrs));
-}

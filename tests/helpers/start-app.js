@@ -2,7 +2,8 @@ import Ember from 'ember';
 import Application from '../../app';
 import config from '../../config/environment';
 
-import registerGMapsAsyncHelpers from './ember-cli-g-maps/register-async-helpers';
+import registerAsyncHelpers from './ember-cli-g-maps/register-async-helpers';
+// import registerSelectPlaceHelper from './ember-cli-g-maps/select-place';
 
 export default function startApp(attrs) {
   let application;
@@ -12,7 +13,8 @@ export default function startApp(attrs) {
 
   Ember.run(() => {
     application = Application.create(attributes);
-    registerGMapsAsyncHelpers();
+    // registerGMapsAsyncHelpers();
+    registerAsyncHelpers();
     application.setupForTesting();
     application.injectTestHelpers();
   });
