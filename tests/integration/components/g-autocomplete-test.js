@@ -10,8 +10,8 @@ moduleForComponent('g-autocomplete', 'Integration | Component | g autocomplete',
   integration: true
 });
 
-test('it passes lat long to on-select action handler', function(assert) {
-  assert.expect(5);
+test('it passes lat lng to on-select action and closure action handler', function(assert) {
+  assert.expect(7);
 
   let gMap, _component, _callback;
 
@@ -20,6 +20,8 @@ test('it passes lat long to on-select action handler', function(assert) {
       gMap = this;
       _component = component;
       _callback = callback;
+
+      assert.ok(component && callback, 'component and callback are passed to `setupAutocomplete`');
     },
     teardownAutocomplete(component) {
       assert.ok(component, 'component is passed on teardown');
@@ -27,15 +29,16 @@ test('it passes lat long to on-select action handler', function(assert) {
   });
 
   this.on('select', function(place){
-    let { lat, long } = place;
-    assert.equal(lat, 'foo');
-    assert.equal(long, 'bar');
+    const { lat, long } = place;
+    assert.equal(lat, 'foo', 'should equal mocked `lat`');
+    assert.equal(long, 'bar', 'should equal mocked `lng`');
   });
 
   this.render(hbs`{{g-autocomplete on-select="select"}}`);
 
-  assert.ok(_component);
-  assert.ok(_callback);
+  gMap._notifyAutocomplete(_component, _callback, { lat: 'foo', long: 'bar'});
 
-  gMap.notifyAutocomplete(_component, _callback, { lat: 'foo', long: 'bar'});
+  this.render(hbs`{{g-autocomplete on-select=(action "select")}}`);
+
+  gMap._notifyAutocomplete(_component, _callback, { lat: 'foo', long: 'bar'});
 });

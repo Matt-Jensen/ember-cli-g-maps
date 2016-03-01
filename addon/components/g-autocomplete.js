@@ -6,30 +6,41 @@ export default Ember.Component.extend({
   GMap: Ember.inject.service('g-map'),
   classNames: ['g-autocomplete'],
 
+  /**
+   * setup autocomplete instance
+   *
+   * wait for access to input on `afterRender`
+   * allow stub instantiation of Autocomplete
+   * allow stub return value from Autocomplete
+   */
   didInsertElement() {
     this._super(...arguments);
-    Ember.run.scheduleOnce('afterRender', this, this.setupAutocomplete);
+    Ember.run.scheduleOnce('afterRender', this, this._setupAutocomplete);
   },
 
-  // be able to stub instantiation of Autocomplete
-  // be able to stub return value from Autocomplete
-
-  setupAutocomplete() {
-
-    let gMapService = this.get('GMap');
+  /**
+   * instantiate autocomplete instance
+   */
+  _setupAutocomplete() {
+    const gMapService = this.get('GMap');
 
     gMapService.setupAutocomplete({
       input: this.$('input')[0],
       component: this,
-      callback: this.didAutocomplete
+      callback: this._didAutocomplete
     });
-
   },
 
-  didAutocomplete(place) {
+  /**
+   * invoke `onSelect` action after autocomplete
+   */
+  _didAutocomplete(place) {
     this.send('onSelect', place);
   },
 
+  /**
+   * teardown autocomplete instance
+   */
   willDestroyElement() {
     this._super(...arguments);
     this.get('GMap').teardownAutocomplete(this);

@@ -2,7 +2,8 @@ import Ember from 'ember';
 
 const {
   get,
-  typeOf
+  typeOf,
+  computed
 } = Ember;
 
 export default Ember.Service.extend({
@@ -79,67 +80,99 @@ export default Ember.Service.extend({
     });
   },
 
-  autocompletes: Ember.computed({
+  /**
+   * @private
+   * registery for all Google Autocomplete instances
+   */
+  _autocompletes: computed({
     get() {
-      let autocompletes = {};
+      const autocompletes = {};
+
       return {
         add(item) {
-          let id = get(item.component, 'elementId');
+          const id = get(item.component, 'elementId');
           autocompletes[id] = item;
         },
         remove(component) {
-          let id = get(component, 'elementId');
+          const id = get(component, 'elementId');
           delete autocompletes[id];
         },
         get(component) {
           if (typeOf(component) === 'string') {
             return autocompletes[component];
           }
-          let id = get(component, 'elementId');
+          const id = get(component, 'elementId');
           return autocompletes[id];
         }
       };
     }
   }),
 
-  googleAPI: Ember.computed({
+  /**
+   * TODO needs description
+   */
+  googleAPI: computed({
     get() {
     }
   }),
 
+  /**
+   * @public
+   * instantiate autocomplete
+   * add event listeners
+   * setup `_notifyAutocomplete` callback
+   * register autocomplete instance
+   *
+   * @param object {input} DOM input elementId
+   * @param object {component} Ember.Component instance
+   * @param function {callback} on `place_changed` event callback
+   */
   setupAutocomplete({input, component, callback}) {
-    // setup input field using Google Maps API
-    // setup event binding for when autocomplete
-    // trigger callback on component when on autocomplete
-    // unregister
-    let autocompletes = this.get('autocompletes');
-
-    let autocomplete = new google.maps.places.Autocomplete(input);
-    let listener = autocomplete.addListener('place_changed', Ember.run.bind(this, () => {
-      let place = autocomplete.getPlace();
-      this.notifyAutocomplete(component, callback, place);
+    const autocomplete = new google.maps.places.Autocomplete(input);
+    const listener = autocomplete.addListener('place_changed', Ember.run.bind(this, () => {
+      const place = autocomplete.getPlace();
+      this._notifyAutocomplete(component, callback, place);
     }));
 
-    autocompletes.add({component, callback, autocomplete, listener});
+    // register
+    get(this, '_autocompletes').add({component, callback, autocomplete, listener});
   },
 
-  notifyAutocomplete(component, callback, data) {
+  /**
+   * @private
+   * optionally find autocomplete instance by id
+   * invoke callback with `data`
+   *
+   * @param object|string {component} Ember.Component instance
+   * @param function {callback}
+   * @param object {data} Google Autocomplete event data
+   */
+  _notifyAutocomplete(component, callback, data) {
     if (typeOf(component) === 'string') {
-      let autocompletes = this.get('autocompletes');
-      let item = autocompletes.get(component);
-      component = item.component;
-      callback = item.callback;
+      const autocomplete = get(this, '_autocompletes').get(component);
+      component = autocomplete.component;
+      callback = autocomplete.callback;
     }
+
+    // invoke autocomplete callback
     callback.call(component, data);
   },
 
+  /**
+   * @public
+   * remove Autocomplete events
+   * unregister autocomplete
+   *
+   * @param string {component} Autocomplete id
+   */
   teardownAutocomplete(component) {
-    let autocompletes = this.get('autocompletes');
-    let { autocomplete, listener } = autocompletes.get(component);
+    const autocompletes = get(this, '_autocompletes');
+    const { autocomplete, listener } = autocompletes.get(component);
 
     google.maps.event.removeListener(listener);
     google.maps.event.clearInstanceListeners(autocomplete);
 
+    // unregister
     autocompletes.remove(component);
   }
 });
