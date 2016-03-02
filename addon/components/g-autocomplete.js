@@ -7,14 +7,14 @@ const {
 
 export default Ember.Component.extend({
   layout: layout,
-  testPlacesAutocomplete: inject.service(),
+  testGMaps: inject.service('test-g-maps'),
   classNames: ['g-autocomplete'],
 
   init() {
     this._super(...arguments);
-    let testPlacesAutocomplete = this.get('testPlacesAutocomplete');
-    if (testPlacesAutocomplete) {
-      testPlacesAutocomplete.register(this);
+    let testGMaps = this.get('testGMaps');
+    if (testGMaps) {
+      testGMaps.registerAutocomplete(this);
     }
   },
 
@@ -54,9 +54,10 @@ export default Ember.Component.extend({
     let listener = this.get('listener');
     google.maps.event.removeListener(listener);
     google.maps.event.clearInstanceListeners(autocomplete);
-    let testPlacesAutocomplete = this.get('testPlacesAutocomplete');
-    if (testPlacesAutocomplete) {
-      testPlacesAutocomplete.unregister();
+
+    let testGMaps = this.get('testGMaps');
+    if (testGMaps) {
+      testGMaps.unregisterAutocomplete(this);
     }
   },
 

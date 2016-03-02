@@ -1,7 +1,6 @@
 import { moduleForComponent, test } from 'ember-qunit';
 import hbs from 'htmlbars-inline-precompile';
-// import gMapService from 'ember-cli-g-maps/services/g-map';
-import TestPlacesAutocomplete from 'ember-cli-g-maps/services/places-autocomplete';
+import gMapsSetupTest from '../../helpers/ember-cli-g-maps/setup-test';
 
 moduleForComponent('g-autocomplete', 'Integration | Component | g autocomplete', {
   integration: true
@@ -9,9 +8,7 @@ moduleForComponent('g-autocomplete', 'Integration | Component | g autocomplete',
 
 test('should receive data when service is notified', function(assert) {
   assert.expect(1);
-  this.register('service:test-places-autocomplete', TestPlacesAutocomplete);
-  this.inject.service('test-places-autocomplete');
-  let service = this.get('test-places-autocomplete');
+  gMapsSetupTest(this);
 
   let receivedData;
   this.on('showLocation', function(data) {
@@ -20,7 +17,7 @@ test('should receive data when service is notified', function(assert) {
 
   this.render(hbs`{{g-autocomplete on-select="showLocation"}}`);
 
-  service.notify({ lat: '123', long: '456' });
+  this.gMapsSelectPlace({ lat: '123', long: '456' });
 
   assert.deepEqual(receivedData, { lat: '123', long: '456' });
 });

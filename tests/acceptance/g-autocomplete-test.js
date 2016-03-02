@@ -1,10 +1,10 @@
 import { test } from 'qunit';
 import moduleForAcceptance from '../../tests/helpers/module-for-acceptance';
-import TestPlacesAutocomplete from 'ember-cli-g-maps/services/places-autocomplete';
+import gMapsSetupTest from '../helpers/ember-cli-g-maps/setup-test';
 
 moduleForAcceptance('Acceptance | basic-usage/autocomplete', {
   beforeEach() {
-    this.application.register('service:test-places-autocomplete', TestPlacesAutocomplete);
+    gMapsSetupTest(this);
   }
 });
 
