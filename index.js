@@ -22,8 +22,11 @@ module.exports = {
     var googleMapSrc;
 
     if (type === 'head') {
-      googleMapSrc = '//maps.googleapis.com/maps/api/js';
+      googleMapSrc = 'maps.googleapis.com/maps/api/js';
       // let googleMapsScript = 'http://maps.google.com/maps/api/js?sensor=true'
+
+      //Protocol setup
+      googleMapConfig.protocol = googleMapConfig.protocol || '//';
 
       // default to Google Maps V3
       googleMapConfig.version = googleMapConfig.version || '3';
@@ -47,6 +50,9 @@ module.exports = {
       // } else {
       //   content = '<script src="'+ googleMapSrc +'"></script>';
       // }
+      
+      googleMapSrc = googleMapConfig.protocol + googleMapSrc;
+      
       googleMapSrc += '?'+ params.join('&');
       content = '<script src="'+ googleMapSrc +'"></script>';
     }
