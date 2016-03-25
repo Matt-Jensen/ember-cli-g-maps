@@ -41,6 +41,9 @@ Router.map(function() {
     this.route('polygon');
     this.route('polyline');
   });
+  this.route('placeAutocomplete', { path: '/place-autocomplete' }, function() {
+    this.route('index');
+  });
   this.route('heatmap', function() {
     this.route('index');
     this.route('properties');
