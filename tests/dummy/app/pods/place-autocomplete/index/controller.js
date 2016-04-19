@@ -2,9 +2,10 @@ import Ember from 'ember';
 
 export default Ember.Controller.extend({
   actions: {
-    showSelection({lat, long}) {
+    showCoordinates({lat, lng, place}) {
       this.set('lat', lat);
-      this.set('long', long);
+      this.set('lng', lng);
+      this.set('address', place.formatted_address);
     }
   }
 });

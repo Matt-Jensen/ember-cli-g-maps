@@ -24,8 +24,7 @@
     "currentRouteName",
     "GMaps",
     "google",
-    "notifyGMapAutocomplete",
-    "stubGMapAutocomplete"
+    "selectPlace"
   ],
   "node": false,
   "browser": false,

@@ -1,7 +1,7 @@
 <div class="grid-frame vertical -scroll-y">
   <div class="primary title-bar title-bar--dark">
     <span class="title left">
-      {{#link-to 'index' 
+      {{#link-to 'index'
         tagName="h2"
         class="-white-color -cursor-pointer -nmb"}}
         Ember-CLI GMaps
@@ -16,7 +16,7 @@
     <nav class="primary title-bar th-google-navigation -np">
       <ul class="th-google-tabs {{if mainNav.isMobileNavActive 'active'}}">
         <li class="th-google-tabs__mobile-nav">
-          <button 
+          <button
             class="th-google-button"
             {{action "toggleMobileNav" target=mainNav}}>Naviation</button>
         </li>
@@ -34,6 +34,9 @@
         </li>
         <li class="th-google-tabs__tab">
           {{#link-to 'heatmap.index'}}<span {{action "toggleMobileNav" target=mainNav}}>Heatmap</span>{{/link-to}}
+        </li>
+        <li class='th-google-tabs__tab'>
+          {{#link-to 'placeAutocomplete.index'}}<span {{action "toggleMobileNav" target=mainNav}}>Autocomplete</span>{{/link-to}}
         </li>
         <li class="th-google-tabs__tab">
           {{#link-to 'misc.index'}}<span {{action "toggleMobileNav" target=mainNav}}>Misc</span>{{/link-to}}

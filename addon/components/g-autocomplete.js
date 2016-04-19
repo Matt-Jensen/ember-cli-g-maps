@@ -1,49 +1,82 @@
 import Ember from 'ember';
 import layout from '../templates/components/g-autocomplete';
 
+const { inject, get, set } = Ember;
+
 export default Ember.Component.extend({
   layout: layout,
-  GMap: Ember.inject.service('g-map'),
+  testGMaps: inject.service('test-g-maps'),
   classNames: ['g-autocomplete'],
 
+  init() {
+    this._super(...arguments);
+
+    const testGMaps = get(this, 'testGMaps');
+    if (testGMaps) {
+      testGMaps.registerAutocomplete(this);
+    }
+  },
+
   /**
-   * setup autocomplete instance
-   *
-   * wait for access to input on `afterRender`
-   * allow stub instantiation of Autocomplete
-   * allow stub return value from Autocomplete
+   * invoke `setup()` with initial input value
    */
   didInsertElement() {
     this._super(...arguments);
-    Ember.run.scheduleOnce('afterRender', this, this._setupAutocomplete);
+    const input = this.$('input')[0];
+    this.setup(input);
   },
 
   /**
-   * instantiate autocomplete instance
+   * @public
+   * generate new autocomplete instance
+   * add `place_changed` event handler
+   * set `autocomplete` and `listener` refs on component
+   *
+   * @param {String} input
    */
-  _setupAutocomplete() {
-    const gMapService = this.get('GMap');
-
-    gMapService.setupAutocomplete({
-      input: this.$('input')[0],
-      component: this,
-      callback: this._didAutocomplete
+  setup(input) {
+    const autocomplete = new google.maps.places.Autocomplete(input);
+    const handler = Ember.run.bind(this, function() {
+      const place = autocomplete.getPlace();
+      this.sendAction('on-select', {
+        lat: place.geometry.location.lat(),
+        lng: place.geometry.location.lng(),
+        place
+      });
     });
+
+    const listener = autocomplete.addListener('place_changed', handler);
+
+    set(this, 'autocomplete', autocomplete);
+    set(this, 'listener', listener);
   },
 
-  /**
-   * invoke `onSelect` action after autocomplete
-   */
-  _didAutocomplete(place) {
+  didAutocomplete(place) {
     this.send('onSelect', place);
   },
 
-  /**
-   * teardown autocomplete instance
-   */
   willDestroyElement() {
     this._super(...arguments);
-    this.get('GMap').teardownAutocomplete(this);
+    this.teardown();
+  },
+
+  /**
+   * @public
+   * remove listener event
+   * remove autocomplete instances event listeners
+   * if unregister autocomplete
+   */
+  teardown() {
+    const autocomplete = get(this, 'autocomplete');
+    const listener = get(this, 'listener');
+
+    google.maps.event.removeListener(listener);
+    google.maps.event.clearInstanceListeners(autocomplete);
+
+    const testGMaps = get(this, 'testGMaps');
+    if (testGMaps) {
+      testGMaps.unregisterAutocomplete(this);
+    }
   },
 
   actions: {
