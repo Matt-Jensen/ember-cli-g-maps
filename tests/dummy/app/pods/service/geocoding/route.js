@@ -47,7 +47,7 @@ export default Ember.Route.extend({
     controller.set('isRequesting', true);
 
     this.get('gMap')
-      .geocode(Ember.merge(req, {
+      .geocode(Ember.assign(req, {
           "language" : 'ja'
       }))
       .then((results) => {

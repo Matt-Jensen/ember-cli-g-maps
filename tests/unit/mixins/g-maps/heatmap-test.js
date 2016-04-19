@@ -3,7 +3,7 @@ import GMapsHeatmapMixin from 'ember-cli-g-maps/mixins/g-maps/heatmap';
 import { module, test }  from 'qunit';
 import sinon             from 'sinon';
 
-const { merge } = Ember;
+const { assign } = Ember;
 
 const googleMap = new google.maps.Map(document.createElement('div'), {
   center: { lat: 0, lng: 0 },
@@ -16,7 +16,7 @@ function createSubject(isValid=false, hasInit=false) {
   const GMapsHeatmapObject = Ember.Object.extend(Ember.Evented, GMapsHeatmapMixin);
 
   if(isValid) {
-    merge(config, {
+    assign(config, {
       heatmapMarkers: Ember.A(),
       isMapLoaded: true,
       map: googleMap

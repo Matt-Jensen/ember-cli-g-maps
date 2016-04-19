@@ -29,7 +29,7 @@ export default Ember.Route.extend({
       ]),
       polygons: Ember.A([
         {
-          id: 'lka234klafj23', 
+          id: 'lka234klafj23',
           paths: pathToAlabama,
           zIndex: 10,
           strokeColor: '#F6D622',
@@ -47,7 +47,7 @@ export default Ember.Route.extend({
           strokeColor: '#D43029',
           zIndex: 9,
           editable: true,
-          click: bind(this, function(e, circle) { 
+          click: bind(this, function(e, circle) {
             console.log('Route context:', this);
             console.log('Event data:', e);
             console.log('Circle data:', circle);
@@ -238,7 +238,7 @@ export default Ember.Route.extend({
 
       Ember.run.later(() => {
         controller.get('polygons').pushObject({
-          id: 'ldfa3fadkafa32234klafj23', 
+          id: 'ldfa3fadkafa32234klafj23',
           paths: [
             [-0.19226038138120835, -120.498046875],
             [1.0381511983133254, -104.0625],
@@ -324,7 +324,7 @@ export default Ember.Route.extend({
       // Mix up All Markers
       // controller.set('markers', Ember.A(markers.map((m, i) => {
       //   const rand = Math.round(Math.random() * (markers.length - 1) + 0);
-      //   return Ember.merge(m, {
+      //   return Ember.assign(m, {
       //     lat: (Math.random() * (55 - 22) + 22),
       //     lng: (Math.random() * (-102 - -115) + -115)
       //   });

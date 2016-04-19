@@ -1,7 +1,7 @@
 import Ember from 'ember';
 
 const { capitalize } = Ember.String;
-const { merge, uuid, on, observer } = Ember;
+const { assign, uuid, on, observer } = Ember;
 
 export default {
   create: function createChildCollection(settings) {
@@ -13,7 +13,7 @@ export default {
       namespace: `gMapChildCollection_${uuid()}`
     };
 
-    settings = merge(defaults, settings);
+    settings = assign(defaults, settings);
 
     if(!settings.model) {
       throw new Error('childCollection requires a `model` string');
