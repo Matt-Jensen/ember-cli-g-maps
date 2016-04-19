@@ -1,6 +1,6 @@
 {
   "name": "ember-cli-g-maps",
-  "version": "0.3.3",
+  "version": "0.4.0",
   "description": "An Ember CLI Addon for map driven applications. Currently in Beta.",
   "directories": {
     "doc": "doc",
