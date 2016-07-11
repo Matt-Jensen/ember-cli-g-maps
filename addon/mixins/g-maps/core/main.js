@@ -51,6 +51,7 @@ export default Ember.Mixin.create(Ember.Evented, {
       'lat',
       'lng',
       'zoom',
+      'styles',
       'mapType',
       'showMapTypeControl',
       'scaleControl',
