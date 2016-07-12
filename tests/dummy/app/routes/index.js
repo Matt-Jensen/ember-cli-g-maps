@@ -324,7 +324,7 @@ export default Ember.Route.extend({
       // Mix up All Markers
       // controller.set('markers', Ember.A(markers.map((m, i) => {
       //   const rand = Math.round(Math.random() * (markers.length - 1) + 0);
-      //   return Ember.assign(m, {
+      //   return Ember.merge(m, {
       //     lat: (Math.random() * (55 - 22) + 22),
       //     lng: (Math.random() * (-102 - -115) + -115)
       //   });

@@ -1,6 +1,6 @@
 import Ember from 'ember';
 
-const { assign, uuid, computed } = Ember;
+const { merge, uuid, computed } = Ember;
 const { bind } = Ember.run;
 
 export default Ember.Mixin.create(Ember.Evented, {
@@ -65,7 +65,7 @@ export default Ember.Mixin.create(Ember.Evented, {
 
     // Create Gmap Instance
     const map = new GMaps(
-      assign(config, {
+      merge(config, {
         div: `#${this.element.id}`
       })
     );
@@ -170,55 +170,55 @@ export default Ember.Mixin.create(Ember.Evented, {
 
   actions: {
     idle: function() {
-      this.sendAction('idle', assign(this.get('defaultGMapState'), ...arguments));
+      this.sendAction('idle', merge(this.get('defaultGMapState'), ...arguments));
     },
 
     drag: function() {
-      this.sendAction('drag', assign(this.get('defaultGMapState'), ...arguments));
+      this.sendAction('drag', merge(this.get('defaultGMapState'), ...arguments));
     },
 
     click: function() {
-      this.sendAction('click', assign(this.get('defaultGMapState'), ...arguments));
+      this.sendAction('click', merge(this.get('defaultGMapState'), ...arguments));
     },
 
     resize: function() {
-      this.sendAction('resize', assign(this.get('defaultGMapState'), ...arguments));
+      this.sendAction('resize', merge(this.get('defaultGMapState'), ...arguments));
     },
 
     loaded: function() {
-      this.sendAction('loaded', assign(this.get('defaultGMapState'), ...arguments));
+      this.sendAction('loaded', merge(this.get('defaultGMapState'), ...arguments));
     },
 
     dragend: function() {
-      this.sendAction('dragend', assign(this.get('defaultGMapState'), ...arguments));
+      this.sendAction('dragend', merge(this.get('defaultGMapState'), ...arguments));
     },
 
     dblclick: function() {
-      this.sendAction('dblclick', assign(this.get('defaultGMapState'), ...arguments));
+      this.sendAction('dblclick', merge(this.get('defaultGMapState'), ...arguments));
     },
 
     mouseout: function() {
-      this.sendAction('mouseout', assign(this.get('defaultGMapState'), ...arguments));
+      this.sendAction('mouseout', merge(this.get('defaultGMapState'), ...arguments));
     },
 
     dragstart: function() {
-      this.sendAction('dragstart', assign(this.get('defaultGMapState'), ...arguments));
+      this.sendAction('dragstart', merge(this.get('defaultGMapState'), ...arguments));
     },
 
     mousemove: function() {
-      this.sendAction('mousemove', assign(this.get('defaultGMapState'), ...arguments));
+      this.sendAction('mousemove', merge(this.get('defaultGMapState'), ...arguments));
     },
 
     mouseover: function() {
-      this.sendAction('mouseover', assign(this.get('defaultGMapState'), ...arguments));
+      this.sendAction('mouseover', merge(this.get('defaultGMapState'), ...arguments));
     },
 
     rightclick: function() {
-      this.sendAction('rightclick', assign(this.get('defaultGMapState'), ...arguments));
+      this.sendAction('rightclick', merge(this.get('defaultGMapState'), ...arguments));
     },
 
     tilesloaded: function() {
-      this.sendAction('tilesloaded', assign(this.get('defaultGMapState'), ...arguments));
+      this.sendAction('tilesloaded', merge(this.get('defaultGMapState'), ...arguments));
     },
 
     tilt_changed: function() {
@@ -226,28 +226,28 @@ export default Ember.Mixin.create(Ember.Evented, {
     },
 
     zoom_changed: function() {
-      this.sendAction('zoom_changed', assign(this.get('defaultGMapState'), ...arguments));
+      this.sendAction('zoom_changed', merge(this.get('defaultGMapState'), ...arguments));
     },
 
     bounds_changed: function() {
-      this.sendAction('bounds_changed', assign(this.get('defaultGMapState'), ...arguments));
+      this.sendAction('bounds_changed', merge(this.get('defaultGMapState'), ...arguments));
     },
 
     center_changed: function() {
-      this.sendAction('center_changed', assign(this.get('defaultGMapState'), ...arguments));
+      this.sendAction('center_changed', merge(this.get('defaultGMapState'), ...arguments));
     },
 
     heading_changed: function() {
-      this.sendAction('heading_changed', assign(this.get('defaultGMapState'), ...arguments));
+      this.sendAction('heading_changed', merge(this.get('defaultGMapState'), ...arguments));
     },
 
     maptypeid_changed: function() {
       const googleMapInstance = this.get('map.map');
-      this.sendAction('maptypeid_changed', assign(this.get('defaultGMapState'), { mapType: googleMapInstance.getMapTypeId() }, ...arguments));
+      this.sendAction('maptypeid_changed', merge(this.get('defaultGMapState'), { mapType: googleMapInstance.getMapTypeId() }, ...arguments));
     },
 
     projection_changed: function() {
-      this.sendAction('projection_changed', assign(this.get('defaultGMapState'), ...arguments));
+      this.sendAction('projection_changed', merge(this.get('defaultGMapState'), ...arguments));
     }
   }
 });

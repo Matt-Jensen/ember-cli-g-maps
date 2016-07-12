@@ -20,7 +20,8 @@ test('should convert address to geocode', function(assert) {
   assert.expect(1);
   return gMapService.geocode({
     address: '716 Richard Arrington Jr Blvd N, Birmingham, AL 35203, United States'
-  }).then((result) => {
+  })
+  .then((result) => {
     assert.ok(Ember.isArray(result), 'returns an array of results');
   });
 });
