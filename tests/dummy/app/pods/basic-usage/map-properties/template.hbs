@@ -9,6 +9,7 @@
   <li><a {{action "scrollToId" 'disableDefaultUI'}}>disableDefaultUI</a></li>
   <li><a {{action "scrollToId" 'disableDoubleClickZoom'}}>disableDoubleClickZoom</a></li>
   <li><a {{action "scrollToId" 'scrollwheel'}}>scrollwheel</a></li>
+  <li><a {{action "scrollToId" 'styles'}}>styles</a></li>
 </ul>
 
 
@@ -73,8 +74,10 @@
     showScaleControl=showScaleControl
     disableDoubleClickZoom=disableDoubleClickZoom
     scrollwheel=scrollwheel
+    styles=styles
     maptypeid_changed="onMapTypeIdChange"}}
 </div>
+<small>Map theme: <a href="https://snazzymaps.com/style/64512/colorful-local" target="_blank">Colorful Local</a> by George</small>
 
 <hr>
 
@@ -435,6 +438,52 @@
                     <tbody><tr>
                       <td id="file-templa-hbs-L1" class="blob-num js-line-number" data-line-number="1"></td>
                       <td id="file-templa-hbs-LC1" class="blob-code blob-code-inner js-file-line"><span class="pl-c1">\{{</span><span class="pl-v">g-maps</span> scrollwheel=true<span class="pl-c1">}}</span></td>
+                    </tr>
+                  </tbody></table>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="gist-meta">
+            made with ❤ by <a href="https://github.com">GitHub</a>
+          </div>
+        </div>
+      </div>
+    </code>
+  </div>
+</p>
+
+<hr>
+
+<p id="styles" class="medium-7">
+  <h3>styles</h3>
+
+  <div class="-mb">
+    <small class="-db">Type</small>
+    Array
+  </div>
+  <div class="-mb">
+    <small class="-db">Default</small>
+    <div class="gmaps-inline-code -nml">undefined</div>
+  </div>
+  <div class="-mb">
+    <small class="-db">Resources</small>
+    <a class="-db" href="https://developers.google.com/maps/documentation/javascript/styling" target="_blank">Google Map Options</a>
+    <a class="-db" href="https://snazzymaps.com/" target="_blank">Snazzymaps theme repository</a>
+  </div>
+  <div class="gmaps-snippet">
+    <header>Example</header>
+    <code>
+      <div class="gist">
+        <div class="gist-file">
+          <div class="gist-data">
+            <div class="js-gist-file-update-container js-task-list-container file-box">
+              <div id="file-templa-hbs" class="file">
+                <div class="blob-wrapper data type-handlebars">
+                  <table class="highlight tab-size js-file-line-container" data-tab-size="8">
+                    <tbody><tr>
+                      <td id="file-templa-hbs-L1" class="blob-num js-line-number" data-line-number="1"></td>
+                      <td id="file-templa-hbs-LC1" class="blob-code blob-code-inner js-file-line"><span class="pl-c1">\{{</span><span class="pl-v">g-maps</span> styles=myStyles<span class="pl-c1">}}</span></td>
                     </tr>
                   </tbody></table>
                 </div>
