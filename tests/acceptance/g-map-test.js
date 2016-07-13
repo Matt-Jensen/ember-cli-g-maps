@@ -16,21 +16,29 @@ module('Acceptance | g map', {
   }
 });
 
-test('should convert address to geocode', function(assert) {
+test('should convert address to geocode or reject Promise', function(assert) {
   assert.expect(1);
   return gMapService.geocode({
     address: '716 Richard Arrington Jr Blvd N, Birmingham, AL 35203, United States'
-  }).then((result) => {
+  })
+  .then(result => {
     assert.ok(Ember.isArray(result), 'returns an array of results');
+  })
+  .catch(err => {
+    assert.ok(err, 'rejected geocode request');
   });
 });
 
-test('should support reverse geocoding with suggested results', function(assert) {
+test('should support reverse geocoding with suggested results or reject Promise', function(assert) {
   assert.expect(1);
   return gMapService.geocode({
     lat: 33.5212291,
     lng: -86.8089334
-  }).then((result) => {
+  })
+  .then(result => {
     assert.ok(Ember.isArray(result), 'returns an array of results');
+  })
+  .catch(err => {
+    assert.ok(err, 'rejected reverse geocoding request');
   });
 });
