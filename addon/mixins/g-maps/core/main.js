@@ -11,6 +11,7 @@ export default Ember.Mixin.create(Ember.Evented, {
   zoom: 0,
   mapType: 'ROADMAP',
   showMapTypeControl: true,
+  clickableIcons: true,
   draggable: true,
   disableDefaultUI: false,
   disableDoubleClickZoom: false,
@@ -55,7 +56,8 @@ export default Ember.Mixin.create(Ember.Evented, {
       'showMapTypeControl',
       'scaleControl',
       'showScaleControl',
-      'disableDefaultUI'
+      'disableDefaultUI',
+      'clickableIcons'
     );
 
     // Map symantic names to Google Map Options

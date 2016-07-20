@@ -420,6 +420,7 @@ export default Ember.Route.extend({
       lng: -86.8025,
       mapType: 'satellite', // Accepts 'roadmap', 'satellite', 'hybrid', or 'terrain'
       showMapTypeControl: true,
+      clickableIcons: true,
       draggable: true,
       disableDefaultUI: false,
       disableDoubleClickZoom: false,
@@ -445,6 +446,10 @@ export default Ember.Route.extend({
 
 ```handlebars
 {{g-maps ... disableDefaultUI=true}}
+```
+
+```handlebars
+{{g-maps ... clickableIcons=true}}
 ```
 
 ```handlebars
