@@ -26,8 +26,8 @@ export default {
 
     const model             = settings.model;
     const namespace         = globalNamespace+capitalize(settings.namespace);
-    const addMethod         = Ember.String.singularize(`add${capitalize(model)}`);
-    const removeMethod      = Ember.String.singularize(`remove${capitalize(model)}`);
+    const addMethod         = `add${capitalize(settings.namespace)}`;
+    const removeMethod      = `remove${capitalize(settings.namespace)}`;
 
 
     ////////////////////////////////////
