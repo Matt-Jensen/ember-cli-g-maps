@@ -1,5 +1,79 @@
-<h2>Feature Coming Soon!</h2>
+<h2>Map Refresh</h2>
 
 <p class="medium-7 large-5">
-  The <span class="gmaps-inline-code">refresh</span> method takes a map instance and triggers a reloading of that google map instance.  If no map name is provided all gmaps will be refreshed.  Handy if you must resize map container elements with javascript.
+  The <span class="gmaps-inline-code">refresh</span> method takes a map instance and triggers a reloading of that google map instance. Useful when a Map's container element resizes and new map tiles must be loaded.
 </p>
+
+<button class="th-google-button--small -mb"
+  {{action "refresh"}}
+  disabled={{disableButton}}>
+  Resize & Refresh Map
+</button>
+
+<span class="-rel" style="top: -7px; left: 5px;">{{mapState}}</span>
+
+<div id="resize-parent-container" style="width: 50%;" class="grid-content -np -mb">
+  {{g-maps class="gmaps-docs-map" name="gmaps-refresh-map" lat=lat lng=lng zoom=zoom}}
+</div>
+
+<div class="grid-block">
+    <div class="grid-content gmaps-snippet small-12">
+    <header>Map Refresh Usage</header>
+    <code>
+      <div class="gist">
+        <div class="gist-file">
+          <div class="gist-data">
+            <div class="js-gist-file-update-container js-task-list-container file-box">
+              <div id="file-g-map-service-js" class="file">
+                <div class="blob-wrapper data type-javascript">
+                  <table class="highlight tab-size js-file-line-container" data-tab-size="8">
+                    <tbody><tr>
+                      <td id="file-google-map-refresh-js-L1" class="blob-num js-line-number" data-line-number="1"></td>
+                      <td id="file-google-map-refresh-js-LC1" class="blob-code blob-code-inner js-file-line"><span class="pl-k">export</span> <span class="pl-v">default</span> <span class="pl-smi">Ember</span>.<span class="pl-smi">Component</span>.<span class="pl-en">extend</span>({</td>
+                      </tr>
+                      <tr>
+                        <td id="file-google-map-refresh-js-L2" class="blob-num js-line-number" data-line-number="2"></td>
+                        <td id="file-google-map-refresh-js-LC2" class="blob-code blob-code-inner js-file-line">  gMap<span class="pl-k">:</span> <span class="pl-smi">Ember</span>.<span class="pl-smi">inject</span>.<span class="pl-en">service</span>(),</td>
+                      </tr>
+                      <tr>
+                        <td id="file-google-map-refresh-js-L3" class="blob-num js-line-number" data-line-number="3"></td>
+                        <td id="file-google-map-refresh-js-LC3" class="blob-code blob-code-inner js-file-line">  </td>
+                      </tr>
+                      <tr>
+                        <td id="file-google-map-refresh-js-L4" class="blob-num js-line-number" data-line-number="4"></td>
+                        <td id="file-google-map-refresh-js-LC4" class="blob-code blob-code-inner js-file-line">  actions<span class="pl-k">:</span> {</td>
+                        </tr>
+                        <tr>
+                          <td id="file-google-map-refresh-js-L5" class="blob-num js-line-number" data-line-number="5"></td>
+                          <td id="file-google-map-refresh-js-LC5" class="blob-code blob-code-inner js-file-line">    <span class="pl-en">refresh</span>() {</td>
+                          </tr>
+                          <tr>
+                            <td id="file-google-map-refresh-js-L6" class="blob-num js-line-number" data-line-number="6"></td>
+                            <td id="file-google-map-refresh-js-LC6" class="blob-code blob-code-inner js-file-line">      <span class="pl-v">this</span>.<span class="pl-en">get</span>(<span class="pl-s"><span class="pl-pds">'</span>gMap<span class="pl-pds">'</span></span>).<span class="pl-smi">maps</span>.<span class="pl-en">refresh</span>(<span class="pl-s"><span class="pl-pds">'</span>my-map-name<span class="pl-pds">'</span></span>);</td>
+                          </tr>
+                          <tr>
+                            <td id="file-google-map-refresh-js-L7" class="blob-num js-line-number" data-line-number="7"></td>
+                            <td id="file-google-map-refresh-js-LC7" class="blob-code blob-code-inner js-file-line">    }</td>
+                          </tr>
+                          <tr>
+                            <td id="file-google-map-refresh-js-L8" class="blob-num js-line-number" data-line-number="8"></td>
+                            <td id="file-google-map-refresh-js-LC8" class="blob-code blob-code-inner js-file-line">  }</td>
+                          </tr>
+                          <tr>
+                            <td id="file-google-map-refresh-js-L9" class="blob-num js-line-number" data-line-number="9"></td>
+                            <td id="file-google-map-refresh-js-LC9" class="blob-code blob-code-inner js-file-line">});</td>
+                          </tr>
+                        </tbody>
+                    </table>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="gist-meta">
+            made with ❤ by <a href="https://github.com">GitHub</a>
+          </div>
+        </div>
+      </div>
+    </code>
+  </div>
+</div>
