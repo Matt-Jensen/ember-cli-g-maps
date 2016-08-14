@@ -14,7 +14,7 @@ Installation
 [Full installation & configuration documentation.](http://matt-jensen.github.io/ember-cli-g-maps/#/basic-usage/index)
 
 Supports:
-- Ember ~1.13
+- Ember >=1.13
 - Google Maps v3
 
 In terminal:
@@ -72,6 +72,7 @@ Documentation
 
 **Services**
 - [Geocoding](http://matt-jensen.github.io/ember-cli-g-maps/#/service/geocoding)
+- [Refreshing](http://matt-jensen.github.io/ember-cli-g-maps/#/service/refresh)
 
 **Selections**
 
@@ -583,6 +584,19 @@ Contributors
 
 Changelog
 ---------
+
+0.5.x
+------------
+* Fixes bug when Ember-Data not included
+* Adds Map refresh
+* Adds Map theming
+* Adds Lazy loading
+
+0.4.x
+------------
+* Adds Geocoding
+* Adds Google Places Autocomplete
+* Wrap GMaps-for-apps geocoding service in Promise
 
 0.3.3
 ------------

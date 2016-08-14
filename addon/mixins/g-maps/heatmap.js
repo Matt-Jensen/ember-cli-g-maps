@@ -1,4 +1,5 @@
 import Ember from 'ember';
+import loadGoogleMaps from 'ember-cli-g-maps/utils/load-google-maps';
 
 const { on, isArray } = Ember;
 
@@ -54,17 +55,20 @@ export default Ember.Mixin.create({
    * @return {[Oberservers]}   [if valid adds obersvers to init method]
    */
   _validateHeatmap: on('didInsertElement', function() {
-    if(!this.get('heatmapMarkers')) { return false; }
+    return loadGoogleMaps()
+      .then(() => {
+        if(!this.get('heatmapMarkers')) { return false; }
 
-    if(!this.googleMapsSupportsHeatmap()) {
-      throw new Error('g-map component requires the "visualization" library included in `config/environment.js`');
-    }
-    else {
+        if(!this.googleMapsSupportsHeatmap()) {
+          throw new Error('g-map component requires the "visualization" library included in `config/environment.js`');
+        }
+        else {
 
-      // Enable Heatmap setup
-      this.addObserver('isMapLoaded', this, '_initHeatmap');
-      this.addObserver('heatmapMarkers', this, '_initHeatmap');
-    }
+          // Enable Heatmap setup
+          this.addObserver('isMapLoaded', this, '_initHeatmap');
+          this.addObserver('heatmapMarkers', this, '_initHeatmap');
+        }
+      });
   }),
 
 

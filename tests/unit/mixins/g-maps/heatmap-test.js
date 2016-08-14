@@ -64,21 +64,24 @@ test('`_validateHeatmap` should trigger on `didInsertElement`', function(a) {
   a.ok(subject._validateHeatmap.called);
 });
 
-test('`_validateHeatmap` should throw error if Heatmap Layer not supported', function(a) {
+test('`googleMapsSupportsHeatmap` should return false if Heatmap Layer not supported', function(a) {
   const subject = createSubject(true);
-  subject.googleMapsSupportsHeatmap = function() { return false; };
+  const originalVis = google.maps.visualization;
+  google.maps.visualization = false;
 
-  a.throws(
-    function() { return subject._validateHeatmap(); },
-    new Error('g-map component requires the "visualization" library included in `config/environment.js`')
-  );
+  a.equal(subject.googleMapsSupportsHeatmap(), false, 'indicates Heatmap is not supporte');
+
+  google.maps.visualization = originalVis;
 });
 
 test('`_validateHeatmap` should add observers for `_initHeatmap` if supported', function(a) {
   const subject = createSubject(true);
-  subject._validateHeatmap();
-  a.ok(subject.hasObserverFor('isMapLoaded'));
-  a.ok(subject.hasObserverFor('heatmapMarkers'));
+
+  return subject._validateHeatmap()
+    .then(() => {
+      a.ok(subject.hasObserverFor('isMapLoaded'));
+      a.ok(subject.hasObserverFor('heatmapMarkers'));
+    });
 });
 
 

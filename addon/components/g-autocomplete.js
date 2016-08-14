@@ -1,5 +1,6 @@
 import Ember from 'ember';
 import layout from '../templates/components/g-autocomplete';
+import loadGoogleMaps from 'ember-cli-g-maps/utils/load-google-maps';
 
 const { inject, get, set } = Ember;
 
@@ -23,7 +24,7 @@ export default Ember.Component.extend({
   didInsertElement() {
     this._super(...arguments);
     const input = this.$('input')[0];
-    this.setup(input);
+    loadGoogleMaps().then(() => this.setup(input));
   },
 
   /**

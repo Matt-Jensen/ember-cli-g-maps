@@ -1,4 +1,5 @@
 import Ember from 'ember';
+import loadGoogleMaps from 'ember-cli-g-maps/utils/load-google-maps';
 
 const { later } = Ember.run;
 const { on, computed, isArray } = Ember;
@@ -190,7 +191,7 @@ export default Ember.Mixin.create({
 
       if (event.type === google.maps.drawing.OverlayType.MARKER) {
         this.send('selectionsMarker', event.overlay);
-      } 
+      }
       else if (event.type === google.maps.drawing.OverlayType.CIRCLE) {
         this.send('selectionsCircle', event.overlay);
       }
@@ -201,7 +202,7 @@ export default Ember.Mixin.create({
         this.send('selectionsPolygon', event.overlay);
       }
       else if(event.type === google.maps.drawing.OverlayType.POLYLINE) {
-        this.send('selectionsPolyline', event.overlay); 
+        this.send('selectionsPolyline', event.overlay);
       }
 
       // Remove the last drawing from map
@@ -299,7 +300,7 @@ export default Ember.Mixin.create({
   googleMapsSupportsDrawingManager: computed(function() {
     return (
       google.maps &&
-      google.maps.drawing && 
+      google.maps.drawing &&
       google.maps.drawing.DrawingManager
     );
   }),
@@ -311,17 +312,20 @@ export default Ember.Mixin.create({
    * @return {[Oberservers]} [if valid adds obersvers to init method]
    */
   _validateSelections: on('didInsertElement', function() {
-    if(!this.get('selections')) { return false; }
+    return loadGoogleMaps()
+      .then(() => {
+        if(!this.get('selections')) { return false; }
 
-    if(!this.get('googleMapsSupportsDrawingManager')) {
-      throw new Error('g-map component requires the "drawing" library included in `config/environment.js`');
-    }
-    else {
+        if(!this.get('googleMapsSupportsDrawingManager')) {
+          throw new Error('g-map component requires the "drawing" library included in `config/environment.js`');
+        }
+        else {
 
-      // Enable selections setup
-      this.addObserver('isMapLoaded', this, '_initSelections');
-      this.addObserver('selections', this, '_initSelections');
-    }
+          // Enable selections setup
+          this.addObserver('isMapLoaded', this, '_initSelections');
+          this.addObserver('selections', this, '_initSelections');
+        }
+      });
   }),
 
 

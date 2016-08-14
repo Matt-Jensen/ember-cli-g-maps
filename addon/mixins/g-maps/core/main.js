@@ -1,4 +1,5 @@
 import Ember from 'ember';
+import loadGoogleMaps from 'ember-cli-g-maps/utils/load-google-maps';
 
 const { merge, uuid, computed } = Ember;
 const { bind } = Ember.run;
@@ -64,26 +65,33 @@ export default Ember.Mixin.create(Ember.Evented, {
     config.mapTypeControl = config.showMapTypeControl;
     config.scaleControl = config.showScaleControl;
 
-    // Create Gmap Instance
-    const map = new GMaps(
-      merge(config, {
-        div: `#${this.element.id}`
+    loadGoogleMaps()
+      .then(() => {
+
+        // Create Gmap Instance
+        const map = new GMaps(
+          merge(config, {
+            div: `#${this.element.id}`
+          })
+        );
+
+        this.set('map', map);
+
+        this._addMapEvents();
+
+        if (!this.get('name')) {
+          this.set('name', `ember-cli-g-map-${uuid()}`);
+        }
+
+        // Register gMap instance in gMap service
+        this.get('gMap').maps.add(this.get('name'), map.map);
+
+        // When map instance has finished loading
+        google.maps.event.addListenerOnce(map.map, 'idle', Ember.run.bind(this, this._onMapLoad));
       })
-    );
-
-    this.set('map', map);
-
-    this._addMapEvents();
-
-    if (!this.get('name')) {
-      this.set('name', `ember-cli-g-map-${uuid()}`);
-    }
-
-    // Register gMap instance in gMap service
-    this.get('gMap').maps.add(this.get('name'), map.map);
-
-    // When map instance has finished loading
-    google.maps.event.addListenerOnce(map.map, 'idle', Ember.run.bind(this, this._onMapLoad));
+      .catch(() => {
+        Ember.Logger.error('Failed to load google maps via Ember-cli-g-maps');
+      });
   },
 
   // TODO write integration test coverage

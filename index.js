@@ -13,13 +13,11 @@ module.exports = {
 
   // Request Google Maps script in consuming app
   contentFor: function(type, config) {
-    // Const
     var googleMapConfig = config.googleMap || {};
 
-    // Let
     var params = [];
     var content = '';
-    var googleMapSrc;
+    var googleMapSrc, isClient;
 
     if (type === 'head') {
       googleMapSrc = 'maps.googleapis.com/maps/api/js';
@@ -34,7 +32,7 @@ module.exports = {
 
       // grab either API key or client ID
       if (googleMapConfig.apiKey) {
-        var isClient = googleMapConfig.apiKey.substr(0, 4) === 'gme-';
+        isClient = googleMapConfig.apiKey.substr(0, 4) === 'gme-';
         params.push((isClient ? 'client' : 'key') +'='+ encodeURIComponent( googleMapConfig.apiKey ));
       }
 
@@ -43,18 +41,14 @@ module.exports = {
         params.push('libraries='+ encodeURIComponent( googleMapConfig.libraries.join(',') ));
       }
 
-      // Build URL
-      // googleMapSrc += '?'+ params.join('&');
-      // if(googleMapConfig.lazyLoad) {
-      //   content = '<meta name="ember-cli-g-maps-sdk-url" content="'+ googleMapSrc +'">';
-      // } else {
-      //   content = '<script src="'+ googleMapSrc +'"></script>';
-      // }
-      
       googleMapSrc = googleMapConfig.protocol + googleMapSrc;
-      
       googleMapSrc += '?'+ params.join('&');
-      content = '<script src="'+ googleMapSrc +'"></script>';
+
+      if(googleMapConfig.lazyLoad) {
+        content = '<meta name="ember-cli-g-maps-url" content="'+ googleMapSrc +'">';
+      } else {
+        content = '<script src="'+ googleMapSrc +'"></script>';
+      }
     }
 
     return content;
