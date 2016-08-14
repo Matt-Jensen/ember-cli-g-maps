@@ -573,7 +573,8 @@ ENV.googleMap = {
   // your configuration goes in here
   libraries: ['places', 'geometry'], // milage varies based on g-maps supported features
   version: '3', // not recommended
-  apiKey: 'your-unique-google-map-api-key'
+  apiKey: 'your-unique-google-map-api-key',
+  lazyLoad: false
 }
 ```
 
@@ -585,14 +586,14 @@ Contributors
 Changelog
 ---------
 
-0.5.x
+0.5.0
 ------------
 * Fixes bug when Ember-Data not included
-* Adds Map refresh
+* Adds Map refresh service
 * Adds Map theming
-* Adds Lazy loading
+* Adds Lazy Load support
 
-0.4.x
+0.4.0
 ------------
 * Adds Geocoding
 * Adds Google Places Autocomplete
