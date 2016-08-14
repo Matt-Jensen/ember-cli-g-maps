@@ -21,17 +21,13 @@ module('Unit | Mixin | g maps/selections', {
 // Validate Selections
 ////////////////////////
 
-// TODO fix
-test('it should throw an error if Drawing Manager is not supported', function(assert) {
-  subject.setProperties({
-    selections: true,
-    googleMapsSupportsDrawingManager: false
-  });
+test('`googleMapsSupportsDrawingManager` should return false if Drawing Manager is not supported', function(assert) {
+  const originalDrawingMngr = google.maps.drawing.DrawingManager;
+  google.maps.drawing.DrawingManager = false;
 
-  assert.throws(
-    function() { return subject._validateSelections(); },
-    new Error('g-map component requires the "drawing" library included in `config/environment.js`')
-  );
+  assert.equal(subject.get('googleMapsSupportsDrawingManager'), false, 'Drawing Manager is not supported');
+
+  google.maps.drawing.DrawingManager = originalDrawingMngr;
 });
 
 test('it invokes `_validateSelections` on `didInsertElement` event', function(assert) {
@@ -43,7 +39,7 @@ test('it invokes `_validateSelections` on `didInsertElement` event', function(as
 test('it adds observers for `isMapLoaded` and `selections` with valid selections requirements', function(assert) {
   subject.setProperties({ selections: true });
 
-  subject._validateSelections()
+  return subject._validateSelections()
     .then(() => {
       assert.ok(subject.hasObserverFor('isMapLoaded'));
       assert.ok(subject.hasObserverFor('selections'));
@@ -57,15 +53,17 @@ test('it adds observers for `isMapLoaded` and `selections` with valid selections
 
 test('it invokes `_initSelections` on `isMapLoaded` and `selections` property changes', function(assert) {
   subject.setProperties({ selections: true });
-  subject.trigger('didInsertElement');
 
-  subject._initSelections = sinon.spy();
+  return subject._validateSelections()
+    .then(() => {
+      subject._initSelections = sinon.spy();
 
-  subject.set('selections', false);
-  assert.ok(subject._initSelections.callCount, 1);
+      subject.set('selections', false);
+      assert.ok(subject._initSelections.callCount, 1);
 
-  subject.set('isMapLoaded', true);
-  assert.ok(subject._initSelections.callCount, 2);
+      subject.set('isMapLoaded', true);
+      assert.ok(subject._initSelections.callCount, 2);
+    });
 });
 
 test('it should not instantiate a drawingManager if Drawing Manager is not supported', function(assert) {

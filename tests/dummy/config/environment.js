@@ -33,7 +33,7 @@ module.exports = function(environment) {
 
   ENV.googleMap = {
     libraries: ['drawing', 'visualization', 'places'],
-    // lazyLoad: true
+    lazyLoad: true
   };
 
   if (environment === 'development') {
@@ -45,6 +45,8 @@ module.exports = function(environment) {
   }
 
   if (environment === 'test') {
+    ENV.googleMap.lazyLoad = false;
+
     // Testem prefers this...
     ENV.locationType = 'none';
 
