@@ -7,23 +7,30 @@ const { RSVP } = Ember;
  * @param {String} query [location of HTML element]
  * @return {String|Boolean}
  */
-export function getLazyLoadSrc(query = 'meta[name="ember-cli-g-maps-url"]') {
-  const $meta = Ember.$(query);
+const getLazyLoadSrc = (query = 'meta[name="ember-cli-g-maps-url"]') => {
+  let meta;
 
-  if ($meta.length === 0) {
+  if (typeof query === 'object') {
+    meta = query;
+  } else {
+    meta = Ember.$(query).get(0);
+  }
+
+  if (!meta) {
     return false;
   }
 
   // Return content property or bust
-  return ($meta.attr('content') || false);
-}
+  const content = meta.getAttribute('content') || '';
+  return (content.length ? content : false);
+};
 
 /**
  * Request Google Maps script and promise result
  * @param {String} src
  * @return {Promise}
  */
-export function lazyLoadGoogleMap(src) {
+const lazyLoadGoogleMap = (src) => {
   if (!src) {
     return RSVP.Promise.reject(); // Google Maps source undefined
   }
@@ -37,7 +44,7 @@ export function lazyLoadGoogleMap(src) {
         reject(jqXhr); // resolve error
       });
   });
-}
+};
 
 export default (function () {
   let googleMapPromise;
@@ -48,7 +55,7 @@ export default (function () {
    * @return {Promise}
    * - @resolve {Object} google.maps
    */
-  return function loadGoogleMaps() {
+  function loadGoogleMaps() {
 
     /**
      * Resolve available global google.maps
@@ -63,9 +70,14 @@ export default (function () {
      */
 
     if (typeof googleMapPromise === 'undefined') {
-      googleMapPromise = lazyLoadGoogleMap( getLazyLoadSrc() );
+      googleMapPromise = loadGoogleMaps.lazyLoadGoogleMap( loadGoogleMaps.getLazyLoadSrc() );
     }
 
     return googleMapPromise;
-  };
+  }
+
+  loadGoogleMaps.getLazyLoadSrc = getLazyLoadSrc;
+  loadGoogleMaps.lazyLoadGoogleMap = lazyLoadGoogleMap;
+
+  return loadGoogleMaps;
 })();
