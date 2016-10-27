@@ -86,7 +86,7 @@ test('_onMapLoad should do nothing if `isDestroyed` = true', function(assert) {
   const coreMainObject = Ember.Object.extend(coreMainMixin);
   const subject = coreMainObject.create();
 
-  subject.set('isDestroyed', true);
+  Ember.run(() => subject.destroy());
 
   assert.equal(subject._onMapLoad(), false, 'should return immediately');
 });
@@ -97,7 +97,6 @@ test('_onMapLoad should trigger load actions if `isDestroyed` = falsey', functio
   const coreMainObject = Ember.Object.extend(coreMainMixin);
   const subject = coreMainObject.create();
 
-  subject.set('isDestroyed', false);
   subject.send = event => subject.actions[event]();
   subject.actions = {
     loaded() {
