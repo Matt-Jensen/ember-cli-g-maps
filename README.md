@@ -574,7 +574,9 @@ ENV.googleMap = {
   libraries: ['places', 'geometry'], // milage varies based on g-maps supported features
   version: '3', // not recommended
   apiKey: 'your-unique-google-map-api-key',
-  lazyLoad: false
+  lazyLoad: false, // default
+  language: 'ja', // optional
+  region: 'JA' // optional
 }
 ```
 
