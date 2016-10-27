@@ -41,6 +41,14 @@ module.exports = {
         params.push('libraries='+ encodeURIComponent( googleMapConfig.libraries.join(',') ));
       }
 
+      // add optional localization
+      if (googleMapConfig.language) {
+        params.push('language='+ encodeURIComponent( googleMapConfig.language ));
+      }
+      if (googleMapConfig.region) {
+        params.push('region='+ encodeURIComponent( googleMapConfig.region ));
+      }
+
       googleMapSrc = googleMapConfig.protocol + googleMapSrc;
       googleMapSrc += '?'+ params.join('&');
 
