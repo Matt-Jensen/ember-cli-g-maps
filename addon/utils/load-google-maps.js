@@ -37,7 +37,7 @@ const lazyLoadGoogleMap = (src) => {
 
   return new RSVP.Promise((resolve, reject) => {
     Ember.$.getScript(src)
-      .success(function emberCliGMapsLazyLoadSuccess() {
+      .done(function emberCliGMapsLazyLoadSuccess() {
         resolve(window.google.maps);
       })
       .fail(function emberCliGMapsLazyLoadFailure(jqXhr) {

@@ -32,7 +32,7 @@ test('`lazyLoadGoogleMap` should reject after failing to fetch Google Maps', (as
   const originalGetScript = Ember.$.getScript;
   const getScriptStub = function () {
     const methods = {
-      success: () => methods,
+      done: () => methods,
       fail: (reject) => {
         reject();
         return methods;
@@ -58,7 +58,7 @@ test('`lazyLoadGoogleMap` should resolve google.maps after successfully fetching
   const originalGetScript = Ember.$.getScript;
   const getScriptStub = function () {
     const methods = {
-      success: (resolve) => {
+      done: (resolve) => {
         resolve();
         return methods;
       },
