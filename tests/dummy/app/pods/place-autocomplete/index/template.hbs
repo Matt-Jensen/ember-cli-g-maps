@@ -63,7 +63,7 @@
 </div>
 
 
-<h2>Usage</h2>
+<h2>Basic Usage</h2>
 
 <p class='medium-7 large-5'>
 A closure action must be passed to <div class='gmaps-inline-code'>on-select</div>. Expect this action to be triggered when the user enters an address and selects an autocomplete option. Your closure action should take as param, an object like <div class='gmaps-inline-code'>{ lat: -49, lng: -123, place: place}</div>. <div class='gmaps-inline-code'>place</div> is a <a href="https://developers.google.com/maps/documentation/javascript/3.exp/reference#MarkerPlace" target="_blank">MarkerPlace</a> object.
@@ -95,6 +95,41 @@ A closure action must be passed to <div class='gmaps-inline-code'>on-select</div
     </div>
   </code>
 </div>
+
+<h2>Options</h2>
+
+<p class='medium-7 large-5'>
+You can pass a POJO of options to Autocomplete instance, the configuration of which is <a href="https://developers.google.com/maps/documentation/javascript/3.exp/reference#AutocompleteOptions" target="_blank">documented here</a>.
+This component is an extention of an <a href="http://emberjs.com/api/classes/Ember.TextField.html" target="_blank">Ember TextField</a> input element and applies all the same properties.
+</p>
+
+<div class='gmaps-snippet'>
+  <header>Example</header>
+  <code>
+    <div class='gist'>
+      <div class='gist-file'>
+        <div class='gist-data'>
+          <div class='js-gist-file-update-container js-task-list-container file-box'>
+            <div id='file-templa-hbs' class='file'>
+              <div class='blob-wrapper data type-handlebars'>
+                <table class="highlight tab-size js-file-line-container" data-tab-size="8">
+                  <tbody><tr>
+                      <td id="file-example-hbs-L1" class="blob-num js-line-number" data-line-number="1"></td>
+                      <td id="file-example-hbs-LC1" class="blob-code blob-code-inner js-file-line"><span class="pl-c1">\{{</span><span class="pl-v">g-autocomplete</span> <span class="pl-e"><span class="pl-v"></span></span><span class="pl-e"><span class="pl-v">class="form-input"</span> <span class="pl-v">options=myOptions</span>}}</span></td>
+                    </tr>
+                  </tbody></table>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="gist-meta">
+          made with ❤ by <a href="https://github.com">GitHub</a>
+        </div>
+      </div>
+    </div>
+  </code>
+</div>
+
 <h2>Testing</h2>
 
 <p class='medium-7 large-5'>
