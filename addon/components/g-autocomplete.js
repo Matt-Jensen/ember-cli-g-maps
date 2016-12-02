@@ -45,7 +45,7 @@ export default TextField.extend({
    * @param {String} input
    */
   setup(input) {
-    const autocomplete = new google.maps.places.Autocomplete(input);
+    const autocomplete = new google.maps.places.Autocomplete(input, this.get('options'));
     const handler = Ember.run.bind(this, function() {
       const place = autocomplete.getPlace();
       this.sendAction('on-select', {
