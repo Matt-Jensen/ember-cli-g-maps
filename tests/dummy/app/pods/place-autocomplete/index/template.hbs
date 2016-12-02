@@ -1,6 +1,6 @@
 <h2>Demo</h2>
 <div class="-mb">
-  {{g-autocomplete on-select=(action 'showCoordinates')}}
+  {{g-autocomplete on-select=(action 'showCoordinates') on-select-error=(action 'autocompleteError')}}
 </div>
 
 {{#if lat}}

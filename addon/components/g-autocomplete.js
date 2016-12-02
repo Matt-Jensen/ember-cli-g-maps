@@ -37,16 +37,19 @@ export default Ember.Component.extend({
    */
   setup(input) {
     const autocomplete = new google.maps.places.Autocomplete(input);
-    const handler = Ember.run.bind(this, function() {
+    const listener = autocomplete.addListener('place_changed', () => {
       const place = autocomplete.getPlace();
+
+      if (!place.geometry) {
+        return this.sendAction('on-select-error', { input: place.name });
+      }
+
       this.sendAction('on-select', {
         lat: place.geometry.location.lat(),
         lng: place.geometry.location.lng(),
         place
       });
     });
-
-    const listener = autocomplete.addListener('place_changed', handler);
 
     set(this, 'autocomplete', autocomplete);
     set(this, 'listener', listener);
