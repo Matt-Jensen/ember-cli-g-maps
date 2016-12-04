@@ -1,13 +1,15 @@
 import Ember from 'ember';
-import layout from '../templates/components/g-autocomplete';
 import loadGoogleMaps from 'ember-cli-g-maps/utils/load-google-maps';
+import TextField from 'ember-components/text-field';
+import { assert } from 'ember-metal/utils';
 
 const { inject, get, set } = Ember;
 
-export default Ember.Component.extend({
-  layout: layout,
+export default TextField.extend({
+  tagName: 'input',
   testGMaps: inject.service('test-g-maps'),
   classNames: ['g-autocomplete'],
+  options: {},
 
   init() {
     this._super(...arguments);
@@ -23,8 +25,15 @@ export default Ember.Component.extend({
    */
   didInsertElement() {
     this._super(...arguments);
-    const input = this.$('input')[0];
-    loadGoogleMaps().then(() => this.setup(input));
+
+    // Don't break the boot
+    if (typeof HTMLInputElement !== 'undefined') {
+
+      // G-Autocomplete's element must be an HTML input
+      assert('g-autocomplete component must have a tagName of `input`', this.element instanceof HTMLInputElement);
+    }
+
+    loadGoogleMaps().then(() => this.setup(this.element));
   },
 
   /**
