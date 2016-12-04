@@ -45,17 +45,20 @@ export default TextField.extend({
    * @param {String} input
    */
   setup(input) {
-    const autocomplete = new google.maps.places.Autocomplete(input, this.get('options'));
-    const handler = Ember.run.bind(this, function() {
-      const place = autocomplete.getPlace();
+    const autocomplete = new google.maps.places.Autocomplete(input);
+    const listener = autocomplete.addListener('place_changed', () => {
+      const placeResult = autocomplete.getPlace();
+
+      if (!placeResult.geometry) {
+        return this.sendAction('on-select-error', { input: placeResult.name });
+      }
+
       this.sendAction('on-select', {
-        lat: place.geometry.location.lat(),
-        lng: place.geometry.location.lng(),
-        place
+        lat: placeResult.geometry.location.lat(),
+        lng: placeResult.geometry.location.lng(),
+        place: placeResult
       });
     });
-
-    const listener = autocomplete.addListener('place_changed', handler);
 
     set(this, 'autocomplete', autocomplete);
     set(this, 'listener', listener);

@@ -6,6 +6,10 @@ export default Ember.Controller.extend({
       this.set('lat', lat);
       this.set('lng', lng);
       this.set('address', place.formatted_address);
+    },
+
+    autocompleteError(err) {
+      window.alert(`Unable to find place for ${err.input}`);
     }
   }
 });
