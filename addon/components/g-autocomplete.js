@@ -47,16 +47,16 @@ export default TextField.extend({
   setup(input) {
     const autocomplete = new google.maps.places.Autocomplete(input);
     const listener = autocomplete.addListener('place_changed', () => {
-      const place = autocomplete.getPlace();
+      const placeResult = autocomplete.getPlace();
 
-      if (!place.geometry) {
-        return this.sendAction('on-select-error', { input: place.name });
+      if (!placeResult.geometry) {
+        return this.sendAction('on-select-error', { input: placeResult.name });
       }
 
       this.sendAction('on-select', {
-        lat: place.geometry.location.lat(),
-        lng: place.geometry.location.lng(),
-        place
+        lat: placeResult.geometry.location.lat(),
+        lng: placeResult.geometry.location.lng(),
+        place: placeResult
       });
     });
 
