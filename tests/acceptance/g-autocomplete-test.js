@@ -1,12 +1,7 @@
 import { test } from 'qunit';
 import moduleForAcceptance from '../../tests/helpers/module-for-acceptance';
-import gMapsSetupTest from '../helpers/ember-cli-g-maps/setup-test';
 
-moduleForAcceptance('Acceptance | place-autocomplete/index', {
-  beforeEach() {
-    gMapsSetupTest(this);
-  }
-});
+moduleForAcceptance('Acceptance | place-autocomplete/index', {});
 
 test('visiting /place-autocomplete/index', function(assert) {
   visit('/place-autocomplete/index');
@@ -16,14 +11,11 @@ test('visiting /place-autocomplete/index', function(assert) {
     assert.ok(find('.g-autocomplete').length > 0, 'g-autocomplete component was rendered');
   });
 
-  selectPlace({ 
-    lat: '123', 
-    lng: '456', 
-    place: { formatted_address: '123 Sesame St' } 
-  });
+  fillIn('.g-autocomplete', 'NYC');
+  selectAutocompletePlace();
 
   andThen(() => {
-    assert.equal($('.lat').text().trim(), '123', 'showing correct latitude');
-    assert.equal($('.long').text().trim(), '456', 'showing correct longitude');
+    assert.ok($('.lat').text().trim().slice(0, 3), '40', 'showing correct latitude');
+    assert.equal($('.long').text().trim().slice(0, 3), '-74', 'showing correct longitude');
   });
 });
