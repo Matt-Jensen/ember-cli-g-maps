@@ -134,7 +134,7 @@ This component is an extention of an <a href="http://emberjs.com/api/classes/Emb
 
 <p class='medium-7 large-5'>
   An acceptance test helper
-  <div class='gmaps-inline-code'>selectPlace</div> is provided to fake the action of selecting an autocomplete suggestion.
+  <div class='gmaps-inline-code'>selectAutocompletePlace</div> is provided to replicate the action of selecting an autocomplete suggestion.  Please use at your own discretion.
 </p>
 
 <div class="gmaps-snippet -lmb">
@@ -145,106 +145,55 @@ This component is an extention of an <a href="http://emberjs.com/api/classes/Emb
         <div class="gist-data">
           <div class="js-gist-file-update-container js-task-list-container file-box">
             <div id="file-ember-cli-g-maps__app-js" class="file">
-              <div class="blob-wrapper data type-javascript">
-<table class="highlight tab-size js-file-line-container" data-tab-size="8">
-      <tbody><tr>
-        <td id="file-test-js-L1" class="blob-num js-line-number" data-line-number="1"></td>
-        <td id="file-test-js-LC1" class="blob-code blob-code-inner js-file-line"><span class="pl-k">import</span> <span class="pl-smi">gMapsSetupTest</span> <span class="pl-k">from</span> <span class="pl-s"><span class="pl-pds">'</span>../helpers/ember-cli-g-maps/setup-test<span class="pl-pds">'</span></span>;</td>
-      </tr>
-      <tr>
-        <td id="file-test-js-L2" class="blob-num js-line-number" data-line-number="2"></td>
-        <td id="file-test-js-LC2" class="blob-code blob-code-inner js-file-line">
-</td>
-      </tr>
-      <tr>
-        <td id="file-test-js-L3" class="blob-num js-line-number" data-line-number="3"></td>
-        <td id="file-test-js-LC3" class="blob-code blob-code-inner js-file-line"><span class="pl-en">moduleForAcceptance</span>(<span class="pl-s"><span class="pl-pds">'</span>Acceptance | basic-usage/autocomplete<span class="pl-pds">'</span></span>, {</td>
-      </tr>
-      <tr>
-        <td id="file-test-js-L4" class="blob-num js-line-number" data-line-number="4"></td>
-        <td id="file-test-js-LC4" class="blob-code blob-code-inner js-file-line">  <span class="pl-en">beforeEach</span>() {</td>
-      </tr>
-      <tr>
-        <td id="file-test-js-L5" class="blob-num js-line-number" data-line-number="5"></td>
-        <td id="file-test-js-LC5" class="blob-code blob-code-inner js-file-line">    <span class="pl-en">gMapsSetupTest</span>(<span class="pl-v">this</span>);</td>
-      </tr>
-      <tr>
-        <td id="file-test-js-L6" class="blob-num js-line-number" data-line-number="6"></td>
-        <td id="file-test-js-LC6" class="blob-code blob-code-inner js-file-line">  }</td>
-      </tr>
-      <tr>
-        <td id="file-test-js-L7" class="blob-num js-line-number" data-line-number="7"></td>
-        <td id="file-test-js-LC7" class="blob-code blob-code-inner js-file-line">});</td>
-      </tr>
-      <tr>
-        <td id="file-test-js-L8" class="blob-num js-line-number" data-line-number="8"></td>
-        <td id="file-test-js-LC8" class="blob-code blob-code-inner js-file-line">
-</td>
-      </tr>
-      <tr>
-        <td id="file-test-js-L9" class="blob-num js-line-number" data-line-number="9"></td>
-        <td id="file-test-js-LC9" class="blob-code blob-code-inner js-file-line"><span class="pl-en">test</span>(<span class="pl-s"><span class="pl-pds">'</span>visiting /basic-usage/autocomplete<span class="pl-pds">'</span></span>, <span class="pl-k">function</span>(<span class="pl-smi">assert</span>) {</td>
-      </tr>
-      <tr>
-        <td id="file-test-js-L10" class="blob-num js-line-number" data-line-number="10"></td>
-        <td id="file-test-js-LC10" class="blob-code blob-code-inner js-file-line">  <span class="pl-en">visit</span>(<span class="pl-s"><span class="pl-pds">'</span>/basic-usage/autocomplete<span class="pl-pds">'</span></span>);</td>
-      </tr>
-      <tr>
-        <td id="file-test-js-L11" class="blob-num js-line-number" data-line-number="11"></td>
-        <td id="file-test-js-LC11" class="blob-code blob-code-inner js-file-line">
-</td>
-      </tr>
-      <tr>
-        <td id="file-test-js-L12" class="blob-num js-line-number" data-line-number="12"></td>
-        <td id="file-test-js-LC12" class="blob-code blob-code-inner js-file-line">  <span class="pl-en">andThen</span>(<span class="pl-k">function</span>() {</td>
-      </tr>
-      <tr>
-        <td id="file-test-js-L13" class="blob-num js-line-number" data-line-number="13"></td>
-        <td id="file-test-js-LC13" class="blob-code blob-code-inner js-file-line">    <span class="pl-smi">assert</span>.<span class="pl-en">equal</span>(<span class="pl-en">currentURL</span>(), <span class="pl-s"><span class="pl-pds">'</span>/basic-usage/autocomplete<span class="pl-pds">'</span></span>, <span class="pl-s"><span class="pl-pds">'</span>visit correct path<span class="pl-pds">'</span></span>);</td>
-      </tr>
-      <tr>
-        <td id="file-test-js-L14" class="blob-num js-line-number" data-line-number="14"></td>
-        <td id="file-test-js-LC14" class="blob-code blob-code-inner js-file-line">    <span class="pl-smi">assert</span>.<span class="pl-en">ok</span>(<span class="pl-en">find</span>(<span class="pl-s"><span class="pl-pds">'</span>.g-autocomplete<span class="pl-pds">'</span></span>).<span class="pl-c1">length</span> <span class="pl-k">&gt;</span> <span class="pl-c1">0</span>, <span class="pl-s"><span class="pl-pds">'</span>g-autocomplete component was rendered<span class="pl-pds">'</span></span>);</td>
-      </tr>
-      <tr>
-        <td id="file-test-js-L15" class="blob-num js-line-number" data-line-number="15"></td>
-        <td id="file-test-js-LC15" class="blob-code blob-code-inner js-file-line">  });</td>
-      </tr>
-      <tr>
-        <td id="file-test-js-L16" class="blob-num js-line-number" data-line-number="16"></td>
-        <td id="file-test-js-LC16" class="blob-code blob-code-inner js-file-line">
-</td>
-      </tr>
-      <tr>
-        <td id="file-test-js-L17" class="blob-num js-line-number" data-line-number="17"></td>
-        <td id="file-test-js-LC17" class="blob-code blob-code-inner js-file-line">  <span class="pl-en">selectPlace</span>({ lat<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>123<span class="pl-pds">'</span></span>, long<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>456<span class="pl-pds">'</span></span> });</td>
-      </tr>
-      <tr>
-        <td id="file-test-js-L18" class="blob-num js-line-number" data-line-number="18"></td>
-        <td id="file-test-js-LC18" class="blob-code blob-code-inner js-file-line">
-</td>
-      </tr>
-      <tr>
-        <td id="file-test-js-L19" class="blob-num js-line-number" data-line-number="19"></td>
-        <td id="file-test-js-LC19" class="blob-code blob-code-inner js-file-line">  <span class="pl-en">andThen</span>(() <span class="pl-k">=&gt;</span> {</td>
-      </tr>
-      <tr>
-        <td id="file-test-js-L20" class="blob-num js-line-number" data-line-number="20"></td>
-        <td id="file-test-js-LC20" class="blob-code blob-code-inner js-file-line">    <span class="pl-smi">assert</span>.<span class="pl-en">equal</span>(<span class="pl-en">$</span>(<span class="pl-s"><span class="pl-pds">'</span>.lat<span class="pl-pds">'</span></span>).<span class="pl-c1">text</span>().<span class="pl-en">trim</span>(), <span class="pl-s"><span class="pl-pds">'</span>123<span class="pl-pds">'</span></span>, <span class="pl-s"><span class="pl-pds">'</span>showing correct latitude<span class="pl-pds">'</span></span>);</td>
-      </tr>
-      <tr>
-        <td id="file-test-js-L21" class="blob-num js-line-number" data-line-number="21"></td>
-        <td id="file-test-js-LC21" class="blob-code blob-code-inner js-file-line">    <span class="pl-smi">assert</span>.<span class="pl-en">equal</span>(<span class="pl-en">$</span>(<span class="pl-s"><span class="pl-pds">'</span>.long<span class="pl-pds">'</span></span>).<span class="pl-c1">text</span>().<span class="pl-en">trim</span>(), <span class="pl-s"><span class="pl-pds">'</span>456<span class="pl-pds">'</span></span>, <span class="pl-s"><span class="pl-pds">'</span>showing correct longitude<span class="pl-pds">'</span></span>);</td>
-      </tr>
-      <tr>
-        <td id="file-test-js-L22" class="blob-num js-line-number" data-line-number="22"></td>
-        <td id="file-test-js-LC22" class="blob-code blob-code-inner js-file-line">  });</td>
-      </tr>
-      <tr>
-        <td id="file-test-js-L23" class="blob-num js-line-number" data-line-number="23"></td>
-        <td id="file-test-js-LC23" class="blob-code blob-code-inner js-file-line">});</td>
-      </tr>
-</tbody></table>
+              <div itemprop="text" class="blob-wrapper data type-javascript">
+                <table class="highlight tab-size js-file-line-container" data-tab-size="8">
+                  <tbody><tr>
+                    <td id="file-test-js-L1" class="blob-num js-line-number" data-line-number="1"></td>
+                    <td id="file-test-js-LC1" class="blob-code blob-code-inner js-file-line"><span class="pl-en">test</span>(<span class="pl-s"><span class="pl-pds">'</span>Search g-autocomplete results<span class="pl-pds">'</span></span>, <span class="pl-k">function</span>(<span class="pl-smi">assert</span>) {</td>
+                    </tr>
+                    <tr>
+                      <td id="file-test-js-L2" class="blob-num js-line-number" data-line-number="2"></td>
+                      <td id="file-test-js-LC2" class="blob-code blob-code-inner js-file-line">  <span class="pl-en">visit</span>(<span class="pl-s"><span class="pl-pds">'</span>/my-g-autocomplete<span class="pl-pds">'</span></span>);</td>
+                    </tr>
+                    <tr>
+                      <td id="file-test-js-L3" class="blob-num js-line-number" data-line-number="3"></td>
+                      <td id="file-test-js-LC3" class="blob-code blob-code-inner js-file-line">
+                      </td>
+                    </tr>
+                    <tr>
+                      <td id="file-test-js-L4" class="blob-num js-line-number" data-line-number="4"></td>
+                      <td id="file-test-js-LC4" class="blob-code blob-code-inner js-file-line">  <span class="pl-en">fillIn</span>(<span class="pl-s"><span class="pl-pds">'</span>.g-autocomplete<span class="pl-pds">'</span></span>, <span class="pl-s"><span class="pl-pds">'</span>NYC<span class="pl-pds">'</span></span>);</td>
+                    </tr>
+                    <tr>
+                      <td id="file-test-js-L5" class="blob-num js-line-number" data-line-number="5"></td>
+                      <td id="file-test-js-LC5" class="blob-code blob-code-inner js-file-line">  <span class="pl-en">selectAutocompletePlace</span>(/* placeResultIndex, autocompleteSelector */); <span class="pl-c">// selects 1st place result</span></td>
+                    </tr>
+                    <tr>
+                      <td id="file-test-js-L6" class="blob-num js-line-number" data-line-number="6"></td>
+                      <td id="file-test-js-LC6" class="blob-code blob-code-inner js-file-line">
+                      </td>
+                    </tr>
+                    <tr>
+                      <td id="file-test-js-L7" class="blob-num js-line-number" data-line-number="7"></td>
+                      <td id="file-test-js-LC7" class="blob-code blob-code-inner js-file-line">  <span class="pl-en">andThen</span>(() <span class="pl-k">=&gt;</span> {</td>
+                      </tr>
+                      <tr>
+                        <td id="file-test-js-L8" class="blob-num js-line-number" data-line-number="8"></td>
+                        <td id="file-test-js-LC8" class="blob-code blob-code-inner js-file-line">    <span class="pl-smi">assert</span>.<span class="pl-en">ok</span>(<span class="pl-en">$</span>(<span class="pl-s"><span class="pl-pds">'</span>.lat<span class="pl-pds">'</span></span>).<span class="pl-c1">text</span>(), <span class="pl-s"><span class="pl-pds">'</span>displays some latitude<span class="pl-pds">'</span></span>);</td>
+                      </tr>
+                      <tr>
+                        <td id="file-test-js-L9" class="blob-num js-line-number" data-line-number="9"></td>
+                        <td id="file-test-js-LC9" class="blob-code blob-code-inner js-file-line">    <span class="pl-smi">assert</span>.<span class="pl-en">ok</span>(<span class="pl-en">$</span>(<span class="pl-s"><span class="pl-pds">'</span>.long<span class="pl-pds">'</span></span>).<span class="pl-c1">text</span>(), <span class="pl-s"><span class="pl-pds">'</span>displays some longitude<span class="pl-pds">'</span></span>);</td>
+                      </tr>
+                      <tr>
+                        <td id="file-test-js-L10" class="blob-num js-line-number" data-line-number="10"></td>
+                        <td id="file-test-js-LC10" class="blob-code blob-code-inner js-file-line">  });</td>
+                      </tr>
+                      <tr>
+                        <td id="file-test-js-L11" class="blob-num js-line-number" data-line-number="11"></td>
+                        <td id="file-test-js-LC11" class="blob-code blob-code-inner js-file-line">});</td>
+                      </tr>
+                    </tbody></table>
               </div>
             </div>
           </div>
@@ -255,4 +204,159 @@ This component is an extention of an <a href="http://emberjs.com/api/classes/Emb
       </div>
     </div>
   </code>
+
+  <p class='medium-7 large-5'>Setup the helper by registering the async helper like so:</p>
+
+  <div class="gmaps-snippet -lmb">
+    <header>tests/helpers/start-app.js</header>
+    <code>
+      <div class="gist">
+        <div class="gist-file">
+          <div class="gist-data">
+            <div class="js-gist-file-update-container js-task-list-container file-box">
+              <div id="file-ember-cli-g-maps__app-js" class="file">
+                <div itemprop="text" class="blob-wrapper data type-javascript">
+                  <table class="highlight tab-size js-file-line-container" data-tab-size="8">
+                    <tbody><tr>
+                      <td id="file-start-app-js-L1" class="blob-num js-line-number" data-line-number="1"></td>
+                      <td id="file-start-app-js-LC1" class="blob-code blob-code-inner js-file-line"><span class="pl-c">// ...redacted</span></td>
+                    </tr>
+                    <tr>
+                      <td id="file-start-app-js-L2" class="blob-num js-line-number" data-line-number="2"></td>
+                      <td id="file-start-app-js-LC2" class="blob-code blob-code-inner js-file-line"><span class="pl-k">import</span> <span class="pl-smi">registerAsyncHelpers</span> <span class="pl-k">from</span> <span class="pl-s"><span class="pl-pds">'</span>../helpers/ember-cli-g-maps/register-async-helpers<span class="pl-pds">'</span></span>;</td>
+                    </tr>
+                    <tr>
+                      <td id="file-start-app-js-L3" class="blob-num js-line-number" data-line-number="3"></td>
+                      <td id="file-start-app-js-LC3" class="blob-code blob-code-inner js-file-line">
+                      </td>
+                    </tr>
+                    <tr>
+                      <td id="file-start-app-js-L4" class="blob-num js-line-number" data-line-number="4"></td>
+                      <td id="file-start-app-js-LC4" class="blob-code blob-code-inner js-file-line"><span class="pl-k">export</span> <span class="pl-v">default</span> <span class="pl-k">function</span> <span class="pl-en">startApp</span>(<span class="pl-smi">attrs</span>) {</td>
+                      </tr>
+                      <tr>
+                        <td id="file-start-app-js-L5" class="blob-num js-line-number" data-line-number="5"></td>
+                        <td id="file-start-app-js-LC5" class="blob-code blob-code-inner js-file-line">  <span class="pl-k">let</span> application;</td>
+                      </tr>
+                      <tr>
+                        <td id="file-start-app-js-L6" class="blob-num js-line-number" data-line-number="6"></td>
+                        <td id="file-start-app-js-LC6" class="blob-code blob-code-inner js-file-line">
+                        </td>
+                      </tr>
+                      <tr>
+                        <td id="file-start-app-js-L7" class="blob-num js-line-number" data-line-number="7"></td>
+                        <td id="file-start-app-js-LC7" class="blob-code blob-code-inner js-file-line">  <span class="pl-k">let</span> attributes <span class="pl-k">=</span> <span class="pl-smi">Ember</span>.<span class="pl-en">merge</span>({}, <span class="pl-smi">config</span>.<span class="pl-c1">APP</span>);</td>
+                      </tr>
+                      <tr>
+                        <td id="file-start-app-js-L8" class="blob-num js-line-number" data-line-number="8"></td>
+                        <td id="file-start-app-js-LC8" class="blob-code blob-code-inner js-file-line">  attributes <span class="pl-k">=</span> <span class="pl-smi">Ember</span>.<span class="pl-en">merge</span>(attributes, attrs);</td>
+                      </tr>
+                      <tr>
+                        <td id="file-start-app-js-L9" class="blob-num js-line-number" data-line-number="9"></td>
+                        <td id="file-start-app-js-LC9" class="blob-code blob-code-inner js-file-line">
+                        </td>
+                      </tr>
+                      <tr>
+                        <td id="file-start-app-js-L10" class="blob-num js-line-number" data-line-number="10"></td>
+                        <td id="file-start-app-js-LC10" class="blob-code blob-code-inner js-file-line">  <span class="pl-smi">Ember</span>.<span class="pl-en">run</span>(() <span class="pl-k">=&gt;</span> {</td>
+                        </tr>
+                        <tr>
+                          <td id="file-start-app-js-L11" class="blob-num js-line-number" data-line-number="11"></td>
+                          <td id="file-start-app-js-LC11" class="blob-code blob-code-inner js-file-line">    application <span class="pl-k">=</span> <span class="pl-smi">Application</span>.<span class="pl-en">create</span>(attributes);</td>
+                        </tr>
+                        <tr>
+                          <td id="file-start-app-js-L12" class="blob-num js-line-number" data-line-number="12"></td>
+                          <td id="file-start-app-js-LC12" class="blob-code blob-code-inner js-file-line">    <span class="pl-en">registerAsyncHelpers</span>(); <span class="pl-c">// call here</span></td>
+                        </tr>
+                        <tr>
+                          <td id="file-start-app-js-L13" class="blob-num js-line-number" data-line-number="13"></td>
+                          <td id="file-start-app-js-LC13" class="blob-code blob-code-inner js-file-line">    <span class="pl-smi">application</span>.<span class="pl-en">setupForTesting</span>();</td>
+                        </tr>
+                        <tr>
+                          <td id="file-start-app-js-L14" class="blob-num js-line-number" data-line-number="14"></td>
+                          <td id="file-start-app-js-LC14" class="blob-code blob-code-inner js-file-line">    <span class="pl-smi">application</span>.<span class="pl-en">injectTestHelpers</span>();</td>
+                        </tr>
+                        <tr>
+                          <td id="file-start-app-js-L15" class="blob-num js-line-number" data-line-number="15"></td>
+                          <td id="file-start-app-js-LC15" class="blob-code blob-code-inner js-file-line">  });</td>
+                        </tr>
+                        <tr>
+                          <td id="file-start-app-js-L16" class="blob-num js-line-number" data-line-number="16"></td>
+                          <td id="file-start-app-js-LC16" class="blob-code blob-code-inner js-file-line">
+                          </td>
+                        </tr>
+                        <tr>
+                          <td id="file-start-app-js-L17" class="blob-num js-line-number" data-line-number="17"></td>
+                          <td id="file-start-app-js-LC17" class="blob-code blob-code-inner js-file-line">  <span class="pl-k">return</span> application;</td>
+                        </tr>
+                        <tr>
+                          <td id="file-start-app-js-L18" class="blob-num js-line-number" data-line-number="18"></td>
+                          <td id="file-start-app-js-LC18" class="blob-code blob-code-inner js-file-line">}</td>
+                        </tr>
+                      </tbody></table>
+
+                    </div>
+              </div>
+            </div>
+          </div>
+          <div class="gist-meta">
+            made with ❤ by <a href="https://github.com">GitHub</a>
+          </div>
+        </div>
+      </div>
+    </code>
+  </div>
+
+  <p class='medium-7 large-5'>Be sure to add the helper to your tests <div class='gmaps-inline-code'>.jshintrc</div> file</p>
+
+  <div class="gmaps-snippet -lmb">
+    <header>tests/.jshintrc</header>
+    <code>
+      <div class="gist">
+        <div class="gist-file">
+          <div class="gist-data">
+            <div class="js-gist-file-update-container js-task-list-container file-box">
+              <div id="file-ember-cli-g-maps__app-js" class="file">
+                <div itemprop="text" class="blob-wrapper data type-json">
+                  <table class="highlight tab-size js-file-line-container" data-tab-size="8">
+                    <tbody><tr>
+                      <td id="file-hello-json-L1" class="blob-num js-line-number" data-line-number="1"></td>
+                      <td id="file-hello-json-LC1" class="blob-code blob-code-inner js-file-line">{</td>
+                      </tr>
+                      <tr>
+                        <td id="file-hello-json-L2" class="blob-num js-line-number" data-line-number="2"></td>
+                        <td id="file-hello-json-LC2" class="blob-code blob-code-inner js-file-line">  <span class="pl-s"><span class="pl-pds">"</span>predef<span class="pl-pds">"</span></span>: [</td>
+                      </tr>
+                      <tr>
+                        <td id="file-hello-json-L3" class="blob-num js-line-number" data-line-number="3"></td>
+                        <td id="file-hello-json-LC3" class="blob-code blob-code-inner js-file-line">    <span class="pl-ii">//</span> <span class="pl-ii">redacted</span></td>
+                      </tr>
+                      <tr>
+                        <td id="file-hello-json-L4" class="blob-num js-line-number" data-line-number="4"></td>
+                        <td id="file-hello-json-LC4" class="blob-code blob-code-inner js-file-line">    <span class="pl-s"><span class="pl-pds">"</span>selectAutocompletePlace<span class="pl-pds">"</span></span></td>
+                      </tr>
+                      <tr>
+                        <td id="file-hello-json-L5" class="blob-num js-line-number" data-line-number="5"></td>
+                        <td id="file-hello-json-LC5" class="blob-code blob-code-inner js-file-line">    <span class="pl-ii">//</span> <span class="pl-ii">redacted</span></td>
+                      </tr>
+                      <tr>
+                        <td id="file-hello-json-L6" class="blob-num js-line-number" data-line-number="6"></td>
+                        <td id="file-hello-json-LC6" class="blob-code blob-code-inner js-file-line">  ]</td>
+                      </tr>
+                      <tr>
+                        <td id="file-hello-json-L7" class="blob-num js-line-number" data-line-number="7"></td>
+                        <td id="file-hello-json-LC7" class="blob-code blob-code-inner js-file-line">}</td>
+                      </tr>
+                    </tbody></table>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="gist-meta">
+            made with ❤ by <a href="https://github.com">GitHub</a>
+          </div>
+        </div>
+      </div>
+    </code>
+  </div>
 </div>

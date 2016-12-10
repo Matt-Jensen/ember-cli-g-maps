@@ -15,7 +15,7 @@ test('visiting /place-autocomplete/index', function(assert) {
   selectAutocompletePlace();
 
   andThen(() => {
-    assert.ok($('.lat').text().trim().slice(0, 3), '40', 'showing correct latitude');
+    assert.equal($('.lat').text().trim().slice(0, 3), '40', 'showing correct latitude');
     assert.equal($('.long').text().trim().slice(0, 3), '-74', 'showing correct longitude');
   });
 });
