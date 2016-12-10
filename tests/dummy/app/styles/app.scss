@@ -75,3 +75,8 @@
     border-right: 16px solid transparent;
     border-bottom: 16px solid $primary-color;
   }
+
+  #ember-testing-container,
+  #ember-testing {
+    height: 100%;
+  }

@@ -3,22 +3,12 @@ import loadGoogleMaps from 'ember-cli-g-maps/utils/load-google-maps';
 import TextField from 'ember-components/text-field';
 import { assert } from 'ember-metal/utils';
 
-const { inject, get, set } = Ember;
+const { get, set } = Ember;
 
 export default TextField.extend({
   tagName: 'input',
-  testGMaps: inject.service('test-g-maps'),
   classNames: ['g-autocomplete'],
   options: {},
-
-  init() {
-    this._super(...arguments);
-
-    const testGMaps = get(this, 'testGMaps');
-    if (testGMaps) {
-      testGMaps.registerAutocomplete(this);
-    }
-  },
 
   /**
    * invoke `setup()` with initial input value
@@ -46,8 +36,10 @@ export default TextField.extend({
    */
   setup(input) {
     const autocomplete = new google.maps.places.Autocomplete(input);
-    const listener = autocomplete.addListener('place_changed', () => {
-      const placeResult = autocomplete.getPlace();
+
+    set(this, 'autocomplete', autocomplete);
+    set(this, 'listener', autocomplete.addListener('place_changed', () => {
+      const placeResult = (autocomplete.getPlace() || {});
 
       if (!placeResult.geometry) {
         return this.sendAction('on-select-error', { input: placeResult.name });
@@ -58,10 +50,7 @@ export default TextField.extend({
         lng: placeResult.geometry.location.lng(),
         place: placeResult
       });
-    });
-
-    set(this, 'autocomplete', autocomplete);
-    set(this, 'listener', listener);
+    }));
   },
 
   didAutocomplete(place) {
@@ -85,11 +74,6 @@ export default TextField.extend({
 
     google.maps.event.removeListener(listener);
     google.maps.event.clearInstanceListeners(autocomplete);
-
-    const testGMaps = get(this, 'testGMaps');
-    if (testGMaps) {
-      testGMaps.unregisterAutocomplete(this);
-    }
   },
 
   actions: {
