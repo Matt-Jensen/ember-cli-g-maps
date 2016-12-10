@@ -7,24 +7,30 @@
 <div class="grid-block -pb">
   <form class="grid-content small-12 medium-6 -smb" {{action "searchGeocode" geocode on="submit"}}>
     <small class="-db -smb">Basic Geocode Lookup</small>
-    {{input 
+    {{input
+      id="geocode-input"
       class="-ilb -smb -full"
       value=geocode
       disabled=isRequesting}}
     <br>
-    <button class="th-google-button--small">Search Geocode</button>
+    <button id="search-geocode-button" class="th-google-button--small">Search Geocode</button>
   </form>
-  <div class="grid-content small-12 medium-6 -smb">
+  <div id="geocode-suggestions" class="grid-content small-12 medium-6 -smb">
     {{#each suggestions as |sug|}}
       <small class="-db">{{sug}}</small>
     {{/each}}
   </div>
 </div>
 
+<p>
+  Do reverse geocode request at: {{reverseGeocode.lat}}, {{reverseGeocode.lng}}:
+  <button id="reverse-geocode-button" class="th-google-button--small" {{action "reverseGeocode"}}>Reverse Geocode</button>
+</p>
+
 <p>Markers are geocode suggestions. Clicking the map will request a reverse geocode.</p>
 
 <div class="grid-content -np -mb">
-  {{g-maps class="gmaps-docs-map" lat=lat lng=lng zoom=zoom markers=markers click="click"}}
+  {{g-maps class="gmaps-docs-map" lat=lat lng=lng zoom=zoom markers=markers click="click" loaded="searchGeocode"}}
 </div>
 
 <div class="grid-block">

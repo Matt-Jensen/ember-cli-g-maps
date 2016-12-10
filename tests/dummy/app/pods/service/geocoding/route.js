@@ -1,18 +1,20 @@
 import Ember from 'ember';
 
 const { computed, uuid } = Ember;
-const defaultAddress = '716 Richard Arrington Jr Blvd N, Birmingham, AL';
+const defaultAddress = '600 Congress Ave, Austin, TX 78701, USA';
 
 export default Ember.Route.extend({
   gMap: Ember.inject.service(),
 
   setupController(controller) {
-    this._makeGeoRequest({ address: defaultAddress });
-
     controller.setProperties({
       lat: 32.75494243654723,
       lng: -86.8359375,
       zoom: 5,
+      reverseGeocode: {
+        lat: 33.5212291,
+        lng: -86.8089334
+      },
       geocode: defaultAddress,
       isRequesting: true,
       markers: Ember.A(),
@@ -37,7 +39,15 @@ export default Ember.Route.extend({
     },
 
     searchGeocode(address) {
+      if (typeof address !== 'string') {
+        address = this.controller.get('geocode');
+      }
+
       this._makeGeoRequest({ address });
+    },
+
+    reverseGeocode() {
+      this._makeGeoRequest(this.controller.get('reverseGeocode'));
     }
   },
 
@@ -51,6 +61,8 @@ export default Ember.Route.extend({
           "language" : 'ja'
       }))
       .then((results) => {
+        if (controller.get('isDestroyed')) return;
+
         controller.setProperties({
           markers: Ember.A(results.map(this._geocodeToMarker)),
           results: Ember.A(results),
@@ -70,7 +82,7 @@ export default Ember.Route.extend({
   },
 
   _refocusMapViewport(results) {
-    if(results.length) {
+    if(results && results.length && this.controller.get('isDestroyed') === false) {
       this.controller.setProperties({
         lat: results[0].geometry.location.lat(),
         lng: results[0].geometry.location.lng()

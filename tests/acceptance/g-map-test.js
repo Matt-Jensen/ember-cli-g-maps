@@ -1,44 +1,41 @@
-import Ember from 'ember';
-import { module, test } from 'qunit';
-import startApp from '../../tests/helpers/start-app';
+import { test } from 'qunit';
+import moduleForAcceptance from '../../tests/helpers/module-for-acceptance';
 
-let gMapService;
+moduleForAcceptance('Acceptance | service/geocoding', {});
 
-module('Acceptance | g map', {
-  beforeEach: function() {
-    this.application = startApp();
-    const container = this.application.__container__;
-    gMapService = container.lookup('service:gMap');
-  },
+test('should return geocode results for default address', function(assert) {
+  visit('/service/geocoding');
 
-  afterEach: function() {
-    Ember.run(this.application, 'destroy');
-  }
-});
+  andThen(function() {
+    assert.equal(currentURL(), '/service/geocoding', 'visit correct path');
+  });
 
-test('should convert address to geocode or reject Promise', function(assert) {
-  assert.expect(1);
-  return gMapService.geocode({
-    address: '716 Richard Arrington Jr Blvd N, Birmingham, AL 35203, United States'
-  })
-  .then(result => {
-    assert.ok(Ember.isArray(result), 'returns an array of results');
-  })
-  .catch(err => {
-    assert.ok(err, 'rejected geocode request');
+  waitForGoogleMap();
+  // TODO create flushGeocodeQueue();
+  wait(800);
+
+  andThen(() => {
+    assert.ok(getSuggestionsText().length, 'should provide geocode results');
   });
 });
 
-test('should support reverse geocoding with suggested results or reject Promise', function(assert) {
-  assert.expect(1);
-  return gMapService.geocode({
-    lat: 33.5212291,
-    lng: -86.8089334
-  })
-  .then(result => {
-    assert.ok(Ember.isArray(result), 'returns an array of results');
-  })
-  .catch(err => {
-    assert.ok(err, 'rejected reverse geocoding request');
+test('should return results for reverse geocoding', function(assert) {
+  visit('/service/geocoding');
+
+  waitForGoogleMap();
+  const originalSuggestions = getSuggestionsText();
+
+  click('#reverse-geocode-button');
+  // TODO create flushGeocodeQueue();
+  wait(800);
+
+  andThen(() => {
+    const newSuggestions = getSuggestionsText();
+    assert.ok(newSuggestions, 'reverse geocode suggestions exist');
+    assert.notEqual(originalSuggestions, newSuggestions, 'suggestions were updated');
   });
 });
+
+function getSuggestionsText() {
+  return find('#geocode-suggestions').text().trim();
+}
