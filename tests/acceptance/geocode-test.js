@@ -11,8 +11,7 @@ test('should return geocode results for default address', function(assert) {
   });
 
   waitForGoogleMap();
-  // TODO create flushGeocodeQueue();
-  wait(800);
+  waitForGeocodeRequests();
 
   andThen(() => {
     assert.ok(getSuggestionsText().length, 'should provide geocode results');
@@ -26,8 +25,8 @@ test('should return results for reverse geocoding', function(assert) {
   const originalSuggestions = getSuggestionsText();
 
   click('#reverse-geocode-button');
-  // TODO create flushGeocodeQueue();
-  wait(800);
+  waitForGeocodeRequests();
+  // wait(800);
 
   andThen(() => {
     const newSuggestions = getSuggestionsText();

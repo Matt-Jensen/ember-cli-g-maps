@@ -61,7 +61,9 @@ export default Ember.Route.extend({
           "language" : 'ja'
       }))
       .then((results) => {
-        if (controller.get('isDestroyed')) return;
+        if (controller.get('isDestroyed')) {
+          return;
+        }
 
         controller.setProperties({
           markers: Ember.A(results.map(this._geocodeToMarker)),
