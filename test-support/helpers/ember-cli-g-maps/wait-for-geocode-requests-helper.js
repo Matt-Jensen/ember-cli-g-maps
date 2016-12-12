@@ -17,13 +17,9 @@ export default function(app) {
   }
 
   return new Ember.Test.promise(function(resolve, reject) {
-    Ember.Test.adapter.asyncStart();
-
     return RSVP.Promise.all(queue)
     .then(() =>
-      Ember.run.later(() => resolve()))
-    .catch(reject)
-    .finally(() =>
-      Ember.Test.adapter.asyncEnd());
+      Ember.run.later(() => resolve(), 300))
+    .catch(reject);
   });
 }

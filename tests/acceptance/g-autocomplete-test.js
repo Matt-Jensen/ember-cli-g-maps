@@ -1,7 +1,7 @@
 import { test } from 'qunit';
 import moduleForAcceptance from '../../tests/helpers/module-for-acceptance';
 
-moduleForAcceptance('Acceptance | place-autocomplete/index', {});
+moduleForAcceptance('Acceptance | place-autocomplete/index');
 
 test('visiting /place-autocomplete/index', function(assert) {
   visit('/place-autocomplete/index');

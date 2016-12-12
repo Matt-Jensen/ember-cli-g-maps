@@ -6,8 +6,6 @@ const EMBER_CLI_GMAPS_SELECTOR = '.ember-cli-g-map';
 
 export default function(app, selector = EMBER_CLI_GMAPS_SELECTOR) {
   return new Ember.Test.promise(function(resolve, reject) {
-    Ember.Test.adapter.asyncStart();
-
     loadGoogleMaps()
     .then(() => {
       Ember.run.scheduleOnce('afterRender', () => {
@@ -17,7 +15,6 @@ export default function(app, selector = EMBER_CLI_GMAPS_SELECTOR) {
         google.maps.event.addListenerOnce($map.get(0).__GOOGLE_MAP__, 'tilesloaded', () =>
           Ember.run.later(() => resolve()));
       });
-    }, reject)
-    .finally(() => Ember.Test.adapter.asyncEnd());
+    }, reject);
   });
 }

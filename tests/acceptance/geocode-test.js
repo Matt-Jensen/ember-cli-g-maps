@@ -1,7 +1,7 @@
 import { test } from 'qunit';
 import moduleForAcceptance from '../../tests/helpers/module-for-acceptance';
 
-moduleForAcceptance('Acceptance | service/geocoding', {});
+moduleForAcceptance('Acceptance | service/geocoding');
 
 test('should return geocode results for default address', function(assert) {
   visit('/service/geocoding');
@@ -25,8 +25,7 @@ test('should return results for reverse geocoding', function(assert) {
   const originalSuggestions = getSuggestionsText();
 
   click('#reverse-geocode-button');
-  waitForGeocodeRequests();
-  // wait(800);
+  // waitForGeocodeRequests();
 
   andThen(() => {
     const newSuggestions = getSuggestionsText();
