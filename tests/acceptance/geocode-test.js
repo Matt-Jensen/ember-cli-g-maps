@@ -12,7 +12,7 @@ test('should return geocode results for default address and reverse geocode', fu
 
   waitForGoogleMap();
   waitForGeocodeRequests();
-  wait(500);
+  wait(1000);
 
   let originalSuggestions;
 
@@ -23,6 +23,7 @@ test('should return geocode results for default address and reverse geocode', fu
 
   click('#reverse-geocode-button');
   waitForGeocodeRequests();
+  wait(1000);
 
   andThen(() => {
     const newSuggestions = getSuggestionsText();
