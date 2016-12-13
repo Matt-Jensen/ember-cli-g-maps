@@ -24,7 +24,10 @@
     "currentRouteName",
     "GMaps",
     "google",
-    "selectAutocompletePlace"
+    "selectAutocompletePlace",
+    "waitForGoogleMap",
+    "waitForGeocodeRequests",
+    "stubGeocodeRequests"
   ],
   "node": false,
   "browser": false,

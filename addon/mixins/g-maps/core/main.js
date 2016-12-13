@@ -88,6 +88,13 @@ export default Ember.Mixin.create(Ember.Evented, {
         // Register gMap instance in gMap service
         this.get('gMap').maps.add(this.get('name'), map.map);
 
+        /*
+         * Some test helpers require access to the map instance
+         */
+        if (this.get('_isTestEnv')) {
+          this.element.__GOOGLE_MAP__ = map.map;
+        }
+
         // When map instance has finished loading
         google.maps.event.addListenerOnce(map.map, 'idle', Ember.run.bind(this, this._onMapLoad));
       })
@@ -107,7 +114,18 @@ export default Ember.Mixin.create(Ember.Evented, {
 
     // Run after Mixin willDestroyElement
     Ember.run.later(() => this.get('map').destroy());
+
+    if (this.get('_isTestEnv')) {
+      this.element.__GOOGLE_MAP__ = null;
+    }
   },
+
+  /**
+   * @type {Boolean}
+   */
+  _isTestEnv: computed(function() {
+    return (this.container.lookupFactory('config:environment').environment === 'test');
+  }),
 
   _addMapEvents() {
     const events = this.get('_gmapEvents');

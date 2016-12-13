@@ -1,7 +1,7 @@
 import { test } from 'qunit';
 import moduleForAcceptance from '../../tests/helpers/module-for-acceptance';
 
-moduleForAcceptance('Acceptance | place-autocomplete/index', {});
+moduleForAcceptance('Acceptance | place-autocomplete/index');
 
 test('visiting /place-autocomplete/index', function(assert) {
   visit('/place-autocomplete/index');
@@ -15,7 +15,7 @@ test('visiting /place-autocomplete/index', function(assert) {
   selectAutocompletePlace();
 
   andThen(() => {
-    assert.equal($('.lat').text().trim().slice(0, 3), '40', 'showing correct latitude');
+    assert.equal($('.lat').text().trim().slice(0, 2), '40', 'showing correct latitude');
     assert.equal($('.long').text().trim().slice(0, 3), '-74', 'showing correct longitude');
   });
 });

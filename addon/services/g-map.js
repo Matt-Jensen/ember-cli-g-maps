@@ -111,8 +111,16 @@ export default Ember.Service.extend({
     };
   })(),
 
+  /**
+   * @type {Array}
+   * Store references to all active geocode request promises
+   */
+  _geocodeQueue: [],
+
   geocode(options) {
-    return new Ember.RSVP.Promise(function(resolve, reject) {
+    const queue = this._geocodeQueue;
+
+    const request = new Ember.RSVP.Promise(function(resolve, reject) {
       options.callback = function(result, status) {
         if (status === 'OK' || status === 'ZERO_RESULTS') {
           resolve(result);
@@ -126,9 +134,16 @@ export default Ember.Service.extend({
 
           reject(err);
         }
+
+        queue.splice(queue.indexOf(request), 1); // remove from queue
       };
+
       GMaps.prototype.geocode(options);
     });
+
+    queue.push(request); // add to queue
+
+    return request;
   },
 
   autocompletes: Ember.computed({

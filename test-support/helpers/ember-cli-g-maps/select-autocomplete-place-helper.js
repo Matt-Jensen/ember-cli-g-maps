@@ -6,7 +6,6 @@ const GOOGLE_AUTOCOMPLETE_RESULTS = '.pac-container .pac-item';
 
 export default function(app, requestedResult = 0, selector = `.${GAUTOCOMPLETE_CLASS}`) {
   return new Ember.Test.promise(function(resolve, reject) {
-    Ember.Test.adapter.asyncStart();
 
     // User only provided selector argument
     if (typeof requestedResult === 'string') {
@@ -39,8 +38,7 @@ export default function(app, requestedResult = 0, selector = `.${GAUTOCOMPLETE_C
       // Select active result (13 = Enter)
       google.maps.event.trigger(input, 'keydown', { keyCode: 13 });
       Ember.run.later(() => resolve(textResults[targetResult]), 300);
-    }, reject)
-    .finally(() => Ember.Test.adapter.asyncEnd());
+    }, reject);
   });
 }
 

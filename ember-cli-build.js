@@ -6,6 +6,11 @@ module.exports = function(defaults) {
   var app = new EmberAddon(defaults, {
     autoprefixer: {
       browsers: ['last 2 versions']
+    },
+
+    babel: {
+      optional: ['es6.spec.symbols'],
+      includePolyfill: true
     }
   });
 
