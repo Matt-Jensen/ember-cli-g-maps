@@ -26,7 +26,8 @@
     "google",
     "selectAutocompletePlace",
     "waitForGoogleMap",
-    "waitForGeocodeRequests"
+    "waitForGeocodeRequests",
+    "stubGeocodeRequests"
   ],
   "node": false,
   "browser": false,
