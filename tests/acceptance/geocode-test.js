@@ -4,6 +4,10 @@ import moduleForAcceptance from '../../tests/helpers/module-for-acceptance';
 moduleForAcceptance('Acceptance | service/geocoding');
 
 test('should return geocode results for default address and reverse geocode', function(assert) {
+  stubGeocodeRequests({
+    onlyPhantomJS: true,
+    results: [{ lat: 1, lng: 2, address: '1234 Street Address, Walla Walla, WA' }]
+  });
   visit('/service/geocoding');
 
   andThen(function() {
@@ -11,8 +15,8 @@ test('should return geocode results for default address and reverse geocode', fu
   });
 
   waitForGoogleMap();
+  click('#search-geocode-button');
   waitForGeocodeRequests();
-  wait(1000);
 
   let originalSuggestions;
 
@@ -21,9 +25,13 @@ test('should return geocode results for default address and reverse geocode', fu
     assert.ok(Boolean(originalSuggestions.length), 'provided geocode results');
   });
 
+  stubGeocodeRequests({
+    onlyPhantomJS: true,
+    results: [{ lat: 1, lng: 2, address: '4567 Another Address, Madison, WI' }]
+  });
+
   click('#reverse-geocode-button');
   waitForGeocodeRequests();
-  wait(1000);
 
   andThen(() => {
     const newSuggestions = getSuggestionsText();
