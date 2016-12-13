@@ -1,7 +1,9 @@
+import RSVP from 'rsvp';
 import Ember from 'ember';
+import getOwner from 'ember-owner/get';
 import { assert } from 'ember-metal/utils';
 
-const { getOwner, RSVP, Logger } = Ember;
+const { Logger } = Ember;
 
 export default function(app) {
   const container = (getOwner(app) || app.__container__);
@@ -10,19 +12,24 @@ export default function(app) {
   const gMap = (container.lookup && container.lookup('service:gMap'));
   assert('gMap service lookup failed', gMap);
 
-  const queue = (gMap._geocodeQueue || []);
-
-  if (!queue.length) {
-    Logger.warn('Geocode request queue was not found, or is currently empty');
-  }
-
   return new Ember.Test.promise(function(resolve, reject) {
     Ember.Test.adapter.asyncStart();
 
+    const queue = (gMap._geocodeQueue || []);
+
+    if (!queue.length) {
+      Logger.warn('Geocode request queue was not found, or is currently empty');
+    }
+
     return RSVP.Promise.all(queue)
-    .then(() =>
-      Ember.run.scheduleOnce('afterRender', resolve))
-    .catch(reject)
-    .finally(() => Ember.Test.adapter.asyncEnd());
+    .then(() => {
+      console.log('--- geocode requests done ---');
+      Ember.run.scheduleOnce('afterRender', null, resolve);
+      Ember.Test.adapter.asyncEnd();
+    })
+    .catch(() => {
+      reject();
+      Ember.Test.adapter.asyncEnd();
+    });
   });
 }
