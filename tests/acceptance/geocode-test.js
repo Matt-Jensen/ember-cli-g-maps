@@ -3,7 +3,7 @@ import moduleForAcceptance from '../../tests/helpers/module-for-acceptance';
 
 moduleForAcceptance('Acceptance | service/geocoding');
 
-test('should return geocode results for default address', function(assert) {
+test('should return geocode results for default address reverse geocode', function(assert) {
   visit('/service/geocoding');
 
   andThen(function() {
@@ -13,19 +13,15 @@ test('should return geocode results for default address', function(assert) {
   waitForGoogleMap();
   waitForGeocodeRequests();
 
+  let originalSuggestions;
+
   andThen(() => {
-    assert.ok(getSuggestionsText().length, 'should provide geocode results');
+    originalSuggestions = getSuggestionsText();
+    assert.ok(originalSuggestions.length, 'should provide geocode results');
   });
-});
-
-test('should return results for reverse geocoding', function(assert) {
-  visit('/service/geocoding');
-
-  waitForGoogleMap();
-  const originalSuggestions = getSuggestionsText();
 
   click('#reverse-geocode-button');
-  // waitForGeocodeRequests();
+  waitForGeocodeRequests();
 
   andThen(() => {
     const newSuggestions = getSuggestionsText();
