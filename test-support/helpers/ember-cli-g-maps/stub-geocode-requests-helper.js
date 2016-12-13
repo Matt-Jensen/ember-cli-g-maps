@@ -34,7 +34,6 @@ export default function(app, config = {}) {
    */
   GMaps.prototype.geocode = function geocodeStub({ callback }) {
     run(() => {
-      console.log('resolving geocode results:', stubs[stubIndex][0]);
       callback(stubs[stubIndex], 'OK');
       stubIndex += 1;
 

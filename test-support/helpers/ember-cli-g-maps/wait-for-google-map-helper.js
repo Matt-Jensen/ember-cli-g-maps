@@ -15,7 +15,6 @@ export default function(app, selector = EMBER_CLI_GMAPS_SELECTOR) {
         assert(`No g-maps component found at selector: ${selector}`, !$map.length || !$map.eq(0).hasClass(EMBER_CLI_GMAPS_SELECTOR));
 
         google.maps.event.addListenerOnce($map.get(0).__GOOGLE_MAP__, 'tilesloaded', () => {
-          console.log('--- map has loaded ---');
           Ember.run(resolve);
           Ember.Test.adapter.asyncEnd();
         });

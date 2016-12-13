@@ -23,7 +23,6 @@ export default function(app) {
 
     return RSVP.Promise.all(queue)
     .then(() => {
-      console.log('--- geocode requests done ---');
       Ember.run.scheduleOnce('afterRender', null, resolve);
       Ember.Test.adapter.asyncEnd();
     })
