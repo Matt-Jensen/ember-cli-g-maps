@@ -3,7 +3,7 @@ import moduleForAcceptance from '../../tests/helpers/module-for-acceptance';
 
 moduleForAcceptance('Acceptance | service/geocoding');
 
-test('should return geocode results for default address reverse geocode', function(assert) {
+test('should return geocode results for default address and reverse geocode', function(assert) {
   visit('/service/geocoding');
 
   andThen(function() {
@@ -17,7 +17,7 @@ test('should return geocode results for default address reverse geocode', functi
 
   andThen(() => {
     originalSuggestions = getSuggestionsText();
-    assert.ok(originalSuggestions.length, 'should provide geocode results');
+    assert.ok(originalSuggestions.length, 'provided geocode results');
   });
 
   click('#reverse-geocode-button');
@@ -25,7 +25,7 @@ test('should return geocode results for default address reverse geocode', functi
 
   andThen(() => {
     const newSuggestions = getSuggestionsText();
-    assert.ok(newSuggestions, 'reverse geocode suggestions exist');
+    assert.ok(Boolean(newSuggestions), 'reverse geocode suggestions exist');
     assert.notEqual(originalSuggestions, newSuggestions, 'suggestions were updated');
   });
 });

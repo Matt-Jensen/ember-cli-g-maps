@@ -21,7 +21,7 @@ export default function(app) {
 
     return RSVP.Promise.all(queue)
     .then(() =>
-      Ember.run.later(() => resolve()))
+      Ember.run.scheduleOnce('afterRender', resolve))
     .catch(reject)
     .finally(() => Ember.Test.adapter.asyncEnd());
   });
