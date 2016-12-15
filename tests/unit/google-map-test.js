@@ -195,6 +195,22 @@ test('it only allows setting valid map type control options', function(assert) {
   assert.deepEqual(map.get('mapTypeControlOptions'), expected, 'resolves new mapTypeControlOptions');
 });
 
+test('it returns the pan control options', function(assert) {
+  const expected = 'BOTTOM_RIGHT';
+  const map = googleMap(document.createElement('div'), {panControlOptions: expected});
+  assert.equal(map.get('panControlOptions'), expected, 'resolves configured panControlOptions');
+});
+
+test('it only allows setting valid pan control options', function(assert) {
+  const expected = 'LEFT_TOP';
+  const map = googleMap(document.createElement('div'), {panControlOptions: 'BOTTOM_RIGHT'});
+
+  assert.throws(() => map.set('panControlOptions', 'non-control-position'), 'only accepts a control position');
+
+  map.set('panControlOptions', expected);
+  assert.equal(map.get('panControlOptions'), expected, 'resolves new panControlOptions');
+})
+
 test('it returns the static map properties', function(assert) {
   const expected = {
     disableDefaultUI: true,
