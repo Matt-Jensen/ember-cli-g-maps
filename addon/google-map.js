@@ -183,8 +183,36 @@ export const GoogleMapProxy = Ember.ObjectProxy.extend({
     }
   }),
 
-  // TODO
-  // mapTypeControlOptions google.maps.MapTypeControlOptions
+  /**
+   * @type {Object}
+   * Configuration settings for the map type controls
+   */
+  mapTypeControlOptions: computed({
+    get() {}, // Undefined by default
+    set(key, value) {
+      assert('mapTypeControlOptions was set without an object', typeof value === 'object');
+
+      const mapTypeControlOptions = Object.create(null);
+
+      if (value.mapTypeIds) {
+        assert('mapTypeControlOptions.mapTypeIds was set without an array', value.mapTypeIds instanceof Array);
+        mapTypeControlOptions.mapTypeIds = value.mapTypeIds.map(getMapTypesId);
+      }
+
+      if (value.position) {
+        assert('mapTypeControlOptions.position was set without a string', typeof value.position === 'string');
+        mapTypeControlOptions.position = getControlPositionId(value.position);
+      }
+
+      if (value.style) {
+        assert('mapTypeControlOptions.style was set without a string', typeof value.style === 'string');
+        mapTypeControlOptions.style = getMapTypeControlStyleId(value.style);
+      }
+
+      this.content.setOptions({mapTypeControlOptions});
+      return value;
+    }
+  }),
 
   /**
    * @type {Boolean}
@@ -381,7 +409,7 @@ export default function googleMap(element, options = {}) {
  */
 function getStaticMapOption(key) {
   return this.content[key];
-};
+}
 
 /**
  * @param {String} key     Google Map option key
@@ -393,7 +421,7 @@ function setStaticMapBooleanOption(key, value) {
   assert(`${key} was set without boolean`, typeof value === 'boolean');
   this.content.setOptions({[key]: value});
   return value;
-};
+}
 
 /**
  * @param {String} key     Google Map option key
@@ -405,7 +433,7 @@ function setStaticMapStringOption(key, value) {
   assert(`${key} was set without string`, typeof value === 'string');
   this.content.setOptions({[key]: value});
   return value;
-};
+}
 
 /**
  * @param  {String} type Map type
@@ -448,3 +476,24 @@ function getControlPosition(id) {
   return Object.keys(google.maps.ControlPosition).filter((position) =>
     google.maps.ControlPosition[position] === id)[0];
 }
+
+/**
+ * @param  {String} style  Map type control style
+ * @return {Number}        Map type control style id
+ * Get the id of a map type control style
+ */
+function getMapTypeControlStyleId(style) {
+  style = `${style}`.toUpperCase();
+  return google.maps.MapTypeControlStyle[style];
+}
+
+/**
+ * @param  {Number} id Map type control style id
+ * @return {String}    Map type control style
+ * Get a map type control style from its' id value
+ */
+// function getMapTypeControlStyle(id) {
+//   id = parseInt(id, 10);
+//   return Object.keys(google.maps.MapTypeControlStyle).filter((style) =>
+//     google.maps.MapTypeControlStyle[style] === id)[0];
+// }

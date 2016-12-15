@@ -169,6 +169,31 @@ test('it only allows setting valid fullscreen control options', function(assert)
   assert.equal(map.get('fullscreenControlOptions'), expected, 'resolves new fullscreenControlOptions');
 });
 
+test('it returns the map type control options', function(assert) {
+  const expected = {
+    mapTypeIds: ['ROADMAP', 'SATELLITE'],
+    position: 'TOP_LEFT',
+    style: 'HORIZONTAL_BAR'
+  };
+  const map = googleMap(document.createElement('div'), {mapTypeControlOptions: expected});
+  assert.deepEqual(map.get('mapTypeControlOptions'), expected, 'resolves configured mapTypeControlOptions');
+});
+
+test('it only allows setting valid map type control options', function(assert) {
+  const expected = {
+    mapTypeIds: ['ROADMAP', 'SATELLITE'],
+    position: 'TOP_LEFT',
+    style: 'HORIZONTAL_BAR'
+  };
+  const map = googleMap(document.createElement('div'));
+
+  assert.throws(() => map.set('mapTypeControlOptions', 'non-type-control'), 'only accepts a configuration object');
+
+  map.set('mapTypeControlOptions', expected);
+  assert.ok(Boolean(map.content.mapTypeControlOptions), 'updates map instance type control options');
+  assert.deepEqual(map.get('mapTypeControlOptions'), expected, 'resolves new mapTypeControlOptions');
+});
+
 test('it returns the static map properties', function(assert) {
   const expected = {
     disableDefaultUI: true,
