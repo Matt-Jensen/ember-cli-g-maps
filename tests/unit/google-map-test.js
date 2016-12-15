@@ -209,7 +209,23 @@ test('it only allows setting valid pan control options', function(assert) {
 
   map.set('panControlOptions', expected);
   assert.equal(map.get('panControlOptions'), expected, 'resolves new panControlOptions');
-})
+});
+
+test('it returns the rotate control options', function(assert) {
+  const expected = 'BOTTOM_RIGHT';
+  const map = googleMap(document.createElement('div'), {panControlOptions: expected});
+  assert.equal(map.get('panControlOptions'), expected, 'resolves configured panControlOptions');
+});
+
+test('it only allows setting valid rotate control options', function(assert) {
+  const expected = 'LEFT_CENTER';
+  const map = googleMap(document.createElement('div'), {rotateControlOptions: 'BOTTOM_RIGHT'});
+
+  assert.throws(() => map.set('rotateControlOptions', 'non-control-position'), 'only accepts a control position');
+
+  map.set('rotateControlOptions', expected);
+  assert.equal(map.get('rotateControlOptions'), expected, 'resolves new rotateControlOptions');
+});
 
 test('it returns the static map properties', function(assert) {
   const expected = {

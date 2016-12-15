@@ -168,9 +168,7 @@ export const GoogleMapProxy = Ember.ObjectProxy.extend({
       assert('fullscreenControlOptions is not a valid control position', id);
 
       this.content.setOptions({
-        fullscreenControlOptions: {
-          position: id
-        }
+        fullscreenControlOptions: { position: id }
       });
 
       return getControlPosition(id);
@@ -222,9 +220,28 @@ export const GoogleMapProxy = Ember.ObjectProxy.extend({
        assert('panControlOptions is not a valid control position', id);
 
        this.content.setOptions({
-         panControlOptions: {
-           position: id
-         }
+         panControlOptions: { position: id }
+       });
+
+       return getControlPosition(id);
+     }
+   }),
+
+  /**
+   * @type {String}
+   * Position to render the rotate control
+   * NOTE replaced configuration object with string
+   */
+   rotateControlOptions: computed({
+     get() {}, // Undefined by default
+     set(key, value) {
+       assert('rotateControlOptions was set without a string', typeof value === 'string');
+
+       const id = getControlPositionId(value);
+       assert('rotateControlOptions is not a valid control position', id);
+
+       this.content.setOptions({
+         rotateControlOptions: { position: id }
        });
 
        return getControlPosition(id);
@@ -388,7 +405,6 @@ export const GoogleMapProxy = Ember.ObjectProxy.extend({
     }
   })
 
-  // rotateControlOptions google.maps.RotateControlOptions
   // scaleControlOptions google.maps.ScaleControlOptions
   // streetViewControlOptions google.maps.StreetViewControlOptions
   // zoomControlOption google.maps.ZoomControlOptions
