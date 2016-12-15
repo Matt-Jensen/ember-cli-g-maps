@@ -211,19 +211,107 @@ export const GoogleMapProxy = Ember.ObjectProxy.extend({
   fullscreenControl: computed({
     get: getStaticMapOption,
     set: setStaticMapBooleanOption
+  }),
+
+  /**
+   * @type {String}
+   * Controls how gestures on the map are handled
+   */
+  gestureHandling: computed({
+    get: getStaticMapOption,
+    set: setStaticMapStringOption
+  }),
+
+  /**
+   * @type {Boolean}
+   * If false, prevents the map from being controlled by the keyboard
+  */
+  keyboardShortcuts: computed({
+    get: getStaticMapOption,
+    set: setStaticMapBooleanOption
+  }),
+
+  /**
+   * @type {Boolean}
+   * The initial enabled/disabled state of the Map type control
+   */
+  mapTypeControl: computed({
+    get: getStaticMapOption,
+    set: setStaticMapBooleanOption
+  }),
+
+  /**
+   * @type {Boolean}
+   * If true, do not clear the contents of the Map div
+   */
+  noClear: computed({
+    get: getStaticMapOption,
+    set: setStaticMapBooleanOption
+  }),
+
+  /**
+   * @type {Boolean}
+   * The enabled/disabled state of the Pan control
+   */
+  panControl: computed({
+    get: getStaticMapOption,
+    set: setStaticMapBooleanOption
+  }),
+
+  /**
+   * @type {Boolean}
+   * The enabled/disabled state of the Rotate control
+   */
+  rotateControl: computed({
+    get: getStaticMapOption,
+    set: setStaticMapBooleanOption
+  }),
+
+  /**
+   * @type {Boolean}
+   * The initial enabled/disabled state of the Scale control
+   */
+  scaleControl: computed({
+    get: getStaticMapOption,
+    set: setStaticMapBooleanOption
+  }),
+
+  /**
+   * @type {Boolean}
+   * The initial enabled/disabled state of the Scale control
+   */
+  scrollwheel: computed({
+    get: getStaticMapOption,
+    set: setStaticMapBooleanOption
+  }),
+
+  /**
+   * @type {Boolean}
+   * The enabled/disabled state of the sign in control
+   */
+  signInControl: computed({
+    get: getStaticMapOption,
+    set: setStaticMapBooleanOption
+  }),
+
+  /**
+   * @type {Boolean}
+   * The initial enabled/disabled state of the Street View Pegman control
+   */
+  streetViewControl: computed({
+    get: getStaticMapOption,
+    set: setStaticMapBooleanOption
+  }),
+
+  /**
+   * @type {Boolean}
+   * The enabled/disabled state of the Zoom control
+   */
+  zoomControl: computed({
+    get: getStaticMapOption,
+    set: setStaticMapBooleanOption
   })
 
-  // gestureHandling String
-  // keyboardShortcuts Boolean
-  // mapTypeControl Boolean
-  // noClear Boolean
-  // panControl Boolean
-  // rotateControl Boolean
-  // scaleControl Boolean
-  // scrollwheel Boolean
-  // signInControl Boolean
-  // streetViewControl Boolean
-  // zoomControl Boolean
   // styles [google.maps.MapTypeStyle]
   // fullscreenControlOptions google.maps.FullscreenControlOptions
   // mapTypeControlOptions google.maps.MapTypeControlOptions

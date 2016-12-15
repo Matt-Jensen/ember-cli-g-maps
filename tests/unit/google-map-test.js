@@ -2,7 +2,7 @@ import googleMap from 'ember-cli-g-maps/google-map';
 import { isPresent } from 'ember-utils';
 import { module, test } from 'qunit';
 
-module('Unit | Proxy | Google Map');
+module('Unit | Factory | Google Map');
 
 test('it returns a Google Map instance as content', function(assert) {
   const map = googleMap(document.createElement('div'));
@@ -150,22 +150,95 @@ test('it returns the static map properties', function(assert) {
     disableDoubleClickZoom: true,
     draggable: false,
     draggableCursor: 'pointer',
-    fullscreenControl: false
+    fullscreenControl: false,
+    gestureHandling: 'greedy',
+    keyboardShortcuts: false,
+    mapTypeControl: false,
+    noClear: false,
+    panControl: false,
+    rotateControl: false,
+    scaleControl: false,
+    scrollwheel: false,
+    signInControl: false,
+    streetViewControl: false,
+    zoomControl: false
   };
+
   const map = googleMap(document.createElement('div'), expected);
+
   assert.equal(map.get('disableDefaultUI'), expected.disableDefaultUI, 'resolves configured disableDefaultUI');
   assert.equal(map.get('disableDoubleClickZoom'), expected.disableDoubleClickZoom, 'resolves configured disableDoubleClickZoom');
   assert.equal(map.get('draggable'), expected.draggable, 'resolves configured draggable');
   assert.equal(map.get('draggableCursor'), expected.draggableCursor, 'resolves configured draggableCursor');
   assert.equal(map.get('fullscreenControl'), expected.fullscreenControl, 'resolves configured fullscreenControl');
+  assert.equal(map.get('gestureHandling'), expected.gestureHandling, 'resolves configured gestureHandling');
+  assert.equal(map.get('keyboardShortcuts'), expected.keyboardShortcuts, 'resolves configured keyboardShortcuts');
+  assert.equal(map.get('mapTypeControl'), expected.mapTypeControl, 'resolves configured mapTypeControl');
+  assert.equal(map.get('noClear'), expected.noClear, 'resolves configured noClear');
+  assert.equal(map.get('panControl'), expected.panControl, 'resolves configured panControl');
+  assert.equal(map.get('rotateControl'), expected.rotateControl, 'resolves configured rotateControl');
+  assert.equal(map.get('scaleControl'), expected.scaleControl, 'resolves configured scaleControl');
+  assert.equal(map.get('scrollwheel'), expected.scrollwheel, 'resolves configured scrollwheel');
+  assert.equal(map.get('signInControl'), expected.signInControl, 'resolves configured signInControl');
+  assert.equal(map.get('streetViewControl'), expected.streetViewControl, 'resolves configured streetViewControl');
+  assert.equal(map.get('zoomControl'), expected.zoomControl, 'resolves configured zoomControl');
 });
 
-test('it only allows setting a valid disableDefaultUI', function(assert) {
-  const expected = true;
+test('it only allows setting valid static map properties', function(assert) {
+  const expected = {
+    disableDefaultUI: true,
+    disableDoubleClickZoom: true,
+    draggable: false,
+    draggableCursor: 'pointer',
+    fullscreenControl: false,
+    gestureHandling: 'greedy',
+    keyboardShortcuts: false,
+    mapTypeControl: false,
+    noClear: false,
+    panControl: false,
+    rotateControl: false,
+    scaleControl: false,
+    scrollwheel: false,
+    signInControl: false,
+    streetViewControl: false,
+    zoomControl: false
+  };
+
   const map = googleMap(document.createElement('div'));
 
   assert.throws(() => map.set('disableDefaultUI', 'non-boolean'), 'only accpets boolean value');
+  assert.throws(() => map.set('disableDoubleClickZoom', 'non-boolean'), 'only accpets boolean value');
+  assert.throws(() => map.set('draggable', 'non-boolean'), 'only accpets boolean value');
+  assert.throws(() => map.set('draggableCursor', 4), 'only accpets string value');
+  assert.throws(() => map.set('fullscreenControl', 'non-boolean'), 'only accpets boolean value');
+  assert.throws(() => map.set('gestureHandling', 4), 'only accpets string value');
+  assert.throws(() => map.set('keyboardShortcuts', 'non-boolean'), 'only accpets boolean value');
+  assert.throws(() => map.set('mapTypeControl', 'non-boolean'), 'only accpets boolean value');
+  assert.throws(() => map.set('noClear', 'non-boolean'), 'only accpets boolean value');
+  assert.throws(() => map.set('panControl', 'non-boolean'), 'only accpets boolean value');
+  assert.throws(() => map.set('rotateControl', 'non-boolean'), 'only accpets boolean value');
+  assert.throws(() => map.set('scaleControl', 'non-boolean'), 'only accpets boolean value');
+  assert.throws(() => map.set('scrollwheel', 'non-boolean'), 'only accpets boolean value');
+  assert.throws(() => map.set('signInControl', 'non-boolean'), 'only accpets boolean value');
+  assert.throws(() => map.set('streetViewControl', 'non-boolean'), 'only accpets boolean value');
+  assert.throws(() => map.set('zoomControl', 'non-boolean'), 'only accpets boolean value');
 
-  map.set('disableDefaultUI', expected);
-  assert.equal(map.get('disableDefaultUI'), expected, 'resolves new disableDefaultUI');
+  map.setProperties(expected);
+
+  assert.equal(map.get('disableDefaultUI'), expected.disableDefaultUI, 'resolves new disableDefaultUI');
+  assert.equal(map.get('disableDoubleClickZoom'), expected.disableDoubleClickZoom, 'resolves new disableDoubleClickZoom');
+  assert.equal(map.get('draggable'), expected.draggable, 'resolves new draggable');
+  assert.equal(map.get('draggableCursor'), expected.draggableCursor, 'resolves new draggableCursor');
+  assert.equal(map.get('fullscreenControl'), expected.fullscreenControl, 'resolves new fullscreenControl');
+  assert.equal(map.get('gestureHandling'), expected.gestureHandling, 'resolves new gestureHandling');
+  assert.equal(map.get('keyboardShortcuts'), expected.keyboardShortcuts, 'resolves new keyboardShortcuts');
+  assert.equal(map.get('mapTypeControl'), expected.mapTypeControl, 'resolves new mapTypeControl');
+  assert.equal(map.get('noClear'), expected.noClear, 'resolves new noClear');
+  assert.equal(map.get('panControl'), expected.panControl, 'resolves new panControl');
+  assert.equal(map.get('rotateControl'), expected.rotateControl, 'resolves new rotateControl');
+  assert.equal(map.get('scaleControl'), expected.scaleControl, 'resolves new scaleControl');
+  assert.equal(map.get('scrollwheel'), expected.scrollwheel, 'resolves new scrollwheel');
+  assert.equal(map.get('signInControl'), expected.signInControl, 'resolves new signInControl');
+  assert.equal(map.get('streetViewControl'), expected.streetViewControl, 'resolves new streetViewControl');
+  assert.equal(map.get('zoomControl'), expected.zoomControl, 'resolves new zoomControl');
 });
