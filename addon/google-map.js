@@ -10,22 +10,6 @@ const MAP_DEFAULTS = {
   tilt: 0
 };
 
-const getStaticMapOption = function(key) {
-  return this.content[key];
-};
-
-const setStaticMapBooleanOption = function(key, value) {
-  assert(`${key} was set without boolean`, typeof value === 'boolean');
-  this.content.setOptions({[key]: value});
-  return value;
-};
-
-const setStaticMapStringOption = function(key, value) {
-  assert(`${key} was set without string`, typeof value === 'string');
-  this.content.setOptions({[key]: value});
-  return value;
-};
-
 export const GoogleMapProxy = Ember.ObjectProxy.extend({
   /**
    * @type {Object}
@@ -37,13 +21,13 @@ export const GoogleMapProxy = Ember.ObjectProxy.extend({
       return { lat: center.lat(), lng: center.lng() };
     },
 
-    set(key, center) {
-      center = (typeof center.toJSON === 'function' ? center.toJSON() : center);
-      assert('center is an Object', typeof center === 'object');
-      assert('center was set without a lat number', typeof center.lat === 'number');
-      assert('center was set without a lng number', typeof center.lng === 'number');
-      this.content.setCenter(center);
-      return center;
+    set(key, value) {
+      value = (typeof value.toJSON === 'function' ? value.toJSON() : value);
+      assert('center is an Object', typeof value === 'object');
+      assert('center was set without a lat number', typeof value.lat === 'number');
+      assert('center was set without a lng number', typeof value.lng === 'number');
+      this.content.setCenter(value);
+      return value;
     }
   }),
 
@@ -56,10 +40,10 @@ export const GoogleMapProxy = Ember.ObjectProxy.extend({
       return this.content.minZoom;
     },
 
-    set(key, minZoom) {
-      assert('minZoom was set without number', typeof minZoom === 'number');
-      assert('minZoom was set above maxZoom', minZoom < this.get('maxZoom'));
-      return this.content.minZoom = minZoom;
+    set(key, value) {
+      assert('minZoom was set without number', typeof value === 'number');
+      assert('minZoom was set above maxZoom', value < this.get('maxZoom'));
+      return this.content.minZoom = value;
     }
   }),
 
@@ -72,10 +56,10 @@ export const GoogleMapProxy = Ember.ObjectProxy.extend({
       return this.content.maxZoom;
     },
 
-    set(key, maxZoom) {
-      assert('maxZoom was set without number', typeof maxZoom);
-      assert('maxZoom was set below minZoom', maxZoom > this.get('minZoom'));
-      return this.content.maxZoom = maxZoom;
+    set(key, value) {
+      assert('maxZoom was set without number', typeof value);
+      assert('maxZoom was set below minZoom', value > this.get('minZoom'));
+      return this.content.maxZoom = value;
     }
   }),
 
@@ -88,36 +72,36 @@ export const GoogleMapProxy = Ember.ObjectProxy.extend({
       return this.content.getZoom();
     },
 
-    set(key, zoom) {
+    set(key, value) {
       const min = this.get('minZoom');
       const max = this.get('maxZoom');
 
-      assert('zoom was set without a number', typeof zoom === 'number');
-      assert('zoom was set above maxZoom', zoom <= max);
-      assert('zoom was set below minZoom', zoom >= min);
+      assert('zoom was set without a number', typeof value === 'number');
+      assert('zoom was set above maxZoom', value <= max);
+      assert('zoom was set below minZoom', value >= min);
 
-      this.content.setZoom(zoom);
-      return zoom;
+      this.content.setZoom(value);
+      return value;
     }
   }),
 
   /**
    * @type {String}
-   * Type of map rendered
+   * Type of map rendered, via map type
    */
   mapTypeId: computed({
     get() {
-      return this.content.getMapTypeId().toUpperCase();
+      return getMapType(this.content.getMapTypeId());
     },
 
-    set(key, mapTypeId) {
-      const mapTypes = Object.keys(google.maps.MapTypeId);
+    set(key, value) {
+      assert('mapTypeId was set without a string', typeof value === 'string');
 
-      assert('mapTypeId was set without a string', typeof mapTypeId === 'string');
-      assert('mapTypeId is not a valid map type', mapTypes.indexOf(mapTypeId.toUpperCase()) > -1);
+      const mapTypeId = getMapTypesId(value);
+      assert('mapTypeId is not a valid map type', mapTypeId);
 
-      this.content.setMapTypeId(google.maps.MapTypeId[mapTypeId.toUpperCase()]);
-      return mapTypeId.toUpperCase();
+      this.content.setMapTypeId(mapTypeId);
+      return getMapType(mapTypeId);
     }
   }),
 
@@ -130,10 +114,10 @@ export const GoogleMapProxy = Ember.ObjectProxy.extend({
       return this.content.getClickableIcons();
     },
 
-    set(key, clickableIcons) {
-      assert('clickableIcons was set without a boolean', typeof clickableIcons === 'boolean');
-      this.content.setClickableIcons(clickableIcons);
-      return clickableIcons;
+    set(key, value) {
+      assert('clickableIcons was set without a boolean', typeof value === 'boolean');
+      this.content.setClickableIcons(value);
+      return value;
     }
   }),
 
@@ -146,11 +130,11 @@ export const GoogleMapProxy = Ember.ObjectProxy.extend({
       return this.content.getTilt();
     },
 
-    set(key, tilt) {
-      assert('tilt was set without a number', typeof tilt === 'number');
-      assert('tilt is not `0` or `45`', tilt === 0 || tilt === 45);
-      this.content.setTilt(tilt);
-      return tilt;
+    set(key, value) {
+      assert('tilt was set without a number', typeof value === 'number');
+      assert('tilt is not `0` or `45`', value === 0 || value === 45);
+      this.content.setTilt(value);
+      return value;
     }
   }),
 
@@ -179,27 +163,28 @@ export const GoogleMapProxy = Ember.ObjectProxy.extend({
       const {position} = this.content.fullscreenControlOptions;
 
       if (position) {
-        // Return first position key that matches value
-        return Object.keys(google.maps.ControlPosition)
-        .filter((pos) => google.maps.ControlPosition[pos] === position)[0];
+        return getControlPosition(position);
       }
     },
 
-    set(key, fullscreenControlOptions) {
-      const positions = Object.keys(google.maps.ControlPosition);
+    set(key, value) {
+      assert('fullscreenControlOptions was set without a string', typeof value === 'string');
 
-      assert('fullscreenControlOptions was set without a string', typeof fullscreenControlOptions === 'string');
-      assert('fullscreenControlOptions is not a valid control position', positions.indexOf(fullscreenControlOptions.toUpperCase()) > -1);
+      const id = getControlPositionId(value);
+      assert('fullscreenControlOptions is not a valid control position', id);
 
       this.content.setOptions({
         fullscreenControlOptions: {
-          position: google.maps.ControlPosition[fullscreenControlOptions.toUpperCase()]
+          position: id
         }
       });
 
-      return fullscreenControlOptions.toUpperCase();
+      return getControlPosition(id);
     }
   }),
+
+  // TODO
+  // mapTypeControlOptions google.maps.MapTypeControlOptions
 
   /**
    * @type {Boolean}
@@ -387,4 +372,79 @@ export default function googleMap(element, options = {}) {
     proxy.set(key, settings[key]));
 
   return proxy;
+}
+
+/**
+ * @param  {String} key   Google Map option key
+ * @return {Any}
+ * Return the option value of a proxy's Google Map
+ */
+function getStaticMapOption(key) {
+  return this.content[key];
+};
+
+/**
+ * @param {String} key     Google Map option key
+ * @param {Boolean} value  Google Map option value
+ * @return {Boolean}
+ * Set a boolean option of a proxy's Google Map
+ */
+function setStaticMapBooleanOption(key, value) {
+  assert(`${key} was set without boolean`, typeof value === 'boolean');
+  this.content.setOptions({[key]: value});
+  return value;
+};
+
+/**
+ * @param {String} key     Google Map option key
+ * @param {String} value   Google Map option value
+ * @return {Boolean}
+ * Set a string option of a proxy's Google Map
+ */
+function setStaticMapStringOption(key, value) {
+  assert(`${key} was set without string`, typeof value === 'string');
+  this.content.setOptions({[key]: value});
+  return value;
+};
+
+/**
+ * @param  {String} type Map type
+ * @return {String}      Map type id
+ * Get the id of a map type
+ */
+function getMapTypesId(type) {
+  type = `${type}`.toUpperCase();
+  return google.maps.MapTypeId[type];
+}
+
+/**
+ * @param  {String} id Map type id
+ * @return {String}    Map type
+ * Get a map type from its' id value
+ */
+function getMapType(id) {
+  id = `${id}`.toLowerCase();
+  return Object.keys(google.maps.MapTypeId).filter((type) =>
+    google.maps.MapTypeId[type] === id)[0];
+}
+
+/**
+ * @param  {String} position Control position
+ * @return {Number}          Control position id
+ * Get the id of a control position
+ */
+function getControlPositionId(position) {
+  position = `${position}`.toUpperCase();
+  return google.maps.ControlPosition[position];
+}
+
+/**
+ * @param  {Number} id Control position id
+ * @return {String}    Control position
+ * Get a control position from its' id value
+ */
+function getControlPosition(id) {
+  id = parseInt(id, 10);
+  return Object.keys(google.maps.ControlPosition).filter((position) =>
+    google.maps.ControlPosition[position] === id)[0];
 }
