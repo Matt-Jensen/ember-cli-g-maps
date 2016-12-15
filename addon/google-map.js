@@ -1,7 +1,8 @@
 import Ember from 'ember';
 import computed from 'ember-computed';
-import { assert } from 'ember-metal/utils';
-import { assign } from 'ember-platform';
+import {assert} from 'ember-metal/utils';
+import {assign} from 'ember-platform';
+import {isPresent} from 'ember-utils';
 
 const MAP_DEFAULTS = {
   minZoom: 0,
@@ -165,7 +166,7 @@ export const GoogleMapProxy = Ember.ObjectProxy.extend({
       assert('fullscreenControlOptions was set without a string', typeof value === 'string');
 
       const id = getControlPositionId(value);
-      assert('fullscreenControlOptions is not a valid control position', id);
+      assert('fullscreenControlOptions is not a valid control position', isPresent(id));
 
       this.content.setOptions({
         fullscreenControlOptions: { position: id }
@@ -193,12 +194,20 @@ export const GoogleMapProxy = Ember.ObjectProxy.extend({
 
       if (value.position) {
         assert('mapTypeControlOptions.position was set without a string', typeof value.position === 'string');
-        mapTypeControlOptions.position = getControlPositionId(value.position);
+
+        const position = getControlPositionId(value.position);
+        assert('fullscreenControlOptions is not a valid control position', isPresent(position));
+
+        mapTypeControlOptions.position = position;
       }
 
       if (value.style) {
         assert('mapTypeControlOptions.style was set without a string', typeof value.style === 'string');
-        mapTypeControlOptions.style = getMapTypeControlStyleId(value.style);
+
+        const style = getMapTypeControlStyleId(value.style);
+        assert('fullscreenControlOptions is not a valid map type control style', isPresent(style));
+
+        mapTypeControlOptions.style = style;
       }
 
       this.content.setOptions({mapTypeControlOptions});
@@ -211,42 +220,63 @@ export const GoogleMapProxy = Ember.ObjectProxy.extend({
    * Position to render the pan control
    * NOTE replaced configuration object with string
    */
-   panControlOptions: computed({
-     get() {}, // Undefined by default
-     set(key, value) {
-       assert('panControlOptions was set without a string', typeof value === 'string');
+  panControlOptions: computed({
+    get() {}, // Undefined by default
+    set(key, value) {
+      assert('panControlOptions was set without a string', typeof value === 'string');
 
-       const id = getControlPositionId(value);
-       assert('panControlOptions is not a valid control position', id);
+      const id = getControlPositionId(value);
+      assert('panControlOptions is not a valid control position', isPresent(id));
 
-       this.content.setOptions({
-         panControlOptions: { position: id }
-       });
+      this.content.setOptions({
+        panControlOptions: { position: id }
+      });
 
-       return getControlPosition(id);
-     }
-   }),
+      return getControlPosition(id);
+    }
+  }),
 
   /**
    * @type {String}
    * Position to render the rotate control
    * NOTE replaced configuration object with string
    */
-   rotateControlOptions: computed({
+  rotateControlOptions: computed({
+    get() {}, // Undefined by default
+    set(key, value) {
+      assert('rotateControlOptions was set without a string', typeof value === 'string');
+
+      const id = getControlPositionId(value);
+      assert('rotateControlOptions is not a valid control position', isPresent(id));
+
+      this.content.setOptions({
+        rotateControlOptions: { position: id }
+      });
+
+      return getControlPosition(id);
+    }
+  }),
+
+  /**
+   * @type {String}
+   * Style to render the scale control with
+   * NOTE replaced configuration object with string
+   */
+  scaleControlOptions: computed({
      get() {}, // Undefined by default
      set(key, value) {
-       assert('rotateControlOptions was set without a string', typeof value === 'string');
+      assert('scaleControlOptions was set without a string', typeof value === 'string');
 
-       const id = getControlPositionId(value);
-       assert('rotateControlOptions is not a valid control position', id);
+      const id = getScaleControlStyleId(value);
+      assert('scaleControlOptions is not a valid scale control style', isPresent(id));
 
-       this.content.setOptions({
-         rotateControlOptions: { position: id }
-       });
+      this.content.setOptions({
+        scaleControlOptions: { style: id }
+      });
 
-       return getControlPosition(id);
-     }
-   }),
+      return getScaleControlStyle(id);
+    }
+  }),
 
   /**
    * @type {Boolean}
@@ -405,7 +435,6 @@ export const GoogleMapProxy = Ember.ObjectProxy.extend({
     }
   })
 
-  // scaleControlOptions google.maps.ScaleControlOptions
   // streetViewControlOptions google.maps.StreetViewControlOptions
   // zoomControlOption google.maps.ZoomControlOptions
 });
@@ -532,8 +561,30 @@ function getMapTypeControlStyleId(style) {
  * @return {String}    Map type control style
  * Get a map type control style from its' id value
  */
+// TODO remove??
 // function getMapTypeControlStyle(id) {
 //   id = parseInt(id, 10);
 //   return Object.keys(google.maps.MapTypeControlStyle).filter((style) =>
 //     google.maps.MapTypeControlStyle[style] === id)[0];
 // }
+
+/**
+ * @param  {String} style  Scale control style
+ * @return {Number}        Scale control style id
+ * Get the id of a scale control style
+ */
+function getScaleControlStyleId(style) {
+  style = `${style}`.toUpperCase();
+  return google.maps.ScaleControlStyle[style];
+}
+
+/**
+ * @param  {Number} id Control position id
+ * @return {String}    Control position
+ * Get a scale control style its' id value
+ */
+function getScaleControlStyle(id) {
+  id = parseInt(id, 10);
+  return Object.keys(google.maps.ScaleControlStyle).filter((style) =>
+    google.maps.ScaleControlStyle[style] === id)[0];
+}

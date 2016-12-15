@@ -227,6 +227,22 @@ test('it only allows setting valid rotate control options', function(assert) {
   assert.equal(map.get('rotateControlOptions'), expected, 'resolves new rotateControlOptions');
 });
 
+test('it returns the scale control options', function(assert) {
+  const expected = 'DEFAULT';
+  const map = googleMap(document.createElement('div'), {scaleControlOptions: expected});
+  assert.equal(map.get('scaleControlOptions'), expected, 'resolves configured scaleControlOptions');
+});
+
+test('it only allows setting valid scale control options', function(assert) {
+  const expected = 'DEFAULT';
+  const map = googleMap(document.createElement('div'));
+
+  assert.throws(() => map.set('scaleControlOptions', 'non-scale-style'), 'only accepts a scale style type');
+
+  map.set('scaleControlOptions', expected);
+  assert.equal(map.get('scaleControlOptions'), expected, 'resolves new scaleControlOptions');
+});
+
 test('it returns the static map properties', function(assert) {
   const expected = {
     disableDefaultUI: true,
