@@ -196,7 +196,7 @@ export const GoogleMapProxy = Ember.ObjectProxy.extend({
         assert('mapTypeControlOptions.position was set without a string', typeof value.position === 'string');
 
         const position = getControlPositionId(value.position);
-        assert('fullscreenControlOptions is not a valid control position', isPresent(position));
+        assert('mapTypeControlOptions.position is not a valid control position', isPresent(position));
 
         mapTypeControlOptions.position = position;
       }
@@ -205,7 +205,7 @@ export const GoogleMapProxy = Ember.ObjectProxy.extend({
         assert('mapTypeControlOptions.style was set without a string', typeof value.style === 'string');
 
         const style = getMapTypeControlStyleId(value.style);
-        assert('fullscreenControlOptions is not a valid map type control style', isPresent(style));
+        assert('mapTypeControlOptions.style is not a valid map type control style', isPresent(style));
 
         mapTypeControlOptions.style = style;
       }
@@ -304,16 +304,16 @@ export const GoogleMapProxy = Ember.ObjectProxy.extend({
    * Position to render the zoom control
    * NOTE replaced configuration object with string
    */
-  zoomControlOption: computed({
+  zoomControlOptions: computed({
     get() {}, // Undefined by default
     set(key, value) {
-      assert('zoomControlOption was set without a string', typeof value === 'string');
+      assert('zoomControlOptions was set without a string', typeof value === 'string');
 
       const id = getControlPositionId(value);
-      assert('zoomControlOption is not a valid control position', isPresent(id));
+      assert('zoomControlOptions is not a valid control position', isPresent(id));
 
       this.content.setOptions({
-        zoomControlOption: { position: id }
+        zoomControlOptions: { position: id }
       });
 
       return getControlPosition(id);
@@ -610,18 +610,6 @@ function getMapTypeControlStyleId(style) {
   style = `${style}`.toUpperCase();
   return google.maps.MapTypeControlStyle[style];
 }
-
-/**
- * @param  {Number} id Map type control style id
- * @return {String}    Map type control style
- * Get a map type control style from its' id value
- */
-// TODO remove??
-// function getMapTypeControlStyle(id) {
-//   id = parseInt(id, 10);
-//   return Object.keys(google.maps.MapTypeControlStyle).filter((style) =>
-//     google.maps.MapTypeControlStyle[style] === id)[0];
-// }
 
 /**
  * @param  {String} style  Scale control style
