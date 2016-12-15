@@ -300,6 +300,27 @@ export const GoogleMapProxy = Ember.ObjectProxy.extend({
   }),
 
   /**
+   * @type {String}
+   * Position to render the zoom control
+   * NOTE replaced configuration object with string
+   */
+  zoomControlOption: computed({
+    get() {}, // Undefined by default
+    set(key, value) {
+      assert('zoomControlOption was set without a string', typeof value === 'string');
+
+      const id = getControlPositionId(value);
+      assert('zoomControlOption is not a valid control position', isPresent(id));
+
+      this.content.setOptions({
+        zoomControlOption: { position: id }
+      });
+
+      return getControlPosition(id);
+    }
+  }),
+
+  /**
    * @type {Boolean}
    * Enables/disables all default UI
    */
@@ -456,7 +477,6 @@ export const GoogleMapProxy = Ember.ObjectProxy.extend({
     }
   })
 
-  // zoomControlOption google.maps.ZoomControlOptions
   // TODO streetView should only accept a google.maps.StreetViewPanorama instance
 });
 

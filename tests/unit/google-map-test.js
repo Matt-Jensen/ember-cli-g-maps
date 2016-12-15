@@ -259,6 +259,22 @@ test('it only allows setting valid street view control options', function(assert
   assert.equal(map.get('streetViewControlOptions'), expected, 'resolves new streetViewControlOptions');
 });
 
+test('it returns the zoom control options', function(assert) {
+  const expected = 'BOTTOM_RIGHT';
+  const map = googleMap(document.createElement('div'), {zoomControlOption: expected});
+  assert.equal(map.get('zoomControlOption'), expected, 'resolves configured zoomControlOption');
+});
+
+test('it only allows setting valid zoom control options', function(assert) {
+  const expected = 'RIGHT_CENTER';
+  const map = googleMap(document.createElement('div'), {zoomControlOption: 'BOTTOM_RIGHT'});
+
+  assert.throws(() => map.set('zoomControlOption', 'non-control-position'), 'only accepts a control position');
+
+  map.set('zoomControlOption', expected);
+  assert.equal(map.get('zoomControlOption'), expected, 'resolves new zoomControlOption');
+});
+
 test('it returns the static map properties', function(assert) {
   const expected = {
     disableDefaultUI: true,
