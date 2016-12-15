@@ -321,6 +321,22 @@ export const GoogleMapProxy = Ember.ObjectProxy.extend({
   }),
 
   /**
+   * @type {google.maps.StreetViewPanorama}
+   * Set the street view panorama used by the map
+   */
+  streetView: computed({
+    get() {
+      return this.content.streetView;
+    },
+
+    set(key, value) {
+      assert('streetView was set without a StreetViewPanorama instance', value instanceof google.maps.StreetViewPanorama);
+      this.content.setOptions({streetView: value});
+      return value;
+    }
+  }),
+
+  /**
    * @type {Boolean}
    * Enables/disables all default UI
    */
@@ -476,8 +492,6 @@ export const GoogleMapProxy = Ember.ObjectProxy.extend({
       return styles;
     }
   })
-
-  // TODO streetView should only accept a google.maps.StreetViewPanorama instance
 });
 
 /**

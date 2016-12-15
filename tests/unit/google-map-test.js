@@ -275,6 +275,23 @@ test('it only allows setting valid zoom control options', function(assert) {
   assert.equal(map.get('zoomControlOption'), expected, 'resolves new zoomControlOption');
 });
 
+test('it returns the street view', function(assert) {
+  const expected = new google.maps.StreetViewPanorama(document.createElement('div'));
+  const map = googleMap(document.createElement('div'), {streetView: expected});
+  assert.equal(map.get('streetView'), expected, 'resolves configured streetView');
+});
+
+test('it only allows setting a valid street view', function(assert) {
+  const expected = new google.maps.StreetViewPanorama(document.createElement('div'));
+  const map = googleMap(document.createElement('div'));
+  const badStreetView = googleMap(document.createElement('div'));
+
+  assert.throws(() => map.set('streetView', badStreetView), 'only accepts a street view instance');
+
+  map.set('streetView', expected);
+  assert.equal(map.get('streetView'), expected, 'resolves new street view');
+});
+
 test('it returns the static map properties', function(assert) {
   const expected = {
     disableDefaultUI: true,
