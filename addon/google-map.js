@@ -16,20 +16,20 @@ const getStaticMapOption = function(key) {
 
 const setStaticMapBooleanOption = function(key, value) {
   assert(`${key} was set without boolean`, typeof value === 'boolean');
-  this.content.setOptions({[key]:value});
-  return this.get(key);
+  this.content.setOptions({[key]: value});
+  return value;
 };
 
 const setStaticMapStringOption = function(key, value) {
   assert(`${key} was set without string`, typeof value === 'string');
-  this.content.setOptions({[key]:value});
-  return this.get(key);
+  this.content.setOptions({[key]: value});
+  return value;
 };
 
 export const GoogleMapProxy = Ember.ObjectProxy.extend({
   /**
    * @type {Object}
-   * Update the center of the Google Map instance via LatLngLiterals
+   * Update the center of the Google Map instance via LatLng/LatLngLiterals
    */
   center: computed({
     get() {
@@ -37,11 +37,13 @@ export const GoogleMapProxy = Ember.ObjectProxy.extend({
       return { lat: center.lat(), lng: center.lng() };
     },
 
-    set(key, {lat, lng}) {
-      assert('center was set without a lat number', typeof lat === 'number');
-      assert('center was set without a lng number', typeof lng === 'number');
-      this.content.setCenter({lat, lng});
-      return this.get('center');
+    set(key, center) {
+      center = (typeof center.toJSON === 'function' ? center.toJSON() : center);
+      assert('center is an Object', typeof center === 'object');
+      assert('center was set without a lat number', typeof center.lat === 'number');
+      assert('center was set without a lng number', typeof center.lng === 'number');
+      this.content.setCenter(center);
+      return center;
     }
   }),
 
@@ -95,7 +97,7 @@ export const GoogleMapProxy = Ember.ObjectProxy.extend({
       assert('zoom was set below minZoom', zoom >= min);
 
       this.content.setZoom(zoom);
-      return this.get('zoom');
+      return zoom;
     }
   }),
 
@@ -115,7 +117,7 @@ export const GoogleMapProxy = Ember.ObjectProxy.extend({
       assert('mapTypeId is not a valid map type', mapTypes.indexOf(mapTypeId.toUpperCase()) > -1);
 
       this.content.setMapTypeId(google.maps.MapTypeId[mapTypeId.toUpperCase()]);
-      return this.get('mapTypeId');
+      return mapTypeId.toUpperCase();
     }
   }),
 
@@ -131,7 +133,7 @@ export const GoogleMapProxy = Ember.ObjectProxy.extend({
     set(key, clickableIcons) {
       assert('clickableIcons was set without a boolean', typeof clickableIcons === 'boolean');
       this.content.setClickableIcons(clickableIcons);
-      return this.get('clickableIcons');
+      return clickableIcons;
     }
   }),
 
@@ -148,7 +150,7 @@ export const GoogleMapProxy = Ember.ObjectProxy.extend({
       assert('tilt was set without a number', typeof tilt === 'number');
       assert('tilt is not `0` or `45`', tilt === 0 || tilt === 45);
       this.content.setTilt(tilt);
-      return this.get('tilt');
+      return tilt;
     }
   }),
 
@@ -164,7 +166,38 @@ export const GoogleMapProxy = Ember.ObjectProxy.extend({
     set(key, heading) {
       assert('heading was set without a number', typeof heading === 'number');
       this.content.setHeading(heading);
-      return this.get('heading');
+      return heading;
+    }
+  }),
+
+  /**
+   * @type {String|Undefined}
+   * Options for the rendering of the fullscreen control
+   */
+  fullscreenControlOptions: computed({
+    get() {
+      const {position} = this.content.fullscreenControlOptions;
+
+      if (position) {
+        // Return first position key that matches value
+        return Object.keys(google.maps.ControlPosition)
+        .filter((pos) => google.maps.ControlPosition[pos] === position)[0];
+      }
+    },
+
+    set(key, fullscreenControlOptions) {
+      const positions = Object.keys(google.maps.ControlPosition);
+
+      assert('fullscreenControlOptions was set without a string', typeof fullscreenControlOptions === 'string');
+      assert('fullscreenControlOptions is not a valid control position', positions.indexOf(fullscreenControlOptions.toUpperCase()) > -1);
+
+      this.content.setOptions({
+        fullscreenControlOptions: {
+          position: google.maps.ControlPosition[fullscreenControlOptions.toUpperCase()]
+        }
+      });
+
+      return fullscreenControlOptions.toUpperCase();
     }
   }),
 
@@ -310,11 +343,21 @@ export const GoogleMapProxy = Ember.ObjectProxy.extend({
   zoomControl: computed({
     get: getStaticMapOption,
     set: setStaticMapBooleanOption
+  }),
+
+  /**
+   * @type {Array<Object>}
+   * Styles to apply to each of the default map types
+   */
+  styles: computed({
+    get: getStaticMapOption,
+    set(key, styles) {
+      assert('styles was set without array', styles instanceof Array);
+      this.content.setOptions({styles});
+      return styles;
+    }
   })
 
-  // styles [google.maps.MapTypeStyle]
-  // fullscreenControlOptions google.maps.FullscreenControlOptions
-  // mapTypeControlOptions google.maps.MapTypeControlOptions
   // panControlOptions google.maps.PanControlOptions
   // rotateControlOptions google.maps.RotateControlOptions
   // scaleControlOptions google.maps.ScaleControlOptions
@@ -331,6 +374,7 @@ export const GoogleMapProxy = Ember.ObjectProxy.extend({
 export default function googleMap(element, options = {}) {
   assert('element must an HTMLElement', element instanceof HTMLElement);
 
+  // set: backgroundColor
   let settings = assign({}, MAP_DEFAULTS);
   assign(settings, options);
 

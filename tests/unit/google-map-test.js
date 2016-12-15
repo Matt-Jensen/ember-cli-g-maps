@@ -28,14 +28,23 @@ test('it returns the center of the Map instance', function(assert) {
 });
 
 test('it allows valid updates of the map center', function(assert) {
-  const expected = {lat: 2, lng: 2};
+  let expected = {lat: 2, lng: 2};
   const map = googleMap(document.createElement('div'));
-  map.content.setCenter({ lat: 1, lng: 1 });
 
+  assert.throws(() => map.set('center', [-34, 151]), 'only accepts obect');
+
+  map.content.setCenter({ lat: 1, lng: 1 });
   map.set('center', expected);
 
   assert.equal(map.get('center.lat'), expected.lat, 'updated latitude of map');
   assert.equal(map.get('center.lng'), expected.lat, 'updated longitude of map');
+
+  expected = {lat: 3, lng: 3};
+  map.set('center', new google.maps.LatLng(expected.lat, expected.lng));
+
+  assert.equal(map.get('center.lat'), expected.lat, 'updated latitude via LatLng');
+  assert.equal(map.get('center.lng'), expected.lng, 'updated longitude via LatLng');
+
 });
 
 test('it returns the minZoom', function(assert) {
@@ -89,7 +98,7 @@ test('it allows setting a valid map type id', function(assert) {
   const expected = 'SATELLITE';
   const map = googleMap(document.createElement('div'));
 
-  assert.throws(() => map.set('mapTypeId', 'invalid'), 'only accpets valid map type ids');
+  assert.throws(() => map.set('mapTypeId', 'invalid'), 'only accepts valid map type ids');
 
   map.set('mapTypeId', expected.toLowerCase());
   assert.equal(map.content.getMapTypeId().toUpperCase(), expected, 'resolves new map type id');
@@ -105,7 +114,7 @@ test('it allows setting a valid clickable icons', function(assert) {
   const expected = false;
   const map = googleMap(document.createElement('div'));
 
-  assert.throws(() => map.set('clickableIcons', 'non-boolean'), 'only accpets boolean value');
+  assert.throws(() => map.set('clickableIcons', 'non-boolean'), 'only accepts boolean value');
 
   map.set('clickableIcons', expected);
   assert.equal(map.content.getClickableIcons(), expected, 'resolves new clickable icons');
@@ -138,10 +147,26 @@ test('it only allows setting a valid heading', function(assert) {
   const expected = 0;
   const map = googleMap(document.createElement('div'), {heading: 1});
 
-  assert.throws(() => map.set('heading', 'non-number'), 'only accpets numeric value');
+  assert.throws(() => map.set('heading', 'non-number'), 'only accepts numeric value');
 
   map.set('heading', expected);
   assert.equal(map.content.getHeading(), expected, 'resolves new heading');
+});
+
+test('it returns the map fullscreen control options', function(assert) {
+  const expected = 'BOTTOM_RIGHT';
+  const map = googleMap(document.createElement('div'), {fullscreenControlOptions: expected});
+  assert.equal(map.get('fullscreenControlOptions'), expected, 'resolves configured fullscreenControlOptions');
+});
+
+test('it only allows setting valid fullscreen control options', function(assert) {
+  const expected = 'LEFT_TOP';
+  const map = googleMap(document.createElement('div'), {fullscreenControlOptions: 'BOTTOM_RIGHT'});
+
+  assert.throws(() => map.set('fullscreenControlOptions', 'non-control-position'), 'only accepts a control position');
+
+  map.set('fullscreenControlOptions', expected);
+  assert.equal(map.get('fullscreenControlOptions'), expected, 'resolves new fullscreenControlOptions');
 });
 
 test('it returns the static map properties', function(assert) {
@@ -161,7 +186,10 @@ test('it returns the static map properties', function(assert) {
     scrollwheel: false,
     signInControl: false,
     streetViewControl: false,
-    zoomControl: false
+    zoomControl: false,
+    styles: [{
+      elementType: 'geometry', stylers: [{color: '#242f3e'}]
+    }]
   };
 
   const map = googleMap(document.createElement('div'), expected);
@@ -182,6 +210,7 @@ test('it returns the static map properties', function(assert) {
   assert.equal(map.get('signInControl'), expected.signInControl, 'resolves configured signInControl');
   assert.equal(map.get('streetViewControl'), expected.streetViewControl, 'resolves configured streetViewControl');
   assert.equal(map.get('zoomControl'), expected.zoomControl, 'resolves configured zoomControl');
+  assert.equal(map.get('styles'), expected.styles, 'resolves configured styles');
 });
 
 test('it only allows setting valid static map properties', function(assert) {
@@ -201,27 +230,31 @@ test('it only allows setting valid static map properties', function(assert) {
     scrollwheel: false,
     signInControl: false,
     streetViewControl: false,
-    zoomControl: false
+    zoomControl: false,
+    styles: [{
+      elementType: 'geometry', stylers: [{color: '#242f3e'}]
+    }]
   };
 
   const map = googleMap(document.createElement('div'));
 
-  assert.throws(() => map.set('disableDefaultUI', 'non-boolean'), 'only accpets boolean value');
-  assert.throws(() => map.set('disableDoubleClickZoom', 'non-boolean'), 'only accpets boolean value');
-  assert.throws(() => map.set('draggable', 'non-boolean'), 'only accpets boolean value');
-  assert.throws(() => map.set('draggableCursor', 4), 'only accpets string value');
-  assert.throws(() => map.set('fullscreenControl', 'non-boolean'), 'only accpets boolean value');
-  assert.throws(() => map.set('gestureHandling', 4), 'only accpets string value');
-  assert.throws(() => map.set('keyboardShortcuts', 'non-boolean'), 'only accpets boolean value');
-  assert.throws(() => map.set('mapTypeControl', 'non-boolean'), 'only accpets boolean value');
-  assert.throws(() => map.set('noClear', 'non-boolean'), 'only accpets boolean value');
-  assert.throws(() => map.set('panControl', 'non-boolean'), 'only accpets boolean value');
-  assert.throws(() => map.set('rotateControl', 'non-boolean'), 'only accpets boolean value');
-  assert.throws(() => map.set('scaleControl', 'non-boolean'), 'only accpets boolean value');
-  assert.throws(() => map.set('scrollwheel', 'non-boolean'), 'only accpets boolean value');
-  assert.throws(() => map.set('signInControl', 'non-boolean'), 'only accpets boolean value');
-  assert.throws(() => map.set('streetViewControl', 'non-boolean'), 'only accpets boolean value');
-  assert.throws(() => map.set('zoomControl', 'non-boolean'), 'only accpets boolean value');
+  assert.throws(() => map.set('disableDefaultUI', 'non-boolean'), 'only accepts boolean value');
+  assert.throws(() => map.set('disableDoubleClickZoom', 'non-boolean'), 'only accepts boolean value');
+  assert.throws(() => map.set('draggable', 'non-boolean'), 'only accepts boolean value');
+  assert.throws(() => map.set('draggableCursor', 4), 'only accepts string value');
+  assert.throws(() => map.set('fullscreenControl', 'non-boolean'), 'only accepts boolean value');
+  assert.throws(() => map.set('gestureHandling', 4), 'only accepts string value');
+  assert.throws(() => map.set('keyboardShortcuts', 'non-boolean'), 'only accepts boolean value');
+  assert.throws(() => map.set('mapTypeControl', 'non-boolean'), 'only accepts boolean value');
+  assert.throws(() => map.set('noClear', 'non-boolean'), 'only accepts boolean value');
+  assert.throws(() => map.set('panControl', 'non-boolean'), 'only accepts boolean value');
+  assert.throws(() => map.set('rotateControl', 'non-boolean'), 'only accepts boolean value');
+  assert.throws(() => map.set('scaleControl', 'non-boolean'), 'only accepts boolean value');
+  assert.throws(() => map.set('scrollwheel', 'non-boolean'), 'only accepts boolean value');
+  assert.throws(() => map.set('signInControl', 'non-boolean'), 'only accepts boolean value');
+  assert.throws(() => map.set('streetViewControl', 'non-boolean'), 'only accepts boolean value');
+  assert.throws(() => map.set('zoomControl', 'non-boolean'), 'only accepts boolean value');
+  assert.throws(() => map.set('styles', 'non-array'), 'only accepts array value');
 
   map.setProperties(expected);
 
@@ -241,4 +274,5 @@ test('it only allows setting valid static map properties', function(assert) {
   assert.equal(map.get('signInControl'), expected.signInControl, 'resolves new signInControl');
   assert.equal(map.get('streetViewControl'), expected.streetViewControl, 'resolves new streetViewControl');
   assert.equal(map.get('zoomControl'), expected.zoomControl, 'resolves new zoomControl');
+  assert.equal(map.get('styles'), expected.styles, 'resolves new styles');
 });
