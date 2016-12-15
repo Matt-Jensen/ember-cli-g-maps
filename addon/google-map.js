@@ -279,6 +279,27 @@ export const GoogleMapProxy = Ember.ObjectProxy.extend({
   }),
 
   /**
+   * @type {String}
+   * Position to render the street view control
+   * NOTE replaced configuration object with string
+   */
+  streetViewControlOptions: computed({
+    get() {}, // Undefined by default
+    set(key, value) {
+      assert('streetViewControlOptions was set without a string', typeof value === 'string');
+
+      const id = getControlPositionId(value);
+      assert('streetViewControlOptions is not a valid control position', isPresent(id));
+
+      this.content.setOptions({
+        streetViewControlOptions: { position: id }
+      });
+
+      return getControlPosition(id);
+    }
+  }),
+
+  /**
    * @type {Boolean}
    * Enables/disables all default UI
    */
@@ -435,8 +456,8 @@ export const GoogleMapProxy = Ember.ObjectProxy.extend({
     }
   })
 
-  // streetViewControlOptions google.maps.StreetViewControlOptions
   // zoomControlOption google.maps.ZoomControlOptions
+  // TODO streetView should only accept a google.maps.StreetViewPanorama instance
 });
 
 /**
