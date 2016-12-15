@@ -387,12 +387,20 @@ export const GoogleMapProxy = Ember.ObjectProxy.extend({
 export default function googleMap(element, options = {}) {
   assert('element must an HTMLElement', element instanceof HTMLElement);
 
-  // set: backgroundColor
   let settings = assign({}, MAP_DEFAULTS);
   assign(settings, options);
 
+  /*
+   * Background color will only take effect if set on inital options
+   */
+  const initalDefaults = Object.create(null);
+  if (options.backgroundColor) {
+    initalDefaults.backgroundColor;
+  }
+
   const proxy = GoogleMapProxy.create({
-    content: new google.maps.Map(element, MAP_DEFAULTS) // instantiate Google Map
+    //  Google Map instance
+    content: new google.maps.Map(element, assign(initalDefaults, MAP_DEFAULTS))
   });
 
   // Set map defaults via proxy API

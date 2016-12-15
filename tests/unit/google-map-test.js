@@ -10,11 +10,12 @@ test('it returns a Google Map instance as content', function(assert) {
 });
 
 test('it set map default options', function(assert) {
-  const map = googleMap(document.createElement('div'));
+  const map = googleMap(document.createElement('div'), {backgroundColor: '#000'});
   assert.ok(isPresent(map.content.minZoom), 'set default min zoom');
   assert.ok(isPresent(map.content.maxZoom), 'set default max zoom');
   assert.ok(isPresent(map.content.clickableIcons), 'set default clickable icons');
   assert.ok(isPresent(map.content.tilt), 'set default tilt');
+  assert.ok(isPresent(map.content.backgroundColor), 'set initial background color');
 });
 
 test('it returns the center of the Map instance', function(assert) {
