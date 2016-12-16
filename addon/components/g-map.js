@@ -1,7 +1,10 @@
+import $ from 'jquery';
 import Component from 'ember-component';
 import set from 'ember-metal/set';
 import { default as get, getProperties } from 'ember-metal/get';
 import computed from 'ember-computed';
+import run from 'ember-runloop';
+import getOwner from 'ember-owner/get';
 
 import googleMap from 'ember-cli-g-maps/google-map';
 import loadGoogleMaps from 'ember-cli-g-maps/utils/load-google-maps';
@@ -12,27 +15,28 @@ const GMAP_DEFAULTS = {
   lng: 97.7431
 };
 
-// const GOOGLE_MAP_EVENTS = [
-//   'bounds_changed',
-//   'center_changed',
-//   'click',
-//   'dblclick',
-//   'drag',
-//   'dragend',
-//   'dragstart',
-//   'heading_changed',
-//   'idle',
-//   'maptypeid_changed',
-//   'mousemove',
-//   'mouseout',
-//   'mouseover',
-//   'projection_changed',
-//   'resize',
-//   'rightclick',
-//   'tilesloaded',
-//   'tilt_changed',
-//   'zoom_changed'
-// ];
+const GOOGLE_MAP_EVENTS = [
+  'bounds_changed',
+  'center_changed',
+  'click',
+  'dblclick',
+  'drag',
+  'dragend',
+  'dragstart',
+  'heading_changed',
+  'idle',
+  'loaded',
+  'maptypeid_changed',
+  'mousemove',
+  'mouseout',
+  'mouseover',
+  'projection_changed',
+  'resize',
+  'rightclick',
+  'tilesloaded',
+  'tilt_changed',
+  'zoom_changed'
+];
 
 const GOOGLE_MAP_OPTIONS = [
   'backgroundColor',
@@ -72,6 +76,16 @@ const GOOGLE_MAP_OPTIONS = [
   'zoomControlOptions'
 ];
 
+const resizeSubscribers = [];
+let didSetupListener = false;
+
+function setupResizeListener() {
+  didSetupListener = true;
+  $(window).on('resize.ember-cli-g-maps', () => {
+    resizeSubscribers.forEach(c => c._windowDidResize());
+  });
+}
+
 export default Component.extend({
   layout,
 
@@ -80,6 +94,19 @@ export default Component.extend({
    * Proxy wrapper for the Google Map instance
    */
   _map: null,
+
+  /**
+   * @type {Number}
+   * Width of maps' parent element in pixels
+   */
+  _containerWidth: 0,
+
+  /**
+   * @type {Boolean}
+   */
+  _isTest: computed(function() {
+    return (getOwner(this).resolveRegistration('config:environment').environment === 'test');
+  }),
 
   /**
    * @type {Object}
@@ -128,10 +155,67 @@ export default Component.extend({
     const canvas = this.element.querySelector('[data-g-map="canvas"]');
 
     loadGoogleMaps().then(() => {
-      set(this, '_map', googleMap(canvas, options));
+      if (!didSetupListener) { setupResizeListener(); }
+      resizeSubscribers.push(this);
+      this._containerWidth = this.element.clientWidth;
 
-      // TODO trigger resize on the map when the div changes size
-      // google.maps.event.trigger(map.content, 'resize')
+      // Instantiate Google Map
+      const map = set(this, '_map', googleMap(canvas, options));
+
+      /*
+       * Bind any events to google map
+       */
+      GOOGLE_MAP_EVENTS.forEach((event) => {
+        const action = this.attrs[event];
+        if (!action) { return; }
+
+        const closureAction = (typeof action === 'function' ? action : run.bind(this, 'sendAction', event));
+
+        if (event === 'loaded') {
+          // Loaded is faked /w first idle event
+          return google.maps.event.addListenerOnce(map.content, 'idle', closureAction);
+        }
+
+        if (action) {
+          map.content.addListener(event, closureAction);
+        }
+      });
+
+      /*
+       * Some test helpers require access to the map instance
+       */
+      if (this.get('_isTest')) {
+        canvas.__GOOGLE_MAP__ = map.content;
+      }
     });
+  },
+
+  willDestroyElement() {
+    google.maps.event.clearInstanceListeners(get(this, '_map.content'));
+
+    for (let i = 0; i < resizeSubscribers.length; i++) {
+      if (resizeSubscribers[i] === this) {
+        resizeSubscribers.splice(i, 1);
+        break;
+      }
+    }
+  },
+
+  /**
+   * @private
+   * Determine if map resize is necessary and queue resize event
+   */
+  _windowDidResize() {
+    if (this._containerWidth === this.element.clientWidth) { return; }
+    this._containerWidth = this.element.clientWidth;
+    run.debounce(this, this._resizeMap, 150);
+  },
+
+  /**
+   * @private
+   * Triggers a resize of the map
+   */
+  _resizeMap() {
+    google.maps.event.trigger(get(this, '_map.content'), 'resize');
   }
 });
