@@ -4,6 +4,7 @@ import { default as get, getProperties } from 'ember-metal/get';
 import computed from 'ember-computed';
 
 import googleMap from 'ember-cli-g-maps/google-map';
+import loadGoogleMaps from 'ember-cli-g-maps/utils/load-google-maps';
 import layout from 'ember-cli-g-maps/templates/components/g-map';
 
 const GMAP_DEFAULTS = {
@@ -125,9 +126,12 @@ export default Component.extend({
      * Render Google Map to canvas data element
      */
     const canvas = this.element.querySelector('[data-g-map="canvas"]');
-    set(this, '_map', googleMap(canvas, options));
 
-    // TODO trigger resize on the map when the div changes size
-    // google.maps.event.trigger(map.content, 'resize')
+    loadGoogleMaps().then(() => {
+      set(this, '_map', googleMap(canvas, options));
+
+      // TODO trigger resize on the map when the div changes size
+      // google.maps.event.trigger(map.content, 'resize')
+    });
   }
 });
