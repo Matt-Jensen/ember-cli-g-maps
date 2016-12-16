@@ -27,6 +27,27 @@ export default Ember.Route.extend({
       istilt_changed: false,
       iszoom_changed: false,
       isloaded: false,
+
+      wasClick: false,
+      wasBounds_changed: false,
+      wasCenter_changed: false,
+      wasDblclick: false,
+      wasDrag: false,
+      wasDragend: false,
+      wasDragstart: false,
+      wasHeading_changed: false,
+      wasIdle: false,
+      wasMaptypeid_changed: false,
+      wasMousemove: false,
+      wasMouseout: false,
+      wasMouseover: false,
+      wasProjection_changed: false,
+      wasResize: false,
+      wasRightclick: false,
+      wasTilesloaded: false,
+      wasTilt_changed: false,
+      wasZoom_changed: false,
+      wasLoaded: false
     });
   },
 
@@ -53,8 +74,8 @@ export default Ember.Route.extend({
 
   actions: {
     click: function() {
-      console.log(...arguments);
       this.controller.set('isclick', true);
+      this.controller.set('wasClick', true);
       if(this.get('click_to')) {
         window.clearTimeout(this.get('click_to'));
       }
@@ -64,7 +85,8 @@ export default Ember.Route.extend({
       );
     },
     bounds_changed: function() {
-      this.controller.set('isbounds_changed',true);
+      this.controller.set('isbounds_changed', true);
+      this.controller.set('wasBounds_changed', true);
       if(this.get('bounds_changed_to')) {
         window.clearTimeout(this.get('bounds_changed_to'));
       }
@@ -75,6 +97,7 @@ export default Ember.Route.extend({
     },
     center_changed: function() {
       this.controller.set('iscenter_changed', true);
+      this.controller.set('wasCenter_changed', true);
       if(this.get('center_changed_to')) {
         window.clearTimeout(this.get('center_changed_to'));
       }
@@ -85,6 +108,7 @@ export default Ember.Route.extend({
     },
     dblclick: function() {
       this.controller.set('isdblclick', true);
+      this.controller.set('wasDblclick', true);
       if(this.get('dblclick_to')) {
         window.clearTimeout(this.get('dblclick_to'));
       }
@@ -95,6 +119,7 @@ export default Ember.Route.extend({
     },
     drag: function() {
       this.controller.set('isdrag', true);
+      this.controller.set('wasDrag', true);
       if(this.get('drag_to')) {
         window.clearTimeout(this.get('drag_to'));
       }
@@ -105,6 +130,7 @@ export default Ember.Route.extend({
     },
     dragend: function() {
       this.controller.set('isdragend', true);
+      this.controller.set('wasDragend', true);
       if(this.get('dragend_to')) {
         window.clearTimeout(this.get('dragend_to'));
       }
@@ -115,6 +141,7 @@ export default Ember.Route.extend({
     },
     dragstart: function() {
       this.controller.set('isdragstart', true);
+      this.controller.set('wasDragstart', true);
       if(this.get('dragstart_to')) {
         window.clearTimeout(this.get('dragstart_to'));
       }
@@ -125,6 +152,7 @@ export default Ember.Route.extend({
     },
     heading_changed: function() {
       this.controller.set('isheading_changed', true);
+      this.controller.set('wasHeading_changed', true);
       if(this.get('heading_changed_to')) {
         window.clearTimeout(this.get('heading_changed_to'));
       }
@@ -135,6 +163,7 @@ export default Ember.Route.extend({
     },
     idle: function() {
       this.controller.set('isidle', true);
+      this.controller.set('wasIdle', true);
       if(this.get('idle_to')) {
         window.clearTimeout(this.get('idle_to'));
       }
@@ -145,6 +174,7 @@ export default Ember.Route.extend({
     },
     maptypeid_changed: function() {
       this.controller.set('ismaptypeid_changed', true);
+      this.controller.set('wasMaptypeid_changed', true);
       if(this.get('maptypeid_changed_to')) {
         window.clearTimeout(this.get('maptypeid_changed_to'));
       }
@@ -155,6 +185,7 @@ export default Ember.Route.extend({
     },
     mousemove: function() {
       this.controller.set('ismousemove', true);
+      this.controller.set('wasMousemove', true);
       if(this.get('mousemove_to')) {
         window.clearTimeout(this.get('mousemove_to'));
       }
@@ -165,6 +196,7 @@ export default Ember.Route.extend({
     },
     mouseout: function() {
       this.controller.set('ismouseout', true);
+      this.controller.set('wasMouseout', true);
       if(this.get('mouseout_to')) {
         window.clearTimeout(this.get('mouseout_to'));
       }
@@ -175,6 +207,7 @@ export default Ember.Route.extend({
     },
     mouseover: function() {
       this.controller.set('ismouseover', true);
+      this.controller.set('wasMouseover', true);
       if(this.get('mouseover_to')) {
         window.clearTimeout(this.get('mouseover_to'));
       }
@@ -185,6 +218,7 @@ export default Ember.Route.extend({
     },
     projection_changed: function() {
       this.controller.set('isprojection_changed', true);
+      this.controller.set('wasProjection_changed', true);
       if(this.get('projection_changed_to')) {
         window.clearTimeout(this.get('projection_changed_to'));
       }
@@ -195,6 +229,7 @@ export default Ember.Route.extend({
     },
     resize: function() {
       this.controller.set('isresize', true);
+      this.controller.set('wasResize', true);
       if(this.get('resize_to')) {
         window.clearTimeout(this.get('resize_to'));
       }
@@ -205,6 +240,7 @@ export default Ember.Route.extend({
     },
     rightclick: function() {
       this.controller.set('isrightclick', true);
+      this.controller.set('wasRightclick', true);
       if(this.get('rightclick_to')) {
         window.clearTimeout(this.get('rightclick_to'));
       }
@@ -215,6 +251,7 @@ export default Ember.Route.extend({
     },
     tilesloaded: function() {
       this.controller.set('istilesloaded', true);
+      this.controller.set('wasTilesloaded', true);
       if(this.get('tilesloaded_to')) {
         window.clearTimeout(this.get('tilesloaded_to'));
       }
@@ -225,6 +262,7 @@ export default Ember.Route.extend({
     },
     tilt_changed: function() {
       this.controller.set('istilt_changed', true);
+      this.controller.set('wasTilt_changed', true);
       if(this.get('tilt_changed_to')) {
         window.clearTimeout(this.get('tilt_changed_to'));
       }
@@ -235,6 +273,7 @@ export default Ember.Route.extend({
     },
     zoom_changed: function() {
       this.controller.set('iszoom_changed', true);
+      this.controller.set('wasZoom_changed', true);
       if(this.get('zoom_changed_to')) {
         window.clearTimeout(this.get('zoom_changed_to'));
       }
@@ -245,6 +284,7 @@ export default Ember.Route.extend({
     },
     loaded: function() {
       this.controller.set('isloaded', true);
+      this.controller.set('wasLoaded', true);
       if(this.get('loaded_to')) {
         window.clearTimeout(this.get('loaded_to'));
       }
@@ -252,10 +292,39 @@ export default Ember.Route.extend({
         'loaded_to',
         window.setTimeout(() => this._debounceRemove('isloaded'), 300)
       );
+    },
+
+    willTransition() {
+      this.controller.setProperties({
+        'wasClick': false,
+        'wasBounds_changed': false,
+        'wasCenter_changed': false,
+        'wasDblclick': false,
+        'wasDrag': false,
+        'wasDragend': false,
+        'wasDragstart': false,
+        'wasHeading_changed': false,
+        'wasIdle': false,
+        'wasMaptypeid_changed': false,
+        'wasMousemove': false,
+        'wasMouseout': false,
+        'wasMouseover': false,
+        'wasProjection_changed': false,
+        'wasResize': false,
+        'wasRightclick': false,
+        'wasTilesloaded': false,
+        'wasTilt_changed': false,
+        'wasZoom_changed': false,
+        'wasLoaded': false
+      });
     }
   },
 
   _debounceRemove(event) {
-    this.controller.set(event, false);
+    Ember.run(() => {
+      if (this.controller.isDestroyed === false) {
+        this.controller.set(event, false);
+      }
+    });
   }
 });

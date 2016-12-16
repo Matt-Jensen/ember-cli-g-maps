@@ -29,63 +29,63 @@
 
 <h3 class="grid-content -npl">Events States</h3>
 
-<div class="grid-block -pb">
+<div id="g-map-event-states" class="grid-block -pb">
   <div class="grid-content small-12 medium-3 -smb">
-    <div class="gmaps-fade-text {{if isclick '-fade'}}">click</div>
-    <div class="gmaps-fade-text {{if isbounds_changed '-fade'}}">bounds_changed</div>
-    <div class="gmaps-fade-text {{if iscenter_changed '-fade'}}">center_changed</div>
-    <div class="gmaps-fade-text {{if isdblclick '-fade'}}">dblclick</div>
-    <div class="gmaps-fade-text {{if isdrag '-fade'}}">drag</div>
-    <div class="gmaps-fade-text {{if isdragend '-fade'}}">dragend</div>
-    <div class="gmaps-fade-text {{if isdragstart '-fade'}}">dragstart</div>
+    <div class="gmaps-fade-text {{if isclick '-fade'}}" data-test-updated={{if wasClick 'click'}}>click</div>
+    <div class="gmaps-fade-text {{if isbounds_changed '-fade'}}" data-test-updated={{if wasBounds_changed 'bounds_changed'}}>bounds_changed</div>
+    <div class="gmaps-fade-text {{if iscenter_changed '-fade'}}" data-test-updated={{if wasCenter_changed 'center_changed'}}>center_changed</div>
+    <div class="gmaps-fade-text {{if isdblclick '-fade'}}" data-test-updated={{if wasDblclick 'dblclick'}}>dblclick</div>
+    <div class="gmaps-fade-text {{if isdrag '-fade'}}" data-test-updated={{if wasDrag 'drag'}}>drag</div>
+    <div class="gmaps-fade-text {{if isdragend '-fade'}}" data-test-updated={{if wasDragend 'dragend'}}>dragend</div>
+    <div class="gmaps-fade-text {{if isdragstart '-fade'}}" data-test-updated={{if wasDragstart 'dragstart'}}>dragstart</div>
   </div>
 
   <div class="grid-content small-12 medium-3 -smb">
-    <div class="gmaps-fade-text {{if isheading_changed '-fade'}}">heading_changed</div>
-    <div class="gmaps-fade-text {{if isidle '-fade'}}">idle</div>
-    <div class="gmaps-fade-text {{if ismaptypeid_changed '-fade'}}">maptypeid_changed</div>
-    <div class="gmaps-fade-text {{if ismousemove '-fade'}}">mousemove</div>
-    <div class="gmaps-fade-text {{if ismouseout '-fade'}}">mouseout</div>
-    <div class="gmaps-fade-text {{if ismouseover '-fade'}}">mouseover</div>
-    <div class="gmaps-fade-text {{if isprojection_changed '-fade'}}">projection_changed</div>
+    <div class="gmaps-fade-text {{if isheading_changed '-fade'}}" data-test-updated={{if wasHeading_changed 'heading_changed'}}>heading_changed</div>
+    <div class="gmaps-fade-text {{if isidle '-fade'}}" data-test-updated={{if wasIdle 'idle'}}>idle</div>
+    <div class="gmaps-fade-text {{if ismaptypeid_changed '-fade'}}" data-test-updated={{if wasMaptypeid_changed 'maptypeid_changed'}}>maptypeid_changed</div>
+    <div class="gmaps-fade-text {{if ismousemove '-fade'}}" data-test-updated={{if wasMousemove 'mousemove'}}>mousemove</div>
+    <div class="gmaps-fade-text {{if ismouseout '-fade'}}" data-test-updated={{if wasMouseout 'mouseout'}}>mouseout</div>
+    <div class="gmaps-fade-text {{if ismouseover '-fade'}}" data-test-updated={{if wasMouseover 'mouseover'}}>mouseover</div>
+    <div class="gmaps-fade-text {{if isprojection_changed '-fade'}}" data-test-updated={{if wasProjection_changed 'projection_changed'}}>projection_changed</div>
   </div>
 
   <div class="grid-content small-12 medium-3 -smb">
-    <div class="gmaps-fade-text {{if isresize '-fade'}}">resize</div>
-    <div class="gmaps-fade-text {{if isrightclick '-fade'}}">rightclick</div>
-    <div class="gmaps-fade-text {{if istilesloaded '-fade'}}">tilesloaded</div>
-    <div class="gmaps-fade-text {{if istilt_changed '-fade'}}">tilt_changed</div>
-    <div class="gmaps-fade-text {{if iszoom_changed '-fade'}}">zoom_changed</div>
-    <div class="gmaps-fade-text {{if isloaded '-fade'}}">loaded</div>
+    <div class="gmaps-fade-text {{if isresize '-fade'}}" data-test-updated={{if wasResize 'resize'}}>resize</div>
+    <div class="gmaps-fade-text {{if isrightclick '-fade'}}" data-test-updated={{if wasRightclick 'rightclick'}}>rightclick</div>
+    <div class="gmaps-fade-text {{if istilesloaded '-fade'}}" data-test-updated={{if wasTilesloaded 'tilesloaded'}}>tilesloaded</div>
+    <div class="gmaps-fade-text {{if istilt_changed '-fade'}}" data-test-updated={{if wasTilt_changed 'tilt_changed'}}>tilt_changed</div>
+    <div class="gmaps-fade-text {{if iszoom_changed '-fade'}}" data-test-updated={{if wasZoom_changed 'zoom_changed'}}>zoom_changed</div>
+    <div class="gmaps-fade-text {{if isloaded '-fade'}}" data-test-updated={{if wasLoaded 'loaded'}}>loaded</div>
   </div>
 </div>
 
 <div class="grid-content -np -mb">
-  {{g-maps 
+  {{g-map
     class="gmaps-docs-map"
     lat=lat
     lng=lng
     zoom=zoom
-    click="click"
-    bounds_changed="bounds_changed"
-    center_changed="center_changed"
-    dblclick="dblclick"
-    drag="drag"
-    dragend="dragend"
-    dragstart="dragstart"
-    heading_changed="heading_changed"
-    idle="idle"
-    maptypeid_changed="maptypeid_changed"
-    mousemove="mousemove"
-    mouseout="mouseout"
-    mouseover="mouseover"
-    projection_changed="projection_changed"
-    resize="resize"
-    rightclick="rightclick"
-    tilesloaded="tilesloaded"
-    zoom_changed="zoom_changed"
-    tilt_changed="tilt_changed"
-    loaded="loaded"}}
+    bounds_changed=(route-action "bounds_changed")
+    center_changed=(route-action "center_changed")
+    click=(route-action "click")
+    dblclick=(route-action "dblclick")
+    drag=(route-action "drag")
+    dragend=(route-action "dragend")
+    dragstart=(route-action "dragstart")
+    heading_changed=(route-action "heading_changed")
+    idle=(route-action "idle")
+    loaded=(route-action "loaded")
+    maptypeid_changed=(route-action "maptypeid_changed")
+    mousemove=(route-action "mousemove")
+    mouseout=(route-action "mouseout")
+    mouseover=(route-action "mouseover")
+    projection_changed=(route-action "projection_changed")
+    resize=(route-action "resize")
+    rightclick=(route-action "rightclick")
+    tilesloaded=(route-action "tilesloaded")
+    tilt_changed=(route-action "tilt_changed")
+    zoom_changed=(route-action "zoom_changed")}}
 </div>
 
 <hr>
