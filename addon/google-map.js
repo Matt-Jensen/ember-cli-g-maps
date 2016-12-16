@@ -520,7 +520,7 @@ export default function googleMap(element, options = {}) {
    */
   const initalDefaults = Object.create(null);
   if (options.backgroundColor) {
-    initalDefaults.backgroundColor;
+    initalDefaults.backgroundColor = options.backgroundColor;
   }
 
   const proxy = GoogleMapProxy.create({
