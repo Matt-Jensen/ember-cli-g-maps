@@ -13,13 +13,16 @@ const MAP_DEFAULTS = {
 
 export const GoogleMapProxy = Ember.ObjectProxy.extend({
   /**
-   * @type {Object}
+   * @type {Object|Undefined}
    * Update the center of the Google Map instance via LatLng/LatLngLiterals
    */
   center: computed({
     get() {
       const center = this.content.getCenter();
-      return { lat: center.lat(), lng: center.lng() };
+
+      if (center) {
+        return { lat: center.lat(), lng: center.lng() };
+      }
     },
 
     set(key, value) {
@@ -512,9 +515,6 @@ export const GoogleMapProxy = Ember.ObjectProxy.extend({
 export default function googleMap(element, options = {}) {
   assert('element must an HTMLElement', element instanceof HTMLElement);
 
-  let settings = assign({}, MAP_DEFAULTS);
-  assign(settings, options);
-
   /*
    * Background color will only take effect if set on inital options
    */
@@ -527,6 +527,9 @@ export default function googleMap(element, options = {}) {
     //  Google Map instance
     content: new google.maps.Map(element, assign(initalDefaults, MAP_DEFAULTS))
   });
+
+  let settings = assign({}, MAP_DEFAULTS);
+  assign(settings, options);
 
   // Set map defaults via proxy API
   Object.keys(settings).forEach((key) =>
