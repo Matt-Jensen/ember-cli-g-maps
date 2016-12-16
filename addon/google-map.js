@@ -439,6 +439,7 @@ export const GoogleMapProxy = Ember.ObjectProxy.extend({
   /**
    * @type {Number}
    * view perspective if availble for map type and zoom
+   * NOTE many factors can affect the map's tilt so this property is volatile
    */
   tilt: computed({
     get() {
@@ -449,9 +450,9 @@ export const GoogleMapProxy = Ember.ObjectProxy.extend({
       assert('tilt was set without a number', typeof value === 'number');
       assert('tilt is not `0` or `45`', value === 0 || value === 45);
       this.content.setTilt(value);
-      return value;
+      return this.content.getTilt();
     }
-  }),
+  }).volatile(),
 
   /**
    * @type {Number}
