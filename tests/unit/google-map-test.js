@@ -45,64 +45,6 @@ test('it allows valid updates of the map center', function(assert) {
 
   assert.equal(map.get('center.lat'), expected.lat, 'updated latitude via LatLng');
   assert.equal(map.get('center.lng'), expected.lng, 'updated longitude via LatLng');
-
-});
-
-test('it returns the minZoom', function(assert) {
-  const expected = 2;
-  const map = googleMap(document.createElement('div'), {minZoom: expected});
-  assert.equal(map.get('minZoom'), expected, 'resolves default min zoom');
-});
-
-test('it only allows setting a valid min zoom', function(assert) {
-  const map = googleMap(document.createElement('div'), {maxZoom: 5});
-  assert.throws(() => map.set('minZoom', 5), 'does not allow min zoom above max zoom');
-  assert.equal(map.set('minZoom', 4), map.content.minZoom, 'updated min zoom of map');
-});
-
-test('it returns the maxZoom', function(assert) {
-  const expected = 5;
-  const map = googleMap(document.createElement('div'), {maxZoom: expected});
-  assert.equal(map.get('maxZoom'), expected, 'resolves default max zoom');
-});
-
-test('it only allows setting a valid max zoom', function(assert) {
-  const map = googleMap(document.createElement('div'), {minZoom: 5});
-  assert.throws(() => map.set('maxZoom', 5), 'does not allow max zoom below min zoom');
-  assert.equal(map.set('maxZoom', 6), map.content.maxZoom, 'updated max zoom of map');
-});
-
-test('it returns the zoom level', function(assert) {
-  const expected = 5;
-  const map = googleMap(document.createElement('div'), {zoom: expected});
-  assert.equal(map.get('zoom'), expected, 'resolves correct zoom level');
-});
-
-test('it allows setting a valid zoom level', function(assert) {
-  const expected = 4;
-  const map = googleMap(document.createElement('div'), {minZoom: 1, maxZoom: 10});
-  assert.throws(() => map.set('zoom', 0), 'does not set below minimum');
-  assert.throws(() => map.set('zoom', 11), 'does not set above maximum');
-
-  map.set('zoom', expected);
-
-  assert.equal(map.content.getZoom(), expected, 'updated zoom of map');
-});
-
-test('it returns the map type id', function(assert) {
-  const expected = 'HYBRID';
-  const map = googleMap(document.createElement('div'), {mapTypeId: expected});
-  assert.equal(map.get('mapTypeId'), expected, 'resolves configured map type');
-});
-
-test('it allows setting a valid map type id', function(assert) {
-  const expected = 'SATELLITE';
-  const map = googleMap(document.createElement('div'));
-
-  assert.throws(() => map.set('mapTypeId', 'invalid'), 'only accepts valid map type ids');
-
-  map.set('mapTypeId', expected.toLowerCase());
-  assert.equal(map.content.getMapTypeId().toUpperCase(), expected, 'resolves new map type id');
 });
 
 test('it returns the map clickableIcons', function(assert) {
@@ -121,39 +63,6 @@ test('it allows setting a valid clickable icons', function(assert) {
   assert.equal(map.content.getClickableIcons(), expected, 'resolves new clickable icons');
 });
 
-test('it returns the map tilt', function(assert) {
-  const expected = 0; // NOTE 45 creates an unreliable test condition
-  const map = googleMap(document.createElement('div'), {tilt: expected});
-  assert.equal(map.get('tilt'), expected, 'resolves configured tilt');
-});
-
-test('it only calls `setTilt` with a valid tilt perspective', function(assert) {
-  const map = googleMap(document.createElement('div'));
-  assert.throws(() => map.set('tilt', 32), 'does not allow invalid tilt values');
-
-  let wasCalled = false;
-  map.content.setTilt = () => wasCalled = true;
-
-  map.set('tilt', 45);
-  assert.equal(wasCalled, true, 'updated tilt of map');
-});
-
-test('it returns the map heading', function(assert) {
-  const expected = 0;
-  const map = googleMap(document.createElement('div'), {heading: expected});
-  assert.equal(map.get('heading'), expected, 'resolves configured heading');
-});
-
-test('it only allows setting a valid heading', function(assert) {
-  const expected = 0;
-  const map = googleMap(document.createElement('div'), {heading: 1});
-
-  assert.throws(() => map.set('heading', 'non-number'), 'only accepts numeric value');
-
-  map.set('heading', expected);
-  assert.equal(map.content.getHeading(), expected, 'resolves new heading');
-});
-
 test('it returns the map fullscreen control options', function(assert) {
   const expected = 'BOTTOM_RIGHT';
   const map = googleMap(document.createElement('div'), {fullscreenControlOptions: expected});
@@ -168,6 +77,22 @@ test('it only allows setting valid fullscreen control options', function(assert)
 
   map.set('fullscreenControlOptions', expected);
   assert.equal(map.get('fullscreenControlOptions'), expected, 'resolves new fullscreenControlOptions');
+});
+
+test('it returns the heading', function(assert) {
+  const expected = 0;
+  const map = googleMap(document.createElement('div'), {heading: expected});
+  assert.equal(map.get('heading'), expected, 'resolves configured heading');
+});
+
+test('it only allows setting a valid heading', function(assert) {
+  const expected = 0;
+  const map = googleMap(document.createElement('div'), {heading: 1});
+
+  assert.throws(() => map.set('heading', 'non-number'), 'only accepts numeric value');
+
+  map.set('heading', expected);
+  assert.equal(map.content.getHeading(), expected, 'resolves new heading');
 });
 
 test('it returns the map type control options', function(assert) {
@@ -193,6 +118,46 @@ test('it only allows setting valid map type control options', function(assert) {
   map.set('mapTypeControlOptions', expected);
   assert.ok(Boolean(map.content.mapTypeControlOptions), 'updates map instance type control options');
   assert.deepEqual(map.get('mapTypeControlOptions'), expected, 'resolves new mapTypeControlOptions');
+});
+
+test('it returns the map type id', function(assert) {
+  const expected = 'HYBRID';
+  const map = googleMap(document.createElement('div'), {mapTypeId: expected});
+  assert.equal(map.get('mapTypeId'), expected, 'resolves configured map type');
+});
+
+test('it allows setting a valid map type id', function(assert) {
+  const expected = 'SATELLITE';
+  const map = googleMap(document.createElement('div'));
+
+  assert.throws(() => map.set('mapTypeId', 'invalid'), 'only accepts valid map type ids');
+
+  map.set('mapTypeId', expected.toLowerCase());
+  assert.equal(map.content.getMapTypeId().toUpperCase(), expected, 'resolves new map type id');
+});
+
+test('it returns the maxZoom', function(assert) {
+  const expected = 5;
+  const map = googleMap(document.createElement('div'), {maxZoom: expected});
+  assert.equal(map.get('maxZoom'), expected, 'resolves default max zoom');
+});
+
+test('it only allows setting a valid max zoom', function(assert) {
+  const map = googleMap(document.createElement('div'), {minZoom: 5});
+  assert.throws(() => map.set('maxZoom', 5), 'does not allow max zoom below min zoom');
+  assert.equal(map.set('maxZoom', 6), map.content.maxZoom, 'updated max zoom of map');
+});
+
+test('it returns the minZoom', function(assert) {
+  const expected = 2;
+  const map = googleMap(document.createElement('div'), {minZoom: expected});
+  assert.equal(map.get('minZoom'), expected, 'resolves default min zoom');
+});
+
+test('it only allows setting a valid min zoom', function(assert) {
+  const map = googleMap(document.createElement('div'), {maxZoom: 5});
+  assert.throws(() => map.set('minZoom', 5), 'does not allow min zoom above max zoom');
+  assert.equal(map.set('minZoom', 4), map.content.minZoom, 'updated min zoom of map');
 });
 
 test('it returns the pan control options', function(assert) {
@@ -243,6 +208,23 @@ test('it only allows setting valid scale control options', function(assert) {
   assert.equal(map.get('scaleControlOptions'), expected, 'resolves new scaleControlOptions');
 });
 
+test('it returns the street view', function(assert) {
+  const expected = new google.maps.StreetViewPanorama(document.createElement('div'));
+  const map = googleMap(document.createElement('div'), {streetView: expected});
+  assert.equal(map.get('streetView'), expected, 'resolves configured streetView');
+});
+
+test('it only allows setting a valid street view', function(assert) {
+  const expected = new google.maps.StreetViewPanorama(document.createElement('div'));
+  const map = googleMap(document.createElement('div'));
+  const badStreetView = googleMap(document.createElement('div'));
+
+  assert.throws(() => map.set('streetView', badStreetView), 'only accepts a street view instance');
+
+  map.set('streetView', expected);
+  assert.equal(map.get('streetView'), expected, 'resolves new street view');
+});
+
 test('it returns the street view control options', function(assert) {
   const expected = 'BOTTOM_RIGHT';
   const map = googleMap(document.createElement('div'), {streetViewControlOptions: expected});
@@ -257,6 +239,40 @@ test('it only allows setting valid street view control options', function(assert
 
   map.set('streetViewControlOptions', expected);
   assert.equal(map.get('streetViewControlOptions'), expected, 'resolves new streetViewControlOptions');
+});
+
+test('it returns the map tilt', function(assert) {
+  const expected = 0; // NOTE 45 creates an unreliable test condition
+  const map = googleMap(document.createElement('div'), {tilt: expected});
+  assert.equal(map.get('tilt'), expected, 'resolves configured tilt');
+});
+
+test('it only calls `setTilt` with a valid tilt perspective', function(assert) {
+  const map = googleMap(document.createElement('div'));
+  assert.throws(() => map.set('tilt', 32), 'does not allow invalid tilt values');
+
+  let wasCalled = false;
+  map.content.setTilt = () => wasCalled = true;
+
+  map.set('tilt', 45);
+  assert.equal(wasCalled, true, 'updated tilt of map');
+});
+
+test('it returns the zoom level', function(assert) {
+  const expected = 5;
+  const map = googleMap(document.createElement('div'), {zoom: expected});
+  assert.equal(map.get('zoom'), expected, 'resolves correct zoom level');
+});
+
+test('it allows setting a valid zoom level', function(assert) {
+  const expected = 4;
+  const map = googleMap(document.createElement('div'), {minZoom: 1, maxZoom: 10});
+  assert.throws(() => map.set('zoom', 0), 'does not set below minimum');
+  assert.throws(() => map.set('zoom', 11), 'does not set above maximum');
+
+  map.set('zoom', expected);
+
+  assert.equal(map.content.getZoom(), expected, 'updated zoom of map');
 });
 
 test('it returns the zoom control options', function(assert) {
@@ -275,29 +291,13 @@ test('it only allows setting valid zoom control options', function(assert) {
   assert.equal(map.get('zoomControlOptions'), expected, 'resolves new zoomControlOptions');
 });
 
-test('it returns the street view', function(assert) {
-  const expected = new google.maps.StreetViewPanorama(document.createElement('div'));
-  const map = googleMap(document.createElement('div'), {streetView: expected});
-  assert.equal(map.get('streetView'), expected, 'resolves configured streetView');
-});
-
-test('it only allows setting a valid street view', function(assert) {
-  const expected = new google.maps.StreetViewPanorama(document.createElement('div'));
-  const map = googleMap(document.createElement('div'));
-  const badStreetView = googleMap(document.createElement('div'));
-
-  assert.throws(() => map.set('streetView', badStreetView), 'only accepts a street view instance');
-
-  map.set('streetView', expected);
-  assert.equal(map.get('streetView'), expected, 'resolves new street view');
-});
-
 test('it returns the static map properties', function(assert) {
   const expected = {
     disableDefaultUI: true,
     disableDoubleClickZoom: true,
     draggable: false,
     draggableCursor: 'pointer',
+    draggingCursor: 'pointer',
     fullscreenControl: false,
     gestureHandling: 'greedy',
     keyboardShortcuts: false,
@@ -321,6 +321,7 @@ test('it returns the static map properties', function(assert) {
   assert.equal(map.get('disableDoubleClickZoom'), expected.disableDoubleClickZoom, 'resolves configured disableDoubleClickZoom');
   assert.equal(map.get('draggable'), expected.draggable, 'resolves configured draggable');
   assert.equal(map.get('draggableCursor'), expected.draggableCursor, 'resolves configured draggableCursor');
+  assert.equal(map.get('draggingCursor'), expected.draggingCursor, 'resolves configured draggingCursor');
   assert.equal(map.get('fullscreenControl'), expected.fullscreenControl, 'resolves configured fullscreenControl');
   assert.equal(map.get('gestureHandling'), expected.gestureHandling, 'resolves configured gestureHandling');
   assert.equal(map.get('keyboardShortcuts'), expected.keyboardShortcuts, 'resolves configured keyboardShortcuts');
@@ -342,6 +343,7 @@ test('it only allows setting valid static map properties', function(assert) {
     disableDoubleClickZoom: true,
     draggable: false,
     draggableCursor: 'pointer',
+    draggingCursor: 'pointer',
     fullscreenControl: false,
     gestureHandling: 'greedy',
     keyboardShortcuts: false,
@@ -365,6 +367,7 @@ test('it only allows setting valid static map properties', function(assert) {
   assert.throws(() => map.set('disableDoubleClickZoom', 'non-boolean'), 'only accepts boolean value');
   assert.throws(() => map.set('draggable', 'non-boolean'), 'only accepts boolean value');
   assert.throws(() => map.set('draggableCursor', 4), 'only accepts string value');
+  assert.throws(() => map.set('draggingCursor', 4), 'only accepts string value');
   assert.throws(() => map.set('fullscreenControl', 'non-boolean'), 'only accepts boolean value');
   assert.throws(() => map.set('gestureHandling', 4), 'only accepts string value');
   assert.throws(() => map.set('keyboardShortcuts', 'non-boolean'), 'only accepts boolean value');
@@ -385,6 +388,7 @@ test('it only allows setting valid static map properties', function(assert) {
   assert.equal(map.get('disableDoubleClickZoom'), expected.disableDoubleClickZoom, 'resolves new disableDoubleClickZoom');
   assert.equal(map.get('draggable'), expected.draggable, 'resolves new draggable');
   assert.equal(map.get('draggableCursor'), expected.draggableCursor, 'resolves new draggableCursor');
+  assert.equal(map.get('draggingCursor'), expected.draggingCursor, 'resolves new draggingCursor');
   assert.equal(map.get('fullscreenControl'), expected.fullscreenControl, 'resolves new fullscreenControl');
   assert.equal(map.get('gestureHandling'), expected.gestureHandling, 'resolves new gestureHandling');
   assert.equal(map.get('keyboardShortcuts'), expected.keyboardShortcuts, 'resolves new keyboardShortcuts');

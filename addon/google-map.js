@@ -33,80 +33,6 @@ export const GoogleMapProxy = Ember.ObjectProxy.extend({
   }),
 
   /**
-   * @type {Number}
-   * Map minimum zoom level
-   */
-  minZoom: computed({
-    get() {
-      return this.content.minZoom;
-    },
-
-    set(key, value) {
-      assert('minZoom was set without number', typeof value === 'number');
-      assert('minZoom was set above maxZoom', value < this.get('maxZoom'));
-      return this.content.minZoom = value;
-    }
-  }),
-
-  /**
-   * @type {Number}
-   * Map maximum zoom level
-   */
-  maxZoom: computed({
-    get() {
-      return this.content.maxZoom;
-    },
-
-    set(key, value) {
-      assert('maxZoom was set without number', typeof value);
-      assert('maxZoom was set below minZoom', value > this.get('minZoom'));
-      return this.content.maxZoom = value;
-    }
-  }),
-
-  /**
-   * @type {Number}
-   * Map zoom level
-   */
-  zoom: computed({
-    get() {
-      return this.content.getZoom();
-    },
-
-    set(key, value) {
-      const min = this.get('minZoom');
-      const max = this.get('maxZoom');
-
-      assert('zoom was set without a number', typeof value === 'number');
-      assert('zoom was set above maxZoom', value <= max);
-      assert('zoom was set below minZoom', value >= min);
-
-      this.content.setZoom(value);
-      return value;
-    }
-  }),
-
-  /**
-   * @type {String}
-   * Type of map rendered, via map type
-   */
-  mapTypeId: computed({
-    get() {
-      return getMapType(this.content.getMapTypeId());
-    },
-
-    set(key, value) {
-      assert('mapTypeId was set without a string', typeof value === 'string');
-
-      const mapTypeId = getMapTypesId(value);
-      assert('mapTypeId is not a valid map type', mapTypeId);
-
-      this.content.setMapTypeId(mapTypeId);
-      return getMapType(mapTypeId);
-    }
-  }),
-
-  /**
    * @type {Boolean}
    * Point of interest icon clickablity
    */
@@ -123,36 +49,57 @@ export const GoogleMapProxy = Ember.ObjectProxy.extend({
   }),
 
   /**
-   * @type {Number}
-   * view perspective if availble for map type and zoom
+   * @type {Boolean}
+   * Enables/disables all default UI
    */
-  tilt: computed({
-    get() {
-      return this.content.getTilt();
-    },
-
-    set(key, value) {
-      assert('tilt was set without a number', typeof value === 'number');
-      assert('tilt is not `0` or `45`', value === 0 || value === 45);
-      this.content.setTilt(value);
-      return value;
-    }
+  disableDefaultUI: computed({
+    get: getStaticMapOption,
+    set: setStaticMapBooleanOption
   }),
 
   /**
-   * @type {Number}
-   * Heading for aerial imagery
+   * @type {Boolean}
+   * Enables/disables zoom and center on double click
    */
-  heading: computed({
-    get() {
-      return this.content.getHeading();
-    },
+  disableDoubleClickZoom: computed({
+    get: getStaticMapOption,
+    set: setStaticMapBooleanOption
+  }),
 
-    set(key, heading) {
-      assert('heading was set without a number', typeof heading === 'number');
-      this.content.setHeading(heading);
-      return heading;
-    }
+  /**
+   * @type {Boolean}
+   * If false, prevents the map from being dragged
+   */
+  draggable: computed({
+    get: getStaticMapOption,
+    set: setStaticMapBooleanOption
+  }),
+
+  /**
+   * @type {String}
+   * The name or url of the cursor to display when mousing over a draggable map
+   */
+  draggableCursor: computed({
+    get: getStaticMapOption,
+    set: setStaticMapStringOption
+  }),
+
+  /**
+   * @type {String}
+   * The name or url of the cursor to display when the map is being dragged
+   */
+  draggingCursor: computed({
+    get: getStaticMapOption,
+    set: setStaticMapStringOption
+  }),
+
+  /**
+   * @type {Boolean}
+   * The enabled/disabled state of the Fullscreen control
+   */
+  fullscreenControl: computed({
+    get: getStaticMapOption,
+    set: setStaticMapBooleanOption
   }),
 
   /**
@@ -174,6 +121,49 @@ export const GoogleMapProxy = Ember.ObjectProxy.extend({
 
       return getControlPosition(id);
     }
+  }),
+
+  /**
+   * @type {String}
+   * Controls how gestures on the map are handled
+   */
+  gestureHandling: computed({
+    get: getStaticMapOption,
+    set: setStaticMapStringOption
+  }),
+
+  /**
+   * @type {Number}
+   * Heading for aerial imagery
+   */
+  heading: computed({
+    get() {
+      return this.content.getHeading();
+    },
+
+    set(key, heading) {
+      assert('heading was set without a number', typeof heading === 'number');
+      this.content.setHeading(heading);
+      return heading;
+    }
+  }),
+
+  /**
+   * @type {Boolean}
+   * If false, prevents the map from being controlled by the keyboard
+  */
+  keyboardShortcuts: computed({
+    get: getStaticMapOption,
+    set: setStaticMapBooleanOption
+  }),
+
+  /**
+   * @type {Boolean}
+   * The initial enabled/disabled state of the Map type control
+   */
+  mapTypeControl: computed({
+    get: getStaticMapOption,
+    set: setStaticMapBooleanOption
   }),
 
   /**
@@ -217,6 +207,76 @@ export const GoogleMapProxy = Ember.ObjectProxy.extend({
 
   /**
    * @type {String}
+   * Type of map rendered, via map type
+   */
+  mapTypeId: computed({
+    get() {
+      return getMapType(this.content.getMapTypeId());
+    },
+
+    set(key, value) {
+      assert('mapTypeId was set without a string', typeof value === 'string');
+
+      const mapTypeId = getMapTypesId(value);
+      assert('mapTypeId is not a valid map type', mapTypeId);
+
+      this.content.setMapTypeId(mapTypeId);
+      return getMapType(mapTypeId);
+    }
+  }),
+
+  /**
+   * @type {Number}
+   * Map maximum zoom level
+   */
+  maxZoom: computed({
+    get() {
+      return this.content.maxZoom;
+    },
+
+    set(key, value) {
+      assert('maxZoom was set without number', typeof value);
+      assert('maxZoom was set below minZoom', value > this.get('minZoom'));
+      return this.content.maxZoom = value;
+    }
+  }),
+
+  /**
+   * @type {Number}
+   * Map minimum zoom level
+   */
+  minZoom: computed({
+    get() {
+      return this.content.minZoom;
+    },
+
+    set(key, value) {
+      assert('minZoom was set without number', typeof value === 'number');
+      assert('minZoom was set above maxZoom', value < this.get('maxZoom'));
+      return this.content.minZoom = value;
+    }
+  }),
+
+  /**
+   * @type {Boolean}
+   * If true, do not clear the contents of the Map div
+   */
+  noClear: computed({
+    get: getStaticMapOption,
+    set: setStaticMapBooleanOption
+  }),
+
+  /**
+   * @type {Boolean}
+   * The enabled/disabled state of the Pan control
+   */
+  panControl: computed({
+    get: getStaticMapOption,
+    set: setStaticMapBooleanOption
+  }),
+
+  /**
+   * @type {String}
    * Position to render the pan control
    * NOTE replaced configuration object with string
    */
@@ -234,6 +294,15 @@ export const GoogleMapProxy = Ember.ObjectProxy.extend({
 
       return getControlPosition(id);
     }
+  }),
+
+  /**
+   * @type {Boolean}
+   * The enabled/disabled state of the Rotate control
+   */
+  rotateControl: computed({
+    get: getStaticMapOption,
+    set: setStaticMapBooleanOption
   }),
 
   /**
@@ -258,6 +327,15 @@ export const GoogleMapProxy = Ember.ObjectProxy.extend({
   }),
 
   /**
+   * @type {Boolean}
+   * The initial enabled/disabled state of the Scale control
+   */
+  scaleControl: computed({
+    get: getStaticMapOption,
+    set: setStaticMapBooleanOption
+  }),
+
+  /**
    * @type {String}
    * Style to render the scale control with
    * NOTE replaced configuration object with string
@@ -276,6 +354,49 @@ export const GoogleMapProxy = Ember.ObjectProxy.extend({
 
       return getScaleControlStyle(id);
     }
+  }),
+
+  /**
+   * @type {Boolean}
+   * The initial enabled/disabled state of the Scale control
+   */
+  scrollwheel: computed({
+    get: getStaticMapOption,
+    set: setStaticMapBooleanOption
+  }),
+
+  /**
+   * @type {Boolean}
+   * The enabled/disabled state of the sign in control
+   */
+  signInControl: computed({
+    get: getStaticMapOption,
+    set: setStaticMapBooleanOption
+  }),
+
+  /**
+   * @type {google.maps.StreetViewPanorama}
+   * Set the street view panorama used by the map
+   */
+  streetView: computed({
+    get() {
+      return this.content.streetView;
+    },
+
+    set(key, value) {
+      assert('streetView was set without a StreetViewPanorama instance', value instanceof google.maps.StreetViewPanorama);
+      this.content.setOptions({streetView: value});
+      return value;
+    }
+  }),
+
+  /**
+   * @type {Boolean}
+   * The initial enabled/disabled state of the Street View Pegman control
+   */
+  streetViewControl: computed({
+    get: getStaticMapOption,
+    set: setStaticMapBooleanOption
   }),
 
   /**
@@ -300,6 +421,67 @@ export const GoogleMapProxy = Ember.ObjectProxy.extend({
   }),
 
   /**
+   * @type {Array<Object>}
+   * Styles to apply to each of the default map types
+   */
+  styles: computed({
+    get: getStaticMapOption,
+    set(key, styles) {
+      assert('styles was set without array', styles instanceof Array);
+      this.content.setOptions({styles});
+      return styles;
+    }
+  }),
+
+  /**
+   * @type {Number}
+   * view perspective if availble for map type and zoom
+   */
+  tilt: computed({
+    get() {
+      return this.content.getTilt();
+    },
+
+    set(key, value) {
+      assert('tilt was set without a number', typeof value === 'number');
+      assert('tilt is not `0` or `45`', value === 0 || value === 45);
+      this.content.setTilt(value);
+      return value;
+    }
+  }),
+
+  /**
+   * @type {Number}
+   * Map zoom level
+   */
+  zoom: computed({
+    get() {
+      return this.content.getZoom();
+    },
+
+    set(key, value) {
+      const min = this.get('minZoom');
+      const max = this.get('maxZoom');
+
+      assert('zoom was set without a number', typeof value === 'number');
+      assert('zoom was set above maxZoom', value <= max);
+      assert('zoom was set below minZoom', value >= min);
+
+      this.content.setZoom(value);
+      return value;
+    }
+  }),
+
+  /**
+   * @type {Boolean}
+   * The enabled/disabled state of the Zoom control
+   */
+  zoomControl: computed({
+    get: getStaticMapOption,
+    set: setStaticMapBooleanOption
+  }),
+
+  /**
    * @type {String}
    * Position to render the zoom control
    * NOTE replaced configuration object with string
@@ -317,179 +499,6 @@ export const GoogleMapProxy = Ember.ObjectProxy.extend({
       });
 
       return getControlPosition(id);
-    }
-  }),
-
-  /**
-   * @type {google.maps.StreetViewPanorama}
-   * Set the street view panorama used by the map
-   */
-  streetView: computed({
-    get() {
-      return this.content.streetView;
-    },
-
-    set(key, value) {
-      assert('streetView was set without a StreetViewPanorama instance', value instanceof google.maps.StreetViewPanorama);
-      this.content.setOptions({streetView: value});
-      return value;
-    }
-  }),
-
-  /**
-   * @type {Boolean}
-   * Enables/disables all default UI
-   */
-  disableDefaultUI: computed({
-    get: getStaticMapOption,
-    set: setStaticMapBooleanOption
-  }),
-
-  /**
-   * @type {Boolean}
-   * Enables/disables zoom and center on double click
-   */
-  disableDoubleClickZoom: computed({
-    get: getStaticMapOption,
-    set: setStaticMapBooleanOption
-  }),
-
-  /**
-   * @type {Boolean}
-   * If false, prevents the map from being dragged
-   */
-  draggable: computed({
-    get: getStaticMapOption,
-    set: setStaticMapBooleanOption
-  }),
-
-  /**
-   * @type {String}
-   * The name or url of the cursor to display when mousing over a draggable map
-   */
-  draggableCursor: computed({
-    get: getStaticMapOption,
-    set: setStaticMapStringOption
-  }),
-
-  /**
-   * @type {Boolean}
-   * The enabled/disabled state of the Fullscreen control
-   */
-  fullscreenControl: computed({
-    get: getStaticMapOption,
-    set: setStaticMapBooleanOption
-  }),
-
-  /**
-   * @type {String}
-   * Controls how gestures on the map are handled
-   */
-  gestureHandling: computed({
-    get: getStaticMapOption,
-    set: setStaticMapStringOption
-  }),
-
-  /**
-   * @type {Boolean}
-   * If false, prevents the map from being controlled by the keyboard
-  */
-  keyboardShortcuts: computed({
-    get: getStaticMapOption,
-    set: setStaticMapBooleanOption
-  }),
-
-  /**
-   * @type {Boolean}
-   * The initial enabled/disabled state of the Map type control
-   */
-  mapTypeControl: computed({
-    get: getStaticMapOption,
-    set: setStaticMapBooleanOption
-  }),
-
-  /**
-   * @type {Boolean}
-   * If true, do not clear the contents of the Map div
-   */
-  noClear: computed({
-    get: getStaticMapOption,
-    set: setStaticMapBooleanOption
-  }),
-
-  /**
-   * @type {Boolean}
-   * The enabled/disabled state of the Pan control
-   */
-  panControl: computed({
-    get: getStaticMapOption,
-    set: setStaticMapBooleanOption
-  }),
-
-  /**
-   * @type {Boolean}
-   * The enabled/disabled state of the Rotate control
-   */
-  rotateControl: computed({
-    get: getStaticMapOption,
-    set: setStaticMapBooleanOption
-  }),
-
-  /**
-   * @type {Boolean}
-   * The initial enabled/disabled state of the Scale control
-   */
-  scaleControl: computed({
-    get: getStaticMapOption,
-    set: setStaticMapBooleanOption
-  }),
-
-  /**
-   * @type {Boolean}
-   * The initial enabled/disabled state of the Scale control
-   */
-  scrollwheel: computed({
-    get: getStaticMapOption,
-    set: setStaticMapBooleanOption
-  }),
-
-  /**
-   * @type {Boolean}
-   * The enabled/disabled state of the sign in control
-   */
-  signInControl: computed({
-    get: getStaticMapOption,
-    set: setStaticMapBooleanOption
-  }),
-
-  /**
-   * @type {Boolean}
-   * The initial enabled/disabled state of the Street View Pegman control
-   */
-  streetViewControl: computed({
-    get: getStaticMapOption,
-    set: setStaticMapBooleanOption
-  }),
-
-  /**
-   * @type {Boolean}
-   * The enabled/disabled state of the Zoom control
-   */
-  zoomControl: computed({
-    get: getStaticMapOption,
-    set: setStaticMapBooleanOption
-  }),
-
-  /**
-   * @type {Array<Object>}
-   * Styles to apply to each of the default map types
-   */
-  styles: computed({
-    get: getStaticMapOption,
-    set(key, styles) {
-      assert('styles was set without array', styles instanceof Array);
-      this.content.setOptions({styles});
-      return styles;
     }
   })
 });
