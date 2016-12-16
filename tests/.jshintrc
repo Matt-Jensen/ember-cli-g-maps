@@ -27,7 +27,8 @@
     "selectAutocompletePlace",
     "waitForGoogleMap",
     "waitForGeocodeRequests",
-    "stubGeocodeRequests"
+    "stubGeocodeRequests",
+    "triggerGoogleMapEvent"
   ],
   "node": false,
   "browser": false,
