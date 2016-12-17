@@ -139,6 +139,7 @@ export const GoogleMapProxy = Ember.ObjectProxy.extend({
    * @type {Number}
    * Heading for aerial imagery
    * NOTE headings are snapped to nearest usable value
+   * NOTE A single set can fire multiple change events
    */
   heading: computed({
     get() {
@@ -150,7 +151,7 @@ export const GoogleMapProxy = Ember.ObjectProxy.extend({
       this.content.setHeading(heading);
       return this.content.getHeading();
     }
-  }),
+  }).volatile(),
 
   /**
    * @type {Boolean}
