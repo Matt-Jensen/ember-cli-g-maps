@@ -53,14 +53,14 @@ test('it sets clickable icons', function(assert) {
   this.set('options', {clickableIcons});
 
   this.render(hbs`{{#g-map clickableIcons=clickableIcons as |map|}}
-    {{if map.clickableIcons 'fail' 'pass'}}
+    <div id="g-map-test-output">{{if map.clickableIcons 'fail' 'pass'}}</div>
   {{/g-map}}`);
-  assert.equal(this.$().text().trim(), 'pass', 'set via property');
+  assert.equal(this.$('#g-map-test-output').text().trim(), 'pass', 'set via property');
 
   this.render(hbs`{{#g-map options=options as |map|}}
-    {{if map.clickableIcons 'fail' 'pass'}}
+    <div id="g-map-test-output">{{if map.clickableIcons 'fail' 'pass'}}</div>
   {{/g-map}}`);
-  assert.equal(this.$().text().trim(), 'pass', 'set via options');
+  assert.equal(this.$('#g-map-test-output').text().trim(), 'pass', 'set via options');
 });
 
 test('it sets disable default UI', function(assert) {
@@ -68,14 +68,14 @@ test('it sets disable default UI', function(assert) {
   this.set('options', {disableDefaultUI});
 
   this.render(hbs`{{#g-map disableDefaultUI=disableDefaultUI as |map|}}
-    {{if map.disableDefaultUI 'pass' 'fail'}}
+    <div id="g-map-test-output">{{if map.disableDefaultUI 'pass' 'fail'}}</div>
   {{/g-map}}`);
-  assert.equal(this.$().text().trim(), 'pass', 'set via property');
+  assert.equal(this.$('#g-map-test-output').text().trim(), 'pass', 'set via property');
 
   this.render(hbs`{{#g-map options=options as |map|}}
-    {{if map.disableDefaultUI 'pass' 'fail'}}
+    <div id="g-map-test-output">{{if map.disableDefaultUI 'pass' 'fail'}}</div>
   {{/g-map}}`);
-  assert.equal(this.$().text().trim(), 'pass', 'set via options');
+  assert.equal(this.$('#g-map-test-output').text().trim(), 'pass', 'set via options');
 });
 
 test('it sets disable double click zoom', function(assert) {
@@ -83,14 +83,14 @@ test('it sets disable double click zoom', function(assert) {
   this.set('options', {disableDoubleClickZoom});
 
   this.render(hbs`{{#g-map disableDoubleClickZoom=disableDoubleClickZoom as |map|}}
-    {{if map.disableDoubleClickZoom 'pass' 'fail'}}
+    <div id="g-map-test-output">{{if map.disableDoubleClickZoom 'pass' 'fail'}}</div>
   {{/g-map}}`);
-  assert.equal(this.$().text().trim(), 'pass', 'set via property');
+  assert.equal(this.$('#g-map-test-output').text().trim(), 'pass', 'set via property');
 
   this.render(hbs`{{#g-map options=options as |map|}}
-    {{if map.disableDoubleClickZoom 'pass' 'fail'}}
+    <div id="g-map-test-output">{{if map.disableDoubleClickZoom 'pass' 'fail'}}</div>
   {{/g-map}}`);
-  assert.equal(this.$().text().trim(), 'pass', 'set via options');
+  assert.equal(this.$('#g-map-test-output').text().trim(), 'pass', 'set via options');
 });
 
 test('it sets draggable', function(assert) {
@@ -98,14 +98,14 @@ test('it sets draggable', function(assert) {
   this.set('options', {draggable});
 
   this.render(hbs`{{#g-map draggable=draggable as |map|}}
-    {{if map.draggable 'fail' 'pass'}}
+    <div id="g-map-test-output">{{if map.draggable 'fail' 'pass'}}</div>
   {{/g-map}}`);
-  assert.equal(this.$().text().trim(), 'pass', 'set via property');
+  assert.equal(this.$('#g-map-test-output').text().trim(), 'pass', 'set via property');
 
   this.render(hbs`{{#g-map options=options as |map|}}
-    {{if map.draggable 'fail' 'pass'}}
+    <div id="g-map-test-output">{{if map.draggable 'fail' 'pass'}}</div>
   {{/g-map}}`);
-  assert.equal(this.$().text().trim(), 'pass', 'set via options');
+  assert.equal(this.$('#g-map-test-output').text().trim(), 'pass', 'set via options');
 });
 
 test('it sets draggable cursor', function(assert) {
@@ -113,14 +113,14 @@ test('it sets draggable cursor', function(assert) {
   this.set('options', {draggableCursor});
 
   this.render(hbs`{{#g-map draggableCursor=draggableCursor as |map|}}
-    {{map.draggableCursor}}
+    <div id="g-map-test-output">{{map.draggableCursor}}</div>
   {{/g-map}}`);
-  assert.equal(this.$().text().trim(), draggableCursor, 'set via property');
+  assert.equal(this.$('#g-map-test-output').text().trim(), draggableCursor, 'set via property');
 
   this.render(hbs`{{#g-map options=options as |map|}}
-    {{map.draggableCursor}}
+    <div id="g-map-test-output">{{map.draggableCursor}}</div>
   {{/g-map}}`);
-  assert.equal(this.$().text().trim(), draggableCursor, 'set via options');
+  assert.equal(this.$('#g-map-test-output').text().trim(), draggableCursor, 'set via options');
 });
 
 test('it sets dragging cursor', function(assert) {
@@ -128,14 +128,14 @@ test('it sets dragging cursor', function(assert) {
   this.set('options', {draggingCursor});
 
   this.render(hbs`{{#g-map draggingCursor=draggingCursor as |map|}}
-    {{map.draggingCursor}}
+    <div id="g-map-test-output">{{map.draggingCursor}}</div>
   {{/g-map}}`);
-  assert.equal(this.$().text().trim(), draggingCursor, 'set via property');
+  assert.equal(this.$('#g-map-test-output').text().trim(), draggingCursor, 'set via property');
 
   this.render(hbs`{{#g-map options=options as |map|}}
-    {{map.draggingCursor}}
+    <div id="g-map-test-output">{{map.draggingCursor}}</div>
   {{/g-map}}`);
-  assert.equal(this.$().text().trim(), draggingCursor, 'set via options');
+  assert.equal(this.$('#g-map-test-output').text().trim(), draggingCursor, 'set via options');
 });
 
 test('it sets fullscreen control', function(assert) {
@@ -143,14 +143,14 @@ test('it sets fullscreen control', function(assert) {
   this.set('options', {fullscreenControl});
 
   this.render(hbs`{{#g-map fullscreenControl=fullscreenControl as |map|}}
-    {{if map.fullscreenControl 'fail' 'pass'}}
+    <div id="g-map-test-output">{{if map.fullscreenControl 'fail' 'pass'}}</div>
   {{/g-map}}`);
-  assert.equal(this.$().text().trim(), 'pass', 'set via property');
+  assert.equal(this.$('#g-map-test-output').text().trim(), 'pass', 'set via property');
 
   this.render(hbs`{{#g-map options=options as |map|}}
-    {{if map.fullscreenControl 'fail' 'pass'}}
+    <div id="g-map-test-output">{{if map.fullscreenControl 'fail' 'pass'}}</div>
   {{/g-map}}`);
-  assert.equal(this.$().text().trim(), 'pass', 'set via options');
+  assert.equal(this.$('#g-map-test-output').text().trim(), 'pass', 'set via options');
 });
 
 test('it sets fullscreen control options', function(assert) {
@@ -158,14 +158,14 @@ test('it sets fullscreen control options', function(assert) {
   this.set('options', {fullscreenControlOptions});
 
   this.render(hbs`{{#g-map fullscreenControlOptions=fullscreenControlOptions as |map|}}
-    {{map.fullscreenControlOptions}}
+    <div id="g-map-test-output">{{map.fullscreenControlOptions}}</div>
   {{/g-map}}`);
-  assert.equal(this.$().text().trim(), fullscreenControlOptions.toUpperCase(), 'set via property');
+  assert.equal(this.$('#g-map-test-output').text().trim(), fullscreenControlOptions.toUpperCase(), 'set via property');
 
   this.render(hbs`{{#g-map options=options as |map|}}
-    {{map.fullscreenControlOptions}}
+    <div id="g-map-test-output">{{map.fullscreenControlOptions}}</div>
   {{/g-map}}`);
-  assert.equal(this.$().text().trim(), fullscreenControlOptions.toUpperCase(), 'set via options');
+  assert.equal(this.$('#g-map-test-output').text().trim(), fullscreenControlOptions.toUpperCase(), 'set via options');
 });
 
 test('it sets gesture handling', function(assert) {
@@ -173,14 +173,14 @@ test('it sets gesture handling', function(assert) {
   this.set('options', {gestureHandling});
 
   this.render(hbs`{{#g-map gestureHandling=gestureHandling as |map|}}
-    {{map.gestureHandling}}
+    <div id="g-map-test-output">{{map.gestureHandling}}</div>
   {{/g-map}}`);
-  assert.equal(this.$().text().trim(), gestureHandling, 'set via property');
+  assert.equal(this.$('#g-map-test-output').text().trim(), gestureHandling, 'set via property');
 
   this.render(hbs`{{#g-map options=options as |map|}}
-    {{map.gestureHandling}}
+    <div id="g-map-test-output">{{map.gestureHandling}}</div>
   {{/g-map}}`);
-  assert.equal(this.$().text().trim(), gestureHandling, 'set via options');
+  assert.equal(this.$('#g-map-test-output').text().trim(), gestureHandling, 'set via options');
 });
 
 test('it sets heading', function(assert) {
@@ -188,14 +188,14 @@ test('it sets heading', function(assert) {
   this.set('options', {heading});
 
   this.render(hbs`{{#g-map heading=heading as |map|}}
-    {{map.heading}}
+    <div id="g-map-test-output">{{map.heading}}</div>
   {{/g-map}}`);
-  assert.equal(this.$().text().trim(), heading, 'set via property');
+  assert.equal(this.$('#g-map-test-output').text().trim(), heading, 'set via property');
 
   this.render(hbs`{{#g-map options=options as |map|}}
-    {{map.heading}}
+    <div id="g-map-test-output">{{map.heading}}</div>
   {{/g-map}}`);
-  assert.equal(this.$().text().trim(), heading, 'set via options');
+  assert.equal(this.$('#g-map-test-output').text().trim(), heading, 'set via options');
 });
 
 test('it sets key board shortcuts', function(assert) {
@@ -203,14 +203,14 @@ test('it sets key board shortcuts', function(assert) {
   this.set('options', {keyboardShortcuts});
 
   this.render(hbs`{{#g-map keyboardShortcuts=keyboardShortcuts as |map|}}
-    {{if map.keyboardShortcuts 'fail' 'pass'}}
+    <div id="g-map-test-output">{{if map.keyboardShortcuts 'fail' 'pass'}}</div>
   {{/g-map}}`);
-  assert.equal(this.$().text().trim(), 'pass', 'set via property');
+  assert.equal(this.$('#g-map-test-output').text().trim(), 'pass', 'set via property');
 
   this.render(hbs`{{#g-map options=options as |map|}}
-    {{if map.keyboardShortcuts 'fail' 'pass'}}
+    <div id="g-map-test-output">{{if map.keyboardShortcuts 'fail' 'pass'}}</div>
   {{/g-map}}`);
-  assert.equal(this.$().text().trim(), 'pass', 'set via options');
+  assert.equal(this.$('#g-map-test-output').text().trim(), 'pass', 'set via options');
 });
 
 test('it sets map type control', function(assert) {
@@ -218,14 +218,14 @@ test('it sets map type control', function(assert) {
   this.set('options', {mapTypeControl});
 
   this.render(hbs`{{#g-map mapTypeControl=mapTypeControl as |map|}}
-    {{if map.mapTypeControl 'fail' 'pass'}}
+    <div id="g-map-test-output">{{if map.mapTypeControl 'fail' 'pass'}}</div>
   {{/g-map}}`);
-  assert.equal(this.$().text().trim(), 'pass', 'set via property');
+  assert.equal(this.$('#g-map-test-output').text().trim(), 'pass', 'set via property');
 
   this.render(hbs`{{#g-map options=options as |map|}}
-    {{if map.mapTypeControl 'fail' 'pass'}}
+    <div id="g-map-test-output">{{if map.mapTypeControl 'fail' 'pass'}}</div>
   {{/g-map}}`);
-  assert.equal(this.$().text().trim(), 'pass', 'set via options');
+  assert.equal(this.$('#g-map-test-output').text().trim(), 'pass', 'set via options');
 });
 
 test('it sets map type control options', function(assert) {
@@ -238,14 +238,18 @@ test('it sets map type control options', function(assert) {
   this.set('options', {mapTypeControlOptions});
 
   this.render(hbs`{{#g-map mapTypeControlOptions=mapTypeControlOptions as |map|}}
-    {{#each map.mapTypeControlOptions.mapTypeIds as |type|}}{{type}} {{/each}}{{map.mapTypeControlOptions.position}} {{map.mapTypeControlOptions.style}}
+    <div id="g-map-test-output">
+      {{#each map.mapTypeControlOptions.mapTypeIds as |type|}}{{type}} {{/each}}{{map.mapTypeControlOptions.position}} {{map.mapTypeControlOptions.style}}
+    </div>
   {{/g-map}}`);
-  assert.equal(this.$().text().trim(), expected, 'set via property');
+  assert.equal(this.$('#g-map-test-output').text().trim(), expected, 'set via property');
 
   this.render(hbs`{{#g-map options=options as |map|}}
-    {{#each map.mapTypeControlOptions.mapTypeIds as |type|}}{{type}} {{/each}}{{map.mapTypeControlOptions.position}} {{map.mapTypeControlOptions.style}}
+    <div id="g-map-test-output">
+      {{#each map.mapTypeControlOptions.mapTypeIds as |type|}}{{type}} {{/each}}{{map.mapTypeControlOptions.position}} {{map.mapTypeControlOptions.style}}
+    </div>
   {{/g-map}}`);
-  assert.equal(this.$().text().trim(), expected, 'set via options');
+  assert.equal(this.$('#g-map-test-output').text().trim(), expected, 'set via options');
 });
 
 test('it sets map type id', function(assert) {
@@ -253,14 +257,14 @@ test('it sets map type id', function(assert) {
   this.set('options', {mapTypeId});
 
   this.render(hbs`{{#g-map mapTypeId=mapTypeId as |map|}}
-    {{map.mapTypeId}}
+    <div id="g-map-test-output">{{map.mapTypeId}}</div>
   {{/g-map}}`);
-  assert.equal(this.$().text().trim(), mapTypeId.toUpperCase(), 'set via property');
+  assert.equal(this.$('#g-map-test-output').text().trim(), mapTypeId.toUpperCase(), 'set via property');
 
   this.render(hbs`{{#g-map options=options as |map|}}
-    {{map.mapTypeId}}
+    <div id="g-map-test-output">{{map.mapTypeId}}</div>
   {{/g-map}}`);
-  assert.equal(this.$().text().trim(), mapTypeId.toUpperCase(), 'set via options');
+  assert.equal(this.$('#g-map-test-output').text().trim(), mapTypeId.toUpperCase(), 'set via options');
 });
 
 test('it sets max zoom', function(assert) {
@@ -268,14 +272,14 @@ test('it sets max zoom', function(assert) {
   this.set('options', {maxZoom});
 
   this.render(hbs`{{#g-map maxZoom=maxZoom as |map|}}
-    {{map.maxZoom}}
+    <div id="g-map-test-output">{{map.maxZoom}}</div>
   {{/g-map}}`);
-  assert.equal(this.$().text().trim(), maxZoom, 'set via property');
+  assert.equal(this.$('#g-map-test-output').text().trim(), maxZoom, 'set via property');
 
   this.render(hbs`{{#g-map options=options as |map|}}
-    {{map.maxZoom}}
+    <div id="g-map-test-output">{{map.maxZoom}}</div>
   {{/g-map}}`);
-  assert.equal(this.$().text().trim(), maxZoom, 'set via options');
+  assert.equal(this.$('#g-map-test-output').text().trim(), maxZoom, 'set via options');
 });
 
 test('it sets min zoom', function(assert) {
@@ -283,14 +287,14 @@ test('it sets min zoom', function(assert) {
   this.set('options', {minZoom});
 
   this.render(hbs`{{#g-map minZoom=minZoom as |map|}}
-    {{map.minZoom}}
+    <div id="g-map-test-output">{{map.minZoom}}</div>
   {{/g-map}}`);
-  assert.equal(this.$().text().trim(), minZoom, 'set via property');
+  assert.equal(this.$('#g-map-test-output').text().trim(), minZoom, 'set via property');
 
   this.render(hbs`{{#g-map options=options as |map|}}
-    {{map.minZoom}}
+    <div id="g-map-test-output">{{map.minZoom}}</div>
   {{/g-map}}`);
-  assert.equal(this.$().text().trim(), minZoom, 'set via options');
+  assert.equal(this.$('#g-map-test-output').text().trim(), minZoom, 'set via options');
 });
 
 test('it sets no clear', function(assert) {
@@ -298,14 +302,14 @@ test('it sets no clear', function(assert) {
   this.set('options', {noClear});
 
   this.render(hbs`{{#g-map noClear=noClear as |map|}}
-    {{if map.noClear 'fail' 'pass'}}
+    <div id="g-map-test-output">{{if map.noClear 'fail' 'pass'}}</div>
   {{/g-map}}`);
-  assert.equal(this.$().text().trim(), 'pass', 'set via property');
+  assert.equal(this.$('#g-map-test-output').text().trim(), 'pass', 'set via property');
 
   this.render(hbs`{{#g-map options=options as |map|}}
-    {{if map.noClear 'fail' 'pass'}}
+    <div id="g-map-test-output">{{if map.noClear 'fail' 'pass'}}</div>
   {{/g-map}}`);
-  assert.equal(this.$().text().trim(), 'pass', 'set via options');
+  assert.equal(this.$('#g-map-test-output').text().trim(), 'pass', 'set via options');
 });
 
 test('it sets pan control', function(assert) {
@@ -313,14 +317,14 @@ test('it sets pan control', function(assert) {
   this.set('options', {panControl});
 
   this.render(hbs`{{#g-map panControl=panControl as |map|}}
-    {{if map.panControl 'fail' 'pass'}}
+    <div id="g-map-test-output">{{if map.panControl 'fail' 'pass'}}</div>
   {{/g-map}}`);
-  assert.equal(this.$().text().trim(), 'pass', 'set via property');
+  assert.equal(this.$('#g-map-test-output').text().trim(), 'pass', 'set via property');
 
   this.render(hbs`{{#g-map options=options as |map|}}
-    {{if map.panControl 'fail' 'pass'}}
+    <div id="g-map-test-output">{{if map.panControl 'fail' 'pass'}}</div>
   {{/g-map}}`);
-  assert.equal(this.$().text().trim(), 'pass', 'set via options');
+  assert.equal(this.$('#g-map-test-output').text().trim(), 'pass', 'set via options');
 });
 
 test('it sets pan control options', function(assert) {
@@ -328,14 +332,14 @@ test('it sets pan control options', function(assert) {
   this.set('options', {panControlOptions});
 
   this.render(hbs`{{#g-map panControlOptions=panControlOptions as |map|}}
-    {{map.panControlOptions}}
+    <div id="g-map-test-output">{{map.panControlOptions}}</div>
   {{/g-map}}`);
-  assert.equal(this.$().text().trim(), panControlOptions.toUpperCase(), 'set via property');
+  assert.equal(this.$('#g-map-test-output').text().trim(), panControlOptions.toUpperCase(), 'set via property');
 
   this.render(hbs`{{#g-map options=options as |map|}}
-    {{map.panControlOptions}}
+    <div id="g-map-test-output">{{map.panControlOptions}}</div>
   {{/g-map}}`);
-  assert.equal(this.$().text().trim(), panControlOptions.toUpperCase(), 'set via options');
+  assert.equal(this.$('#g-map-test-output').text().trim(), panControlOptions.toUpperCase(), 'set via options');
 });
 
 test('it sets rotate control', function(assert) {
@@ -343,14 +347,14 @@ test('it sets rotate control', function(assert) {
   this.set('options', {rotateControl});
 
   this.render(hbs`{{#g-map rotateControl=rotateControl as |map|}}
-    {{if map.rotateControl 'fail' 'pass'}}
+    <div id="g-map-test-output">{{if map.rotateControl 'fail' 'pass'}}</div>
   {{/g-map}}`);
-  assert.equal(this.$().text().trim(), 'pass', 'set via property');
+  assert.equal(this.$('#g-map-test-output').text().trim(), 'pass', 'set via property');
 
   this.render(hbs`{{#g-map options=options as |map|}}
-    {{if map.rotateControl 'fail' 'pass'}}
+    <div id="g-map-test-output">{{if map.rotateControl 'fail' 'pass'}}</div>
   {{/g-map}}`);
-  assert.equal(this.$().text().trim(), 'pass', 'set via options');
+  assert.equal(this.$('#g-map-test-output').text().trim(), 'pass', 'set via options');
 });
 
 test('it sets rotate control options', function(assert) {
@@ -358,14 +362,14 @@ test('it sets rotate control options', function(assert) {
   this.set('options', {rotateControlOptions});
 
   this.render(hbs`{{#g-map rotateControlOptions=rotateControlOptions as |map|}}
-    {{map.rotateControlOptions}}
+    <div id="g-map-test-output">{{map.rotateControlOptions}}</div>
   {{/g-map}}`);
-  assert.equal(this.$().text().trim(), rotateControlOptions.toUpperCase(), 'set via property');
+  assert.equal(this.$('#g-map-test-output').text().trim(), rotateControlOptions.toUpperCase(), 'set via property');
 
   this.render(hbs`{{#g-map options=options as |map|}}
-    {{map.rotateControlOptions}}
+    <div id="g-map-test-output">{{map.rotateControlOptions}}</div>
   {{/g-map}}`);
-  assert.equal(this.$().text().trim(), rotateControlOptions.toUpperCase(), 'set via options');
+  assert.equal(this.$('#g-map-test-output').text().trim(), rotateControlOptions.toUpperCase(), 'set via options');
 });
 
 test('it sets scale control', function(assert) {
@@ -373,14 +377,14 @@ test('it sets scale control', function(assert) {
   this.set('options', {scaleControl});
 
   this.render(hbs`{{#g-map scaleControl=scaleControl as |map|}}
-    {{if map.scaleControl 'fail' 'pass'}}
+    <div id="g-map-test-output">{{if map.scaleControl 'fail' 'pass'}}</div>
   {{/g-map}}`);
-  assert.equal(this.$().text().trim(), 'pass', 'set via property');
+  assert.equal(this.$('#g-map-test-output').text().trim(), 'pass', 'set via property');
 
   this.render(hbs`{{#g-map options=options as |map|}}
-    {{if map.scaleControl 'fail' 'pass'}}
+    <div id="g-map-test-output">{{if map.scaleControl 'fail' 'pass'}}</div>
   {{/g-map}}`);
-  assert.equal(this.$().text().trim(), 'pass', 'set via options');
+  assert.equal(this.$('#g-map-test-output').text().trim(), 'pass', 'set via options');
 });
 
 test('it sets rotate control options', function(assert) {
@@ -388,14 +392,14 @@ test('it sets rotate control options', function(assert) {
   this.set('options', {scaleControlOptions});
 
   this.render(hbs`{{#g-map scaleControlOptions=scaleControlOptions as |map|}}
-    {{map.scaleControlOptions}}
+    <div id="g-map-test-output">{{map.scaleControlOptions}}</div>
   {{/g-map}}`);
-  assert.equal(this.$().text().trim(), scaleControlOptions.toUpperCase(), 'set via property');
+  assert.equal(this.$('#g-map-test-output').text().trim(), scaleControlOptions.toUpperCase(), 'set via property');
 
   this.render(hbs`{{#g-map options=options as |map|}}
-    {{map.scaleControlOptions}}
+    <div id="g-map-test-output">{{map.scaleControlOptions}}</div>
   {{/g-map}}`);
-  assert.equal(this.$().text().trim(), scaleControlOptions.toUpperCase(), 'set via options');
+  assert.equal(this.$('#g-map-test-output').text().trim(), scaleControlOptions.toUpperCase(), 'set via options');
 });
 
 test('it sets scroll wheel', function(assert) {
@@ -403,14 +407,14 @@ test('it sets scroll wheel', function(assert) {
   this.set('options', {scrollwheel});
 
   this.render(hbs`{{#g-map scrollwheel=scrollwheel as |map|}}
-    {{if map.scrollwheel 'fail' 'pass'}}
+    <div id="g-map-test-output">{{if map.scrollwheel 'fail' 'pass'}}</div>
   {{/g-map}}`);
-  assert.equal(this.$().text().trim(), 'pass', 'set via property');
+  assert.equal(this.$('#g-map-test-output').text().trim(), 'pass', 'set via property');
 
   this.render(hbs`{{#g-map options=options as |map|}}
-    {{if map.scrollwheel 'fail' 'pass'}}
+    <div id="g-map-test-output">{{if map.scrollwheel 'fail' 'pass'}}</div>
   {{/g-map}}`);
-  assert.equal(this.$().text().trim(), 'pass', 'set via options');
+  assert.equal(this.$('#g-map-test-output').text().trim(), 'pass', 'set via options');
 });
 
 test('it sets sign in control', function(assert) {
@@ -418,14 +422,14 @@ test('it sets sign in control', function(assert) {
   this.set('options', {signInControl});
 
   this.render(hbs`{{#g-map signInControl=signInControl as |map|}}
-    {{if map.signInControl 'fail' 'pass'}}
+    <div id="g-map-test-output">{{if map.signInControl 'fail' 'pass'}}</div>
   {{/g-map}}`);
-  assert.equal(this.$().text().trim(), 'pass', 'set via property');
+  assert.equal(this.$('#g-map-test-output').text().trim(), 'pass', 'set via property');
 
   this.render(hbs`{{#g-map options=options as |map|}}
-    {{if map.signInControl 'fail' 'pass'}}
+    <div id="g-map-test-output">{{if map.signInControl 'fail' 'pass'}}</div>
   {{/g-map}}`);
-  assert.equal(this.$().text().trim(), 'pass', 'set via options');
+  assert.equal(this.$('#g-map-test-output').text().trim(), 'pass', 'set via options');
 });
 
 test('it sets street view', function(assert) {
@@ -433,14 +437,14 @@ test('it sets street view', function(assert) {
   this.set('options', {streetView});
 
   this.render(hbs`{{#g-map streetView=streetView as |map|}}
-    {{if map.streetView 'pass' 'fail'}}
+    <div id="g-map-test-output">{{if map.streetView 'pass' 'fail'}}</div>
   {{/g-map}}`);
-  assert.equal(this.$().text().trim(), 'pass', 'set via property');
+  assert.equal(this.$('#g-map-test-output').text().trim(), 'pass', 'set via property');
 
   this.render(hbs`{{#g-map options=options as |map|}}
-    {{if map.streetView 'pass' 'fail'}}
+    <div id="g-map-test-output">{{if map.streetView 'pass' 'fail'}}</div>
   {{/g-map}}`);
-  assert.equal(this.$().text().trim(), 'pass', 'set via options');
+  assert.equal(this.$('#g-map-test-output').text().trim(), 'pass', 'set via options');
 });
 
 test('it sets street view control options', function(assert) {
@@ -448,14 +452,14 @@ test('it sets street view control options', function(assert) {
   this.set('options', {streetViewControlOptions});
 
   this.render(hbs`{{#g-map streetViewControlOptions=streetViewControlOptions as |map|}}
-    {{map.streetViewControlOptions}}
+    <div id="g-map-test-output">{{map.streetViewControlOptions}}</div>
   {{/g-map}}`);
-  assert.equal(this.$().text().trim(), streetViewControlOptions.toUpperCase(), 'set via property');
+  assert.equal(this.$('#g-map-test-output').text().trim(), streetViewControlOptions.toUpperCase(), 'set via property');
 
   this.render(hbs`{{#g-map options=options as |map|}}
-    {{map.streetViewControlOptions}}
+    <div id="g-map-test-output">{{map.streetViewControlOptions}}</div>
   {{/g-map}}`);
-  assert.equal(this.$().text().trim(), streetViewControlOptions.toUpperCase(), 'set via options');
+  assert.equal(this.$('#g-map-test-output').text().trim(), streetViewControlOptions.toUpperCase(), 'set via options');
 });
 
 test('it sets styles', function(assert) {
@@ -463,14 +467,14 @@ test('it sets styles', function(assert) {
   this.set('options', {styles});
 
   this.render(hbs`{{#g-map styles=styles as |map|}}
-    {{if map.styles 'pass' 'fail'}}
+    <div id="g-map-test-output">{{if map.styles 'pass' 'fail'}}</div>
   {{/g-map}}`);
-  assert.equal(this.$().text().trim(), 'pass', 'set via property');
+  assert.equal(this.$('#g-map-test-output').text().trim(), 'pass', 'set via property');
 
   this.render(hbs`{{#g-map options=options as |map|}}
-    {{if map.styles 'pass' 'fail'}}
+    <div id="g-map-test-output">{{if map.styles 'pass' 'fail'}}</div>
   {{/g-map}}`);
-  assert.equal(this.$().text().trim(), 'pass', 'set via options');
+  assert.equal(this.$('#g-map-test-output').text().trim(), 'pass', 'set via options');
 });
 
 test('it sets tilt', function(assert) {
@@ -479,15 +483,15 @@ test('it sets tilt', function(assert) {
   this.set('options', {tilt});
 
   this.render(hbs`{{#g-map tilt=tilt as |map|}}
-    {{map.tilt}}
+    <div id="g-map-test-output">{{map.tilt}}</div>
   {{/g-map}}`);
-  text = this.$().text().trim();
+  text = this.$('#g-map-test-output').text().trim();
   assert.ok(text === '0' || text === '45', `set tilt to ${text} via property`);
 
   this.render(hbs`{{#g-map options=options as |map|}}
-    {{map.tilt}}
+    <div id="g-map-test-output">{{map.tilt}}</div>
   {{/g-map}}`);
-  text = this.$().text().trim();
+  text = this.$('#g-map-test-output').text().trim();
   assert.ok(text === '0' || text === '45', `set tilt to ${text} via options`);
 });
 
@@ -496,14 +500,14 @@ test('it sets zoom', function(assert) {
   this.set('options', {zoom});
 
   this.render(hbs`{{#g-map zoom=zoom as |map|}}
-    {{map.zoom}}
+    <div id="g-map-test-output">{{map.zoom}}</div>
   {{/g-map}}`);
-  assert.equal(this.$().text().trim(), zoom, 'set via property');
+  assert.equal(this.$('#g-map-test-output').text().trim(), zoom, 'set via property');
 
   this.render(hbs`{{#g-map options=options as |map|}}
-    {{map.zoom}}
+    <div id="g-map-test-output">{{map.zoom}}</div>
   {{/g-map}}`);
-  assert.equal(this.$().text().trim(), zoom, 'set via options');
+  assert.equal(this.$('#g-map-test-output').text().trim(), zoom, 'set via options');
 });
 
 test('it sets zoom control', function(assert) {
@@ -511,14 +515,14 @@ test('it sets zoom control', function(assert) {
   this.set('options', {zoomControl});
 
   this.render(hbs`{{#g-map zoomControl=zoomControl as |map|}}
-    {{if map.zoomControl 'fail' 'pass'}}
+    <div id="g-map-test-output">{{if map.zoomControl 'fail' 'pass'}}</div>
   {{/g-map}}`);
-  assert.equal(this.$().text().trim(), 'pass', 'set via property');
+  assert.equal(this.$('#g-map-test-output').text().trim(), 'pass', 'set via property');
 
   this.render(hbs`{{#g-map options=options as |map|}}
-    {{if map.zoomControl 'fail' 'pass'}}
+    <div id="g-map-test-output">{{if map.zoomControl 'fail' 'pass'}}</div>
   {{/g-map}}`);
-  assert.equal(this.$().text().trim(), 'pass', 'set via options');
+  assert.equal(this.$('#g-map-test-output').text().trim(), 'pass', 'set via options');
 });
 
 test('it sets zoom control options', function(assert) {
@@ -526,12 +530,12 @@ test('it sets zoom control options', function(assert) {
   this.set('options', {zoomControlOptions});
 
   this.render(hbs`{{#g-map zoomControlOptions=zoomControlOptions as |map|}}
-    {{map.zoomControlOptions}}
+    <div id="g-map-test-output">{{map.zoomControlOptions}}</div>
   {{/g-map}}`);
-  assert.equal(this.$().text().trim(), zoomControlOptions.toUpperCase(), 'set via property');
+  assert.equal(this.$('#g-map-test-output').text().trim(), zoomControlOptions.toUpperCase(), 'set via property');
 
   this.render(hbs`{{#g-map options=options as |map|}}
-    {{map.zoomControlOptions}}
+    <div id="g-map-test-output">{{map.zoomControlOptions}}</div>
   {{/g-map}}`);
-  assert.equal(this.$().text().trim(), zoomControlOptions.toUpperCase(), 'set via options');
+  assert.equal(this.$('#g-map-test-output').text().trim(), zoomControlOptions.toUpperCase(), 'set via options');
 });
