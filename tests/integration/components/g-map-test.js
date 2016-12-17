@@ -24,28 +24,28 @@ test('it renders all map centering strategies', function(assert) {
   this.set('options', {center: {lat, lng}});
 
   this.render(hbs`{{#g-map lat=lat lng=lng as |map|}}
-    {{map.center.lat}},{{map.center.lng}}
+    <div id="g-map-test-output">{{map.center.lat}},{{map.center.lng}}</div>
   {{/g-map}}`);
 
-  assert.equal(this.$().text().trim(), `${lat},${lng}`, 'set center via `lat` & `lng` properties');
+  assert.equal(this.$('#g-map-test-output').text().trim(), `${lat},${lng}`, 'set center via `lat` & `lng` properties');
 
   this.render(hbs`{{#g-map center=centerLiteral as |map|}}
-    {{map.center.lat}},{{map.center.lng}}
+    <div id="g-map-test-output">{{map.center.lat}},{{map.center.lng}}</div>
   {{/g-map}}`);
 
-  assert.equal(this.$().text().trim(), `${lat},${lng}`, 'set center via center literal');
+  assert.equal(this.$('#g-map-test-output').text().trim(), `${lat},${lng}`, 'set center via center literal');
 
   this.render(hbs`{{#g-map center=centerLatLng as |map|}}
-    {{map.center.lat}},{{map.center.lng}}
+    <div id="g-map-test-output">{{map.center.lat}},{{map.center.lng}}</div>
   {{/g-map}}`);
 
-  assert.equal(this.$().text().trim().slice(0, 15), `${lat},${lng}`, 'set center via LatLng instance');
+  assert.equal(this.$('#g-map-test-output').text().trim().slice(0, 15), `${lat},${lng}`, 'set center via LatLng instance');
 
   this.render(hbs`{{#g-map options=options as |map|}}
-    {{map.center.lat}},{{map.center.lng}}
+    <div id="g-map-test-output">{{map.center.lat}},{{map.center.lng}}</div>
   {{/g-map}}`);
 
-  assert.equal(this.$().text().trim(), `${lat},${lng}`, 'set center via options');
+  assert.equal(this.$('#g-map-test-output').text().trim(), `${lat},${lng}`, 'set center via options');
 });
 
 test('it sets clickable icons', function(assert) {
@@ -482,13 +482,13 @@ test('it sets tilt', function(assert) {
     {{map.tilt}}
   {{/g-map}}`);
   text = this.$().text().trim();
-  assert.ok(text === '0' || text === '45', 'set via property');
+  assert.ok(text === '0' || text === '45', `set tilt to ${text} via property`);
 
   this.render(hbs`{{#g-map options=options as |map|}}
     {{map.tilt}}
   {{/g-map}}`);
   text = this.$().text().trim();
-  assert.ok(text === '0' || text === '45', 'set via options');
+  assert.ok(text === '0' || text === '45', `set tilt to ${text} via options`);
 });
 
 test('it sets zoom', function(assert) {
