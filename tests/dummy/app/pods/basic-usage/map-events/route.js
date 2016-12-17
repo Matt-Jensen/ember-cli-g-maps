@@ -95,10 +95,9 @@ export default Ember.Route.extend({
         window.setTimeout(() => this._debounceRemove('isbounds_changed'), 300)
       );
     },
-    center_changed: function({lat,lng}) {
+    center_changed: function() {
       this.controller.set('iscenter_changed', true);
       this.controller.set('wasCenter_changed', true);
-      this.controller.set('argumentCenterChanged', `${lat},${lng}`);
       if(this.get('center_changed_to')) {
         window.clearTimeout(this.get('center_changed_to'));
       }
@@ -151,10 +150,9 @@ export default Ember.Route.extend({
         window.setTimeout(() => this._debounceRemove('isdragstart'), 300)
       );
     },
-    heading_changed: function(arg) {
+    heading_changed: function() {
       this.controller.set('isheading_changed', true);
       this.controller.set('wasHeading_changed', true);
-      this.controller.set('argumentHeadingChanged', arg);
       if(this.get('heading_changed_to')) {
         window.clearTimeout(this.get('heading_changed_to'));
       }
@@ -174,10 +172,9 @@ export default Ember.Route.extend({
         window.setTimeout(() => this._debounceRemove('isidle'), 300)
       );
     },
-    maptypeid_changed: function(arg) {
+    maptypeid_changed: function() {
       this.controller.set('ismaptypeid_changed', true);
       this.controller.set('wasMaptypeid_changed', true);
-      this.controller.set('argumentMaptypeidChanged', arg);
       if(this.get('maptypeid_changed_to')) {
         window.clearTimeout(this.get('maptypeid_changed_to'));
       }
@@ -263,10 +260,9 @@ export default Ember.Route.extend({
         window.setTimeout(() => this._debounceRemove('istilesloaded'), 300)
       );
     },
-    tilt_changed: function(arg) {
+    tilt_changed: function() {
       this.controller.set('istilt_changed', true);
       this.controller.set('wasTilt_changed', true);
-      this.controller.set('argumentTiltChanged', arg);
       if(this.get('tilt_changed_to')) {
         window.clearTimeout(this.get('tilt_changed_to'));
       }
@@ -275,10 +271,9 @@ export default Ember.Route.extend({
         window.setTimeout(() => this._debounceRemove('istilt_changed'), 300)
       );
     },
-    zoom_changed: function(arg) {
+    zoom_changed: function() {
       this.controller.set('iszoom_changed', true);
       this.controller.set('wasZoom_changed', true);
-      this.controller.set('argumentZoomChanged', arg);
       if(this.get('zoom_changed_to')) {
         window.clearTimeout(this.get('zoom_changed_to'));
       }

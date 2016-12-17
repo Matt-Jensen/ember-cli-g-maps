@@ -1,5 +1,7 @@
+import $ from 'jquery';
 import { moduleForComponent, test } from 'ember-qunit';
 import hbs from 'htmlbars-inline-precompile';
+import {assert} from 'ember-metal/utils';
 
 moduleForComponent('g-map', 'Integration | Component | g map', {
   integration: true
@@ -539,3 +541,94 @@ test('it sets zoom control options', function(assert) {
   {{/g-map}}`);
   assert.equal(this.$('#g-map-test-output').text().trim(), zoomControlOptions.toUpperCase(), 'set via options');
 });
+
+/*
+ * User Actions API
+ */
+
+test('it provides the default mouse event argument to all click actions', function(assert) {
+  assert.expect(6);
+  const stubMouseEvent = {};
+
+  const mouseEvents = [
+    'click',
+    'dblclick',
+    'mousemove',
+    'mouseout',
+    'mouseover',
+    'rightclick'
+  ];
+
+  mouseEvents.forEach((event) => {
+    this.on(event, (mouseEvent) =>
+      assert.equal(mouseEvent, stubMouseEvent, `${event} action was called with mouse event`));
+  });
+
+  this.render(hbs`{{g-map click="click" dblclick=(action "dblclick") mousemove=(action "mousemove") mouseout=(action "mouseout") mouseover=(action "mouseover") rightclick=(action "rightclick")}}`);
+
+  mouseEvents.forEach((event) =>
+    triggerGoogleMapEvent(this.$('.ember-cli-g-map'), event, stubMouseEvent));
+});
+
+test('it provides the relevant map state as change action argument', function(assert) {
+  const changeProperties = {
+    center_changed: 'center',
+    heading_changed: 'heading',
+    maptypeid_changed: 'mapTypeId',
+    tilt_changed: 'tilt',
+    zoom_changed: 'zoom'
+  };
+
+  const changeValues = {
+    center_changed: {lat: 34, lng: 32},
+    heading_changed: 0,
+    maptypeid_changed: 'ROADMAP',
+    tilt_changed: 0,
+    zoom_changed: 10
+  };
+
+  // Add map state properties
+  Object.keys(changeProperties).forEach((event) =>
+    this.set(changeProperties[event], changeValues[event]));
+
+  // Add change event listeners
+  Object.keys(changeValues).forEach((event) => {
+    this.on(event, (value) =>
+      assert.equal(value, changeValues[event], `${event} action was called with map state: ${changeValues[event]}`));
+  });
+
+  this.render(hbs`{{g-map
+    center=center
+    heading=heading
+    mapTypeId=mapTypeId
+    tilt=tilt
+    zoom=zoom
+    center_changed=(action "center_changed")
+    heading_changed=(action "heading_changed")
+    maptypeid_changed=(action "maptypeid_changed")
+    tilt_changed=(action "tilt_changed")
+    zoom_changed=(action "zoom_changed")}}`);
+
+  // Trigger all change events on map
+  Object.keys(changeValues).forEach((event) =>
+    triggerGoogleMapEvent(this.$('.ember-cli-g-map'), event));
+});
+
+/**
+ * @param  {HTMLElement} element     HTML element that Google Map was instantiated on
+ * @param  {String}      eventName   Google Map event name to trigger
+ * @param  {any}         args        Options variable arid list of parameters to apply to event
+ * Triggers an event on the given map element with any provided arguements
+ */
+function triggerGoogleMapEvent(element, eventName, ...args) {
+  if (element instanceof $) {
+    element = element.get(0);
+  }
+
+  const map = element.__GOOGLE_MAP__;
+
+  assert('invalid g-map map element', map);
+  assert('invalid google map event', eventName);
+
+  google.maps.event.trigger(map, eventName, ...args);
+}
