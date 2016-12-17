@@ -1,7 +1,8 @@
 import $ from 'jquery';
 import Component from 'ember-component';
 import set from 'ember-metal/set';
-import { default as get, getProperties } from 'ember-metal/get';
+import {default as get, getProperties} from 'ember-metal/get';
+import {assert} from 'ember-metal/utils';
 import computed from 'ember-computed';
 import run from 'ember-runloop';
 import getOwner from 'ember-owner/get';
@@ -93,15 +94,17 @@ export default Component.extend({
    * @type {Ember.ObjectProxy}
    * Proxy wrapper for the Google Map instance
    */
-  _map: null,
+  map: null,
 
   /**
+   * @private
    * @type {Number}
    * Width of maps' parent element in pixels
    */
   _containerWidth: 0,
 
   /**
+   * @private
    * @type {Boolean}
    */
   _isTest: computed(function() {
@@ -135,6 +138,7 @@ export default Component.extend({
   }),
 
   didInsertElement() {
+    assert('map is a reserved namespace', get(this, 'map') === null);
     const options = get(this, 'options') || {};
 
     if (!options.center) {
@@ -160,7 +164,7 @@ export default Component.extend({
       this._containerWidth = this.element.clientWidth;
 
       // Instantiate Google Map
-      const map = set(this, '_map', googleMap(canvas, options));
+      const map = set(this, 'map', googleMap(canvas, options));
 
       /*
        * Bind any events to google map
@@ -191,7 +195,7 @@ export default Component.extend({
   },
 
   willDestroyElement() {
-    google.maps.event.clearInstanceListeners(get(this, '_map.content'));
+    google.maps.event.clearInstanceListeners(get(this, 'map.content'));
 
     for (let i = 0; i < resizeSubscribers.length; i++) {
       if (resizeSubscribers[i] === this) {
@@ -216,6 +220,6 @@ export default Component.extend({
    * Triggers a resize of the map
    */
   _resizeMap() {
-    google.maps.event.trigger(get(this, '_map.content'), 'resize');
+    google.maps.event.trigger(get(this, 'map.content'), 'resize');
   }
 });
