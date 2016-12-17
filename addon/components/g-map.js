@@ -39,6 +39,14 @@ const GOOGLE_MAP_EVENTS = [
   'zoom_changed'
 ];
 
+const EVENTS_ARGUMENT = {
+  center_changed: 'center',
+  heading_changed: 'heading',
+  maptypeid_changed: 'mapTypeId',
+  tilt_changed: 'tilt',
+  zoom_changed: 'zoom'
+};
+
 const GOOGLE_MAP_OPTIONS = [
   'backgroundColor',
   'center',
@@ -174,14 +182,18 @@ export default Component.extend({
         if (!action) { return; }
 
         const closureAction = (typeof action === 'function' ? action : run.bind(this, 'sendAction', event));
+        const eventHandler = () => {
+          const arg = EVENTS_ARGUMENT[event];
+          return closureAction(arg ? get(this, `map.${arg}`) : undefined); // Call /w optional arguments
+        };
 
         if (event === 'loaded') {
           // Loaded is faked /w first idle event
-          return google.maps.event.addListenerOnce(map.content, 'idle', closureAction);
+          return google.maps.event.addListenerOnce(map.content, 'idle', eventHandler);
         }
 
         if (action) {
-          map.content.addListener(event, closureAction);
+          map.content.addListener(event, eventHandler);
         }
       });
 

@@ -60,12 +60,22 @@
   </div>
 </div>
 
+<div id="g-map-event-arguments" style="display: none; visibility: hidden; height: 0; overflow: hidden; opacity: 0;">
+  <div data-test-argument="center_changed">{{argumentCenterChanged}}</div>
+  <div data-test-argument="heading_changed">{{argumentHeadingChanged}}</div>
+  <div data-test-argument="maptypeid_changed">{{argumentMaptypeidChanged}}</div>
+  <div data-test-argument="tilt_changed">{{argumentTiltChanged}}</div>
+  <div data-test-argument="zoom_changed">{{argumentZoomChanged}}</div>
+</div>
+
 <div class="grid-content -np -mb">
   {{g-map
     class="gmaps-docs-map"
     lat=lat
     lng=lng
     zoom=zoom
+    heading=10
+    tilt=45
     bounds_changed=(route-action "bounds_changed")
     center_changed=(route-action "center_changed")
     click=(route-action "click")
