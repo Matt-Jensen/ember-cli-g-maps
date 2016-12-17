@@ -217,6 +217,20 @@ export default Component.extend({
     }
   },
 
+  didUpdateAttrs({newAttrs, oldAttrs}) {
+    const options = get(this, 'options');
+
+    Object.keys(newAttrs).forEach((opt) => {
+      const update = options[opt];
+      const previous = (oldAttrs[opt] ? oldAttrs[opt].value : update);
+      const current = get(this, `map.${opt}`);
+
+      if (GOOGLE_MAP_OPTIONS.indexOf(opt) !== -1 && update !== previous && update !== current) {
+        set(this, `map.${opt}`, update);
+      }
+    });
+  },
+
   /**
    * @private
    * Determine if map resize is necessary and queue resize event
