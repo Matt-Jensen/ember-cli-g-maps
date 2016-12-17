@@ -182,9 +182,12 @@ export default Component.extend({
         if (!action) { return; }
 
         const closureAction = (typeof action === 'function' ? action : run.bind(this, 'sendAction', event));
-        const eventHandler = () => {
-          const arg = EVENTS_ARGUMENT[event];
-          return closureAction(arg ? get(this, `map.${arg}`) : undefined); // Call /w optional arguments
+        const eventHandler = (...args) => {
+          // Append optional argument
+          args.push(EVENTS_ARGUMENT[event] ? get(this, `map.${EVENTS_ARGUMENT[event]}`) : undefined);
+
+          // Invoke with any arguments
+          return closureAction(...args);
         };
 
         if (event === 'loaded') {
