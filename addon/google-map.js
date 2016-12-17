@@ -227,7 +227,7 @@ export const GoogleMapProxy = Ember.ObjectProxy.extend({
       this.content.setMapTypeId(mapTypeId);
       return getMapType(mapTypeId);
     }
-  }),
+  }).volatile(),
 
   /**
    * @type {Number}
