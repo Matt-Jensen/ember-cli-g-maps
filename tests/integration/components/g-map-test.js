@@ -184,7 +184,7 @@ test('it sets gesture handling', function(assert) {
 });
 
 test('it sets heading', function(assert) {
-  const heading = this.set('heading', 1);
+  const heading = this.set('heading', 0);
   this.set('options', {heading});
 
   this.render(hbs`{{#g-map heading=heading as |map|}}

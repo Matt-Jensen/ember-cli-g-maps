@@ -138,6 +138,7 @@ export const GoogleMapProxy = Ember.ObjectProxy.extend({
   /**
    * @type {Number}
    * Heading for aerial imagery
+   * NOTE headings are snapped to nearest usable value
    */
   heading: computed({
     get() {
@@ -147,7 +148,7 @@ export const GoogleMapProxy = Ember.ObjectProxy.extend({
     set(key, heading) {
       assert('heading was set without a number', typeof heading === 'number');
       this.content.setHeading(heading);
-      return heading;
+      return this.content.getHeading();
     }
   }),
 
