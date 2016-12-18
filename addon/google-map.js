@@ -274,7 +274,8 @@ export const GoogleMapProxy = Ember.ObjectProxy.extend({
     },
 
     set(key, value) {
-      assert('maxZoom was set without number', typeof value);
+      value = (value === Infinity ? value : parseInt(value, 10));
+      assert('maxZoom was set without a valid number', isNaN(value) === false);
       assert('maxZoom was set below minZoom', value > this.get('minZoom'));
       return this.content.maxZoom = value;
     }
@@ -290,7 +291,8 @@ export const GoogleMapProxy = Ember.ObjectProxy.extend({
     },
 
     set(key, value) {
-      assert('minZoom was set without number', typeof value === 'number');
+      value = parseInt(value, 10);
+      assert('minZoom was set without a valid number', isNaN(value) === false);
       assert('minZoom was set above maxZoom', value < this.get('maxZoom'));
       return this.content.minZoom = value;
     }
