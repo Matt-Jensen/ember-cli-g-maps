@@ -9,7 +9,7 @@ export default Ember.Controller.extend({
     },
 
     autocompleteError(err) {
-      window.alert(`Unable to find place for ${err.input}`);
+      console.error(`Unable to find place for ${err.input}`);
     }
   }
 });
