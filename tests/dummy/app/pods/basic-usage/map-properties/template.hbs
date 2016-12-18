@@ -1,84 +1,259 @@
 <h2>Properties</h2>
 
-<ul>
-  <li><a {{action "scrollToId" 'mapType'}}>mapType</a></li>
-  <li><a {{action "scrollToId" 'showMapTypeControl'}}>showMapTypeControl</a></li>
-  <li><a {{action "scrollToId" 'draggable'}}>draggable</a></li>
-  <li><a {{action "scrollToId" 'showZoomControl'}}>showZoomControl</a></li>
-  <li><a {{action "scrollToId" 'showScaleControl'}}>showScaleControl</a></li>
-  <li><a {{action "scrollToId" 'disableDefaultUI'}}>disableDefaultUI</a></li>
-  <li><a {{action "scrollToId" 'clickableIcons'}}>clickableIcons</a></li>
-  <li><a {{action "scrollToId" 'disableDoubleClickZoom'}}>disableDoubleClickZoom</a></li>
-  <li><a {{action "scrollToId" 'scrollwheel'}}>scrollwheel</a></li>
-  <li><a {{action "scrollToId" 'styles'}}>styles</a></li>
-</ul>
+<div class="grid-block">
+  <ul class="grid-content shrink">
+    <li><a {{action "scrollToId" 'mapType'}}>backgroundColor</a></li>
+    <li><a {{action "scrollToId" 'mapType'}}>mapType</a></li>
+    <li><a {{action "scrollToId" 'showMapTypeControl'}}>showMapTypeControl</a></li>
+    <li><a {{action "scrollToId" 'draggable'}}>draggable</a></li>
+    <li><a {{action "scrollToId" 'showZoomControl'}}>showZoomControl</a></li>
+    <li><a {{action "scrollToId" 'showScaleControl'}}>showScaleControl</a></li>
+  </ul>
+  <ul class="grid-content shrink">
+    <li><a {{action "scrollToId" 'disableDefaultUI'}}>disableDefaultUI</a></li>
+    <li><a {{action "scrollToId" 'clickableIcons'}}>clickableIcons</a></li>
+    <li><a {{action "scrollToId" 'disableDoubleClickZoom'}}>disableDoubleClickZoom</a></li>
+    <li><a {{action "scrollToId" 'scrollwheel'}}>scrollwheel</a></li>
+    <li><a {{action "scrollToId" 'styles'}}>styles</a></li>
+  </ul>
+</div>
 
+<div class="grid-content -np -mb">
+  {{g-map
+    class="gmaps-docs-map"
+    lat=lat
+    lng=lng
+    backgroundColor=backgroundColor
+    clickableIcons=clickableIcons
+    disableDefaultUI=disableDefaultUI
+    disableDoubleClickZoom=disableDoubleClickZoom
+    draggable=draggable
+    draggableCursor=draggableCursor
+    draggingCursor=draggingCursor
+    fullscreenControl=fullscreenControl
+    fullscreenControlOptions=fullscreenControlOptions
+    gestureHandling=gestureHandling
+    heading=heading
+    keyboardShortcuts=keyboardShortcuts
+    mapTypeId=mapTypeId
+    mapTypeControl=mapTypeControl
+    mapTypeControlOptions=mapTypeControlOptions
+    maxZoom=maxZoom
+    minZoom=minZoom
+    panControl=panControl
+    panControlOptions=panControlOptions
+    rotateControl=rotateControl
+    rotateControlOptions=rotateControlOptions
+    scaleControl=scaleControl
+    scaleControlStyles=scaleControlStyles
+    scrollwheel=scrollwheel
+    signInControl=signInControl
+    styles=styles
+    streetViewControl=streetViewControl
+    streetViewControlOptions=streetViewControlOptions
+    zoom=zoom
+    zoomControl=zoomControl
+    zoomControlOptions=zoomControlOptions
+    maptypeid_changed=(route-action "onMapTypeIdChange")
+    heading_changed=(route-action "onHeadingChanged")
+    zoom_changed=(route-action "onZoomChanged")}}
+</div>
+<small>Map theme: <a href="https://snazzymaps.com/style/64512/colorful-local" target="_blank">Colorful Local</a> by George</small>
+
+<hr>
 
 <div class="grid-block -pb">
-  <div class="grid-content small-12 medium-3 -smb">
-    <small class="-db">Map Type</small>
-    {{type}}
+  <div class="grid-content small-6 medium-3 -mb">
+    <small class="-db -smb">backgroundColor</small>
+    {{backgroundColor}}
   </div>
 
-  <div class="grid-content small-12 medium-3 -smb">
-    <small class="-db">Show Map Type Controls</small>
-    <input type="checkbox" value=showMaptypeControl checked {{action "toggleTypeControls" on="change"}}>
+  <div class="grid-content small-6 medium-3 -mb">
+    <small class="-db -smb">clickableIcons</small>
+    <button class="th-google-button--xsmall -ilb" {{action (toggle "clickableIcons" this)}}>{{if clickableIcons 'Enabled' 'Disabled'}}</button>
   </div>
 
-  <div class="grid-content small-12 medium-3 -smb">
-    <small class="-db">Disable Draggable</small>
-    <input type="checkbox" value=drag {{action "toggleDrag" on="change"}}>
+  <div class="grid-content small-6 medium-3 -mb">
+    <small class="-db -smb">disableDefaultUI</small>
+    <button class="th-google-button--xsmall -ilb" {{action (toggle "disableDefaultUI" this)}}>{{if disableDefaultUI 'Active' 'Inactive'}}</button>
   </div>
 
-  <div class="grid-content small-12 medium-3 -smb">
-    <small class="-db">Show Zoom Controls</small>
-    <input type="checkbox" value=showZoomControl checked {{action "toggleZoomControls" on="change"}}>
+  <div class="grid-content small-6 medium-3 -mb">
+    <small class="-db -smb">disableDoubleClickZoom</small>
+    <button class="th-google-button--xsmall -ilb" {{action (toggle "disableDoubleClickZoom" this)}}>{{if disableDoubleClickZoom 'Active' 'Inactive'}}</button>
   </div>
 
-  <div class="grid-content small-12 medium-3 -smb">
-    <small class="-db">Show Scale Controls</small>
-    <input type="checkbox" value=showScaleControl checked {{action "toggleScaleControls" on="change"}}>
+  <div class="grid-content small-6 medium-3 -mb">
+    <small class="-db -smb">draggable</small>
+    <button class="th-google-button--xsmall -ilb" {{action (toggle "draggable" this)}}>{{if draggable 'Enabled' 'Disabled'}}</button>
   </div>
 
-  <div class="grid-content small-12 medium-3 -smb">
-    <small class="-db">Disable Double Click Zoom</small>
-    <input type="checkbox" value=disableDoubleClickZoom {{action "toggleDisableDoubleClickZoom" on="change"}}>
+  <div class="grid-content small-6 medium-3 -mb">
+    <small class="-db -smb">draggableCursor</small>
+    <button class="th-google-button--xsmall -ilb" {{action "setToNext" "draggableCursor" "cursor"}}>{{draggableCursor}}</button>
   </div>
 
-  <div class="grid-content small-12 medium-3 -smb">
-    <small class="-db">Disable Scrollwheel</small>
-    <input type="checkbox" value=scrollwheel {{action "toggleScrollwheel" on="change"}}>
+  <div class="grid-content small-6 medium-3 -mb">
+    <small class="-db -smb">draggingCursor</small>
+    <button class="th-google-button--xsmall -ilb" {{action "setToNext" "draggingCursor" "cursor"}}>{{draggingCursor}}</button>
+  </div>
+
+  <div class="grid-content small-6 medium-3 -mb">
+    <small class="-db -smb">fullscreenControl</small>
+    <button class="th-google-button--xsmall -ilb" {{action (toggle "fullscreenControl" this)}}>{{if fullscreenControl 'Enabled' 'Disabled'}}</button>
+  </div>
+
+  <div class="grid-content small-6 medium-3 -mb">
+    <small class="-db -smb">fullscreenControlOptions</small>
+    <button class="th-google-button--xsmall -ilb" {{action "setToNext" "fullscreenControlOptions" "position"}}>{{fullscreenControlOptions}}</button>
+  </div>
+
+  <div class="grid-content small-6 medium-3 -mb">
+    <small class="-db -smb">gestureHandling</small>
+    <button class="th-google-button--xsmall -ilb" {{action "setToNext" "gestureHandling" "gesture"}}>{{gestureHandling}}</button>
+  </div>
+
+  <div class="grid-content small-6 medium-3 -mb">
+    <small class="-db -smb">heading</small>
+    <button class="th-google-button--xsmall -ilb" {{action "setRandomHeading"}}>{{heading}}</button>
+  </div>
+
+  <div class="grid-content small-6 medium-3 -mb">
+    <small class="-db -smb">keyboardShortcuts</small>
+    <button class="th-google-button--xsmall -ilb" {{action (toggle "keyboardShortcuts" this)}}>{{if keyboardShortcuts 'Enabled' 'Disabled'}}</button>
+  </div>
+
+  <div class="grid-content small-6 medium-3 -mb">
+    <small class="-db -smb">mapTypeControl</small>
+    <button class="th-google-button--xsmall -ilb" {{action (toggle "mapTypeControl" this)}}>{{if mapTypeControl 'Enabled' 'Disabled'}}</button>
+  </div>
+
+  <div class="grid-content small-6 medium-3 -mb">
+    <small class="-db -smb">maxZoom</small>
+    <div style="width: 70px">{{input type="number" class="-full" width="80" value=maxZoom min=(inc minZoom)}}</div>
+  </div>
+
+  <div class="grid-content small-6 medium-3 -mb">
+    <small class="-db -smb">minZoom</small>
+    <div style="width: 70px">{{input type="number" class="-full" value=minZoom max=(dec maxZoom) min="0"}}</div>
+  </div>
+
+  <div class="grid-content small-6 medium-3 -mb">
+    <small class="-db -smb">panControl</small>
+    <button class="th-google-button--xsmall -ilb" {{action (toggle "panControl" this)}}>{{if panControl 'Enabled' 'Disabled'}}</button>
+  </div>
+
+  <div class="grid-content small-6 medium-3 -mb">
+    <small class="-db -smb">panControlOptions</small>
+    <button class="th-google-button--xsmall -ilb" {{action "setToNext" "panControlOptions" "position"}}>{{panControlOptions}}</button>
+  </div>
+
+  <div class="grid-content small-6 medium-3 -mb">
+    <small class="-db -smb">rotateControl</small>
+    <button class="th-google-button--xsmall -ilb" {{action (toggle "rotateControl" this)}}>{{if rotateControl 'Enabled' 'Disabled'}}</button>
+  </div>
+
+  <div class="grid-content small-6 medium-3 -mb">
+    <small class="-db -smb">rotateControlOptions</small>
+    <button class="th-google-button--xsmall -ilb" {{action "setToNext" "rotateControlOptions" "position"}}>{{rotateControlOptions}}</button>
+  </div>
+
+  <div class="grid-content small-6 medium-3 -mb">
+    <small class="-db -smb">scaleControl</small>
+    <button class="th-google-button--xsmall -ilb" {{action (toggle "scaleControl" this)}}>{{if scaleControl 'Enabled' 'Disabled'}}</button>
+  </div>
+
+  <div class="grid-content small-6 medium-3 -mb">
+    <small class="-db -smb">scaleControlOptions</small>
+    <button class="th-google-button--xsmall -ilb" {{action "setToNext" "scaleControlOptions" "scaleControlStyles"}}>{{scaleControlOptions}}</button>
+  </div>
+
+  <div class="grid-content small-6 medium-3 -mb">
+    <small class="-db -smb">scrollwheel</small>
+    <button class="th-google-button--xsmall -ilb" {{action (toggle "scrollwheel" this)}}>{{if scrollwheel 'Enabled' 'Disabled'}}</button>
+  </div>
+
+  <div class="grid-content small-6 medium-3 -mb">
+    <small class="-db -smb">signInControl</small>
+    <button class="th-google-button--xsmall -ilb" {{action (toggle "signInControl" this)}}>{{if signInControl 'Enabled' 'Disabled'}}</button>
+  </div>
+
+  <div class="grid-content small-6 medium-3 -mb">
+    <small class="-db -smb">streetViewControl</small>
+    <button class="th-google-button--xsmall -ilb" {{action (toggle "streetViewControl" this)}}>{{if streetViewControl 'Enabled' 'Disabled'}}</button>
+  </div>
+
+  <div class="grid-content small-6 medium-3 -mb">
+    <small class="-db -smb">streetViewControlOptions</small>
+    <button class="th-google-button--xsmall -ilb" {{action "setToNext" "streetViewControlOptions" "position"}}>{{streetViewControlOptions}}</button>
+  </div>
+
+  <div class="grid-content small-6 medium-3 -mb">
+    <small class="-db -smb">zoom</small>
+    <div style="width: 70px">{{input type="number" class="-full" value=zoom max=(dec maxZoom) min=(inc minZoom)}}</div>
+  </div>
+
+  <div class="grid-content small-6 medium-3 -mb">
+    <small class="-db -smb">zoomControl</small>
+    <button class="th-google-button--xsmall -ilb" {{action (toggle "zoomControl" this)}}>{{if zoomControl 'Enabled' 'Disabled'}}</button>
+  </div>
+
+  <div class="grid-content small-6 medium-3 -mb">
+    <small class="-db -smb">zoomControlOptions</small>
+    <button class="th-google-button--xsmall -ilb" {{action "setToNext" "zoomControlOptions" "position"}}>{{zoomControlOptions}}</button>
   </div>
 </div>
 
 <div class="grid-block">
-  <div class="grid-content small-12 -pb">
-    {{#each types as |mapType|}}
-      <button class="th-google-button--small -ilb -smr
-        {{if (eq mapType type) 'active'}}"
-        {{action "setMapType" mapType}}>
-        {{mapType}}
-      </button>
-    {{/each}}
+  <div class="grid-content shrink -pb" style="min-height: 59px;">
+    <small class="-db -smb">Map Type</small>
+
+    <div class="th-google-button-bar">
+      {{#each mapTypeControlOptions.mapTypeIds as |mapType|}}
+        <button class="th-google-button--small
+          {{if (eq mapType mapTypeId) 'active'}}"
+          {{action "setMapType" mapType}}>
+          {{mapType}}
+        </button>
+      {{/each}}
+    </div>
   </div>
 </div>
 
-<div class="grid-content -np -mb">
-  {{g-maps class="gmaps-docs-map"
-    lat=lat
-    lng=lng
-    zoom=zoom
-    mapType=type
-    draggable=drag
-    showMapTypeControl=showMapTypeControl
-    showZoomControl=showZoomControl
-    showScaleControl=showScaleControl
-    disableDoubleClickZoom=disableDoubleClickZoom
-    scrollwheel=scrollwheel
-    styles=styles
-    maptypeid_changed="onMapTypeIdChange"}}
+<div class="grid-block -pb">
+  <strong class="grid-content small-12 -smb">mapTypeControlOptions</strong>
+
+  <div class="grid-content shrink">
+    <small class="-db -smb">mapTypeIds</small>
+    <div class="th-google-button-bar">
+      {{#each allMapTypes as |mapType|}}
+        <button class="th-google-button--small {{if (contains mapType mapTypeControlOptions.mapTypeIds) 'active'}}"
+          {{action "toggleSplice" "mapTypeControlOptions.mapTypeIds" mapType allMapTypes}}>
+          {{mapType}}
+        </button>
+      {{/each}}
+    </div>
+  </div>
+
+  <div class="grid-content shrink">
+    <small class="-db -smb">position</small>
+    <div class="th-google-button-bar">
+      <button class="th-google-button--small" {{action "setToNext" "mapTypeControlOptions.position" "position"}}>
+        {{mapTypeControlOptions.position}}
+      </button>
+    </div>
+  </div>
+
+  <div class="grid-content shrink">
+    <small class="-db -smb">style</small>
+    <div class="th-google-button-bar">
+      <button class="th-google-button--small" {{action "setToNext" "mapTypeControlOptions.style" "mapTypeControlStyles"}}>
+        {{mapTypeControlOptions.style}}
+      </button>
+    </div>
+  </div>
 </div>
-<small>Map theme: <a href="https://snazzymaps.com/style/64512/colorful-local" target="_blank">Colorful Local</a> by George</small>
+
 
 <hr>
 

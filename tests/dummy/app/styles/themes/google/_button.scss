@@ -33,3 +33,35 @@
   line-height: 1.1;
   height: rem-calc(26);
 }
+
+.th-google-button--xsmall {
+  @extend .th-google-button;
+
+  font-size: rem-calc(7);
+  line-height: 0.6;
+  height: rem-calc(20);
+}
+
+.th-google-button-bar {
+  font-size: 0;
+  box-shadow: 0 1px 4px rgba(0,0,0,.37);
+  display: inline-block;
+
+  > [class*=th-google-button] {
+    border-radius: 0;
+    border-right: 1px solid rgba(0, 0, 0, 0.18);
+    display: inline-block;
+    box-shadow: none;
+
+    &:first-child {
+      border-top-left-radius: $google-radius;
+      border-bottom-left-radius: $google-radius;
+    }
+
+    &:last-child {
+      border-top-right-radius: $google-radius;
+      border-bottom-right-radius: $google-radius;
+      border-right-width: 0;
+    }
+  }
+}
