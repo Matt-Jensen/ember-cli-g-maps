@@ -6,6 +6,7 @@ import {assert} from 'ember-metal/utils';
 import computed from 'ember-computed';
 import run from 'ember-runloop';
 import getOwner from 'ember-owner/get';
+import {assign} from 'ember-platform';
 
 import googleMap from 'ember-cli-g-maps/google-map';
 import loadGoogleMaps from 'ember-cli-g-maps/utils/load-google-maps';
@@ -16,7 +17,7 @@ const GMAP_DEFAULTS = {
   lng: 97.7431
 };
 
-const GOOGLE_MAP_EVENTS = [
+const MAP_EVENTS = [
   'bounds_changed',
   'center_changed',
   'click',
@@ -39,7 +40,7 @@ const GOOGLE_MAP_EVENTS = [
   'zoom_changed'
 ];
 
-const EVENTS_ARGUMENT = {
+const AUGMENTED_MAP_EVENTS = {
   center_changed: 'center',
   heading_changed: 'heading',
   maptypeid_changed: 'mapTypeId',
@@ -47,8 +48,12 @@ const EVENTS_ARGUMENT = {
   zoom_changed: 'zoom'
 };
 
-const GOOGLE_MAP_OPTIONS = [
+const MAP_STATIC_OPTIONS = [
   'backgroundColor',
+  'styles'
+];
+
+const MAP_BOUND_OPTIONS = [
   'center',
   'clickableIcons',
   'disableDefaultUI',
@@ -78,7 +83,6 @@ const GOOGLE_MAP_OPTIONS = [
   'streetView',
   'streetViewControl',
   'streetViewControlOptions',
-  'styles',
   'tilt',
   'zoom',
   'zoomControl',
@@ -133,8 +137,8 @@ export default Component.extend({
    * Google MapOptions object
    * NOTE this is designed to be overwritten, by user, if desired
    */
-  options: computed(...GOOGLE_MAP_OPTIONS, function() {
-    const opts = getProperties(this, ...GOOGLE_MAP_OPTIONS);
+  options: computed(...MAP_BOUND_OPTIONS, function() {
+    const opts = getProperties(this, ...MAP_BOUND_OPTIONS);
 
     Object.keys(opts).forEach((option) => {
       if (opts[option] === undefined) {
@@ -161,6 +165,9 @@ export default Component.extend({
       options.center.lng = GMAP_DEFAULTS.lng;
     }
 
+    // Add static properties to options
+    assign(options, getProperties(this, ...MAP_STATIC_OPTIONS));
+
     /*
      * Render Google Map to canvas data element
      */
@@ -177,14 +184,14 @@ export default Component.extend({
       /*
        * Bind any events to google map
        */
-      GOOGLE_MAP_EVENTS.forEach((event) => {
+      MAP_EVENTS.forEach((event) => {
         const action = this.attrs[event];
         if (!action) { return; }
 
         const closureAction = (typeof action === 'function' ? action : run.bind(this, 'sendAction', event));
         const eventHandler = (...args) => {
           // Append optional argument
-          args.push(EVENTS_ARGUMENT[event] ? get(this, `map.${EVENTS_ARGUMENT[event]}`) : undefined);
+          args.push(AUGMENTED_MAP_EVENTS[event] ? get(this, `map.${AUGMENTED_MAP_EVENTS[event]}`) : undefined);
 
           // Invoke with any arguments
           return closureAction(...args);
@@ -224,7 +231,7 @@ export default Component.extend({
     const options = get(this, 'options');
 
     Object.keys(newAttrs).forEach((opt) => {
-      if (GOOGLE_MAP_OPTIONS.indexOf(opt) === -1) {
+      if (MAP_BOUND_OPTIONS.indexOf(opt) === -1) {
         return;
       }
 
