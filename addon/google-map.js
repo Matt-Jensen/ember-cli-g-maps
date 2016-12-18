@@ -172,11 +172,42 @@ export const GoogleMapProxy = Ember.ObjectProxy.extend({
   }),
 
   /**
+   * @private
+   * @type {Boolean}
+   * Google maps does not return a style if its set to default
+   * This indicates if a user has set any map type control option style
+   */
+  _enforceMapTypeControlOptionsStyle: false,
+
+  /**
    * @type {Object}
    * Configuration settings for the map type controls
    */
   mapTypeControlOptions: computed({
-    get() {}, // Undefined by default
+    get() {
+      const {mapTypeControlOptions} = this.content;
+
+      const result = {};
+
+      if (mapTypeControlOptions.mapTypeIds) {
+        result.mapTypeIds = mapTypeControlOptions.mapTypeIds.map(getMapType);
+      }
+
+      if (mapTypeControlOptions.position) {
+        result.position = getControlPosition(mapTypeControlOptions.position);
+      }
+
+      if (mapTypeControlOptions.style) {
+        result.style = getMapTypeControlStyle(mapTypeControlOptions.style);
+      }
+
+      if (!result.style && this._enforceMapTypeControlOptionsStyle){
+        result.style = 'DEFAULT'; // Enforce style presence
+      }
+
+      return result;
+    },
+
     set(key, value) {
       assert('mapTypeControlOptions was set without an object', typeof value === 'object');
 
@@ -203,12 +234,15 @@ export const GoogleMapProxy = Ember.ObjectProxy.extend({
         assert('mapTypeControlOptions.style is not a valid map type control style', isPresent(style));
 
         mapTypeControlOptions.style = style;
+        this._enforceMapTypeControlOptionsStyle = true;
+      } else {
+        this._enforceMapTypeControlOptionsStyle = false;
       }
 
       this.content.setOptions({mapTypeControlOptions});
-      return value;
+      return this.get('mapTypeControlOptions');
     }
-  }),
+  }).volatile(),
 
   /**
    * @type {String}
@@ -624,6 +658,17 @@ function getControlPosition(id) {
 function getMapTypeControlStyleId(style) {
   style = `${style}`.toUpperCase();
   return google.maps.MapTypeControlStyle[style];
+}
+
+/**
+ * @param  {Number} id Map type control style id
+ * @return {String}    Map type control style
+ * Get a map type control style from its' id value
+ */
+function getMapTypeControlStyle(id) {
+  id = parseInt(id, 10);
+  return Object.keys(google.maps.MapTypeControlStyle).filter((style) =>
+    google.maps.MapTypeControlStyle[style] === id)[0];
 }
 
 /**
