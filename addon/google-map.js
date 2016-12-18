@@ -513,7 +513,7 @@ export const GoogleMapProxy = Ember.ObjectProxy.extend({
       this.content.setZoom(value);
       return value;
     }
-  }),
+  }).volatile(),
 
   /**
    * @type {Boolean}
