@@ -224,12 +224,16 @@ export default Component.extend({
     const options = get(this, 'options');
 
     Object.keys(newAttrs).forEach((opt) => {
-      const update = options[opt];
-      const previous = (oldAttrs[opt] ? oldAttrs[opt].value : update);
+      if (GOOGLE_MAP_OPTIONS.indexOf(opt) === -1) {
+        return;
+      }
+
+      const value = options[opt];
+      const previous = (oldAttrs[opt] ? oldAttrs[opt].value : value);
       const current = get(this, `map.${opt}`);
 
-      if (GOOGLE_MAP_OPTIONS.indexOf(opt) !== -1 && update !== previous && update !== current) {
-        set(this, `map.${opt}`, update);
+      if (value !== previous || (typeof value !== 'object' ? value !== current : JSON.stringify(value).toLowerCase() !== JSON.stringify(current).toLowerCase())) {
+        set(this, `map.${opt}`, value);
       }
     });
   },
