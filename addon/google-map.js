@@ -504,8 +504,9 @@ export const GoogleMapProxy = Ember.ObjectProxy.extend({
     set(key, value) {
       const min = this.get('minZoom');
       const max = this.get('maxZoom');
+      value = parseInt(value, 10);
 
-      assert('zoom was set without a number', typeof value === 'number');
+      assert('zoom was set without a valid number', isNaN(value) === false);
       assert('zoom was set above maxZoom', value <= max);
       assert('zoom was set below minZoom', value >= min);
 
