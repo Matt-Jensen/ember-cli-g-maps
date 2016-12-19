@@ -419,21 +419,6 @@ test('it sets scroll wheel', function(assert) {
   assert.equal(this.$('#g-map-test-output').text().trim(), 'pass', 'set via options');
 });
 
-test('it sets sign in control', function(assert) {
-  const signInControl = this.set('signInControl', false);
-  this.set('options', {signInControl});
-
-  this.render(hbs`{{#g-map signInControl=signInControl as |map|}}
-    <div id="g-map-test-output">{{if map.signInControl 'fail' 'pass'}}</div>
-  {{/g-map}}`);
-  assert.equal(this.$('#g-map-test-output').text().trim(), 'pass', 'set via property');
-
-  this.render(hbs`{{#g-map options=options as |map|}}
-    <div id="g-map-test-output">{{if map.signInControl 'fail' 'pass'}}</div>
-  {{/g-map}}`);
-  assert.equal(this.$('#g-map-test-output').text().trim(), 'pass', 'set via options');
-});
-
 test('it sets street view', function(assert) {
   const streetView = this.set('streetView', new google.maps.StreetViewPanorama(document.createElement('div')));
   this.set('options', {streetView});

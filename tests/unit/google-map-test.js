@@ -307,7 +307,6 @@ test('it returns the static map properties', function(assert) {
     rotateControl: false,
     scaleControl: false,
     scrollwheel: false,
-    signInControl: false,
     streetViewControl: false,
     zoomControl: false,
     styles: [{
@@ -331,7 +330,6 @@ test('it returns the static map properties', function(assert) {
   assert.equal(map.get('rotateControl'), expected.rotateControl, 'resolves configured rotateControl');
   assert.equal(map.get('scaleControl'), expected.scaleControl, 'resolves configured scaleControl');
   assert.equal(map.get('scrollwheel'), expected.scrollwheel, 'resolves configured scrollwheel');
-  assert.equal(map.get('signInControl'), expected.signInControl, 'resolves configured signInControl');
   assert.equal(map.get('streetViewControl'), expected.streetViewControl, 'resolves configured streetViewControl');
   assert.equal(map.get('zoomControl'), expected.zoomControl, 'resolves configured zoomControl');
   assert.equal(map.get('styles'), expected.styles, 'resolves configured styles');
@@ -353,7 +351,6 @@ test('it only allows setting valid static map properties', function(assert) {
     rotateControl: false,
     scaleControl: false,
     scrollwheel: false,
-    signInControl: false,
     streetViewControl: false,
     zoomControl: false,
     styles: [{
@@ -377,7 +374,6 @@ test('it only allows setting valid static map properties', function(assert) {
   assert.throws(() => map.set('rotateControl', 'non-boolean'), 'only accepts boolean value');
   assert.throws(() => map.set('scaleControl', 'non-boolean'), 'only accepts boolean value');
   assert.throws(() => map.set('scrollwheel', 'non-boolean'), 'only accepts boolean value');
-  assert.throws(() => map.set('signInControl', 'non-boolean'), 'only accepts boolean value');
   assert.throws(() => map.set('streetViewControl', 'non-boolean'), 'only accepts boolean value');
   assert.throws(() => map.set('zoomControl', 'non-boolean'), 'only accepts boolean value');
   assert.throws(() => map.set('styles', 'non-array'), 'only accepts array value');
@@ -398,7 +394,6 @@ test('it only allows setting valid static map properties', function(assert) {
   assert.equal(map.get('rotateControl'), expected.rotateControl, 'resolves new rotateControl');
   assert.equal(map.get('scaleControl'), expected.scaleControl, 'resolves new scaleControl');
   assert.equal(map.get('scrollwheel'), expected.scrollwheel, 'resolves new scrollwheel');
-  assert.equal(map.get('signInControl'), expected.signInControl, 'resolves new signInControl');
   assert.equal(map.get('streetViewControl'), expected.streetViewControl, 'resolves new streetViewControl');
   assert.equal(map.get('zoomControl'), expected.zoomControl, 'resolves new zoomControl');
   assert.equal(map.get('styles'), expected.styles, 'resolves new styles');

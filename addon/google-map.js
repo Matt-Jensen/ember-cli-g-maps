@@ -407,15 +407,6 @@ export const GoogleMapProxy = Ember.ObjectProxy.extend({
   }),
 
   /**
-   * @type {Boolean}
-   * The enabled/disabled state of the sign in control
-   */
-  signInControl: computed({
-    get: getStaticMapOption,
-    set: setStaticMapBooleanOption
-  }),
-
-  /**
    * @type {google.maps.StreetViewPanorama}
    * Set the street view panorama used by the map
    */
@@ -596,6 +587,7 @@ function getStaticMapOption(key) {
 function setStaticMapBooleanOption(key, value) {
   assert(`${key} was set without boolean`, typeof value === 'boolean');
   this.content.setOptions({[key]: value});
+  console.log('map', this.content[key]);
   return value;
 }
 

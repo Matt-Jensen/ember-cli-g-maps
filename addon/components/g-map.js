@@ -78,7 +78,6 @@ const MAP_BOUND_OPTIONS = [
   'scaleControl',
   'scaleControlOptions',
   'scrollwheel',
-  'signInControl',
   'streetView',
   'streetViewControl',
   'streetViewControlOptions',
@@ -245,6 +244,7 @@ export default Component.extend({
       const current = get(this, `map.${option}`);
 
       if (isDiff(value, current)) {
+        console.log('setting ', option, value);
         set(this, `map.${option}`, value);
       }
     });
