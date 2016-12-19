@@ -6,7 +6,6 @@ import {assert} from 'ember-metal/utils';
 import computed from 'ember-computed';
 import run from 'ember-runloop';
 import getOwner from 'ember-owner/get';
-import {assign} from 'ember-platform';
 
 import googleMap from 'ember-cli-g-maps/google-map';
 import loadGoogleMaps from 'ember-cli-g-maps/utils/load-google-maps';
@@ -153,6 +152,15 @@ export default Component.extend({
     assert('map is a reserved namespace', get(this, 'map') === null);
     const options = get(this, 'options') || {};
 
+    // Add static options if undefined
+    MAP_STATIC_OPTIONS.forEach((staticOpt) => {
+      const option = get(this, staticOpt);
+
+      if (options[staticOpt] === undefined) {
+        set(options, staticOpt, option);
+      }
+    });
+
     if (!options.center) {
       options.center = get(this, 'center');
     }
@@ -164,9 +172,6 @@ export default Component.extend({
     if (!options.center.lng) {
       options.center.lng = GMAP_DEFAULTS.lng;
     }
-
-    // Add static properties to options
-    assign(options, getProperties(this, ...MAP_STATIC_OPTIONS));
 
     /*
      * Render Google Map to canvas data element
