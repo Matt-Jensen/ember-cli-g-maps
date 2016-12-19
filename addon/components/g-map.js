@@ -232,20 +232,19 @@ export default Component.extend({
     }
   },
 
-  didUpdateAttrs({newAttrs, oldAttrs}) {
+  didUpdateAttrs() {
     const options = get(this, 'options');
 
     /*
      * Check for any changes to bound options and apply to map
      */
     MAP_BOUND_OPTIONS
-    .filter((option) => newAttrs[option])
+    .filter((option) => options[option] !== undefined)
     .forEach((option) => {
       const value = options[option];
       const current = get(this, `map.${option}`);
-      const previous = (oldAttrs[option] ? oldAttrs[option].value : value);
 
-      if (isDiff(value, previous) || isDiff(value, current)) {
+      if (isDiff(value, current)) {
         set(this, `map.${option}`, value);
       }
     });
@@ -270,12 +269,6 @@ export default Component.extend({
   }
 });
 
-/**
- * @param  {any}  a
- * @param  {any}  b
- * @return {Boolean}
- * Determine if two values differ
- */
 function isDiff(a, b) {
   if (typeof a === 'object') {
     return JSON.stringify(a).toLowerCase() !== JSON.stringify(b).toLowerCase();
