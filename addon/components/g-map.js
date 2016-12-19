@@ -230,17 +230,18 @@ export default Component.extend({
   didUpdateAttrs({newAttrs, oldAttrs}) {
     const options = get(this, 'options');
 
-    Object.keys(newAttrs).forEach((opt) => {
-      if (MAP_BOUND_OPTIONS.indexOf(opt) === -1) {
-        return;
-      }
+    /*
+     * Check for any changes to bound options and apply to map
+     */
+    MAP_BOUND_OPTIONS
+    .filter((option) => newAttrs[option])
+    .forEach((option) => {
+      const value = options[option];
+      const current = get(this, `map.${option}`);
+      const previous = (oldAttrs[option] ? oldAttrs[option].value : value);
 
-      const value = options[opt];
-      const previous = (oldAttrs[opt] ? oldAttrs[opt].value : value);
-      const current = get(this, `map.${opt}`);
-
-      if (value !== previous || (typeof value !== 'object' ? value !== current : JSON.stringify(value).toLowerCase() !== JSON.stringify(current).toLowerCase())) {
-        set(this, `map.${opt}`, value);
+      if (isDiff(value, previous) || isDiff(value, current)) {
+        set(this, `map.${option}`, value);
       }
     });
   },
@@ -263,3 +264,17 @@ export default Component.extend({
     google.maps.event.trigger(get(this, 'map.content'), 'resize');
   }
 });
+
+/**
+ * @param  {any}  a
+ * @param  {any}  b
+ * @return {Boolean}
+ * Determine if two values differ
+ */
+function isDiff(a, b) {
+  if (typeof a === 'object') {
+    return JSON.stringify(a).toLowerCase() !== JSON.stringify(b).toLowerCase();
+  } else {
+    return a !== b;
+  }
+}
