@@ -26,9 +26,10 @@ module.exports = {
       //Protocol setup
       googleMapConfig.protocol = googleMapConfig.protocol || '//';
 
-      // default to Google Maps V3
-      googleMapConfig.version = googleMapConfig.version || '3';
-      params.push('v='+ encodeURIComponent(googleMapConfig.version));
+      // Use specified Google Maps version
+      if (googleMapConfig.version) {
+        params.push('v='+ encodeURIComponent(googleMapConfig.version));
+      }
 
       // grab either API key or client ID
       if (googleMapConfig.apiKey) {
