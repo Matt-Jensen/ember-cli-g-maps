@@ -587,7 +587,6 @@ function getStaticMapOption(key) {
 function setStaticMapBooleanOption(key, value) {
   assert(`${key} was set without boolean`, typeof value === 'boolean');
   this.content.setOptions({[key]: value});
-  console.log('map', this.content[key]);
   return value;
 }
 

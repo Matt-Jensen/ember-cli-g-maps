@@ -10,35 +10,16 @@ import getOwner from 'ember-owner/get';
 import googleMap from 'ember-cli-g-maps/google-map';
 import loadGoogleMaps from 'ember-cli-g-maps/utils/load-google-maps';
 import layout from 'ember-cli-g-maps/templates/components/g-map';
+import ENV from '../configuration';
 
 const GMAP_DEFAULTS = {
   lat: 30.2672,
   lng: 97.7431
 };
 
-const MAP_EVENTS = [
-  'bounds_changed',
-  'center_changed',
-  'click',
-  'dblclick',
-  'drag',
-  'dragend',
-  'dragstart',
-  'heading_changed',
-  'idle',
-  'loaded',
-  'maptypeid_changed',
-  'mousemove',
-  'mouseout',
-  'mouseover',
-  'projection_changed',
-  'resize',
-  'rightclick',
-  'tilesloaded',
-  'tilt_changed',
-  'zoom_changed'
-];
-
+const MAP_EVENTS = ENV.googleMap.events;
+const MAP_STATIC_OPTIONS = ENV.googleMap.staticOptions;
+const MAP_BOUND_OPTIONS = ENV.googleMap.boundOptions;
 const AUGMENTED_MAP_EVENTS = {
   center_changed: 'center',
   heading_changed: 'heading',
@@ -46,46 +27,6 @@ const AUGMENTED_MAP_EVENTS = {
   tilt_changed: 'tilt',
   zoom_changed: 'zoom'
 };
-
-const MAP_STATIC_OPTIONS = [
-  'backgroundColor',
-  'styles'
-];
-
-const MAP_BOUND_OPTIONS = [
-  'center',
-  'clickableIcons',
-  'disableDefaultUI',
-  'disableDoubleClickZoom',
-  'draggable',
-  'draggableCursor',
-  'draggingCursor',
-  'fullscreenControl',
-  'fullscreenControlOptions',
-  'gestureHandling',
-  'heading',
-  'keyboardShortcuts',
-  'mapTypeControl',
-  'mapTypeControlOptions',
-  'mapTypeId',
-  'maxZoom',
-  'minZoom',
-  'noClear',
-  'panControl',
-  'panControlOptions',
-  'rotateControl',
-  'rotateControlOptions',
-  'scaleControl',
-  'scaleControlOptions',
-  'scrollwheel',
-  'streetView',
-  'streetViewControl',
-  'streetViewControlOptions',
-  'tilt',
-  'zoom',
-  'zoomControl',
-  'zoomControlOptions'
-];
 
 const resizeSubscribers = [];
 let didSetupListener = false;
