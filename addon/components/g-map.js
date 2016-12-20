@@ -92,11 +92,13 @@ export default Component.extend({
     assert('map is a reserved namespace', get(this, 'map') === null);
     const options = get(this, 'options') || {};
 
-    // Add static options if undefined
+    /*
+     * Add any static options if not defined in `options`
+     */
     MAP_STATIC_OPTIONS.forEach((staticOpt) => {
       const option = get(this, staticOpt);
 
-      if (options[staticOpt] === undefined) {
+      if (option !== undefined && options[staticOpt] === undefined) {
         set(options, staticOpt, option);
       }
     });
@@ -114,7 +116,7 @@ export default Component.extend({
     }
 
     /*
-     * Render Google Map to canvas data element
+     * Render Google Map to canvas element
      */
     const canvas = this.element.querySelector('[data-g-map="canvas"]');
 
@@ -185,7 +187,6 @@ export default Component.extend({
       const current = get(this, `map.${option}`);
 
       if (isDiff(value, current)) {
-        console.log('setting ', option, value);
         set(this, `map.${option}`, value);
       }
     });
