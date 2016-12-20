@@ -58,7 +58,7 @@ export default Ember.Route.extend({
 
     this.get('gMap')
       .geocode(Ember.merge(req, {
-          "language" : 'ja'
+        "language" : 'ja'
       }))
       .then((results) => {
         if (controller.get('isDestroyed')) {

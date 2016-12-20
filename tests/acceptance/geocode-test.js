@@ -14,9 +14,11 @@ test('should return geocode results for default address and reverse geocode', fu
     assert.equal(currentURL(), '/service/geocoding', 'visit correct path');
   });
 
-  waitForGoogleMap();
-  click('#search-geocode-button');
-  waitForGeocodeRequests();
+  waitForGoogleMap()
+  .then(() => {
+    click('#search-geocode-button');
+    waitForGeocodeRequests();
+  });
 
   let originalSuggestions;
 
