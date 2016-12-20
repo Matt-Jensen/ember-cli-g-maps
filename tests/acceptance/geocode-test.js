@@ -5,7 +5,6 @@ moduleForAcceptance('Acceptance | service/geocoding');
 
 test('should return geocode results for default address and reverse geocode', function(assert) {
   stubGeocodeRequests({
-    onlyPhantomJS: true,
     results: [{ lat: 1, lng: 2, address: '1234 Street Address, Walla Walla, WA' }]
   });
   visit('/service/geocoding');
@@ -14,11 +13,9 @@ test('should return geocode results for default address and reverse geocode', fu
     assert.equal(currentURL(), '/service/geocoding', 'visit correct path');
   });
 
-  waitForGoogleMap()
-  .then(() => {
-    click('#search-geocode-button');
-    waitForGeocodeRequests();
-  });
+  waitForGoogleMap();
+  click('#search-geocode-button');
+  waitForGeocodeRequests();
 
   let originalSuggestions;
 
@@ -28,7 +25,6 @@ test('should return geocode results for default address and reverse geocode', fu
   });
 
   stubGeocodeRequests({
-    onlyPhantomJS: true,
     results: [{ lat: 1, lng: 2, address: '4567 Another Address, Madison, WI' }]
   });
 
