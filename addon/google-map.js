@@ -33,7 +33,7 @@ export const GoogleMapProxy = Ember.ObjectProxy.extend({
       this.content.setCenter(value);
       return value;
     }
-  }),
+  }).volatile(),
 
   /**
    * @type {Boolean}
@@ -607,7 +607,7 @@ function setStaticMapStringOption(key, value) {
  * @return {String}      Map type id
  * Get the id of a map type
  */
-function getMapTypesId(type) {
+export function getMapTypesId(type) {
   type = `${type}`.toUpperCase();
   return google.maps.MapTypeId[type];
 }
@@ -617,7 +617,7 @@ function getMapTypesId(type) {
  * @return {String}    Map type
  * Get a map type from its' id value
  */
-function getMapType(id) {
+export function getMapType(id) {
   id = `${id}`.toLowerCase();
   return Object.keys(google.maps.MapTypeId).filter((type) =>
     google.maps.MapTypeId[type] === id)[0];
@@ -628,7 +628,7 @@ function getMapType(id) {
  * @return {Number}          Control position id
  * Get the id of a control position
  */
-function getControlPositionId(position) {
+export function getControlPositionId(position) {
   position = `${position}`.toUpperCase();
   return google.maps.ControlPosition[position];
 }
@@ -638,7 +638,7 @@ function getControlPositionId(position) {
  * @return {String}    Control position
  * Get a control position from its' id value
  */
-function getControlPosition(id) {
+export function getControlPosition(id) {
   id = parseInt(id, 10);
   return Object.keys(google.maps.ControlPosition).filter((position) =>
     google.maps.ControlPosition[position] === id)[0];
@@ -649,7 +649,7 @@ function getControlPosition(id) {
  * @return {Number}        Map type control style id
  * Get the id of a map type control style
  */
-function getMapTypeControlStyleId(style) {
+export function getMapTypeControlStyleId(style) {
   style = `${style}`.toUpperCase();
   return google.maps.MapTypeControlStyle[style];
 }
@@ -659,7 +659,7 @@ function getMapTypeControlStyleId(style) {
  * @return {String}    Map type control style
  * Get a map type control style from its' id value
  */
-function getMapTypeControlStyle(id) {
+export function getMapTypeControlStyle(id) {
   id = parseInt(id, 10);
   return Object.keys(google.maps.MapTypeControlStyle).filter((style) =>
     google.maps.MapTypeControlStyle[style] === id)[0];
@@ -670,7 +670,7 @@ function getMapTypeControlStyle(id) {
  * @return {Number}        Scale control style id
  * Get the id of a scale control style
  */
-function getScaleControlStyleId(style) {
+export function getScaleControlStyleId(style) {
   style = `${style}`.toUpperCase();
   return google.maps.ScaleControlStyle[style];
 }
@@ -680,7 +680,7 @@ function getScaleControlStyleId(style) {
  * @return {String}    Control position
  * Get a scale control style its' id value
  */
-function getScaleControlStyle(id) {
+export function getScaleControlStyle(id) {
   id = parseInt(id, 10);
   return Object.keys(google.maps.ScaleControlStyle).filter((style) =>
     google.maps.ScaleControlStyle[style] === id)[0];

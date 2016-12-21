@@ -29,13 +29,13 @@ test('it renders all map centering strategies', function(assert) {
     <div id="g-map-test-output">{{map.center.lat}},{{map.center.lng}}</div>
   {{/g-map}}`);
 
-  assert.equal(this.$('#g-map-test-output').text().trim(), `${lat},${lng}`, 'set center via `lat` & `lng` properties');
+  assert.equal(this.$('#g-map-test-output').text().trim().slice(0, 15), `${lat},${lng}`, 'set center via `lat` & `lng` properties');
 
   this.render(hbs`{{#g-map center=centerLiteral as |map|}}
     <div id="g-map-test-output">{{map.center.lat}},{{map.center.lng}}</div>
   {{/g-map}}`);
 
-  assert.equal(this.$('#g-map-test-output').text().trim(), `${lat},${lng}`, 'set center via center literal');
+  assert.equal(this.$('#g-map-test-output').text().trim().slice(0, 15), `${lat},${lng}`, 'set center via center literal');
 
   this.render(hbs`{{#g-map center=centerLatLng as |map|}}
     <div id="g-map-test-output">{{map.center.lat}},{{map.center.lng}}</div>
@@ -47,7 +47,7 @@ test('it renders all map centering strategies', function(assert) {
     <div id="g-map-test-output">{{map.center.lat}},{{map.center.lng}}</div>
   {{/g-map}}`);
 
-  assert.equal(this.$('#g-map-test-output').text().trim(), `${lat},${lng}`, 'set center via options');
+  assert.equal(this.$('#g-map-test-output').text().trim().slice(0, 15), `${lat},${lng}`, 'set center via options');
 });
 
 test('it sets clickable icons', function(assert) {
@@ -578,8 +578,15 @@ test('it provides the relevant map state as change action argument', function(as
 
   // Add change event listeners
   Object.keys(changeValues).forEach((event) => {
-    this.on(event, (value) =>
-      assert.equal(value, changeValues[event], `${event} action was called with map state: ${changeValues[event]}`));
+    if (event !== 'center_changed') {
+      this.on(event, (value) =>
+        assert.equal(value, changeValues[event], `${event} action was called with map state: ${changeValues[event]}`));
+    }
+  });
+
+  this.on('center_changed', (value) => {
+    const actual = { lat: parseInt(value.lat, 10), lng: parseInt(value.lng, 10) };
+    assert.deepEqual(actual, changeValues.center_changed, 'center_changed action was called with map state: `{lat: 34, lng: 32}`');
   });
 
   this.render(hbs`{{g-map
