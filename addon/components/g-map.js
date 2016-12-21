@@ -6,6 +6,8 @@ import {assert} from 'ember-metal/utils';
 import computed from 'ember-computed';
 import run from 'ember-runloop';
 import getOwner from 'ember-owner/get';
+import {isPresent} from 'ember-utils';
+import {assign} from 'ember-platform';
 
 import googleMap from 'ember-cli-g-maps/google-map';
 import loadGoogleMaps from 'ember-cli-g-maps/utils/load-google-maps';
@@ -90,7 +92,7 @@ export default Component.extend({
 
   didInsertElement() {
     assert('map is a reserved namespace', get(this, 'map') === null);
-    const options = get(this, 'options') || {};
+    const options = assign({}, get(this, 'options')); // clone options
 
     /*
      * Add any static options if not defined in `options`
@@ -103,17 +105,7 @@ export default Component.extend({
       }
     });
 
-    if (!options.center) {
-      options.center = get(this, 'center');
-    }
-
-    if (!options.center.lat) {
-      options.center.lat = GMAP_DEFAULTS.lat;
-    }
-
-    if (!options.center.lng) {
-      options.center.lng = GMAP_DEFAULTS.lng;
-    }
+    assign(options, this._assignableCenter());
 
     /*
      * Render Google Map to canvas element
@@ -175,7 +167,8 @@ export default Component.extend({
   },
 
   didUpdateAttrs() {
-    const options = get(this, 'options');
+    const options = assign({}, get(this, 'options'));
+    assign(options, this._assignableCenter());
 
     /*
      * Check for any changes to bound options and apply to map
@@ -208,6 +201,35 @@ export default Component.extend({
    */
   _resizeMap() {
     google.maps.event.trigger(get(this, 'map.content'), 'resize');
+  },
+
+  /**
+   * @return {Object|Undefind} updates
+   * Ensure that center is configured in order of priority:
+   * - user override: options.center
+   * - user override: center
+   * - top level: lat,lng
+   * - user override: options.{lat,lng}
+   * - fallback gmap defaults
+   */
+  _assignableCenter() {
+    const options = get(this, 'options');
+    const center = options.center || {};
+
+    // Use user configuration
+    if (isPresent(center.lat) && isPresent(center.lng)) { return; }
+
+    const updates = get(this, 'center');
+
+    if (!isPresent(center.lat)) {
+      updates.lat = updates.lat || options.lat || GMAP_DEFAULTS.lat;
+    }
+
+    if (!isPresent(center.lng)) {
+      updates.lng = updates.lng || options.lng || GMAP_DEFAULTS.lng;
+    }
+
+    return {center: updates};
   }
 });
 

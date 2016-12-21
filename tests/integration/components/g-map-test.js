@@ -24,6 +24,7 @@ test('it renders all map centering strategies', function(assert) {
   this.set('centerLiteral', {lat, lng});
   this.set('centerLatLng', new google.maps.LatLng(lat, lng));
   this.set('options', {center: {lat, lng}});
+  this.set('optionsLatLng', {lat, lng});
 
   this.render(hbs`{{#g-map lat=lat lng=lng as |map|}}
     <div id="g-map-test-output">{{map.center.lat}},{{map.center.lng}}</div>
@@ -47,7 +48,13 @@ test('it renders all map centering strategies', function(assert) {
     <div id="g-map-test-output">{{map.center.lat}},{{map.center.lng}}</div>
   {{/g-map}}`);
 
-  assert.equal(this.$('#g-map-test-output').text().trim().slice(0, 15), `${lat},${lng}`, 'set center via options');
+  assert.equal(this.$('#g-map-test-output').text().trim().slice(0, 15), `${lat},${lng}`, 'set center via options.center');
+
+  this.render(hbs`{{#g-map options=optionsLatLng as |map|}}
+    <div id="g-map-test-output">{{map.center.lat}},{{map.center.lng}}</div>
+  {{/g-map}}`);
+
+  assert.equal(this.$('#g-map-test-output').text().trim().slice(0, 15), `${lat},${lng}`, 'set center via options.{lat,lng}');
 });
 
 test('it sets clickable icons', function(assert) {
