@@ -4,7 +4,7 @@ import ENV from 'ember-cli-g-maps/configuration';
 
 const MAP_EVENTS = ENV.googleMap.events;
 
-moduleForAcceptance('Acceptance | g-map');
+moduleForAcceptance('Acceptance | g-map | events');
 
 test('g-map events', function(assert) {
   visit('/basic-usage/map-events');

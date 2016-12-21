@@ -18,7 +18,7 @@ export default Route.extend({
       lng: -97.7431,
       backgroundColor: '#4285f4',
       clickableIcons: true,
-      disableDefaultUI: false,
+      disableDefaultUI: true,
       disableDoubleClickZoom: false,
       draggable: true,
       draggableCursor: 'default',
@@ -28,7 +28,7 @@ export default Route.extend({
       gestureHandling: 'auto',
       heading: -78.41318697649092,
       keyboardShortcuts: true,
-      mapTypeId: 'ROADMAP',
+      mapTypeId: 'SATELLITE',
       mapTypeControl: true,
       mapTypeControlOptions: {
         mapTypeIds: A(MAP_TYPES), // copy all types
@@ -38,17 +38,17 @@ export default Route.extend({
       maxZoom: 20,
       minZoom: 2,
       panControl: true,
-      panControlOptions: 'BOTTOM_LEFT',
+      panControlOptions: 'TOP_RIGHT',
       rotateControl: true,
       rotateControlOptions: 'LEFT_BOTTOM',
       scaleControl: true,
       scaleControlOptions: 'DEFAULT',
       scrollwheel: true,
-      signInControl: true,
       styles: colorfulStyles,
       streetViewControl: true,
       streetViewControlOptions: 'RIGHT_BOTTOM',
-      zoom: 5,
+      tilt: 45,
+      zoom: 18,
       zoomControl: true,
       zoomControlOptions: 'RIGHT_BOTTOM',
       allMapTypes: [].concat(MAP_TYPES), // copy all types
@@ -133,6 +133,20 @@ export default Route.extend({
       if (parseInt(this.controller.get('zoom'), 10) !== parseInt(zoom, 10)) {
         this.controller.set('zoom', zoom);
       }
+    },
+
+    toggleTilt(tilt) {
+      this.controller.set('tilt', tilt === 0 ? 45 : 0);
+    },
+
+    increment(option) {
+      const value = this.controller.get(option);
+      this.controller.set(option, value + 1);
+    },
+
+    decrement(option) {
+      const value = this.controller.get(option);
+      this.controller.set(option, value - 1);
     }
   }
 });

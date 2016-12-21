@@ -47,10 +47,10 @@
     scaleControl=scaleControl
     scaleControlStyles=scaleControlStyles
     scrollwheel=scrollwheel
-    signInControl=signInControl
     styles=styles
     streetViewControl=streetViewControl
     streetViewControlOptions=streetViewControlOptions
+    tilt=tilt
     zoom=zoom
     zoomControl=zoomControl
     zoomControlOptions=zoomControlOptions
@@ -70,137 +70,280 @@
 
   <div class="grid-content small-6 medium-3 -mb">
     <small class="-db -smb">clickableIcons</small>
-    <button class="th-google-button--xsmall -ilb" {{action (toggle "clickableIcons" this)}}>{{if clickableIcons 'Enabled' 'Disabled'}}</button>
+    <button
+      class="th-google-button--xsmall -ilb"
+      data-test-update="clickableIcons"
+      {{action (toggle "clickableIcons" this)}}>{{if clickableIcons 'Enabled' 'Disabled'}}</button>
   </div>
 
   <div class="grid-content small-6 medium-3 -mb">
     <small class="-db -smb">disableDefaultUI</small>
-    <button class="th-google-button--xsmall -ilb" {{action (toggle "disableDefaultUI" this)}}>{{if disableDefaultUI 'Active' 'Inactive'}}</button>
+    <button
+      class="th-google-button--xsmall -ilb"
+      data-test-update="disableDefaultUI"
+      {{action (toggle "disableDefaultUI" this)}}>{{if disableDefaultUI 'Active' 'Inactive'}}</button>
   </div>
 
   <div class="grid-content small-6 medium-3 -mb">
     <small class="-db -smb">disableDoubleClickZoom</small>
-    <button class="th-google-button--xsmall -ilb" {{action (toggle "disableDoubleClickZoom" this)}}>{{if disableDoubleClickZoom 'Active' 'Inactive'}}</button>
+    <button
+      class="th-google-button--xsmall -ilb"
+      data-test-update="disableDoubleClickZoom"
+      {{action (toggle "disableDoubleClickZoom" this)}}>{{if disableDoubleClickZoom 'Active' 'Inactive'}}</button>
   </div>
 
   <div class="grid-content small-6 medium-3 -mb">
     <small class="-db -smb">draggable</small>
-    <button class="th-google-button--xsmall -ilb" {{action (toggle "draggable" this)}}>{{if draggable 'Enabled' 'Disabled'}}</button>
+    <button
+      class="th-google-button--xsmall -ilb"
+      data-test-update="draggable"
+      {{action (toggle "draggable" this)}}>{{if draggable 'Enabled' 'Disabled'}}</button>
   </div>
 
   <div class="grid-content small-6 medium-3 -mb">
     <small class="-db -smb">draggableCursor</small>
-    <button class="th-google-button--xsmall -ilb" {{action "setToNext" "draggableCursor" "cursor"}}>{{draggableCursor}}</button>
+    <button
+      class="th-google-button--xsmall -ilb"
+      data-test-update="draggableCursor"
+      {{action "setToNext" "draggableCursor" "cursor"}}>{{draggableCursor}}</button>
   </div>
 
   <div class="grid-content small-6 medium-3 -mb">
     <small class="-db -smb">draggingCursor</small>
-    <button class="th-google-button--xsmall -ilb" {{action "setToNext" "draggingCursor" "cursor"}}>{{draggingCursor}}</button>
+    <button
+      class="th-google-button--xsmall -ilb"
+      data-test-update="draggingCursor"
+      {{action "setToNext" "draggingCursor" "cursor"}}>{{draggingCursor}}</button>
   </div>
 
   <div class="grid-content small-6 medium-3 -mb">
     <small class="-db -smb">fullscreenControl</small>
-    <button class="th-google-button--xsmall -ilb" {{action (toggle "fullscreenControl" this)}}>{{if fullscreenControl 'Enabled' 'Disabled'}}</button>
+    <button
+      class="th-google-button--xsmall -ilb"
+      data-test-update="fullscreenControl"
+      {{action (toggle "fullscreenControl" this)}}>{{if fullscreenControl 'Enabled' 'Disabled'}}</button>
   </div>
 
   <div class="grid-content small-6 medium-3 -mb">
     <small class="-db -smb">fullscreenControlOptions</small>
-    <button class="th-google-button--xsmall -ilb" {{action "setToNext" "fullscreenControlOptions" "position"}}>{{fullscreenControlOptions}}</button>
+    <button
+      class="th-google-button--xsmall -ilb"
+      data-test-update="fullscreenControlOptions"
+      {{action "setToNext" "fullscreenControlOptions" "position"}}>{{fullscreenControlOptions}}</button>
   </div>
 
   <div class="grid-content small-6 medium-3 -mb">
     <small class="-db -smb">gestureHandling</small>
-    <button class="th-google-button--xsmall -ilb" {{action "setToNext" "gestureHandling" "gesture"}}>{{gestureHandling}}</button>
+    <button
+      class="th-google-button--xsmall -ilb"
+      data-test-update="gestureHandling"
+      {{action "setToNext" "gestureHandling" "gesture"}}>{{gestureHandling}}</button>
   </div>
 
   <div class="grid-content small-6 medium-3 -mb">
     <small class="-db -smb">heading</small>
-    <button class="th-google-button--xsmall -ilb" {{action "setRandomHeading"}}>{{heading}}</button>
+    <button
+      class="th-google-button--xsmall -ilb"
+      data-test-update="heading"
+      {{action "setRandomHeading"}}>{{heading}}</button>
   </div>
 
   <div class="grid-content small-6 medium-3 -mb">
     <small class="-db -smb">keyboardShortcuts</small>
-    <button class="th-google-button--xsmall -ilb" {{action (toggle "keyboardShortcuts" this)}}>{{if keyboardShortcuts 'Enabled' 'Disabled'}}</button>
+    <button
+      class="th-google-button--xsmall -ilb"
+      data-test-update="keyboardShortcuts"
+      {{action (toggle "keyboardShortcuts" this)}}>{{if keyboardShortcuts 'Enabled' 'Disabled'}}</button>
+  </div>
+
+  <div class="grid-content small-6 medium-3 -mb">
+    <small class="-db -smb">lat</small>
+    <div class="th-google-button-bar">
+      <button
+        class="th-google-button--xsmall -fz-large -np"
+        {{action (route-action "decrement" "lat")}}
+        data-test-update="center.lat"
+        disabled={{lte (dec lat) -90}}>-</button>
+      <button class="th-google-button--xsmall">{{lat}}</button>
+      <button
+        class="th-google-button--xsmall -fz-large -np"
+        {{action (route-action "increment" "lat")}}
+        disabled={{gte (inc lat) 90}}>+</button>
+    </div>
+  </div>
+
+  <div class="grid-content small-6 medium-3 -mb">
+    <small class="-db -smb">lng</small>
+    <div class="th-google-button-bar">
+      <button
+      class="th-google-button--xsmall -fz-large -np"
+      {{action (route-action "decrement" "lng")}}
+      data-test-update="center.lng"
+      disabled={{lte (dec lng) -180}}>-</button>
+      <button class="th-google-button--xsmall">{{lng}}</button>
+      <button
+      class="th-google-button--xsmall -fz-large -np"
+      {{action (route-action "increment" "lng")}}
+      disabled={{gte (inc lng) 180}}>+</button>
+    </div>
   </div>
 
   <div class="grid-content small-6 medium-3 -mb">
     <small class="-db -smb">mapTypeControl</small>
-    <button class="th-google-button--xsmall -ilb" {{action (toggle "mapTypeControl" this)}}>{{if mapTypeControl 'Enabled' 'Disabled'}}</button>
+    <button
+      class="th-google-button--xsmall -ilb"
+      data-test-update="mapTypeControl"
+      {{action (toggle "mapTypeControl" this)}}>{{if mapTypeControl 'Enabled' 'Disabled'}}</button>
   </div>
 
   <div class="grid-content small-6 medium-3 -mb">
     <small class="-db -smb">maxZoom</small>
-    <div style="width: 70px">{{input type="number" class="-full" width="80" value=maxZoom min=(inc minZoom)}}</div>
+    <div class="th-google-button-bar">
+      <button
+        class="th-google-button--xsmall -fz-large -np"
+        {{action (route-action "decrement" "maxZoom")}}
+        data-test-update="maxZoom"
+        disabled={{eq maxZoom zoom}}>-</button>
+      <button class="th-google-button--xsmall">{{maxZoom}}</button>
+      <button
+        class="th-google-button--xsmall -fz-large -np"
+        {{action (route-action "increment" "maxZoom")}}
+        disabled={{gte maxZoom 20}}>+</button>
+    </div>
   </div>
 
   <div class="grid-content small-6 medium-3 -mb">
     <small class="-db -smb">minZoom</small>
-    <div style="width: 70px">{{input type="number" class="-full" value=minZoom max=(dec maxZoom) min="0"}}</div>
+    <div class="th-google-button-bar">
+      <button
+        class="th-google-button--xsmall -fz-large -np"
+        {{action (route-action "decrement" "minZoom")}}
+        disabled={{eq minZoom 0}}>-</button>
+      <button class="th-google-button--xsmall">{{minZoom}}</button>
+      <button
+        class="th-google-button--xsmall -fz-large -np"
+        {{action (route-action "increment" "minZoom")}}
+        data-test-update="minZoom"
+        disabled={{gte minZoom zoom}}>+</button>
+    </div>
   </div>
 
-  <div class="grid-content small-6 medium-3 -mb">
+  {{!--
+    https://developers.google.com/maps/documentation/javascript/3.exp/reference#MapOptions
+    "The Pan control is not available in the new set of controls introduced in v3.22 of the Google Maps JavaScript API
+    While using v3.22 and v3.23, you can choose to use the earlier set of controls rather than the new controls,
+    thus making the Pan control available as part of the old control set."
+    NOTE panControl/Options is an advanced user feature, keeping for testing purposes only:
+  --}}
+  <div class="grid-content small-6 medium-3 -mb" style="visibility: hidden; display: none;">
     <small class="-db -smb">panControl</small>
-    <button class="th-google-button--xsmall -ilb" {{action (toggle "panControl" this)}}>{{if panControl 'Enabled' 'Disabled'}}</button>
+    <button
+      class="th-google-button--xsmall -ilb"
+      data-test-update="panControl"
+      {{action (toggle "panControl" this)}}>{{if panControl 'Enabled' 'Disabled'}}</button>
   </div>
 
-  <div class="grid-content small-6 medium-3 -mb">
+  <div class="grid-content small-6 medium-3 -mb" style="visibility: hidden; display: none;">
     <small class="-db -smb">panControlOptions</small>
-    <button class="th-google-button--xsmall -ilb" {{action "setToNext" "panControlOptions" "position"}}>{{panControlOptions}}</button>
+    <button
+      class="th-google-button--xsmall -ilb"
+      data-test-update="panControlOptions"
+      {{action "setToNext" "panControlOptions" "position"}}>{{panControlOptions}}</button>
   </div>
 
   <div class="grid-content small-6 medium-3 -mb">
     <small class="-db -smb">rotateControl</small>
-    <button class="th-google-button--xsmall -ilb" {{action (toggle "rotateControl" this)}}>{{if rotateControl 'Enabled' 'Disabled'}}</button>
+    <button
+      class="th-google-button--xsmall -ilb"
+      data-test-update="rotateControl"
+      {{action (toggle "rotateControl" this)}}>{{if rotateControl 'Enabled' 'Disabled'}}</button>
   </div>
 
   <div class="grid-content small-6 medium-3 -mb">
     <small class="-db -smb">rotateControlOptions</small>
-    <button class="th-google-button--xsmall -ilb" {{action "setToNext" "rotateControlOptions" "position"}}>{{rotateControlOptions}}</button>
+    <button
+      class="th-google-button--xsmall -ilb"
+      data-test-update="rotateControlOptions"
+      {{action "setToNext" "rotateControlOptions" "position"}}>{{rotateControlOptions}}</button>
   </div>
 
   <div class="grid-content small-6 medium-3 -mb">
     <small class="-db -smb">scaleControl</small>
-    <button class="th-google-button--xsmall -ilb" {{action (toggle "scaleControl" this)}}>{{if scaleControl 'Enabled' 'Disabled'}}</button>
+    <button
+      class="th-google-button--xsmall -ilb"
+      data-test-update="scaleControl"
+      {{action (toggle "scaleControl" this)}}>{{if scaleControl 'Enabled' 'Disabled'}}</button>
   </div>
 
   <div class="grid-content small-6 medium-3 -mb">
     <small class="-db -smb">scaleControlOptions</small>
-    <button class="th-google-button--xsmall -ilb" {{action "setToNext" "scaleControlOptions" "scaleControlStyles"}}>{{scaleControlOptions}}</button>
+    <button
+      class="th-google-button--xsmall -ilb"
+      {{action "setToNext" "scaleControlOptions" "scaleControlStyles"}}>{{scaleControlOptions}}</button>
   </div>
 
   <div class="grid-content small-6 medium-3 -mb">
     <small class="-db -smb">scrollwheel</small>
-    <button class="th-google-button--xsmall -ilb" {{action (toggle "scrollwheel" this)}}>{{if scrollwheel 'Enabled' 'Disabled'}}</button>
-  </div>
-
-  <div class="grid-content small-6 medium-3 -mb">
-    <small class="-db -smb">signInControl</small>
-    <button class="th-google-button--xsmall -ilb" {{action (toggle "signInControl" this)}}>{{if signInControl 'Enabled' 'Disabled'}}</button>
+    <button
+      class="th-google-button--xsmall -ilb"
+      data-test-update="scrollwheel"
+      {{action (toggle "scrollwheel" this)}}>{{if scrollwheel 'Enabled' 'Disabled'}}</button>
   </div>
 
   <div class="grid-content small-6 medium-3 -mb">
     <small class="-db -smb">streetViewControl</small>
-    <button class="th-google-button--xsmall -ilb" {{action (toggle "streetViewControl" this)}}>{{if streetViewControl 'Enabled' 'Disabled'}}</button>
+    <button
+      class="th-google-button--xsmall -ilb"
+      data-test-update="streetViewControl"
+      {{action (toggle "streetViewControl" this)}}>{{if streetViewControl 'Enabled' 'Disabled'}}</button>
   </div>
 
   <div class="grid-content small-6 medium-3 -mb">
     <small class="-db -smb">streetViewControlOptions</small>
-    <button class="th-google-button--xsmall -ilb" {{action "setToNext" "streetViewControlOptions" "position"}}>{{streetViewControlOptions}}</button>
+    <button
+      class="th-google-button--xsmall -ilb"
+      data-test-update="streetViewControlOptions"
+      {{action "setToNext" "streetViewControlOptions" "position"}}>{{streetViewControlOptions}}</button>
+  </div>
+
+  <div class="grid-content small-6 medium-3 -mb">
+    <small class="-db -smb">tilt</small>
+    <button
+      class="th-google-button--xsmall -ilb"
+      data-test-update="tilt"
+      {{action "toggleTilt" tilt}}>{{tilt}}</button>
   </div>
 
   <div class="grid-content small-6 medium-3 -mb">
     <small class="-db -smb">zoom</small>
-    <div style="width: 70px">{{input type="number" class="-full" value=zoom max=(dec maxZoom) min=(inc minZoom)}}</div>
+    <div class="th-google-button-bar">
+      <button
+        class="th-google-button--xsmall -fz-large -np"
+        {{action (route-action "decrement" "zoom")}}
+        data-test-update="zoom"
+        disabled={{eq zoom minZoom}}>-</button>
+      <button class="th-google-button--xsmall">{{zoom}}</button>
+      <button
+        class="th-google-button--xsmall -fz-large -np"
+        {{action (route-action "increment" "zoom")}}
+        disabled={{eq zoom maxZoom}}>+</button>
+    </div>
   </div>
 
   <div class="grid-content small-6 medium-3 -mb">
     <small class="-db -smb">zoomControl</small>
-    <button class="th-google-button--xsmall -ilb" {{action (toggle "zoomControl" this)}}>{{if zoomControl 'Enabled' 'Disabled'}}</button>
+    <button
+      class="th-google-button--xsmall -ilb"
+      data-test-update="zoomControl"
+      {{action (toggle "zoomControl" this)}}>{{if zoomControl 'Enabled' 'Disabled'}}</button>
   </div>
 
   <div class="grid-content small-6 medium-3 -mb">
     <small class="-db -smb">zoomControlOptions</small>
-    <button class="th-google-button--xsmall -ilb" {{action "setToNext" "zoomControlOptions" "position"}}>{{zoomControlOptions}}</button>
+    <button
+      class="th-google-button--xsmall -ilb"
+      data-test-update="zoomControlOptions"
+      {{action "setToNext" "zoomControlOptions" "position"}}>{{zoomControlOptions}}</button>
   </div>
 </div>
 
@@ -212,7 +355,8 @@
       {{#each mapTypeControlOptions.mapTypeIds as |mapType|}}
         <button class="th-google-button--small
           {{if (eq mapType mapTypeId) 'active'}}"
-          {{action "setMapType" mapType}}>
+          {{action "setMapType" mapType}}
+          data-test-update="mapTypeId">
           {{mapType}}
         </button>
       {{/each}}
@@ -227,8 +371,10 @@
     <small class="-db -smb">mapTypeIds</small>
     <div class="th-google-button-bar">
       {{#each allMapTypes as |mapType|}}
-        <button class="th-google-button--small {{if (contains mapType mapTypeControlOptions.mapTypeIds) 'active'}}"
-          {{action "toggleSplice" "mapTypeControlOptions.mapTypeIds" mapType allMapTypes}}>
+        <button
+          class="th-google-button--small {{if (contains mapType mapTypeControlOptions.mapTypeIds) 'active'}}"
+          {{action "toggleSplice" "mapTypeControlOptions.mapTypeIds" mapType allMapTypes}}
+          data-test-update="mapTypeControlOptions.mapTypeId">
           {{mapType}}
         </button>
       {{/each}}
@@ -238,7 +384,10 @@
   <div class="grid-content shrink">
     <small class="-db -smb">position</small>
     <div class="th-google-button-bar">
-      <button class="th-google-button--small" {{action "setToNext" "mapTypeControlOptions.position" "position"}}>
+      <button
+        class="th-google-button--small"
+        {{action "setToNext" "mapTypeControlOptions.position" "position"}}
+        data-test-update="mapTypeControlOptions.position">
         {{mapTypeControlOptions.position}}
       </button>
     </div>
@@ -247,13 +396,14 @@
   <div class="grid-content shrink">
     <small class="-db -smb">style</small>
     <div class="th-google-button-bar">
-      <button class="th-google-button--small" {{action "setToNext" "mapTypeControlOptions.style" "mapTypeControlStyles"}}>
+      <button
+        class="th-google-button--small"
+        {{action "setToNext" "mapTypeControlOptions.style" "mapTypeControlStyles"}}>
         {{mapTypeControlOptions.style}}
       </button>
     </div>
   </div>
 </div>
-
 
 <hr>
 
