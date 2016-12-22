@@ -1,62 +1,104 @@
 <h2>Properties</h2>
 
-<div class="grid-block">
-  <ul class="grid-content shrink">
-    <li><a {{action "scrollToId" 'mapType'}}>backgroundColor</a></li>
-    <li><a {{action "scrollToId" 'mapType'}}>mapType</a></li>
-    <li><a {{action "scrollToId" 'showMapTypeControl'}}>showMapTypeControl</a></li>
-    <li><a {{action "scrollToId" 'draggable'}}>draggable</a></li>
-    <li><a {{action "scrollToId" 'showZoomControl'}}>showZoomControl</a></li>
-    <li><a {{action "scrollToId" 'showScaleControl'}}>showScaleControl</a></li>
+{{!--<div class="grid-block -mb">
+  <ul class="grid-content large-3 medium-5 small-12 -nml -nmb -lis-none">
+    <li><a {{action "scrollToId" "backgroundColor"}}>backgroundColor</a></li>
+    <li><a {{action "scrollToId" "center"}}>backgroundColor</a></li>
+    <li><a {{action "scrollToId" "clickableIcons"}}>clickableIcons</a></li>
+    <li><a {{action "scrollToId" "disableDefaultUI"}}>disableDefaultUI</a></li>
+    <li><a {{action "scrollToId" "disableDoubleClickZoom"}}>disableDoubleClickZoom</a></li>
+    <li><a {{action "scrollToId" "draggable"}}>draggable</a></li>
+    <li><a {{action "scrollToId" "draggableCursor"}}>draggableCursor</a></li>
+    <li><a {{action "scrollToId" "draggingCursor"}}>draggingCursor</a></li>
+    <li><a {{action "scrollToId" "fullscreenControl"}}>fullscreenControl</a></li>
   </ul>
-  <ul class="grid-content shrink">
-    <li><a {{action "scrollToId" 'disableDefaultUI'}}>disableDefaultUI</a></li>
-    <li><a {{action "scrollToId" 'clickableIcons'}}>clickableIcons</a></li>
-    <li><a {{action "scrollToId" 'disableDoubleClickZoom'}}>disableDoubleClickZoom</a></li>
-    <li><a {{action "scrollToId" 'scrollwheel'}}>scrollwheel</a></li>
-    <li><a {{action "scrollToId" 'styles'}}>styles</a></li>
+  <ul class="grid-content large-3 medium-5 small-12 -nml -nmb -lis-none">
+    <li><a {{action "scrollToId" "fullscreenControlOptions"}}>fullscreenControlOptions</a></li>
+    <li><a {{action "scrollToId" "gestureHandling"}}>gestureHandling</a></li>
+    <li><a {{action "scrollToId" "heading"}}>heading</a></li>
+    <li><a {{action "scrollToId" "keyboardShortcuts"}}>keyboardShortcuts</a></li>
+    <li><a {{action "scrollToId" "lat"}}>lat</a></li>
+    <li><a {{action "scrollToId" "lng"}}>lng</a></li>
+    <li><a {{action "scrollToId" "mapTypeId"}}>mapTypeId</a></li>
+    <li><a {{action "scrollToId" "mapTypeControl"}}>mapTypeControl</a></li>
+    <li><a {{action "scrollToId" "mapTypeControlOptions"}}>mapTypeControlOptions</a></li>
   </ul>
-</div>
+  <ul class="grid-content large-3 medium-5 small-12 -nml -nmb -lis-none">
+    <li><a {{action "scrollToId" "maxZoom"}}>maxZoom</a></li>
+    <li><a {{action "scrollToId" "minZoom"}}>minZoom</a></li>
+    <li><a {{action "scrollToId" "panControl"}}>panControl</a></li>
+    <li><a {{action "scrollToId" "panControlOptions"}}>panControlOptions</a></li>
+    <li><a {{action "scrollToId" "rotateControl"}}>rotateControl</a></li>
+    <li><a {{action "scrollToId" "rotateControlOptions"}}>rotateControlOptions</a></li>
+    <li><a {{action "scrollToId" "scaleControl"}}>scaleControl</a></li>
+    <li><a {{action "scrollToId" "scaleControlStyles"}}>scaleControlStyles</a></li>
+  </ul>
+  <ul class="grid-content large-3 medium-5 small-12 -nml -nmb -lis-none">
+    <li><a {{action "scrollToId" "scrollwheel"}}>scrollwheel</a></li>
+    <li><a {{action "scrollToId" "styles"}}>styles</a></li>
+    <li><a {{action "scrollToId" "streetViewControl"}}>streetViewControl</a></li>
+    <li><a {{action "scrollToId" "streetViewControlOptions"}}>streetViewControlOptions</a></li>
+    <li><a {{action "scrollToId" "tilt"}}>tilt</a></li>
+    <li><a {{action "scrollToId" "zoom"}}>zoom</a></li>
+    <li><a {{action "scrollToId" "zoomControl"}}>zoomControl</a></li>
+    <li><a {{action "scrollToId" "zoomControlOptions"}}>zoomControlOptions</a></li>
+  </ul>
+</div> --}}
 
 <div class="grid-content -np -mb">
-  {{g-map
-    class="gmaps-docs-map"
-    lat=lat
-    lng=lng
-    backgroundColor=backgroundColor
-    clickableIcons=clickableIcons
-    disableDefaultUI=disableDefaultUI
-    disableDoubleClickZoom=disableDoubleClickZoom
-    draggable=draggable
-    draggableCursor=draggableCursor
-    draggingCursor=draggingCursor
-    fullscreenControl=fullscreenControl
-    fullscreenControlOptions=fullscreenControlOptions
-    gestureHandling=gestureHandling
-    heading=heading
-    keyboardShortcuts=keyboardShortcuts
-    mapTypeId=mapTypeId
-    mapTypeControl=mapTypeControl
-    mapTypeControlOptions=mapTypeControlOptions
-    maxZoom=maxZoom
-    minZoom=minZoom
-    panControl=panControl
-    panControlOptions=panControlOptions
-    rotateControl=rotateControl
-    rotateControlOptions=rotateControlOptions
-    scaleControl=scaleControl
-    scaleControlStyles=scaleControlStyles
-    scrollwheel=scrollwheel
-    styles=styles
-    streetViewControl=streetViewControl
-    streetViewControlOptions=streetViewControlOptions
-    tilt=tilt
-    zoom=zoom
-    zoomControl=zoomControl
-    zoomControlOptions=zoomControlOptions
-    maptypeid_changed=(route-action "onMapTypeIdChange")
-    heading_changed=(route-action "onHeadingChanged")
-    zoom_changed=(route-action "onZoomChanged")}}
+  {{#if (not useOptionsMap)}}
+    {{g-map
+      class="gmaps-docs-map"
+      lat=options.lat
+      lng=options.lng
+      backgroundColor=options.backgroundColor
+      clickableIcons=options.clickableIcons
+      disableDefaultUI=options.disableDefaultUI
+      disableDoubleClickZoom=options.disableDoubleClickZoom
+      draggable=options.draggable
+      draggableCursor=options.draggableCursor
+      draggingCursor=options.draggingCursor
+      fullscreenControl=options.fullscreenControl
+      fullscreenControlOptions=options.fullscreenControlOptions
+      gestureHandling=options.gestureHandling
+      heading=options.heading
+      keyboardShortcuts=options.keyboardShortcuts
+      mapTypeId=options.mapTypeId
+      mapTypeControl=options.mapTypeControl
+      mapTypeControlOptions=options.mapTypeControlOptions
+      maxZoom=options.maxZoom
+      minZoom=options.minZoom
+      panControl=options.panControl
+      panControlOptions=options.panControlOptions
+      rotateControl=options.rotateControl
+      rotateControlOptions=options.rotateControlOptions
+      scaleControl=options.scaleControl
+      scaleControlStyles=options.scaleControlStyles
+      scrollwheel=options.scrollwheel
+      styles=options.styles
+      streetViewControl=options.streetViewControl
+      streetViewControlOptions=options.streetViewControlOptions
+      tilt=options.tilt
+      zoom=options.zoom
+      zoomControl=options.zoomControl
+      zoomControlOptions=options.zoomControlOptions
+      center_changed=(route-action "onCenterChanged")
+      maptypeid_changed=(route-action "onMapTypeIdChange")
+      heading_changed=(route-action "onHeadingChanged")
+      zoom_changed=(route-action "onZoomChanged")}}
+    {{else}}
+      {{g-map
+        class="gmaps-docs-map"
+        options=options
+        center_changed=(route-action "onCenterChanged")
+        heading_changed=(route-action "onHeadingChanged")
+        maptypeid_changed=(route-action "onMapTypeIdChange")
+        zoom_changed=(route-action "onZoomChanged")}}
+        Options map
+    {{/if}}
+
+    <button data-test="reset-map-state" style="display: none;" {{action (route-action "resetMapState" true)}}></button>
+    <button data-test="use-options-map" style="display: none;" {{action (route-action "toogleOptionsMap" true)}}></button>
 </div>
 <small>Map theme: <a href="https://snazzymaps.com/style/64512/colorful-local" target="_blank">Colorful Local</a> by George</small>
 
@@ -65,7 +107,7 @@
 <div class="grid-block -pb">
   <div class="grid-content small-6 medium-3 -mb">
     <small class="-db -smb">backgroundColor</small>
-    {{backgroundColor}}
+    {{options.backgroundColor}}
   </div>
 
   <div class="grid-content small-6 medium-3 -mb">
@@ -73,7 +115,7 @@
     <button
       class="th-google-button--xsmall -ilb"
       data-test-update="clickableIcons"
-      {{action (toggle "clickableIcons" this)}}>{{if clickableIcons 'Enabled' 'Disabled'}}</button>
+      {{action (route-action "toggleOption" "clickableIcons")}}>{{if options.clickableIcons 'Enabled' 'Disabled'}}</button>
   </div>
 
   <div class="grid-content small-6 medium-3 -mb">
@@ -81,7 +123,7 @@
     <button
       class="th-google-button--xsmall -ilb"
       data-test-update="disableDefaultUI"
-      {{action (toggle "disableDefaultUI" this)}}>{{if disableDefaultUI 'Active' 'Inactive'}}</button>
+      {{action (route-action "toggleOption" "disableDefaultUI")}}>{{if options.disableDefaultUI 'Active' 'Inactive'}}</button>
   </div>
 
   <div class="grid-content small-6 medium-3 -mb">
@@ -89,7 +131,7 @@
     <button
       class="th-google-button--xsmall -ilb"
       data-test-update="disableDoubleClickZoom"
-      {{action (toggle "disableDoubleClickZoom" this)}}>{{if disableDoubleClickZoom 'Active' 'Inactive'}}</button>
+      {{action (route-action "toggleOption" "disableDoubleClickZoom")}}>{{if options.disableDoubleClickZoom 'Active' 'Inactive'}}</button>
   </div>
 
   <div class="grid-content small-6 medium-3 -mb">
@@ -97,7 +139,7 @@
     <button
       class="th-google-button--xsmall -ilb"
       data-test-update="draggable"
-      {{action (toggle "draggable" this)}}>{{if draggable 'Enabled' 'Disabled'}}</button>
+      {{action (route-action "toggleOption" "draggable")}}>{{if options.draggable 'Enabled' 'Disabled'}}</button>
   </div>
 
   <div class="grid-content small-6 medium-3 -mb">
@@ -105,7 +147,7 @@
     <button
       class="th-google-button--xsmall -ilb"
       data-test-update="draggableCursor"
-      {{action "setToNext" "draggableCursor" "cursor"}}>{{draggableCursor}}</button>
+      {{action "setToNext" "draggableCursor" "cursor"}}>{{options.draggableCursor}}</button>
   </div>
 
   <div class="grid-content small-6 medium-3 -mb">
@@ -113,7 +155,7 @@
     <button
       class="th-google-button--xsmall -ilb"
       data-test-update="draggingCursor"
-      {{action "setToNext" "draggingCursor" "cursor"}}>{{draggingCursor}}</button>
+      {{action "setToNext" "draggingCursor" "cursor"}}>{{options.draggingCursor}}</button>
   </div>
 
   <div class="grid-content small-6 medium-3 -mb">
@@ -121,7 +163,7 @@
     <button
       class="th-google-button--xsmall -ilb"
       data-test-update="fullscreenControl"
-      {{action (toggle "fullscreenControl" this)}}>{{if fullscreenControl 'Enabled' 'Disabled'}}</button>
+      {{action (route-action "toggleOption" "fullscreenControl")}}>{{if options.fullscreenControl 'Enabled' 'Disabled'}}</button>
   </div>
 
   <div class="grid-content small-6 medium-3 -mb">
@@ -129,7 +171,7 @@
     <button
       class="th-google-button--xsmall -ilb"
       data-test-update="fullscreenControlOptions"
-      {{action "setToNext" "fullscreenControlOptions" "position"}}>{{fullscreenControlOptions}}</button>
+      {{action "setToNext" "fullscreenControlOptions" "position"}}>{{options.fullscreenControlOptions}}</button>
   </div>
 
   <div class="grid-content small-6 medium-3 -mb">
@@ -137,7 +179,7 @@
     <button
       class="th-google-button--xsmall -ilb"
       data-test-update="gestureHandling"
-      {{action "setToNext" "gestureHandling" "gesture"}}>{{gestureHandling}}</button>
+      {{action "setToNext" "gestureHandling" "gesture"}}>{{options.gestureHandling}}</button>
   </div>
 
   <div class="grid-content small-6 medium-3 -mb">
@@ -145,7 +187,7 @@
     <button
       class="th-google-button--xsmall -ilb"
       data-test-update="heading"
-      {{action "setRandomHeading"}}>{{heading}}</button>
+      {{action "setRandomHeading"}}>{{options.heading}}</button>
   </div>
 
   <div class="grid-content small-6 medium-3 -mb">
@@ -153,7 +195,7 @@
     <button
       class="th-google-button--xsmall -ilb"
       data-test-update="keyboardShortcuts"
-      {{action (toggle "keyboardShortcuts" this)}}>{{if keyboardShortcuts 'Enabled' 'Disabled'}}</button>
+      {{action (route-action "toggleOption" "keyboardShortcuts")}}>{{if options.keyboardShortcuts 'Enabled' 'Disabled'}}</button>
   </div>
 
   <div class="grid-content small-6 medium-3 -mb">
@@ -163,12 +205,12 @@
         class="th-google-button--xsmall -fz-large -np"
         {{action (route-action "decrement" "lat")}}
         data-test-update="center.lat"
-        disabled={{lte (dec lat) -90}}>-</button>
-      <button class="th-google-button--xsmall">{{lat}}</button>
+        disabled={{lte (dec options.lat) -90}}>-</button>
+      <button data-test-value="center.lat" class="th-google-button--xsmall">{{slice options.lat 0 7}}</button>
       <button
         class="th-google-button--xsmall -fz-large -np"
         {{action (route-action "increment" "lat")}}
-        disabled={{gte (inc lat) 90}}>+</button>
+        disabled={{gte (inc options.lat) 90}}>+</button>
     </div>
   </div>
 
@@ -179,12 +221,12 @@
       class="th-google-button--xsmall -fz-large -np"
       {{action (route-action "decrement" "lng")}}
       data-test-update="center.lng"
-      disabled={{lte (dec lng) -180}}>-</button>
-      <button class="th-google-button--xsmall">{{lng}}</button>
+      disabled={{lte (dec options.lng) -180}}>-</button>
+      <button data-test-value="center.lng" class="th-google-button--xsmall">{{slice options.lng 0 7}}</button>
       <button
       class="th-google-button--xsmall -fz-large -np"
       {{action (route-action "increment" "lng")}}
-      disabled={{gte (inc lng) 180}}>+</button>
+      disabled={{gte (inc options.lng) 180}}>+</button>
     </div>
   </div>
 
@@ -193,7 +235,7 @@
     <button
       class="th-google-button--xsmall -ilb"
       data-test-update="mapTypeControl"
-      {{action (toggle "mapTypeControl" this)}}>{{if mapTypeControl 'Enabled' 'Disabled'}}</button>
+      {{action (route-action "toggleOption" "mapTypeControl")}}>{{if options.mapTypeControl 'Enabled' 'Disabled'}}</button>
   </div>
 
   <div class="grid-content small-6 medium-3 -mb">
@@ -203,12 +245,12 @@
         class="th-google-button--xsmall -fz-large -np"
         {{action (route-action "decrement" "maxZoom")}}
         data-test-update="maxZoom"
-        disabled={{eq maxZoom zoom}}>-</button>
-      <button class="th-google-button--xsmall">{{maxZoom}}</button>
+        disabled={{lte options.maxZoom options.zoom}}>-</button>
+      <button data-test-value="maxZoom" class="th-google-button--xsmall">{{options.maxZoom}}</button>
       <button
         class="th-google-button--xsmall -fz-large -np"
         {{action (route-action "increment" "maxZoom")}}
-        disabled={{gte maxZoom 20}}>+</button>
+        disabled={{gte options.maxZoom 20}}>+</button>
     </div>
   </div>
 
@@ -218,13 +260,13 @@
       <button
         class="th-google-button--xsmall -fz-large -np"
         {{action (route-action "decrement" "minZoom")}}
-        disabled={{eq minZoom 0}}>-</button>
-      <button class="th-google-button--xsmall">{{minZoom}}</button>
+        disabled={{eq options.minZoom 0}}>-</button>
+      <button data-test-value="minZoom" class="th-google-button--xsmall">{{options.minZoom}}</button>
       <button
         class="th-google-button--xsmall -fz-large -np"
         {{action (route-action "increment" "minZoom")}}
         data-test-update="minZoom"
-        disabled={{gte minZoom zoom}}>+</button>
+        disabled={{gte options.minZoom options.zoom}}>+</button>
     </div>
   </div>
 
@@ -240,7 +282,7 @@
     <button
       class="th-google-button--xsmall -ilb"
       data-test-update="panControl"
-      {{action (toggle "panControl" this)}}>{{if panControl 'Enabled' 'Disabled'}}</button>
+      {{action (route-action "toggleOption" "panControl")}}>{{if options.panControl 'Enabled' 'Disabled'}}</button>
   </div>
 
   <div class="grid-content small-6 medium-3 -mb" style="visibility: hidden; display: none;">
@@ -248,7 +290,7 @@
     <button
       class="th-google-button--xsmall -ilb"
       data-test-update="panControlOptions"
-      {{action "setToNext" "panControlOptions" "position"}}>{{panControlOptions}}</button>
+      {{action "setToNext" "panControlOptions" "position"}}>{{options.panControlOptions}}</button>
   </div>
 
   <div class="grid-content small-6 medium-3 -mb">
@@ -256,7 +298,7 @@
     <button
       class="th-google-button--xsmall -ilb"
       data-test-update="rotateControl"
-      {{action (toggle "rotateControl" this)}}>{{if rotateControl 'Enabled' 'Disabled'}}</button>
+      {{action (route-action "toggleOption" "rotateControl")}}>{{if options.rotateControl 'Enabled' 'Disabled'}}</button>
   </div>
 
   <div class="grid-content small-6 medium-3 -mb">
@@ -264,7 +306,7 @@
     <button
       class="th-google-button--xsmall -ilb"
       data-test-update="rotateControlOptions"
-      {{action "setToNext" "rotateControlOptions" "position"}}>{{rotateControlOptions}}</button>
+      {{action "setToNext" "rotateControlOptions" "position"}}>{{options.rotateControlOptions}}</button>
   </div>
 
   <div class="grid-content small-6 medium-3 -mb">
@@ -272,14 +314,14 @@
     <button
       class="th-google-button--xsmall -ilb"
       data-test-update="scaleControl"
-      {{action (toggle "scaleControl" this)}}>{{if scaleControl 'Enabled' 'Disabled'}}</button>
+      {{action (route-action "toggleOption" "scaleControl")}}>{{if options.scaleControl 'Enabled' 'Disabled'}}</button>
   </div>
 
   <div class="grid-content small-6 medium-3 -mb">
     <small class="-db -smb">scaleControlOptions</small>
     <button
       class="th-google-button--xsmall -ilb"
-      {{action "setToNext" "scaleControlOptions" "scaleControlStyles"}}>{{scaleControlOptions}}</button>
+      {{action "setToNext" "scaleControlOptions" "scaleControlStyles"}}>{{options.scaleControlOptions}}</button>
   </div>
 
   <div class="grid-content small-6 medium-3 -mb">
@@ -287,7 +329,7 @@
     <button
       class="th-google-button--xsmall -ilb"
       data-test-update="scrollwheel"
-      {{action (toggle "scrollwheel" this)}}>{{if scrollwheel 'Enabled' 'Disabled'}}</button>
+      {{action (route-action "toggleOption" "scrollwheel")}}>{{if options.scrollwheel 'Enabled' 'Disabled'}}</button>
   </div>
 
   <div class="grid-content small-6 medium-3 -mb">
@@ -295,7 +337,7 @@
     <button
       class="th-google-button--xsmall -ilb"
       data-test-update="streetViewControl"
-      {{action (toggle "streetViewControl" this)}}>{{if streetViewControl 'Enabled' 'Disabled'}}</button>
+      {{action (route-action "toggleOption" "streetViewControl")}}>{{if options.streetViewControl 'Enabled' 'Disabled'}}</button>
   </div>
 
   <div class="grid-content small-6 medium-3 -mb">
@@ -303,7 +345,7 @@
     <button
       class="th-google-button--xsmall -ilb"
       data-test-update="streetViewControlOptions"
-      {{action "setToNext" "streetViewControlOptions" "position"}}>{{streetViewControlOptions}}</button>
+      {{action "setToNext" "streetViewControlOptions" "position"}}>{{options.streetViewControlOptions}}</button>
   </div>
 
   <div class="grid-content small-6 medium-3 -mb">
@@ -311,7 +353,7 @@
     <button
       class="th-google-button--xsmall -ilb"
       data-test-update="tilt"
-      {{action "toggleTilt" tilt}}>{{tilt}}</button>
+      {{action "toggleTilt"}}>{{options.tilt}}</button>
   </div>
 
   <div class="grid-content small-6 medium-3 -mb">
@@ -321,12 +363,12 @@
         class="th-google-button--xsmall -fz-large -np"
         {{action (route-action "decrement" "zoom")}}
         data-test-update="zoom"
-        disabled={{eq zoom minZoom}}>-</button>
-      <button class="th-google-button--xsmall">{{zoom}}</button>
+        disabled={{eq options.zoom options.minZoom}}>-</button>
+      <button data-test-value="zoom" class="th-google-button--xsmall">{{options.zoom}}</button>
       <button
         class="th-google-button--xsmall -fz-large -np"
         {{action (route-action "increment" "zoom")}}
-        disabled={{eq zoom maxZoom}}>+</button>
+        disabled={{eq options.zoom options.maxZoom}}>+</button>
     </div>
   </div>
 
@@ -335,7 +377,7 @@
     <button
       class="th-google-button--xsmall -ilb"
       data-test-update="zoomControl"
-      {{action (toggle "zoomControl" this)}}>{{if zoomControl 'Enabled' 'Disabled'}}</button>
+      {{action (route-action "toggleOption" "zoomControl")}}>{{if options.zoomControl 'Enabled' 'Disabled'}}</button>
   </div>
 
   <div class="grid-content small-6 medium-3 -mb">
@@ -343,7 +385,7 @@
     <button
       class="th-google-button--xsmall -ilb"
       data-test-update="zoomControlOptions"
-      {{action "setToNext" "zoomControlOptions" "position"}}>{{zoomControlOptions}}</button>
+      {{action "setToNext" "zoomControlOptions" "position"}}>{{options.zoomControlOptions}}</button>
   </div>
 </div>
 
@@ -352,9 +394,9 @@
     <small class="-db -smb">Map Type</small>
 
     <div class="th-google-button-bar">
-      {{#each mapTypeControlOptions.mapTypeIds as |mapType|}}
+      {{#each options.mapTypeControlOptions.mapTypeIds as |mapType|}}
         <button class="th-google-button--small
-          {{if (eq mapType mapTypeId) 'active'}}"
+          {{if (eq mapType options.mapTypeId) 'active'}}"
           {{action "setMapType" mapType}}
           data-test-update="mapTypeId">
           {{mapType}}
@@ -372,9 +414,9 @@
     <div class="th-google-button-bar">
       {{#each allMapTypes as |mapType|}}
         <button
-          class="th-google-button--small {{if (contains mapType mapTypeControlOptions.mapTypeIds) 'active'}}"
+          class="th-google-button--small {{if (contains mapType options.mapTypeControlOptions.mapTypeIds) 'active'}}"
           {{action "toggleSplice" "mapTypeControlOptions.mapTypeIds" mapType allMapTypes}}
-          data-test-update="mapTypeControlOptions.mapTypeId">
+          data-test-update="mapTypeControlOptions.mapTypeIds">
           {{mapType}}
         </button>
       {{/each}}
@@ -388,7 +430,7 @@
         class="th-google-button--small"
         {{action "setToNext" "mapTypeControlOptions.position" "position"}}
         data-test-update="mapTypeControlOptions.position">
-        {{mapTypeControlOptions.position}}
+        {{options.mapTypeControlOptions.position}}
       </button>
     </div>
   </div>
@@ -398,8 +440,9 @@
     <div class="th-google-button-bar">
       <button
         class="th-google-button--small"
-        {{action "setToNext" "mapTypeControlOptions.style" "mapTypeControlStyles"}}>
-        {{mapTypeControlOptions.style}}
+        {{action "setToNext" "mapTypeControlOptions.style" "mapTypeControlStyles"}}
+        data-test-update="mapTypeControlOptions.style">
+        {{options.mapTypeControlOptions.style}}
       </button>
     </div>
   </div>
@@ -407,8 +450,8 @@
 
 <hr>
 
-<p id="mapType" class="medium-7">
-  <h3>mapType</h3>
+<p id="mapTypeId" class="medium-7">
+  <h3>mapTypeId</h3>
 
   <div class="-mb">
     <small class="-db">Type</small>
@@ -417,15 +460,15 @@
 
   <div class="-mb">
     <small class="-db">Options</small>
-    <span class="gmaps-inline-code -nml">roadmap</span>
-    <span class="gmaps-inline-code">satellite</span>
-    <span class="gmaps-inline-code">hybrid</span>
-    <span class="gmaps-inline-code">terrain</span>
+    <span class="gmaps-inline-code -nml">ROADMAP</span>
+    <span class="gmaps-inline-code">SATELLITE</span>
+    <span class="gmaps-inline-code">HYBRID</span>
+    <span class="gmaps-inline-code">TERRAIN</span>
   </div>
 
   <div class="-mb">
     <small class="-db">Default</small>
-    <span class="gmaps-inline-code -nml">roadmap</span>
+    <span class="gmaps-inline-code -nml">ROADMAP</span>
   </div>
 
   <div class="-mb">
@@ -463,8 +506,8 @@
 
 <hr>
 
-<p id="showMapTypeControl" class="medium-7">
-  <h3>showMapTypeControl</h3>
+<p id="mapTypeControl" class="medium-7">
+  <h3>mapTypeControl</h3>
 
   <div class="-mb">
     <small class="-db">Type</small>
