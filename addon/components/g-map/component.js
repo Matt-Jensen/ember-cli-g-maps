@@ -9,10 +9,10 @@ import getOwner from 'ember-owner/get';
 import {isPresent} from 'ember-utils';
 import {assign} from 'ember-platform';
 
-import googleMap from 'ember-cli-g-maps/google-map';
-import loadGoogleMaps from 'ember-cli-g-maps/utils/load-google-maps';
-import layout from 'ember-cli-g-maps/templates/components/g-map';
-import ENV from '../configuration';
+import googleMap from './factory';
+import loadGoogleMaps from '../../utils/load-google-maps';
+import layout from '../../templates/components/g-map';
+import ENV from '../../configuration';
 
 const GMAP_DEFAULTS = {
   lat: 30.2672,

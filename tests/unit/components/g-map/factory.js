@@ -1,6 +1,6 @@
-import googleMap from 'ember-cli-g-maps/google-map';
-import { isPresent } from 'ember-utils';
-import { module, test } from 'qunit';
+import googleMap from 'ember-cli-g-maps/components/g-map/factory';
+import {isPresent} from 'ember-utils';
+import {module, test} from 'qunit';
 
 module('Unit | Factory | Google Map');
 
