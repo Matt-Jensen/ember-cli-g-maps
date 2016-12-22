@@ -1,9 +1,9 @@
 <h2>Properties</h2>
 
-{{!--<div class="grid-block -mb">
+<div class="grid-block -mb">
   <ul class="grid-content large-3 medium-5 small-12 -nml -nmb -lis-none">
     <li><a {{action "scrollToId" "backgroundColor"}}>backgroundColor</a></li>
-    <li><a {{action "scrollToId" "center"}}>backgroundColor</a></li>
+    <li><a {{action "scrollToId" "center"}}>center</a></li>
     <li><a {{action "scrollToId" "clickableIcons"}}>clickableIcons</a></li>
     <li><a {{action "scrollToId" "disableDefaultUI"}}>disableDefaultUI</a></li>
     <li><a {{action "scrollToId" "disableDoubleClickZoom"}}>disableDoubleClickZoom</a></li>
@@ -43,7 +43,7 @@
     <li><a {{action "scrollToId" "zoomControl"}}>zoomControl</a></li>
     <li><a {{action "scrollToId" "zoomControlOptions"}}>zoomControlOptions</a></li>
   </ul>
-</div> --}}
+</div>
 
 <div class="grid-content -np -mb">
   {{#if (not useOptionsMap)}}
@@ -450,8 +450,18 @@
 
 <hr>
 
-<p id="mapTypeId" class="medium-7">
-  <h3>mapTypeId</h3>
+<h2>Overview</h2>
+<p class="medium-7">
+  All configuration options may be set as top level properties:
+  <span class="gmaps-inline-code">\{{g-map clickableIcons=true}}</span>
+  or as attributes in an options hash: <span class="gmaps-inline-code">\{{g-map options=options}}</span>.
+  Please note that these configuration strategies a mututally and exclusive and should not be used together.
+</p>
+
+<hr>
+
+<p id="backgroundColor" class="medium-7">
+  <h3>backgroundColor</h3>
 
   <div class="-mb">
     <small class="-db">Type</small>
@@ -459,276 +469,41 @@
   </div>
 
   <div class="-mb">
-    <small class="-db">Options</small>
-    <span class="gmaps-inline-code -nml">ROADMAP</span>
-    <span class="gmaps-inline-code">SATELLITE</span>
-    <span class="gmaps-inline-code">HYBRID</span>
-    <span class="gmaps-inline-code">TERRAIN</span>
-  </div>
-
-  <div class="-mb">
     <small class="-db">Default</small>
-    <span class="gmaps-inline-code -nml">ROADMAP</span>
+    <span class="gmaps-inline-code -nml">undefined</span>
   </div>
 
   <div class="-mb">
     <small class="-db">Resources</small>
-    <a href="https://developers.google.com/maps/documentation/javascript/maptypes" target="_blank">Google Map Type Docs</a>
-  </div>
-
-  <div class="gmaps-snippet">
-    <header>Example</header>
-    <code>
-      <div class="gist">
-        <div class="gist-file">
-          <div class="gist-data">
-            <div class="js-gist-file-update-container js-task-list-container file-box">
-              <div id="file-templa-hbs" class="file">
-                <div class="blob-wrapper data type-handlebars">
-                  <table class="highlight tab-size js-file-line-container" data-tab-size="8">
-                    <tbody><tr>
-                      <td id="file-templa-hbs-L1" class="blob-num js-line-number" data-line-number="1"></td>
-                      <td id="file-templa-hbs-LC1" class="blob-code blob-code-inner js-file-line"><span class="pl-c1">\{{</span><span class="pl-v">g-maps</span> mapType=myMapType<span class="pl-c1">}}</span></td>
-                    </tr>
-                  </tbody></table>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="gist-meta">
-            made with ❤ by <a href="https://github.com">GitHub</a>
-          </div>
-        </div>
-      </div>
-    </code>
+    <a href="https://developers.google.com/maps/documentation/javascript/reference#MapOptions" target="_blank">Google Map Type Docs</a>
   </div>
 </p>
 
 <hr>
 
-<p id="mapTypeControl" class="medium-7">
-  <h3>mapTypeControl</h3>
+<p id="center" class="medium-7">
+  <h3>center</h3>
 
   <div class="-mb">
     <small class="-db">Type</small>
-    Boolean
+    Object
   </div>
 
   <div class="-mb">
     <small class="-db">Default</small>
-    <span class="gmaps-inline-code -nml">true</span>
+    <span class="gmaps-inline-code -nml">g-map default lat,lng</span>
+  </div>
+
+  <div class="-mb">
+    <small class="-db">Notes</small>
+    center may be an object literal <span class="gmaps-inline-code">{lat: 32, lng: 34}</span>
+    or a Google LatLng instance <span class="gmaps-inline-code">new google.map.LatLng(32, 34)</span>.
+    Please note using center anywhere will override "lat" and "lng" properties.
   </div>
 
   <div class="-mb">
     <small class="-db">Resources</small>
-    <a href="https://developers.google.com/maps/documentation/javascript/reference#MapOptions" target="_blank">Google Map Type Control Docs</a>
-  </div>
-
-  <div class="gmaps-snippet">
-    <header>Example</header>
-    <code>
-      <div class="gist">
-        <div class="gist-file">
-          <div class="gist-data">
-            <div class="js-gist-file-update-container js-task-list-container file-box">
-              <div id="file-templa-hbs" class="file">
-                <div class="blob-wrapper data type-handlebars">
-                  <table class="highlight tab-size js-file-line-container" data-tab-size="8">
-                    <tbody><tr>
-                      <td id="file-templa-hbs-L1" class="blob-num js-line-number" data-line-number="1"></td>
-                      <td id="file-templa-hbs-LC1" class="blob-code blob-code-inner js-file-line"><span class="pl-c1">\{{</span><span class="pl-v">g-maps</span> showMapTypeControl=true<span class="pl-c1">}}</span></td>
-                    </tr>
-                  </tbody></table>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="gist-meta">
-            made with ❤ by <a href="https://github.com">GitHub</a>
-          </div>
-        </div>
-      </div>
-    </code>
-  </div>
-</p>
-
-<hr>
-
-<p id="draggable" class="medium-7">
-  <h3>draggable</h3>
-
-  <div class="-mb">
-    <small class="-db">Type</small>
-    Boolean
-  </div>
-  <div class="-mb">
-    <small class="-db">Default</small>
-    <div class="gmaps-inline-code -nml">false</div>
-  </div>
-  <div class="-mb">
-    <small class="-db">Resources</small>
-    <a href="https://developers.google.com/maps/documentation/javascript/reference#MapOptions" target="_blank">Google Map Options</a>
-  </div>
-  <div class="gmaps-snippet">
-    <header>Example</header>
-    <code>
-      <div class="gist">
-        <div class="gist-file">
-          <div class="gist-data">
-            <div class="js-gist-file-update-container js-task-list-container file-box">
-              <div id="file-templa-hbs" class="file">
-                <div class="blob-wrapper data type-handlebars">
-                  <table class="highlight tab-size js-file-line-container" data-tab-size="8">
-                    <tbody><tr>
-                      <td id="file-templa-hbs-L1" class="blob-num js-line-number" data-line-number="1"></td>
-                      <td id="file-templa-hbs-LC1" class="blob-code blob-code-inner js-file-line"><span class="pl-c1">\{{</span><span class="pl-v">g-maps</span> draggable=true<span class="pl-c1">}}</span></td>
-                    </tr>
-                  </tbody></table>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="gist-meta">
-            made with ❤ by <a href="https://github.com">GitHub</a>
-          </div>
-        </div>
-      </div>
-    </code>
-  </div>
-</p>
-
-<hr>
-
-<p id="showZoomControl" class="medium-7">
-  <h3>showZoomControl</h3>
-
-  <div class="-mb">
-    <small class="-db">Type</small>
-    Boolean
-  </div>
-  <div class="-mb">
-    <small class="-db">Default</small>
-    <div class="gmaps-inline-code -nml">true</div>
-  </div>
-  <div class="-mb">
-    <small class="-db">Resources</small>
-    <a href="https://developers.google.com/maps/documentation/javascript/reference#MapOptions" target="_blank">Google Map Options</a>
-  </div>
-  <div class="gmaps-snippet">
-    <header>Example</header>
-    <code>
-      <div class="gist">
-        <div class="gist-file">
-          <div class="gist-data">
-            <div class="js-gist-file-update-container js-task-list-container file-box">
-              <div id="file-templa-hbs" class="file">
-                <div class="blob-wrapper data type-handlebars">
-                  <table class="highlight tab-size js-file-line-container" data-tab-size="8">
-                    <tbody><tr>
-                      <td id="file-templa-hbs-L1" class="blob-num js-line-number" data-line-number="1"></td>
-                      <td id="file-templa-hbs-LC1" class="blob-code blob-code-inner js-file-line"><span class="pl-c1">\{{</span><span class="pl-v">g-maps</span> showZoomControl=true<span class="pl-c1">}}</span></td>
-                    </tr>
-                  </tbody></table>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="gist-meta">
-            made with ❤ by <a href="https://github.com">GitHub</a>
-          </div>
-        </div>
-      </div>
-    </code>
-  </div>
-</p>
-
-<hr>
-
-<p id="showScaleControl" class="medium-7">
-  <h3>showScaleControl</h3>
-
-  <div class="-mb">
-    <small class="-db">Type</small>
-    Boolean
-  </div>
-  <div class="-mb">
-    <small class="-db">Default</small>
-    <div class="gmaps-inline-code -nml">true</div>
-  </div>
-  <div class="-mb">
-    <small class="-db">Resources</small>
-    <a href="https://developers.google.com/maps/documentation/javascript/reference#MapOptions" target="_blank">Google Map Options</a>
-  </div>
-  <div class="gmaps-snippet">
-    <header>Example</header>
-    <code>
-      <div class="gist">
-        <div class="gist-file">
-          <div class="gist-data">
-            <div class="js-gist-file-update-container js-task-list-container file-box">
-              <div id="file-templa-hbs" class="file">
-                <div class="blob-wrapper data type-handlebars">
-                  <table class="highlight tab-size js-file-line-container" data-tab-size="8">
-                    <tbody><tr>
-                      <td id="file-templa-hbs-L1" class="blob-num js-line-number" data-line-number="1"></td>
-                      <td id="file-templa-hbs-LC1" class="blob-code blob-code-inner js-file-line"><span class="pl-c1">\{{</span><span class="pl-v">g-maps</span> showScaleControl=true<span class="pl-c1">}}</span></td>
-                    </tr>
-                  </tbody></table>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="gist-meta">
-            made with ❤ by <a href="https://github.com">GitHub</a>
-          </div>
-        </div>
-      </div>
-    </code>
-  </div>
-</p>
-
-<hr>
-
-<p id="disableDefaultUI" class="medium-7">
-  <h3>disableDefaultUI</h3>
-
-  <div class="-mb">
-    <small class="-db">Type</small>
-    Boolean
-  </div>
-  <div class="-mb">
-    <small class="-db">Default</small>
-    <div class="gmaps-inline-code -nml">false</div>
-  </div>
-  <div class="-mb">
-    <small class="-db">Resources</small>
-    <a href="https://developers.google.com/maps/documentation/javascript/reference#MapOptions" target="_blank">Google Map Options</a>
-  </div>
-  <div class="gmaps-snippet">
-    <header>Example</header>
-    <code>
-      <div class="gist">
-        <div class="gist-file">
-          <div class="gist-data">
-            <div class="js-gist-file-update-container js-task-list-container file-box">
-              <div id="file-templa-hbs" class="file">
-                <div class="blob-wrapper data type-handlebars">
-                  <table class="highlight tab-size js-file-line-container" data-tab-size="8">
-                    <tbody><tr>
-                      <td id="file-templa-hbs-L1" class="blob-num js-line-number" data-line-number="1"></td>
-                      <td id="file-templa-hbs-LC1" class="blob-code blob-code-inner js-file-line"><span class="pl-c1">\{{</span><span class="pl-v">g-maps</span> disableDefaultUI=false<span class="pl-c1">}}</span></td>
-                    </tr>
-                  </tbody></table>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="gist-meta">
-            made with ❤ by <a href="https://github.com">GitHub</a>
-          </div>
-        </div>
-      </div>
-    </code>
+    <a href="https://developers.google.com/maps/documentation/javascript/reference#MapOptions" target="_blank">Google Map Type Docs</a>
   </div>
 </p>
 
@@ -749,31 +524,24 @@
     <small class="-db">Resources</small>
     <a href="https://developers.google.com/maps/documentation/javascript/reference#MapOptions" target="_blank">Google Map Options</a>
   </div>
-  <div class="gmaps-snippet">
-    <header>Example</header>
-    <code>
-      <div class="gist">
-        <div class="gist-file">
-          <div class="gist-data">
-            <div class="js-gist-file-update-container js-task-list-container file-box">
-              <div id="file-templa-hbs" class="file">
-                <div class="blob-wrapper data type-handlebars">
-                  <table class="highlight tab-size js-file-line-container" data-tab-size="8">
-                    <tbody><tr>
-                      <td id="file-templa-hbs-L1" class="blob-num js-line-number" data-line-number="1"></td>
-                      <td id="file-templa-hbs-LC1" class="blob-code blob-code-inner js-file-line"><span class="pl-c1">\{{</span><span class="pl-v">g-maps</span> clickableIcons=false<span class="pl-c1">}}</span></td>
-                    </tr>
-                  </tbody></table>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="gist-meta">
-            made with ❤ by <a href="https://github.com">GitHub</a>
-          </div>
-        </div>
-      </div>
-    </code>
+</p>
+
+<hr>
+
+<p id="disableDefaultUI" class="medium-7">
+  <h3>disableDefaultUI</h3>
+
+  <div class="-mb">
+    <small class="-db">Type</small>
+    Boolean
+  </div>
+  <div class="-mb">
+    <small class="-db">Default</small>
+    <div class="gmaps-inline-code -nml">false</div>
+  </div>
+  <div class="-mb">
+    <small class="-db">Resources</small>
+    <a href="https://developers.google.com/maps/documentation/javascript/reference#MapOptions" target="_blank">Google Map Options</a>
   </div>
 </p>
 
@@ -794,31 +562,506 @@
     <small class="-db">Resources</small>
     <a href="https://developers.google.com/maps/documentation/javascript/reference#MapOptions" target="_blank">Google Map Options</a>
   </div>
-  <div class="gmaps-snippet">
-    <header>Example</header>
-    <code>
-      <div class="gist">
-        <div class="gist-file">
-          <div class="gist-data">
-            <div class="js-gist-file-update-container js-task-list-container file-box">
-              <div id="file-templa-hbs" class="file">
-                <div class="blob-wrapper data type-handlebars">
-                  <table class="highlight tab-size js-file-line-container" data-tab-size="8">
-                    <tbody><tr>
-                      <td id="file-templa-hbs-L1" class="blob-num js-line-number" data-line-number="1"></td>
-                      <td id="file-templa-hbs-LC1" class="blob-code blob-code-inner js-file-line"><span class="pl-c1">\{{</span><span class="pl-v">g-maps</span> disableDoubleClickZoom=false<span class="pl-c1">}}</span></td>
-                    </tr>
-                  </tbody></table>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="gist-meta">
-            made with ❤ by <a href="https://github.com">GitHub</a>
-          </div>
-        </div>
-      </div>
-    </code>
+</p>
+
+<hr>
+
+<p id="draggable" class="medium-7">
+  <h3>draggable</h3>
+
+  <div class="-mb">
+    <small class="-db">Type</small>
+    Boolean
+  </div>
+
+  <div class="-mb">
+    <small class="-db">Default</small>
+    <div class="gmaps-inline-code -nml">false</div>
+  </div>
+
+  <div class="-mb">
+    <small class="-db">Resources</small>
+    <a href="https://developers.google.com/maps/documentation/javascript/reference#MapOptions" target="_blank">Google Map Options</a>
+  </div>
+</p>
+
+<hr>
+
+<p id="draggableCursor" class="medium-7">
+  <h3>draggableCursor</h3>
+
+  <div class="-mb">
+    <small class="-db">Type</small>
+    String
+  </div>
+
+  <div class="-mb">
+    <small class="-db">Default</small>
+    <div class="gmaps-inline-code -nml">default</div>
+  </div>
+
+  <div class="-mb">
+    <small class="-db">Options</small>
+    <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/cursor" target="_blank">CSS cursor property values</a>
+  </div>
+
+  <div class="-mb">
+    <small class="-db">Resources</small>
+    <a href="https://developers.google.com/maps/documentation/javascript/reference#MapOptions" target="_blank">Google Map Options</a>
+  </div>
+</p>
+
+<hr>
+
+<p id="draggingCursor" class="medium-7">
+  <h3>draggingCursor</h3>
+
+  <div class="-mb">
+    <small class="-db">Type</small>
+    String
+  </div>
+
+  <div class="-mb">
+    <small class="-db">Default</small>
+    <div class="gmaps-inline-code -nml">default</div>
+  </div>
+
+  <div class="-mb">
+    <small class="-db">Options</small>
+    <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/cursor" target="_blank">CSS cursor property values</a>
+  </div>
+
+  <div class="-mb">
+    <small class="-db">Resources</small>
+    <a href="https://developers.google.com/maps/documentation/javascript/reference#MapOptions" target="_blank">Google Map Options</a>
+  </div>
+</p>
+
+<hr>
+
+<p id="fullscreenControl" class="medium-7">
+  <h3>fullscreenControl</h3>
+
+  <div class="-mb">
+    <small class="-db">Type</small>
+    Boolean
+  </div>
+
+  <div class="-mb">
+    <small class="-db">Default</small>
+    <div class="gmaps-inline-code -nml">false</div>
+  </div>
+
+  <div class="-mb">
+    <small class="-db">Resources</small>
+    <a href="https://developers.google.com/maps/documentation/javascript/reference#MapOptions" target="_blank">Google Map Options</a>
+  </div>
+</p>
+
+<hr>
+
+<p id="fullscreenControlOptions" class="medium-7">
+  <h3>fullscreenControlOptions</h3>
+
+  <div class="-mb">
+    <small class="-db">Type</small>
+    String
+  </div>
+
+  <div class="-mb">
+    <small class="-db">Default</small>
+    <div class="gmaps-inline-code -nml">RIGHT_TOP</div>
+  </div>
+
+  <div class="-mb">
+    <small class="-db">Options</small>
+    <a href="https://developers.google.com/maps/documentation/javascript/reference#ControlPosition" target="_blank">Google Maps control position</a>
+  </div>
+
+  <div class="-mb">
+    <small class="-db">Resources</small>
+    <a href="https://developers.google.com/maps/documentation/javascript/reference#MapOptions" target="_blank">Google Map Options</a>
+  </div>
+</p>
+
+<hr>
+
+<p id="gestureHandling" class="medium-7">
+  <h3>gestureHandling</h3>
+
+  <div class="-mb">
+    <small class="-db">Type</small>
+    String
+  </div>
+
+  <div class="-mb">
+    <small class="-db">Default</small>
+    <span class="gmaps-inline-code -nml">auto</span>
+  </div>
+
+  <div class="-mb">
+    <small class="-db">Options</small>
+    <span class="gmaps-inline-code -nml">cooperative</span>
+    <span class="gmaps-inline-code">greedy</span>
+    <span class="gmaps-inline-code">none</span>
+    <span class="gmaps-inline-code">auto</span>
+  </div>
+
+  <div class="-mb">
+    <small class="-db">Resources</small>
+    <a href="https://developers.google.com/maps/documentation/javascript/3.exp/reference#MapOptions" target="_blank">Google Map Type Docs</a>
+  </div>
+</p>
+
+<hr>
+
+<p id="heading" class="medium-7">
+  <h3>heading</h3>
+
+  <div class="-mb">
+    <small class="-db">Type</small>
+    Number
+  </div>
+
+  <div class="-mb">
+    <small class="-db">Skill Level</small>
+    <span class="gmaps-inline-code -nml">Advanced</span>
+  </div>
+
+  <div class="-mb">
+    <small class="-db">Resources</small>
+    <a href="https://developers.google.com/maps/documentation/javascript/reference#MapOptions" target="_blank">Google Map Options</a>
+  </div>
+</p>
+
+<hr>
+
+<p id="keyboardShortcuts" class="medium-7">
+  <h3>keyboardShortcuts</h3>
+
+  <div class="-mb">
+    <small class="-db">Type</small>
+    Boolean
+  </div>
+
+  <div class="-mb">
+    <small class="-db">Default</small>
+    <div class="gmaps-inline-code -nml">true</div>
+  </div>
+
+  <div class="-mb">
+    <small class="-db">Resources</small>
+    <a href="https://developers.google.com/maps/documentation/javascript/reference#MapOptions" target="_blank">Google Map Options</a>
+  </div>
+</p>
+
+<hr>
+
+<p id="lat" class="medium-7">
+  <h3>lat</h3>
+
+  <div class="-mb">
+    <small class="-db">Type</small>
+    Number
+  </div>
+
+  <div class="-mb">
+    <small class="-db">Notes</small>
+    A latitude corrdinate that will be overridden if used with the center option.
+    Lat is used in conjunction with lng.
+  </div>
+</p>
+
+<hr>
+
+<p id="lng" class="medium-7">
+  <h3>lng</h3>
+
+  <div class="-mb">
+    <small class="-db">Type</small>
+    Number
+  </div>
+
+  <div class="-mb">
+    <small class="-db">Notes</small>
+    A longitude corrdinate that will be overridden if used with the center option.
+    Lng is used in conjunction with lat.
+  </div>
+</p>
+
+<hr>
+
+<p id="mapTypeId" class="medium-7">
+  <h3>mapTypeId</h3>
+
+  <div class="-mb">
+    <small class="-db">Type</small>
+    String
+  </div>
+
+  <div class="-mb">
+    <small class="-db">Default</small>
+    <span class="gmaps-inline-code -nml">ROADMAP</span>
+  </div>
+
+  <div class="-mb">
+    <small class="-db">Options</small>
+    <span class="gmaps-inline-code -nml">ROADMAP</span>
+    <span class="gmaps-inline-code">SATELLITE</span>
+    <span class="gmaps-inline-code">HYBRID</span>
+    <span class="gmaps-inline-code">TERRAIN</span>
+  </div>
+
+  <div class="-mb">
+    <small class="-db">Resources</small>
+    <a href="https://developers.google.com/maps/documentation/javascript/maptypes" target="_blank">Google Map Type Docs</a>
+  </div>
+</p>
+
+<hr>
+
+<p id="mapTypeControl" class="medium-7">
+  <h3>mapTypeControl</h3>
+
+  <div class="-mb">
+    <small class="-db">Type</small>
+    Boolean
+  </div>
+
+  <div class="-mb">
+    <small class="-db">Default</small>
+    <span class="gmaps-inline-code -nml">true</span>
+  </div>
+
+  <div class="-mb">
+    <small class="-db">Resources</small>
+    <a href="https://developers.google.com/maps/documentation/javascript/reference#MapOptions" target="_blank">Google Map Options</a>
+  </div>
+</p>
+
+<hr>
+
+<p id="mapTypeControlOptions" class="medium-7">
+  <h3>mapTypeControlOptions</h3>
+
+  <div class="-mb">
+    <small class="-db">Type</small>
+    Object
+  </div>
+
+  <div class="-mb">
+    <small class="-db">Default</small>
+    <span class="gmaps-inline-code -nml" style="white-space: pre;"><code>{
+    mapTypeIds: ['ROADMAP', 'SATELLITE', 'HYBRID', 'TERRAIN'],
+    position: 'TOP_RIGHT',
+    style: 'DEFAULT'
+}</code></span>
+  </div>
+
+  <div class="-mb">
+    <small class="-db">Options</small>
+    <a class="-db" href="https://developers.google.com/maps/documentation/javascript/maptypes" target="_blank">Google Map types</a>
+    <a class="-db" href="https://developers.google.com/maps/documentation/javascript/reference#ControlPosition" target="_blank">Google Maps control position</a>
+    <a class="-db" href="https://developers.google.com/maps/documentation/javascript/3.exp/reference#MapTypeControlStyle" target="_blank">Googel Map type control styles</a>
+  </div>
+
+  <div class="-mb">
+    <small class="-db">Resources</small>
+    <a href="https://developers.google.com/maps/documentation/javascript/reference#MapOptions" target="_blank">Google Map Options</a>
+  </div>
+</p>
+
+<hr>
+
+<p id="maxZoom" class="medium-7">
+  <h3>maxZoom</h3>
+
+  <div class="-mb">
+    <small class="-db">Type</small>
+    Number </div>
+
+  <div class="-mb">
+    <small class="-db">Default</small>
+    Dependent on active map type
+  </div>
+
+  <div class="-mb">
+    <small class="-db">Resources</small>
+    <a href="https://developers.google.com/maps/documentation/javascript/reference#MapOptions" target="_blank">Google Map Options</a>
+  </div>
+</p>
+
+<hr>
+
+<p id="minZoom" class="medium-7">
+  <h3>minZoom</h3>
+
+  <div class="-mb">
+    <small class="-db">Type</small>
+    Number
+  </div>
+
+  <div class="-mb">
+    <small class="-db">Default</small>
+    <span class="gmaps-inline-code -nml">0</span>
+  </div>
+
+  <div class="-mb">
+    <small class="-db">Resources</small>
+    <a href="https://developers.google.com/maps/documentation/javascript/reference#MapOptions" target="_blank">Google Map Options</a>
+  </div>
+</p>
+
+<hr>
+
+<p id="panControl" class="medium-7">
+  <h3>panControl</h3>
+
+  <div class="-mb">
+    <small class="-db">Type</small>
+    Boolean
+  </div>
+
+  <div class="-mb">
+    <small class="-db">Default</small>
+    <span class="gmaps-inline-code -nml">false</span>
+  </div>
+
+  <div class="-mb">
+    <small class="-db">Notes</small>
+    This option is deprecated and disabled by default and must be activated to appear.
+    Please read the resouces linked below for more information.
+  </div>
+
+  <div class="-mb">
+    <small class="-db">Resources</small>
+    <a href="https://developers.google.com/maps/documentation/javascript/reference#MapOptions" target="_blank">Google Map Options</a>
+  </div>
+</p>
+
+<hr>
+
+<p id="panControlOptions" class="medium-7">
+  <h3>panControlOptions</h3>
+
+  <div class="-mb">
+    <small class="-db">Type</small>
+    String
+  </div>
+
+  <div class="-mb">
+    <small class="-db">Default</small>
+    <div class="gmaps-inline-code -nml">TOP_LEFT</div>
+  </div>
+
+  <div class="-mb">
+    <small class="-db">Options</small>
+    <a href="https://developers.google.com/maps/documentation/javascript/reference#ControlPosition" target="_blank">Google Maps control position</a>
+  </div>
+
+  <div class="-mb">
+    <small class="-db">Notes</small>
+    This option is deprecated and disabled by default and must be activated to appear.
+    Please read the resouces linked below for more information.
+  </div>
+
+  <div class="-mb">
+    <small class="-db">Resources</small>
+    <a href="https://developers.google.com/maps/documentation/javascript/reference#MapOptions" target="_blank">Google Map Options</a>
+  </div>
+</p>
+
+<hr>
+
+<p id="rotateControl" class="medium-7">
+  <h3>rotateControl</h3>
+
+  <div class="-mb">
+    <small class="-db">Type</small>
+    Boolean
+  </div>
+
+  <div class="-mb">
+    <small class="-db">Default</small>
+    <div class="gmaps-inline-code -nml">false</div>
+  </div>
+
+  <div class="-mb">
+    <small class="-db">Resources</small>
+    <a href="https://developers.google.com/maps/documentation/javascript/reference#MapOptions" target="_blank">Google Map Options</a>
+  </div>
+</p>
+
+<hr>
+
+<p id="rotateControlOptions" class="medium-7">
+  <h3>rotateControlOptions</h3>
+
+  <div class="-mb">
+    <small class="-db">Type</small>
+    String
+  </div>
+
+  <div class="-mb">
+    <small class="-db">Default</small>
+    <div class="gmaps-inline-code -nml">TOP_LEFT</div>
+  </div>
+
+  <div class="-mb">
+    <small class="-db">Options</small>
+    <a href="https://developers.google.com/maps/documentation/javascript/reference#ControlPosition" target="_blank">Google Maps control position</a>
+  </div>
+
+  <div class="-mb">
+    <small class="-db">Resources</small>
+    <a href="https://developers.google.com/maps/documentation/javascript/reference#MapOptions" target="_blank">Google Map Options</a>
+  </div>
+</p>
+
+<hr>
+
+<p id="scaleControl" class="medium-7">
+  <h3>scaleControl</h3>
+
+  <div class="-mb">
+    <small class="-db">Type</small>
+    Boolean
+  </div>
+
+  <div class="-mb">
+    <small class="-db">Default</small>
+    <div class="gmaps-inline-code -nml">true</div>
+  </div>
+
+  <div class="-mb">
+    <small class="-db">Resources</small>
+    <a href="https://developers.google.com/maps/documentation/javascript/reference#MapOptions" target="_blank">Google Map Options</a>
+  </div>
+</p>
+
+<hr>
+
+<p id="scaleControlStyles" class="medium-7">
+  <h3>scaleControlStyles</h3>
+
+  <div class="-mb">
+    <small class="-db">Type</small>
+    String
+  </div>
+
+  <div class="-mb">
+    <small class="-db">Default</small>
+    <div class="gmaps-inline-code -nml">DEFAULT</div>
+  </div>
+
+  <div class="-mb">
+    <small class="-db">Options</small>
+    <a href="https://developers.google.com/maps/documentation/javascript/3.exp/reference#ScaleControlStyle" target="_blank">Google Maps scale control styles</a>
+  </div>
+
+  <div class="-mb">
+    <small class="-db">Resources</small>
+    <a href="https://developers.google.com/maps/documentation/javascript/reference#MapOptions" target="_blank">Google Map Options</a>
   </div>
 </p>
 
@@ -831,39 +1074,15 @@
     <small class="-db">Type</small>
     Boolean
   </div>
+
   <div class="-mb">
     <small class="-db">Default</small>
     <div class="gmaps-inline-code -nml">true</div>
   </div>
+
   <div class="-mb">
     <small class="-db">Resources</small>
     <a href="https://developers.google.com/maps/documentation/javascript/reference#MapOptions" target="_blank">Google Map Options</a>
-  </div>
-  <div class="gmaps-snippet">
-    <header>Example</header>
-    <code>
-      <div class="gist">
-        <div class="gist-file">
-          <div class="gist-data">
-            <div class="js-gist-file-update-container js-task-list-container file-box">
-              <div id="file-templa-hbs" class="file">
-                <div class="blob-wrapper data type-handlebars">
-                  <table class="highlight tab-size js-file-line-container" data-tab-size="8">
-                    <tbody><tr>
-                      <td id="file-templa-hbs-L1" class="blob-num js-line-number" data-line-number="1"></td>
-                      <td id="file-templa-hbs-LC1" class="blob-code blob-code-inner js-file-line"><span class="pl-c1">\{{</span><span class="pl-v">g-maps</span> scrollwheel=true<span class="pl-c1">}}</span></td>
-                    </tr>
-                  </tbody></table>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="gist-meta">
-            made with ❤ by <a href="https://github.com">GitHub</a>
-          </div>
-        </div>
-      </div>
-    </code>
   </div>
 </p>
 
@@ -876,39 +1095,162 @@
     <small class="-db">Type</small>
     Array
   </div>
+
   <div class="-mb">
     <small class="-db">Default</small>
     <div class="gmaps-inline-code -nml">undefined</div>
   </div>
+
   <div class="-mb">
     <small class="-db">Resources</small>
     <a class="-db" href="https://developers.google.com/maps/documentation/javascript/styling" target="_blank">Google Map Options</a>
     <a class="-db" href="https://snazzymaps.com/" target="_blank">Snazzymaps theme repository</a>
   </div>
-  <div class="gmaps-snippet">
-    <header>Example</header>
-    <code>
-      <div class="gist">
-        <div class="gist-file">
-          <div class="gist-data">
-            <div class="js-gist-file-update-container js-task-list-container file-box">
-              <div id="file-templa-hbs" class="file">
-                <div class="blob-wrapper data type-handlebars">
-                  <table class="highlight tab-size js-file-line-container" data-tab-size="8">
-                    <tbody><tr>
-                      <td id="file-templa-hbs-L1" class="blob-num js-line-number" data-line-number="1"></td>
-                      <td id="file-templa-hbs-LC1" class="blob-code blob-code-inner js-file-line"><span class="pl-c1">\{{</span><span class="pl-v">g-maps</span> styles=myStyles<span class="pl-c1">}}</span></td>
-                    </tr>
-                  </tbody></table>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="gist-meta">
-            made with ❤ by <a href="https://github.com">GitHub</a>
-          </div>
-        </div>
-      </div>
-    </code>
+</p>
+
+<hr>
+
+<p id="streetViewControl" class="medium-7">
+  <h3>streetViewControl</h3>
+
+  <div class="-mb">
+    <small class="-db">Type</small>
+    Boolean
+  </div>
+
+  <div class="-mb">
+    <small class="-db">Default</small>
+    <div class="gmaps-inline-code -nml">true</div>
+  </div>
+
+  <div class="-mb">
+    <small class="-db">Resources</small>
+    <a href="https://developers.google.com/maps/documentation/javascript/reference#MapOptions" target="_blank">Google Map Options</a>
+  </div>
+</p>
+
+<hr>
+
+<p id="streetViewControlOptions" class="medium-7">
+  <h3>streetViewControlOptions</h3>
+
+  <div class="-mb">
+    <small class="-db">Type</small>
+    String
+  </div>
+
+  <div class="-mb">
+    <small class="-db">Default</small>
+    Undefined or the same as that specified in the zoomControlOptions
+  </div>
+
+  <div class="-mb">
+    <small class="-db">Options</small>
+    <a href="https://developers.google.com/maps/documentation/javascript/reference#ControlPosition" target="_blank">Google Maps control position</a>
+  </div>
+
+  <div class="-mb">
+    <small class="-db">Resources</small>
+    <a href="https://developers.google.com/maps/documentation/javascript/reference#MapOptions" target="_blank">Google Map Options</a>
+  </div>
+</p>
+
+<hr>
+
+<p id="tilt" class="medium-7">
+  <h3>tilt</h3>
+
+  <div class="-mb">
+    <small class="-db">Type</small>
+    Number
+  </div>
+
+  <div class="-mb">
+    <small class="-db">Default</small>
+    <span class="gmaps-inline-code -nml">0</span>
+  </div>
+
+  <div class="-mb">
+    <small class="-db">Options</small>
+    <span class="gmaps-inline-code -nml">0</span>
+    <span class="gmaps-inline-code -nml">45</span>
+  </div>
+
+  <div class="-mb">
+    <small class="-db">Notes</small>
+    This is an advanced feature
+  </div>
+
+  <div class="-mb">
+    <small class="-db">Resources</small>
+    <a href="https://developers.google.com/maps/documentation/javascript/reference#MapOptions" target="_blank">Google Map Options</a>
+  </div>
+</p>
+
+<hr>
+
+<p id="zoom" class="medium-7">
+  <h3>zoom</h3>
+
+  <div class="-mb">
+    <small class="-db">Type</small>
+    Number
+  </div>
+
+  <div class="-mb">
+    <small class="-db">Default</small>
+    The initial Map zoom level
+  </div>
+
+  <div class="-mb">
+    <small class="-db">Resources</small>
+    <a href="https://developers.google.com/maps/documentation/javascript/reference#MapOptions" target="_blank">Google Map Options</a>
+  </div>
+</p>
+
+<hr>
+
+<p id="zoomControl" class="medium-7">
+  <h3>zoomControl</h3>
+
+  <div class="-mb">
+    <small class="-db">Type</small>
+    Boolean
+  </div>
+
+  <div class="-mb">
+    <small class="-db">Default</small>
+    <div class="gmaps-inline-code -nml">true</div>
+  </div>
+
+  <div class="-mb">
+    <small class="-db">Resources</small>
+    <a href="https://developers.google.com/maps/documentation/javascript/reference#MapOptions" target="_blank">Google Map Options</a>
+  </div>
+</p>
+
+<hr>
+
+<p id="zoomControlOptions" class="medium-7">
+  <h3>zoomControlOptions</h3>
+
+  <div class="-mb">
+    <small class="-db">Type</small>
+    String
+  </div>
+
+  <div class="-mb">
+    <small class="-db">Default</small>
+    TOP_LEFT
+  </div>
+
+  <div class="-mb">
+    <small class="-db">Options</small>
+    <a href="https://developers.google.com/maps/documentation/javascript/reference#ControlPosition" target="_blank">Google Maps control position</a>
+  </div>
+
+  <div class="-mb">
+    <small class="-db">Resources</small>
+    <a href="https://developers.google.com/maps/documentation/javascript/reference#MapOptions" target="_blank">Google Map Options</a>
   </div>
 </p>
