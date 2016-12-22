@@ -69,7 +69,7 @@ export default Component.extend({
    * LatLngLiteral combination of lat lng
    * NOTE this is designed to be overwritten, by user, if desired
    */
-  center: computed('lat', 'lng', function() {
+  center: computed('lat', 'lng', 'options.{lat,lng,center}', function() {
     return getProperties(this, 'lat', 'lng');
   }),
 
@@ -221,15 +221,16 @@ export default Component.extend({
 
     const updates = get(this, 'center');
 
-    if (!isPresent(center.lat)) {
-      updates.lat = updates.lat || options.lat || GMAP_DEFAULTS.lat;
+    if (isPresent(updates.lat) && isPresent(updates.lng)) {
+      return {center: updates};
     }
 
-    if (!isPresent(center.lng)) {
-      updates.lng = updates.lng || options.lng || GMAP_DEFAULTS.lng;
-    }
-
-    return {center: updates};
+    return {
+      center: {
+        lat: options.lat || GMAP_DEFAULTS.lat,
+        lng: options.lng || GMAP_DEFAULTS.lng
+      }
+    };
   }
 });
 
