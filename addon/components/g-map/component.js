@@ -1,16 +1,13 @@
 import $ from 'jquery';
-import Component from 'ember-component';
 import set from 'ember-metal/set';
-import {default as get, getProperties} from 'ember-metal/get';
+import get from 'ember-metal/get';
 import {assert} from 'ember-metal/utils';
 import computed from 'ember-computed';
 import run from 'ember-runloop';
 import getOwner from 'ember-owner/get';
-import {isPresent} from 'ember-utils';
-import {assign} from 'ember-platform';
 
 import googleMap from './factory';
-import loadGoogleMaps from '../../utils/load-google-maps';
+import mapPointComponent from '../../factories/map-point-component';
 import layout from '../../templates/components/g-map';
 import ENV from '../../configuration';
 
@@ -40,89 +37,58 @@ function setupResizeListener() {
   });
 }
 
-export default Component.extend({
-  layout,
+/*
+ * Generate an instance of a map point component
+ */
+export default mapPointComponent({
+  bound: MAP_BOUND_OPTIONS,
+  passive: MAP_STATIC_OPTIONS,
+  defaults: GMAP_DEFAULTS,
+  component: {
+    layout,
 
-  /**
-   * @type {Ember.ObjectProxy}
-   * Proxy wrapper for the Google Map instance
-   */
-  map: null,
-
-  /**
-   * @private
-   * @type {Number}
-   * Width of maps' parent element in pixels
-   */
-  _containerWidth: 0,
-
-  /**
-   * @private
-   * @type {Boolean}
-   */
-  _isTest: computed(function() {
-    return (getOwner(this).resolveRegistration('config:environment').environment === 'test');
-  }),
-
-  /**
-   * @type {Object}
-   * LatLngLiteral combination of lat lng
-   * NOTE this is designed to be overwritten, by user, if desired
-   */
-  center: computed('lat', 'lng', 'options.{lat,lng,center}', function() {
-    return getProperties(this, 'lat', 'lng');
-  }),
-
-  /**
-   * @type {Object}
-   * Google MapOptions object
-   * NOTE this is designed to be overwritten, by user, if desired
-   */
-  options: computed(...MAP_BOUND_OPTIONS, function() {
-    const opts = getProperties(this, ...MAP_BOUND_OPTIONS);
-
-    Object.keys(opts).forEach((option) => {
-      if (opts[option] === undefined) {
-        delete opts[option];
-      }
-    });
-
-    return opts;
-  }),
-
-  didInsertElement() {
-    assert('map is a reserved namespace', get(this, 'map') === null);
-    const options = assign({}, get(this, 'options')); // clone options
-
-    /*
-     * Add any static options if not defined in `options`
+    /**
+     * @type {Ember.ObjectProxy}
+     * Proxy wrapper for the Google Map instance
      */
-    MAP_STATIC_OPTIONS.forEach((staticOpt) => {
-      const option = get(this, staticOpt);
+    map: null,
 
-      if (option !== undefined && options[staticOpt] === undefined) {
-        set(options, staticOpt, option);
-      }
-    });
-
-    assign(options, this._assignableCenter());
-
-    /*
-     * Render Google Map to canvas element
+    /**
+     * @private
+     * @type {Number}
+     * Width of maps' parent element in pixels
      */
-    const canvas = this.element.querySelector('[data-g-map="canvas"]');
+    _containerWidth: 0,
 
-    loadGoogleMaps().then(() => {
+    /**
+     * @private
+     * @type {Boolean}
+     */
+    _isTest: computed(function() {
+      return (getOwner(this).resolveRegistration('config:environment').environment === 'test');
+    }),
+
+    /**
+     * @param {Object} options   Current Map options
+     * Method invoked when Google Maps libraries have loaded
+     * and the `didInsertElement` lifecycle hook has fired
+     */
+    insertGoogleMapInstance(options) {
       if (!didSetupListener) { setupResizeListener(); }
       resizeSubscribers.push(this);
       this._containerWidth = this.element.clientWidth;
 
+     /*
+      * Render Google Map to canvas element
+      */
+      const canvas = this.element.querySelector('[data-g-map="canvas"]');
+
       // Instantiate Google Map
       const map = set(this, 'map', googleMap(canvas, options));
 
-      /*
-       * Bind any events to google map
-       */
+     /*
+      * Bind any events to google map
+      */
       MAP_EVENTS.forEach((event) => {
         const action = this.attrs[event];
         if (!action) { return; }
@@ -147,97 +113,58 @@ export default Component.extend({
       });
 
       /*
-       * Some test helpers require access to the map instance
-       */
+      * Some test helpers require access to the map instance
+      */
       if (this.get('_isTest')) {
         canvas.__GOOGLE_MAP__ = map.content;
       }
-    });
-  },
+    },
 
-  willDestroyElement() {
-    google.maps.event.clearInstanceListeners(get(this, 'map.content'));
-
-    for (let i = 0; i < resizeSubscribers.length; i++) {
-      if (resizeSubscribers[i] === this) {
-        resizeSubscribers.splice(i, 1);
-        break;
-      }
-    }
-  },
-
-  didUpdateAttrs() {
-    const options = assign({}, get(this, 'options'));
-    assign(options, this._assignableCenter());
+    getGoogleMapInstanceValue(option) {
+      return get(this, `map.${option}`);
+    },
 
     /*
-     * Check for any changes to bound options and apply to map
+     * Invoked during `didUpdateAttrs` with any updated option
      */
-    MAP_BOUND_OPTIONS
-    .filter((option) => options[option] !== undefined)
-    .forEach((option) => {
-      const value = options[option];
-      const current = get(this, `map.${option}`);
+    updateGoogleMapInstance(option, value) {
+      return set(this, `map.${option}`, value);
+    },
 
-      if (isDiff(value, current)) {
-        set(this, `map.${option}`, value);
+    didInsertElement() {
+      this._super(...arguments);
+      assert('map is a reserved namespace', get(this, 'map') === null);
+    },
+
+    willDestroyElement() {
+      this._super(...arguments);
+
+      google.maps.event.clearInstanceListeners(get(this, 'map.content'));
+
+      for (let i = 0; i < resizeSubscribers.length; i++) {
+        if (resizeSubscribers[i] === this) {
+          resizeSubscribers.splice(i, 1);
+          break;
+        }
       }
-    });
-  },
+    },
 
-  /**
-   * @private
-   * Determine if map resize is necessary and queue resize event
-   */
-  _windowDidResize() {
-    if (this._containerWidth === this.element.clientWidth) { return; }
-    this._containerWidth = this.element.clientWidth;
-    run.debounce(this, this._resizeMap, 150);
-  },
+    /**
+     * @private
+     * Determine if map resize is necessary and queue resize event
+     */
+    _windowDidResize() {
+      if (this._containerWidth === this.element.clientWidth) { return; }
+      this._containerWidth = this.element.clientWidth;
+      run.debounce(this, this._resizeMap, 150);
+    },
 
-  /**
-   * @private
-   * Triggers a resize of the map
-   */
-  _resizeMap() {
-    google.maps.event.trigger(get(this, 'map.content'), 'resize');
-  },
-
-  /**
-   * @return {Object|Undefind} updates
-   * Ensure that center is configured in order of priority:
-   * - user override: options.center
-   * - user override: center
-   * - top level: lat,lng
-   * - user override: options.{lat,lng}
-   * - fallback gmap defaults
-   */
-  _assignableCenter() {
-    const options = get(this, 'options');
-    const center = options.center || {};
-
-    // Use user configuration
-    if (isPresent(center.lat) && isPresent(center.lng)) { return; }
-
-    const updates = get(this, 'center');
-
-    if (isPresent(updates.lat) && isPresent(updates.lng)) {
-      return {center: updates};
+    /**
+     * @private
+     * Triggers a resize of the map
+     */
+    _resizeMap() {
+      google.maps.event.trigger(get(this, 'map.content'), 'resize');
     }
-
-    return {
-      center: {
-        lat: options.lat || GMAP_DEFAULTS.lat,
-        lng: options.lng || GMAP_DEFAULTS.lng
-      }
-    };
   }
 });
-
-function isDiff(a, b) {
-  if (typeof a === 'object') {
-    return JSON.stringify(a).toLowerCase() !== JSON.stringify(b).toLowerCase();
-  } else {
-    return a !== b;
-  }
-}
