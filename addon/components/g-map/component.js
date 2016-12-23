@@ -1,4 +1,5 @@
 import $ from 'jquery';
+import Component from 'ember-component';
 import set from 'ember-metal/set';
 import get from 'ember-metal/get';
 import {assert} from 'ember-metal/utils';
@@ -7,7 +8,7 @@ import run from 'ember-runloop';
 import getOwner from 'ember-owner/get';
 
 import googleMap from './factory';
-import mapPointComponent from '../../factories/map-point-component';
+import mapPoint from '../../factories/map-point';
 import layout from '../../templates/components/g-map';
 import ENV from '../../configuration';
 
@@ -39,8 +40,9 @@ function setupResizeListener() {
 
 /*
  * Generate an instance of a map point component
+ * as the g-map component class
  */
-export default mapPointComponent({
+export default Component.extend(mapPoint({
   bound: MAP_BOUND_OPTIONS,
   passive: MAP_STATIC_OPTIONS,
   defaults: GMAP_DEFAULTS,
@@ -167,4 +169,4 @@ export default mapPointComponent({
       google.maps.event.trigger(get(this, 'map.content'), 'resize');
     }
   }
-});
+}));

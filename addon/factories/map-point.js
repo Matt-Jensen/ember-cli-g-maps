@@ -1,4 +1,3 @@
-import Component from 'ember-component';
 import computed from 'ember-computed';
 import {assert} from 'ember-metal/utils';
 import {default as get, getProperties} from 'ember-metal/get';
@@ -12,16 +11,16 @@ import loadGoogleMaps from '../utils/load-google-maps';
 const {isArray} = Array;
 
 /**
- * Generate components for Google map instances that
+ * Generate boilerplate for Google map instances that
  * are focused around a single point including Map instances
  * themselves.
  *
- * This factory configures components that accept both top-level
+ * This factory creates configuration for components that accept both top-level
  * properties or options object configurations, as well as a prioritized
  * list of instance centering strategies.
  *
  * @param {Object} settings
- * @return {Ember.Component}
+ * @return {Object}
  */
 export default function mapPointComponent(settings) {
   const {component} = settings;
@@ -35,7 +34,13 @@ export default function mapPointComponent(settings) {
   const configuration = mapOptions(settings.bound, settings.passive);
   const componentConfig = assign(component, configuration);
 
-  return Component.extend(assign(componentConfig, {
+  return assign(componentConfig, {
+    /**
+     * @private
+     * Allow test stubbing
+     */
+    _loadGoogleMaps: loadGoogleMaps,
+
     /**
      * @type {Object}
      * LatLngLiteral combination of lat lng
@@ -63,7 +68,7 @@ export default function mapPointComponent(settings) {
       /*
        * Insert google map instance with options
        */
-      loadGoogleMaps()
+      return this._loadGoogleMaps()
       .then(bind(this, this.insertGoogleMapInstance, options));
     },
 
@@ -90,7 +95,7 @@ export default function mapPointComponent(settings) {
         }
       });
     }
-  }));
+  });
 }
 
 /**
@@ -102,7 +107,7 @@ export default function mapPointComponent(settings) {
  * - top level: lat,lng
  * - fallback
  */
-function getCenter(options, centerProp, fallback = {}) {
+export function getCenter(options, centerProp, fallback = {}) {
   const optionsCenter = options.center || {};
 
   // options.center
