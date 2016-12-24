@@ -27,9 +27,9 @@ export default function mapPointComponent(settings) {
 
   assert('component configuration is required', component);
   assert('bound options are required', isArray(settings.bound));
-  assert('component configuration requires `insertGoogleMapInstance` method', component.insertGoogleMapInstance);
-  assert('component configuration requires `updateGoogleMapInstance` method', component.updateGoogleMapInstance);
-  assert('component configuration requires `getGoogleMapInstanceValue` method', component.getGoogleMapInstanceValue);
+  assert('component configuration requires `insertGoogleMapInstance` method', Boolean(component.insertGoogleMapInstance));
+  assert('component configuration requires `updateGoogleMapInstance` method', Boolean(component.updateGoogleMapInstance));
+  assert('component configuration requires `getGoogleMapInstanceValue` method', Boolean(component.getGoogleMapInstanceValue));
 
   const configuration = mapOptions(settings.bound, settings.passive);
   const componentConfig = assign(component, configuration);
