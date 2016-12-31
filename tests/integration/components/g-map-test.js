@@ -22,7 +22,6 @@ test('it renders all map centering strategies', function(assert) {
   const lat = this.set('lat', 30.2672);
   const lng = this.set('lng', 97.7431);
   this.set('centerLiteral', {lat, lng});
-  this.set('centerLatLng', new google.maps.LatLng(lat, lng));
   this.set('options', {center: {lat, lng}});
   this.set('optionsLatLng', {lat, lng});
 
@@ -37,12 +36,6 @@ test('it renders all map centering strategies', function(assert) {
   {{/g-map}}`);
 
   assert.equal(this.$('#g-map-test-output').text().trim().slice(0, 15), `${lat},${lng}`, 'set center via center literal');
-
-  this.render(hbs`{{#g-map center=centerLatLng as |map|}}
-    <div id="g-map-test-output">{{map.center.lat}},{{map.center.lng}}</div>
-  {{/g-map}}`);
-
-  assert.equal(this.$('#g-map-test-output').text().trim().slice(0, 15), `${lat},${lng}`, 'set center via LatLng instance');
 
   this.render(hbs`{{#g-map options=options as |map|}}
     <div id="g-map-test-output">{{map.center.lat}},{{map.center.lng}}</div>

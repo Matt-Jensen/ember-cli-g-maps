@@ -3,6 +3,7 @@ import Component from 'ember-component';
 import set from 'ember-metal/set';
 import get from 'ember-metal/get';
 import {assert} from 'ember-metal/utils';
+import {assign} from 'ember-platform';
 import computed from 'ember-computed';
 import run from 'ember-runloop';
 import getOwner from 'ember-owner/get';
@@ -12,9 +13,10 @@ import mapPoint from '../../factories/map-point';
 import layout from '../../templates/components/g-map';
 import ENV from '../../configuration';
 
-const GMAP_DEFAULTS = {
+const GOOGLE_MAP_DEFAULTS = {
   lat: 30.2672,
-  lng: 97.7431
+  lng: 97.7431,
+  zoom: 4
 };
 
 const MAP_EVENTS = ENV.googleMap.events;
@@ -45,7 +47,7 @@ function setupResizeListener() {
 export default Component.extend(mapPoint({
   bound: MAP_BOUND_OPTIONS,
   passive: MAP_STATIC_OPTIONS,
-  defaults: GMAP_DEFAULTS,
+  defaults: GOOGLE_MAP_DEFAULTS,
   component: {
     layout,
 
@@ -84,9 +86,11 @@ export default Component.extend(mapPoint({
       * Render Google Map to canvas element
       */
       const canvas = this.element.querySelector('[data-g-map="canvas"]');
+      const mapConfig = assign({}, GOOGLE_MAP_DEFAULTS);
+      assign(mapConfig, options);
 
       // Instantiate Google Map
-      const map = set(this, 'map', googleMap(canvas, options));
+      const map = set(this, 'map', googleMap(canvas, mapConfig));
 
      /*
       * Bind any events to google map
