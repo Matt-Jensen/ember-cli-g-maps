@@ -31,6 +31,10 @@ export default function mapPointComponent(settings) {
   assert('component configuration requires `updateGoogleMapInstance` method', Boolean(component.updateGoogleMapInstance));
   assert('component configuration requires `getGoogleMapInstanceValue` method', Boolean(component.getGoogleMapInstanceValue));
 
+  if (!settings.center) {
+    settings.center = 'center';
+  }
+
   const configuration = mapOptions(settings.bound, settings.passive);
   const componentConfig = assign(component, configuration);
 
@@ -46,7 +50,7 @@ export default function mapPointComponent(settings) {
      * LatLngLiteral combination of lat lng
      * NOTE this is designed to be overwritten, by user, if desired
      */
-    center: computed('lat', 'lng', 'options.{lat,lng,center}', function() {
+    [settings.center]: computed('lat', 'lng', `options.{lat,lng,${settings.center}}`, function() {
       return getProperties(this, 'lat', 'lng');
     }),
 
