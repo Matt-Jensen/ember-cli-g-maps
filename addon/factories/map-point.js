@@ -3,6 +3,7 @@ import {assert} from 'ember-metal/utils';
 import {default as get, getProperties} from 'ember-metal/get';
 import {assign} from 'ember-platform';
 import {isPresent} from 'ember-utils';
+import {bind} from 'ember-runloop';
 import on from 'ember-evented/on';
 
 import mapOptions from './map-options';
@@ -78,13 +79,11 @@ export default function mapPointComponent(settings) {
     }),
 
     _mapPointDidInsertElement: on('didInsertElement', function() {
-      this._super(...arguments);
-
       /*
        * Expect Google Map instance object is lazily instantiated
        */
       const scope = this.googleMapsInstanceScope;
-      assert(`${scope} is a reserved namespace`, isPresent(get(this, scope)) === false);
+      assert(`"${scope}" is a reserved namespace`, isPresent(get(this, scope)) === false);
 
       /*
        * Add any passive settings to options
@@ -96,33 +95,32 @@ export default function mapPointComponent(settings) {
       /*
        * Set center in order of strategy priority
        */
-      options[this._mapPointCenter] = getCenter(options, get(this, 'center'), this._mapPointDefaults, this._mapPointCenter);
+      const center = this._mapPointCenter;
+      options[center] = getCenter(options, get(this, center), this._mapPointDefaults, center);
 
       /*
        * Insert google map instance with options
        */
       return this._loadGoogleMaps()
-      .then(() => {
-        this.insertGoogleMapInstance(options);
-        this.bindGoogleMapsInstanceEvents();
-      });
+      .then(bind(this, this.insertGoogleMapInstance, options))
+      .then(bind(this, this.bindGoogleMapsInstanceEvents));
     }),
 
     _mapPointDidUpdateAttrs: on('didUpdateAttrs', function() {
-      this._super(...arguments);
+      const mapObjInstance = get(this, this.googleMapsInstanceScope);
 
       /*
-       * Expect Google Map instance object to of been
-       * set during the `insertGoogleMapInstance` hook
+       * Do not handle updates until Google Maps instance
+       * has been asyncronously set via: `insertGoogleMapInstance`
        */
-      const mapObjInstance = get(this, this.googleMapsInstanceScope);
-      assert(`Map Point requires a Google Map instance object at: ${this.googleMapsInstanceScope}`, mapObjInstance);
+      if (!mapObjInstance) { return; }
 
       /*
        * Set center in order of strategy priority
        */
       const options = assign({}, get(this, 'options'));
-      options[this._mapPointCenter] = getCenter(options, get(this, 'center'), this._mapPointDefaults, this._mapPointCenter);
+      const center = this._mapPointCenter;
+      options[center] = getCenter(options, get(this, center), this._mapPointDefaults, center);
 
       /*
        * Check for changes to bound options and apply to instance
