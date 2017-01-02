@@ -62,6 +62,13 @@ export default function mapPointComponent(settings) {
     _mapPointDefaults: settings.defaults,
 
     /**
+     * @private
+     * @type {String}
+     * Location of the Google Maps instance center point
+     */
+    _mapPointCenter: settings.center,
+
+    /**
      * @type {Object}
      * LatLngLiteral combination of lat lng
      * NOTE this is designed to be overwritten, by user, if desired
@@ -89,7 +96,7 @@ export default function mapPointComponent(settings) {
       /*
        * Set center in order of strategy priority
        */
-      options.center = getCenter(options, get(this, 'center'), this._mapPointDefaults);
+      options[this._mapPointCenter] = getCenter(options, get(this, 'center'), this._mapPointDefaults, this._mapPointCenter);
 
       /*
        * Insert google map instance with options
@@ -115,7 +122,7 @@ export default function mapPointComponent(settings) {
        * Set center in order of strategy priority
        */
       const options = assign({}, get(this, 'options'));
-      options.center = getCenter(options, get(this, 'center'), this._mapPointDefaults);
+      options[this._mapPointCenter] = getCenter(options, get(this, 'center'), this._mapPointDefaults, this._mapPointCenter);
 
       /*
        * Check for changes to bound options and apply to instance
@@ -143,8 +150,8 @@ export default function mapPointComponent(settings) {
  * - top level: lat,lng
  * - fallback
  */
-export function getCenter(options, centerProp, fallback = {}) {
-  const optionsCenter = options.center || {};
+export function getCenter(options, centerProp, fallback = {}, point = 'center') {
+  const optionsCenter = options[point] || {};
 
   // options.center
   if (isPresent(optionsCenter.lat) && isPresent(optionsCenter.lng)) {
