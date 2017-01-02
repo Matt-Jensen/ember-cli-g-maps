@@ -9,33 +9,13 @@ module('Unit | Factory | map point');
 test('it requires correct configuration', function(assert) {
   assert.throws(() => mapPoint({}), 'requires component configuration');
   assert.throws(() => mapPoint({component: {}}), 'requires bound options');
-  assert.throws(() => mapPoint({bound: [], component: {}}), 'requires insertGoogleMapInstance');
-  assert.throws(
-    () => mapPoint({
+  assert.throws(() => mapPoint({component: {}, bound: []}), 'requires an googleMapsInstanceScope');
+  assert.throws(() => mapPoint({bound: [], component: {}, googleMapsInstanceScope: 'scope'}), 'requires insertGoogleMapInstance');
+  assert.ok(mapPoint({
+      googleMapsInstanceScope: 'scope',
       bound: [],
       component: {
         insertGoogleMapInstance() {}
-      }
-    }),
-    'requires component updateGoogleMapInstance'
-  );
-  assert.throws(
-    () => mapPoint({
-      bound: [],
-      component: {
-        insertGoogleMapInstance() {},
-        updateGoogleMapInstance() {}
-      }
-    }),
-    'requires component getGoogleMapInstanceValue'
-  );
-
-  assert.ok(mapPoint({
-      bound: [],
-      component: {
-        insertGoogleMapInstance() {},
-        updateGoogleMapInstance() {},
-        getGoogleMapInstanceValue() {}
       }
     }),
     'accepts valid configuration'
@@ -45,10 +25,9 @@ test('it requires correct configuration', function(assert) {
 test('it invokes `insertGoogleMapInstance` with configured options', function(assert) {
   const expected = {lat: 1, lng: 1};
   const instance = mapPoint({
+    googleMapsInstanceScope: 'scope',
     bound: ['center', 'random'],
     component: {
-      updateGoogleMapInstance() {},
-      getGoogleMapInstanceValue() {},
       insertGoogleMapInstance({center, random}) {
         assert.ok(random, 'received configured random option');
         assert.deepEqual(center, expected, 'received configured center option');
@@ -84,17 +63,22 @@ test('it invokes `updateGoogleMapInstance` with updated properties', function(as
   };
 
   const instance = mapPoint({
+    googleMapsInstanceScope: 'scope',
     bound: ['updatedValue', 'updatedObj', 'notUpdated', 'notDefined'],
     component: {
-      updateGoogleMapInstance(prop, value) {
-        assert.equal(value, newState[prop], `received update of ${prop}`);
-      },
-      getGoogleMapInstanceValue(prop) {
-        return oldState[prop];
-      },
       insertGoogleMapInstance() {}
     }
   });
+
+  instance.scope = {
+    set(key, value) {
+      assert.equal(value, newState[key], `received update of ${key}`);
+    },
+
+    get(key) {
+      return oldState[key];
+    }
+  };
 
   instance._super = () => {};
   assign(instance, newState);

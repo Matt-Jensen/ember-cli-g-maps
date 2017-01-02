@@ -22,14 +22,14 @@ const {isArray} = Array;
  * @param {Object} settings
  * @return {Object}
  */
+ // TODO dont require: updateGoogleMapInstance or getGoogleMapInstanceValue
 export default function mapPointComponent(settings) {
   const {component} = settings;
 
-  assert('component configuration is required', component);
-  assert('bound options are required', isArray(settings.bound));
-  assert('component configuration requires `insertGoogleMapInstance` method', Boolean(component.insertGoogleMapInstance));
-  assert('component configuration requires `updateGoogleMapInstance` method', Boolean(component.updateGoogleMapInstance));
-  assert('component configuration requires `getGoogleMapInstanceValue` method', Boolean(component.getGoogleMapInstanceValue));
+  assert('Map Point requires `component` Object in settings', component);
+  assert('Map Point requires `bound` Array in settings', isArray(settings.bound));
+  assert('Map Point requires `googleMapsInstanceScope` String in settings', typeof settings.googleMapsInstanceScope === 'string');
+  assert('Map Point requires `component.insertGoogleMapInstance` method in settings', Boolean(component.insertGoogleMapInstance));
 
   if (!settings.center) {
     settings.center = 'center';
@@ -40,6 +40,13 @@ export default function mapPointComponent(settings) {
   assign(componentConfig, mapEvents(settings));
 
   return assign(componentConfig, {
+    /**
+     * @public
+     * @type {String}
+     * Location of Google Maps instance object
+     */
+    googleMapsInstanceScope: settings.googleMapsInstanceScope,
+
     /**
      * @private
      * Allow test stubbing
@@ -55,8 +62,15 @@ export default function mapPointComponent(settings) {
       return getProperties(this, 'lat', 'lng');
     }),
 
+    // TODO on('didInsertElement')
     didInsertElement() {
       this._super(...arguments);
+
+      /*
+       * Expect Google Map instance object is lazily instantiated
+       */
+      const scope = this.googleMapsInstanceScope;
+      assert(`${scope} is a reserved namespace`, isPresent(get(this, scope)) === false);
 
       /*
        * Add any passive settings to options
@@ -80,8 +94,16 @@ export default function mapPointComponent(settings) {
       });
     },
 
+    // TODO on('didUpdateAttrs')
     didUpdateAttrs() {
       this._super(...arguments);
+
+      /*
+       * Expect Google Map instance object to of been
+       * set during the `insertGoogleMapInstance` hook
+       */
+      const mapObjInstance = get(this, this.googleMapsInstanceScope);
+      assert(`Map Point requires a Google Map instance object at: ${this.googleMapsInstanceScope}`, mapObjInstance);
 
       /*
        * Set center in order of strategy priority
@@ -96,10 +118,10 @@ export default function mapPointComponent(settings) {
       .filter((option) => options[option] !== undefined)
       .forEach((option) => {
         const value = options[option];
-        const current = this.getGoogleMapInstanceValue(option);
+        const current = mapObjInstance.get(option);
 
         if (isDiff(value, current)) {
-          this.updateGoogleMapInstance(option, value);
+          mapObjInstance.set(option, value);
         }
       });
     }
