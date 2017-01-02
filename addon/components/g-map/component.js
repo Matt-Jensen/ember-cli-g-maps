@@ -4,13 +4,12 @@ import set from 'ember-metal/set';
 import get from 'ember-metal/get';
 import {assert} from 'ember-metal/utils';
 import {assign} from 'ember-platform';
-import computed from 'ember-computed';
 import run from 'ember-runloop';
-import getOwner from 'ember-owner/get';
 
 import googleMap from './factory';
 import mapPoint from '../../factories/map-point';
 import layout from '../../templates/components/g-map';
+import isTest from '../../mixins/is-test';
 import ENV from '../../configuration';
 
 const GOOGLE_MAP_DEFAULTS = {
@@ -30,7 +29,7 @@ const AUGMENTED_MAP_EVENTS = {
   zoom_changed: 'zoom'
 };
 
-const googleMapsInstanceScope = 'map';
+const googleMapsInstanceScope = ENV.googleMap.scope;
 
 const resizeSubscribers = [];
 let didSetupListener = false;
@@ -46,7 +45,7 @@ function setupResizeListener() {
  * Generate an instance of a map point component
  * as the g-map component class
  */
-export default Component.extend(mapPoint({
+export default Component.extend(isTest, mapPoint({
   bound: MAP_BOUND_OPTIONS,
   passive: MAP_STATIC_OPTIONS,
   defaults: GOOGLE_MAP_DEFAULTS,
@@ -60,7 +59,7 @@ export default Component.extend(mapPoint({
      * @type {Ember.ObjectProxy}
      * Proxy wrapper for the Google Map instance
      */
-    map: null,
+    [googleMapsInstanceScope]: null,
 
     /**
      * @private
@@ -68,14 +67,6 @@ export default Component.extend(mapPoint({
      * Width of maps' parent element in pixels
      */
     _containerWidth: 0,
-
-    /**
-     * @private
-     * @type {Boolean}
-     */
-    _isTest: computed(function() {
-      return (getOwner(this).resolveRegistration('config:environment').environment === 'test');
-    }),
 
     /**
      * @param {Object} options   Current Map options

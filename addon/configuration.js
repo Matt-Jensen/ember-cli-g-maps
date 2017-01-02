@@ -1,5 +1,7 @@
 export default {
   googleMap: {
+    scope: 'map',
+
     events: [
       'bounds_changed',
       'center_changed',
