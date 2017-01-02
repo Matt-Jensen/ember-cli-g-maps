@@ -1,8 +1,7 @@
 import $ from 'jquery';
 import Component from 'ember-component';
-import set from 'ember-metal/set';
 import get from 'ember-metal/get';
-import {assert} from 'ember-metal/utils';
+import set from 'ember-metal/set';
 import {assign} from 'ember-platform';
 import run from 'ember-runloop';
 
@@ -106,26 +105,8 @@ export default Component.extend(isTest, mapPoint({
       }
     },
 
-    getGoogleMapInstanceValue(option) {
-      return get(this, `${googleMapsInstanceScope}.${option}`);
-    },
-
-    /*
-     * Invoked during `didUpdateAttrs` with any updated option
-     */
-    updateGoogleMapInstance(option, value) {
-      return set(this, `${googleMapsInstanceScope}.${option}`, value);
-    },
-
-    didInsertElement() {
-      this._super(...arguments);
-      assert(`${googleMapsInstanceScope} is a reserved namespace`, get(this, googleMapsInstanceScope) === null);
-    },
-
     willDestroyElement() {
       this._super(...arguments);
-
-      google.maps.event.clearInstanceListeners(get(this, `${googleMapsInstanceScope}.content`));
 
       for (let i = 0; i < resizeSubscribers.length; i++) {
         if (resizeSubscribers[i] === this) {
