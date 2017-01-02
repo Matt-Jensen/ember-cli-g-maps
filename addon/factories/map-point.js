@@ -3,6 +3,7 @@ import {assert} from 'ember-metal/utils';
 import {default as get, getProperties} from 'ember-metal/get';
 import {assign} from 'ember-platform';
 import {isPresent} from 'ember-utils';
+import on from 'ember-evented/on';
 
 import mapOptions from './map-options';
 import mapEvents from './map-events';
@@ -62,8 +63,7 @@ export default function mapPointComponent(settings) {
       return getProperties(this, 'lat', 'lng');
     }),
 
-    // TODO on('didInsertElement')
-    didInsertElement() {
+    _mapPointDidInsertElement: on('didInsertElement', function() {
       this._super(...arguments);
 
       /*
@@ -92,10 +92,9 @@ export default function mapPointComponent(settings) {
         this.insertGoogleMapInstance(options);
         this.bindGoogleMapsInstanceEvents();
       });
-    },
+    }),
 
-    // TODO on('didUpdateAttrs')
-    didUpdateAttrs() {
+    _mapPointDidUpdateAttrs: on('didUpdateAttrs', function() {
       this._super(...arguments);
 
       /*
@@ -124,7 +123,7 @@ export default function mapPointComponent(settings) {
           mapObjInstance.set(option, value);
         }
       });
-    }
+    })
   });
 }
 

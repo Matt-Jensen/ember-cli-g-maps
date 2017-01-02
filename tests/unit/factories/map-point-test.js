@@ -44,7 +44,7 @@ test('it invokes `insertGoogleMapInstance` with configured options', function(as
   instance.lng = expected.lng;
   instance.random = true;
 
-  return instance.didInsertElement();
+  return instance._mapPointDidInsertElement();
 });
 
 test('it invokes `updateGoogleMapInstance` with updated properties', function(assert) {
@@ -83,7 +83,7 @@ test('it invokes `updateGoogleMapInstance` with updated properties', function(as
   instance._super = () => {};
   assign(instance, newState);
 
-  instance.didUpdateAttrs();
+  instance._mapPointDidUpdateAttrs();
 });
 
 module('Unit | Factory | map point | getCenter');
