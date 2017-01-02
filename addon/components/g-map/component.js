@@ -30,6 +30,8 @@ const AUGMENTED_MAP_EVENTS = {
   zoom_changed: 'zoom'
 };
 
+const googleMapsInstanceScope = 'map';
+
 const resizeSubscribers = [];
 let didSetupListener = false;
 
@@ -48,6 +50,9 @@ export default Component.extend(mapPoint({
   bound: MAP_BOUND_OPTIONS,
   passive: MAP_STATIC_OPTIONS,
   defaults: GOOGLE_MAP_DEFAULTS,
+  events: MAP_EVENTS,
+  augmentedEvents: AUGMENTED_MAP_EVENTS,
+  googleMapsInstanceScope,
   component: {
     layout,
 
@@ -90,62 +95,46 @@ export default Component.extend(mapPoint({
       assign(mapConfig, options);
 
       // Instantiate Google Map
-      const map = set(this, 'map', googleMap(canvas, mapConfig));
-
-     /*
-      * Bind any events to google map
-      */
-      MAP_EVENTS.forEach((event) => {
-        const action = this.attrs[event];
-        if (!action) { return; }
-
-        const closureAction = (typeof action === 'function' ? action : run.bind(this, 'sendAction', event));
-        const eventHandler = (...args) => {
-          // Append optional argument
-          args.push(AUGMENTED_MAP_EVENTS[event] ? get(this, `map.${AUGMENTED_MAP_EVENTS[event]}`) : undefined);
-
-          // Invoke with any arguments
-          return closureAction(...args);
-        };
-
-        if (event === 'loaded') {
-          // Loaded is faked /w first idle event
-          return google.maps.event.addListenerOnce(map.content, 'idle', eventHandler);
-        }
-
-        if (action) {
-          map.content.addListener(event, eventHandler);
-        }
-      });
+      const map = set(this, googleMapsInstanceScope, googleMap(canvas, mapConfig));
 
       /*
+       * Mock `loaded` event w/ first idle
+       */
+      const {loaded} = this.attrs;
+
+      if (loaded) {
+        const loadedAction = (typeof loaded  === 'function' ? loaded : run.bind(this, 'sendAction', 'loaded'));
+        google.maps.event.addListenerOnce(map.content, 'idle', loadedAction);
+      }
+
+     /*
       * Some test helpers require access to the map instance
       */
-      if (this.get('_isTest')) {
+      if (get(this, '_isTest')) {
         canvas.__GOOGLE_MAP__ = map.content;
       }
     },
 
     getGoogleMapInstanceValue(option) {
-      return get(this, `map.${option}`);
+      return get(this, `${googleMapsInstanceScope}.${option}`);
     },
 
     /*
      * Invoked during `didUpdateAttrs` with any updated option
      */
     updateGoogleMapInstance(option, value) {
-      return set(this, `map.${option}`, value);
+      return set(this, `${googleMapsInstanceScope}.${option}`, value);
     },
 
     didInsertElement() {
       this._super(...arguments);
-      assert('map is a reserved namespace', get(this, 'map') === null);
+      assert(`${googleMapsInstanceScope} is a reserved namespace`, get(this, googleMapsInstanceScope) === null);
     },
 
     willDestroyElement() {
       this._super(...arguments);
 
-      google.maps.event.clearInstanceListeners(get(this, 'map.content'));
+      google.maps.event.clearInstanceListeners(get(this, `${googleMapsInstanceScope}.content`));
 
       for (let i = 0; i < resizeSubscribers.length; i++) {
         if (resizeSubscribers[i] === this) {
@@ -170,7 +159,7 @@ export default Component.extend(mapPoint({
      * Triggers a resize of the map
      */
     _resizeMap() {
-      google.maps.event.trigger(get(this, 'map.content'), 'resize');
+      google.maps.event.trigger(get(this, `${googleMapsInstanceScope}.content`), 'resize');
     }
   }
 }));

@@ -10,7 +10,6 @@ export default {
       'dragstart',
       'heading_changed',
       'idle',
-      'loaded',
       'maptypeid_changed',
       'mousemove',
       'mouseout',
