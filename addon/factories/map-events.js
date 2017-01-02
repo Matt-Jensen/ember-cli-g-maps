@@ -1,5 +1,6 @@
 import get from 'ember-metal/get';
 import run from 'ember-runloop';
+import on from 'ember-evented/on';
 import {assert} from 'ember-metal/utils';
 
 const {isArray} = Array;
@@ -12,27 +13,28 @@ const {isArray} = Array;
  * Resolve a Component configuration for enabling the binding
  * of user specified actions to Google Map instance event listeners
  */
-export default function mapEvents(config = {}) {
-  const events = config.events || [];
-  const augmentedEvents = config.augmentedEvents || {};
-  const googleMapsInstanceScope = config.googleMapsInstanceScope || 'map';
+export default function mapEvents(settings = {}) {
+  const events = settings.events || [];
+  const augmentedEvents = settings.augmentedEvents || {};
+  const {googleMapsInstanceScope} = settings;
 
-  assert('Map Events expects `events` to be an Array', isArray(events));
-  assert('Map Events expects `augmentedEvents` to be an Object', typeof augmentedEvents === 'object');
-  assert('Map Events expects `googleMapsInstanceScope` to be a String', typeof googleMapsInstanceScope === 'string');
+  assert('Map Events expects `events` Array in settings', isArray(events));
+  assert('Map Events expects `augmentedEvents` Object in settings', typeof augmentedEvents === 'object');
+  assert('Map Events expects `googleMapsInstanceScope` String in settings', typeof googleMapsInstanceScope === 'string');
 
   return {
+    /**
+     * @public
+     * @type {String}
+     * Location of Google Maps instance object
+     */
+    googleMapsInstanceScope,
+
     /**
      * @type {Array}
      * List of supported Google Map instance events
      */
     _googleMapInstanceEvents: events,
-
-   /**
-    * @type {String}
-    * Location of Google Map instance within component
-    */
-    _googleMapInstanceScope: googleMapsInstanceScope,
 
    /**
     * @type {Object}
@@ -47,23 +49,31 @@ export default function mapEvents(config = {}) {
     * appending optional stateful data to, whitelisted, augmented
     * events.
     */
-    bindGoogleMapsInstanceEvents
+    bindGoogleMapsInstanceEvents,
+
+    /**
+     * Remove all events bound to Google Maps instance during
+     * `bindGoogleMapsInstanceEvents` hook
+     */
+    _mapEventsWillDestroyElement: on('willDestroyElement', function() {
+      google.maps.event.clearInstanceListeners(get(this, `${this.googleMapsInstanceScope}.content`));
+    })
   };
 }
 
 export function bindGoogleMapsInstanceEvents() {
-  const googleMapsInstance = get(this, this._googleMapInstanceScope);
+  const mapObjInstance = get(this, this.googleMapsInstanceScope);
 
   assert(
-    `Map Events requires a Google Map instance at ${this._googleMapInstanceScope}.content`,
-    typeof googleMapsInstance === 'object' && googleMapsInstance.content
+    `Map Events requires a Google Map instance at ${this.googleMapsInstanceScope}.content`,
+    typeof mapObjInstance === 'object' && mapObjInstance.content
   );
 
   this._googleMapInstanceEvents.forEach((event) => {
     const action = this.attrs[event];
 
     if (action) {
-      googleMapsInstance.content.addListener(event, (...args) => {
+      mapObjInstance.content.addListener(event, (...args) => {
         /*
         * Accept both closure and declarative actions
         */
@@ -71,7 +81,7 @@ export function bindGoogleMapsInstanceEvents() {
         const augmentedEventProperty = this._googleMapInstanceAugmentedEvents[event];
 
         if (augmentedEventProperty) {
-          args.push(get(this, `${this._googleMapInstanceScope}.${augmentedEventProperty}`)); // Event augmentation
+          args.push(get(this, `${this.googleMapsInstanceScope}.${augmentedEventProperty}`)); // Event augmentation
         }
 
         // Invoke with all arguments
