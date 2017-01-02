@@ -56,6 +56,9 @@ test('it invokes `insertGoogleMapInstance` with configured options', function(as
     }
   });
 
+  // Stub event binding
+  instance.bindGoogleMapsInstanceEvents = () => {};
+
   instance._super = () => {};
   instance._loadGoogleMaps = () => RSVP.Promise.resolve();
   instance.lat = expected.lat;

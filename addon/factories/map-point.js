@@ -2,10 +2,10 @@ import computed from 'ember-computed';
 import {assert} from 'ember-metal/utils';
 import {default as get, getProperties} from 'ember-metal/get';
 import {assign} from 'ember-platform';
-import {bind} from 'ember-runloop';
 import {isPresent} from 'ember-utils';
 
 import mapOptions from './map-options';
+import mapEvents from './map-events';
 import loadGoogleMaps from '../utils/load-google-maps';
 
 const {isArray} = Array;
@@ -35,8 +35,9 @@ export default function mapPointComponent(settings) {
     settings.center = 'center';
   }
 
-  const configuration = mapOptions(settings.bound, settings.passive);
-  const componentConfig = assign(component, configuration);
+  const componentConfig = assign({}, component);
+  assign(componentConfig, mapOptions(settings.bound, settings.passive));
+  assign(componentConfig, mapEvents(settings));
 
   return assign(componentConfig, {
     /**
@@ -73,7 +74,10 @@ export default function mapPointComponent(settings) {
        * Insert google map instance with options
        */
       return this._loadGoogleMaps()
-      .then(bind(this, this.insertGoogleMapInstance, options));
+      .then(() => {
+        this.insertGoogleMapInstance(options);
+        this.bindGoogleMapsInstanceEvents();
+      });
     },
 
     didUpdateAttrs() {
