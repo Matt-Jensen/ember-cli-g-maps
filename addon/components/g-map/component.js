@@ -13,7 +13,7 @@ import ENV from '../../configuration';
 
 const GOOGLE_MAP_DEFAULTS = {
   lat: 30.2672,
-  lng: 97.7431,
+  lng: -97.7431,
   zoom: 4
 };
 

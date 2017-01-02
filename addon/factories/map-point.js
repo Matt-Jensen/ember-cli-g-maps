@@ -55,6 +55,13 @@ export default function mapPointComponent(settings) {
     _loadGoogleMaps: loadGoogleMaps,
 
     /**
+     * @private
+     * @type {Object}
+     * Used for Map Point's fallback behavior
+     */
+    _mapPointDefaults: settings.defaults,
+
+    /**
      * @type {Object}
      * LatLngLiteral combination of lat lng
      * NOTE this is designed to be overwritten, by user, if desired
@@ -82,7 +89,7 @@ export default function mapPointComponent(settings) {
       /*
        * Set center in order of strategy priority
        */
-      options.center = getCenter(options, get(this, 'center'), settings.defaults);
+      options.center = getCenter(options, get(this, 'center'), this._mapPointDefaults);
 
       /*
        * Insert google map instance with options
@@ -108,7 +115,7 @@ export default function mapPointComponent(settings) {
        * Set center in order of strategy priority
        */
       const options = assign({}, get(this, 'options'));
-      options.center = getCenter(options, get(this, 'center'), settings.defaults);
+      options.center = getCenter(options, get(this, 'center'), this._mapPointDefaults);
 
       /*
        * Check for changes to bound options and apply to instance
