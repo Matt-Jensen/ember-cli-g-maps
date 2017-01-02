@@ -2,18 +2,19 @@
 
 <div class="grid-block -lmb">
   <ul class="grid-content small-12 medium-5 -nmb">
-    <li><a {{action "scrollToId" 'click'}}>click</a></li>
     <li><a {{action "scrollToId" 'bounds_changed'}}>bounds_changed</a></li>
     <li><a {{action "scrollToId" 'center_changed'}}>center_changed</a></li>
+    <li><a {{action "scrollToId" 'click'}}>click</a></li>
     <li><a {{action "scrollToId" 'dblclick'}}>dblclick</a></li>
     <li><a {{action "scrollToId" 'drag'}}>drag</a></li>
     <li><a {{action "scrollToId" 'dragend'}}>dragend</a></li>
     <li><a {{action "scrollToId" 'dragstart'}}>dragstart</a></li>
     <li><a {{action "scrollToId" 'heading_changed'}}>heading_changed</a></li>
     <li><a {{action "scrollToId" 'idle'}}>idle</a></li>
-    <li><a {{action "scrollToId" 'maptypeid_changed'}}>maptypeid_changed</a></li>
+    <li><a {{action "scrollToId" 'loaded'}}>loaded</a></li>
   </ul>
   <ul class="grid-content small-12 medium-5 -nmb">
+    <li><a {{action "scrollToId" 'maptypeid_changed'}}>maptypeid_changed</a></li>
     <li><a {{action "scrollToId" 'mousemove'}}>mousemove</a></li>
     <li><a {{action "scrollToId" 'mouseout'}}>mouseout</a></li>
     <li><a {{action "scrollToId" 'mouseover'}}>mouseover</a></li>
@@ -23,7 +24,6 @@
     <li><a {{action "scrollToId" 'tilesloaded'}}>tilesloaded</a></li>
     <li><a {{action "scrollToId" 'tilt_changed'}}>tilt_changed</a></li>
     <li><a {{action "scrollToId" 'zoom_changed'}}>zoom_changed</a></li>
-    <li><a {{action "scrollToId" 'loaded'}}>loaded</a></li>
   </ul>
 </div>
 
@@ -31,9 +31,9 @@
 
 <div id="g-map-event-states" class="grid-block -pb">
   <div class="grid-content small-12 medium-3 -smb">
-    <div class="gmaps-fade-text {{if isclick '-fade'}}" data-test-updated={{if wasClick 'click'}}>click</div>
     <div class="gmaps-fade-text {{if isbounds_changed '-fade'}}" data-test-updated={{if wasBounds_changed 'bounds_changed'}}>bounds_changed</div>
     <div class="gmaps-fade-text {{if iscenter_changed '-fade'}}" data-test-updated={{if wasCenter_changed 'center_changed'}}>center_changed</div>
+    <div class="gmaps-fade-text {{if isclick '-fade'}}" data-test-updated={{if wasClick 'click'}}>click</div>
     <div class="gmaps-fade-text {{if isdblclick '-fade'}}" data-test-updated={{if wasDblclick 'dblclick'}}>dblclick</div>
     <div class="gmaps-fade-text {{if isdrag '-fade'}}" data-test-updated={{if wasDrag 'drag'}}>drag</div>
     <div class="gmaps-fade-text {{if isdragend '-fade'}}" data-test-updated={{if wasDragend 'dragend'}}>dragend</div>
@@ -43,20 +43,20 @@
   <div class="grid-content small-12 medium-3 -smb">
     <div class="gmaps-fade-text {{if isheading_changed '-fade'}}" data-test-updated={{if wasHeading_changed 'heading_changed'}}>heading_changed</div>
     <div class="gmaps-fade-text {{if isidle '-fade'}}" data-test-updated={{if wasIdle 'idle'}}>idle</div>
+    <div class="gmaps-fade-text {{if isloaded '-fade'}}" data-test-updated={{if wasLoaded 'loaded'}}>loaded</div>
     <div class="gmaps-fade-text {{if ismaptypeid_changed '-fade'}}" data-test-updated={{if wasMaptypeid_changed 'maptypeid_changed'}}>maptypeid_changed</div>
     <div class="gmaps-fade-text {{if ismousemove '-fade'}}" data-test-updated={{if wasMousemove 'mousemove'}}>mousemove</div>
     <div class="gmaps-fade-text {{if ismouseout '-fade'}}" data-test-updated={{if wasMouseout 'mouseout'}}>mouseout</div>
     <div class="gmaps-fade-text {{if ismouseover '-fade'}}" data-test-updated={{if wasMouseover 'mouseover'}}>mouseover</div>
-    <div class="gmaps-fade-text {{if isprojection_changed '-fade'}}" data-test-updated={{if wasProjection_changed 'projection_changed'}}>projection_changed</div>
   </div>
 
   <div class="grid-content small-12 medium-3 -smb">
+    <div class="gmaps-fade-text {{if isprojection_changed '-fade'}}" data-test-updated={{if wasProjection_changed 'projection_changed'}}>projection_changed</div>
     <div class="gmaps-fade-text {{if isresize '-fade'}}" data-test-updated={{if wasResize 'resize'}}>resize</div>
     <div class="gmaps-fade-text {{if isrightclick '-fade'}}" data-test-updated={{if wasRightclick 'rightclick'}}>rightclick</div>
     <div class="gmaps-fade-text {{if istilesloaded '-fade'}}" data-test-updated={{if wasTilesloaded 'tilesloaded'}}>tilesloaded</div>
     <div class="gmaps-fade-text {{if istilt_changed '-fade'}}" data-test-updated={{if wasTilt_changed 'tilt_changed'}}>tilt_changed</div>
     <div class="gmaps-fade-text {{if iszoom_changed '-fade'}}" data-test-updated={{if wasZoom_changed 'zoom_changed'}}>zoom_changed</div>
-    <div class="gmaps-fade-text {{if isloaded '-fade'}}" data-test-updated={{if wasLoaded 'loaded'}}>loaded</div>
   </div>
 </div>
 
@@ -92,52 +92,9 @@
 
 <hr>
 
-<p id="click" class="medium-7">
-  <h3>click</h3>
-
-  <div class="-mb">
-    <small class="-db">Response</small>
-    <div class="gmaps-inline-code -nml">gMapEvent</div>
-  </div>
-
-  <div class="gmaps-snippet">
-    <header>Example</header>
-    <code>
-      <div class="gist">
-        <div class="gist-file">
-          <div class="gist-data">
-            <div class="js-gist-file-update-container js-task-list-container file-box">
-              <div id="file-templa-hbs" class="file">
-                <div class="blob-wrapper data type-handlebars">
-                  <table class="highlight tab-size js-file-line-container" data-tab-size="8">
-                    <tbody><tr>
-                      <td id="file-templa-hbs-L1" class="blob-num js-line-number" data-line-number="1"></td>
-                      <td id="file-templa-hbs-LC1" class="blob-code blob-code-inner js-file-line"><span class="pl-c1">\{{</span><span class="pl-v">g-maps</span> click="myClick"<span class="pl-c1">}}</span></td>
-                    </tr>
-                  </tbody></table>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="gist-meta">
-            made with ❤ by <a href="https://github.com">GitHub</a>
-          </div>
-        </div>
-      </div>
-    </code>
-  </div>
-</p>
-
-<hr>
-
 <p id="bounds_changed" class="medium-7">
   <h3>bounds_changed</h3>
 
-  <div class="-mb">
-    <small class="-db">Response</small>
-    <div class="gmaps-inline-code -nml">gMapEvent</div>
-  </div>
-
   <div class="gmaps-snippet">
     <header>Example</header>
     <code>
@@ -148,11 +105,13 @@
               <div id="file-templa-hbs" class="file">
                 <div class="blob-wrapper data type-handlebars">
                   <table class="highlight tab-size js-file-line-container" data-tab-size="8">
-                    <tbody><tr>
-                      <td id="file-templa-hbs-L1" class="blob-num js-line-number" data-line-number="1"></td>
-                      <td id="file-templa-hbs-LC1" class="blob-code blob-code-inner js-file-line"><span class="pl-c1">\{{</span><span class="pl-v">g-maps</span> bounds_changed="myBoundsChanged"<span class="pl-c1">}}</span></td>
-                    </tr>
-                  </tbody></table>
+                    <tbody>
+                      <tr>
+                        <td id="file-stuff-hbs-L1" class="blob-num js-line-number" data-line-number="1"></td>
+                        <td id="file-stuff-hbs-LC1" class="blob-code blob-code-inner js-file-line"><span class="pl-c1">\{{</span><span class="pl-v">g-map</span> <span class="pl-e"><span class="pl-v">bounds_changed</span>=</span>(<span class="pl-e"><span class="pl-v">action</span> <span class="pl-v">"myBoundsChanged"</span></span>)<span class="pl-c1">}}</span></td>
+                      </tr>
+                    </tbody>
+                  </table>
                 </div>
               </div>
             </div>
@@ -172,8 +131,8 @@
   <h3>center_changed</h3>
 
   <div class="-mb">
-    <small class="-db">Response</small>
-    <div class="gmaps-inline-code -nml">gMapEvent</div>
+    <small class="-db">Arugments</small>
+    <div class="gmaps-inline-code -nml">{lat, lng}</div>
   </div>
 
   <div class="gmaps-snippet">
@@ -186,11 +145,53 @@
               <div id="file-templa-hbs" class="file">
                 <div class="blob-wrapper data type-handlebars">
                   <table class="highlight tab-size js-file-line-container" data-tab-size="8">
-                    <tbody><tr>
-                      <td id="file-templa-hbs-L1" class="blob-num js-line-number" data-line-number="1"></td>
-                      <td id="file-templa-hbs-LC1" class="blob-code blob-code-inner js-file-line"><span class="pl-c1">\{{</span><span class="pl-v">g-maps</span> center_changed="myCenterChanged"<span class="pl-c1">}}</span></td>
-                    </tr>
-                  </tbody></table>
+                    <tbody>
+                      <tr>
+                        <td id="file-stuff-hbs-L1" class="blob-num js-line-number" data-line-number="1"></td>
+                        <td id="file-stuff-hbs-LC1" class="blob-code blob-code-inner js-file-line"><span class="pl-c1">\{{</span><span class="pl-v">g-map</span> <span class="pl-e"><span class="pl-v">center_changed</span>=</span>(<span class="pl-e"><span class="pl-v">action</span> <span class="pl-v">"myCenterChanged"</span></span>)<span class="pl-c1">}}</span></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="gist-meta">
+            made with ❤ by <a href="https://github.com">GitHub</a>
+          </div>
+        </div>
+      </div>
+    </code>
+  </div>
+</p>
+
+<hr>
+
+<p id="click" class="medium-7">
+  <h3>click</h3>
+
+  <div class="-mb">
+    <small class="-db">Arugments</small>
+    <div class="gmaps-inline-code -nml">MouseEvent|IconMouseEvent</div>
+  </div>
+
+  <div class="gmaps-snippet">
+    <header>Example</header>
+    <code>
+      <div class="gist">
+        <div class="gist-file">
+          <div class="gist-data">
+            <div class="js-gist-file-update-container js-task-list-container file-box">
+              <div id="file-templa-hbs" class="file">
+                <div class="blob-wrapper data type-handlebars">
+                  <table class="highlight tab-size js-file-line-container" data-tab-size="8">
+                    <tbody>
+                      <tr>
+                        <td id="file-stuff-hbs-L1" class="blob-num js-line-number" data-line-number="1"></td>
+                        <td id="file-stuff-hbs-LC1" class="blob-code blob-code-inner js-file-line"><span class="pl-c1">\{{</span><span class="pl-v">g-map</span> <span class="pl-e"><span class="pl-v">click</span>=</span>(<span class="pl-e"><span class="pl-v">action</span> <span class="pl-v">"myClick"</span></span>)<span class="pl-c1">}}</span></td>
+                      </tr>
+                    </tbody>
+                  </table>
                 </div>
               </div>
             </div>
@@ -210,8 +211,8 @@
   <h3>dblclick</h3>
 
   <div class="-mb">
-    <small class="-db">Response</small>
-    <div class="gmaps-inline-code -nml">gMapEvent</div>
+    <small class="-db">Arugments</small>
+    <div class="gmaps-inline-code -nml">MouseEvent</div>
   </div>
 
   <div class="gmaps-snippet">
@@ -224,11 +225,13 @@
               <div id="file-templa-hbs" class="file">
                 <div class="blob-wrapper data type-handlebars">
                   <table class="highlight tab-size js-file-line-container" data-tab-size="8">
-                    <tbody><tr>
-                      <td id="file-templa-hbs-L1" class="blob-num js-line-number" data-line-number="1"></td>
-                      <td id="file-templa-hbs-LC1" class="blob-code blob-code-inner js-file-line"><span class="pl-c1">\{{</span><span class="pl-v">g-maps</span> dblclick="myDblclick"<span class="pl-c1">}}</span></td>
-                    </tr>
-                  </tbody></table>
+                    <tbody>
+                      <tr>
+                        <td id="file-stuff-hbs-L1" class="blob-num js-line-number" data-line-number="1"></td>
+                        <td id="file-stuff-hbs-LC1" class="blob-code blob-code-inner js-file-line"><span class="pl-c1">\{{</span><span class="pl-v">g-map</span> <span class="pl-e"><span class="pl-v">dblclick</span>=</span>(<span class="pl-e"><span class="pl-v">action</span> <span class="pl-v">"myDblclick"</span></span>)<span class="pl-c1">}}</span></td>
+                      </tr>
+                    </tbody>
+                  </table>
                 </div>
               </div>
             </div>
@@ -247,11 +250,6 @@
 <p id="drag" class="medium-7">
   <h3>drag</h3>
 
-  <div class="-mb">
-    <small class="-db">Response</small>
-    <div class="gmaps-inline-code -nml">gMapEvent</div>
-  </div>
-
   <div class="gmaps-snippet">
     <header>Example</header>
     <code>
@@ -262,11 +260,13 @@
               <div id="file-templa-hbs" class="file">
                 <div class="blob-wrapper data type-handlebars">
                   <table class="highlight tab-size js-file-line-container" data-tab-size="8">
-                    <tbody><tr>
-                      <td id="file-templa-hbs-L1" class="blob-num js-line-number" data-line-number="1"></td>
-                      <td id="file-templa-hbs-LC1" class="blob-code blob-code-inner js-file-line"><span class="pl-c1">\{{</span><span class="pl-v">g-maps</span> drag="myDrag"<span class="pl-c1">}}</span></td>
-                    </tr>
-                  </tbody></table>
+                    <tbody>
+                      <tr>
+                        <td id="file-stuff-hbs-L1" class="blob-num js-line-number" data-line-number="1"></td>
+                        <td id="file-stuff-hbs-LC1" class="blob-code blob-code-inner js-file-line"><span class="pl-c1">\{{</span><span class="pl-v">g-map</span> <span class="pl-e"><span class="pl-v">drag</span>=</span>(<span class="pl-e"><span class="pl-v">action</span> <span class="pl-v">"myDrag"</span></span>)<span class="pl-c1">}}</span></td>
+                      </tr>
+                    </tbody>
+                  </table>
                 </div>
               </div>
             </div>
@@ -285,11 +285,6 @@
 <p id="dragend" class="medium-7">
   <h3>dragend</h3>
 
-  <div class="-mb">
-    <small class="-db">Response</small>
-    <div class="gmaps-inline-code -nml">gMapEvent</div>
-  </div>
-
   <div class="gmaps-snippet">
     <header>Example</header>
     <code>
@@ -300,11 +295,13 @@
               <div id="file-templa-hbs" class="file">
                 <div class="blob-wrapper data type-handlebars">
                   <table class="highlight tab-size js-file-line-container" data-tab-size="8">
-                    <tbody><tr>
-                      <td id="file-templa-hbs-L1" class="blob-num js-line-number" data-line-number="1"></td>
-                      <td id="file-templa-hbs-LC1" class="blob-code blob-code-inner js-file-line"><span class="pl-c1">\{{</span><span class="pl-v">g-maps</span> dragend="myDragend"<span class="pl-c1">}}</span></td>
-                    </tr>
-                  </tbody></table>
+                    <tbody>
+                      <tr>
+                        <td id="file-stuff-hbs-L1" class="blob-num js-line-number" data-line-number="1"></td>
+                        <td id="file-stuff-hbs-LC1" class="blob-code blob-code-inner js-file-line"><span class="pl-c1">\{{</span><span class="pl-v">g-map</span> <span class="pl-e"><span class="pl-v">dragend</span>=</span>(<span class="pl-e"><span class="pl-v">action</span> <span class="pl-v">"myDragend"</span></span>)<span class="pl-c1">}}</span></td>
+                      </tr>
+                    </tbody>
+                  </table>
                 </div>
               </div>
             </div>
@@ -323,11 +320,6 @@
 <p id="dragstart" class="medium-7">
   <h3>dragstart</h3>
 
-  <div class="-mb">
-    <small class="-db">Response</small>
-    <div class="gmaps-inline-code -nml">gMapEvent</div>
-  </div>
-
   <div class="gmaps-snippet">
     <header>Example</header>
     <code>
@@ -338,11 +330,13 @@
               <div id="file-templa-hbs" class="file">
                 <div class="blob-wrapper data type-handlebars">
                   <table class="highlight tab-size js-file-line-container" data-tab-size="8">
-                    <tbody><tr>
-                      <td id="file-templa-hbs-L1" class="blob-num js-line-number" data-line-number="1"></td>
-                      <td id="file-templa-hbs-LC1" class="blob-code blob-code-inner js-file-line"><span class="pl-c1">\{{</span><span class="pl-v">g-maps</span> dragstart="myDragstart"<span class="pl-c1">}}</span></td>
-                    </tr>
-                  </tbody></table>
+                    <tbody>
+                      <tr>
+                        <td id="file-stuff-hbs-L1" class="blob-num js-line-number" data-line-number="1"></td>
+                        <td id="file-stuff-hbs-LC1" class="blob-code blob-code-inner js-file-line"><span class="pl-c1">\{{</span><span class="pl-v">g-map</span> <span class="pl-e"><span class="pl-v">dragstart</span>=</span>(<span class="pl-e"><span class="pl-v">action</span> <span class="pl-v">"myDragstart"</span></span>)<span class="pl-c1">}}</span></td>
+                      </tr>
+                    </tbody>
+                  </table>
                 </div>
               </div>
             </div>
@@ -362,8 +356,8 @@
   <h3>heading_changed</h3>
 
   <div class="-mb">
-    <small class="-db">Response</small>
-    <div class="gmaps-inline-code -nml">gMapEvent</div>
+    <small class="-db">Arugments</small>
+    <div class="gmaps-inline-code -nml">heading</div>
   </div>
 
   <div class="gmaps-snippet">
@@ -376,11 +370,13 @@
               <div id="file-templa-hbs" class="file">
                 <div class="blob-wrapper data type-handlebars">
                   <table class="highlight tab-size js-file-line-container" data-tab-size="8">
-                    <tbody><tr>
-                      <td id="file-templa-hbs-L1" class="blob-num js-line-number" data-line-number="1"></td>
-                      <td id="file-templa-hbs-LC1" class="blob-code blob-code-inner js-file-line"><span class="pl-c1">\{{</span><span class="pl-v">g-maps</span> heading_changed="myHeadingChanged"<span class="pl-c1">}}</span></td>
-                    </tr>
-                  </tbody></table>
+                    <tbody>
+                      <tr>
+                        <td id="file-stuff-hbs-L1" class="blob-num js-line-number" data-line-number="1"></td>
+                        <td id="file-stuff-hbs-LC1" class="blob-code blob-code-inner js-file-line"><span class="pl-c1">\{{</span><span class="pl-v">g-map</span> <span class="pl-e"><span class="pl-v">heading_changed</span>=</span>(<span class="pl-e"><span class="pl-v">action</span> <span class="pl-v">"myHeadingChanged"</span></span>)<span class="pl-c1">}}</span></td>
+                      </tr>
+                    </tbody>
+                  </table>
                 </div>
               </div>
             </div>
@@ -399,10 +395,40 @@
 <p id="idle" class="medium-7">
   <h3>idle</h3>
 
-  <div class="-mb">
-    <small class="-db">Response</small>
-    <div class="gmaps-inline-code -nml">gMapEvent</div>
+  <div class="gmaps-snippet">
+    <header>Example</header>
+    <code>
+      <div class="gist">
+        <div class="gist-file">
+          <div class="gist-data">
+            <div class="js-gist-file-update-container js-task-list-container file-box">
+              <div id="file-templa-hbs" class="file">
+                <div class="blob-wrapper data type-handlebars">
+                  <table class="highlight tab-size js-file-line-container" data-tab-size="8">
+                    <tbody>
+                      <tr>
+                        <td id="file-stuff-hbs-L1" class="blob-num js-line-number" data-line-number="1"></td>
+                        <td id="file-stuff-hbs-LC1" class="blob-code blob-code-inner js-file-line"><span class="pl-c1">\{{</span><span class="pl-v">g-map</span> <span class="pl-e"><span class="pl-v">idle</span>=</span>(<span class="pl-e"><span class="pl-v">action</span> <span class="pl-v">"myIdle"</span></span>)<span class="pl-c1">}}</span></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="gist-meta">
+            made with ❤ by <a href="https://github.com">GitHub</a>
+          </div>
+        </div>
+      </div>
+    </code>
   </div>
+</p>
+
+<hr>
+
+<p id="loaded" class="medium-7">
+  <h3>loaded</h3>
 
   <div class="gmaps-snippet">
     <header>Example</header>
@@ -414,11 +440,13 @@
               <div id="file-templa-hbs" class="file">
                 <div class="blob-wrapper data type-handlebars">
                   <table class="highlight tab-size js-file-line-container" data-tab-size="8">
-                    <tbody><tr>
-                      <td id="file-templa-hbs-L1" class="blob-num js-line-number" data-line-number="1"></td>
-                      <td id="file-templa-hbs-LC1" class="blob-code blob-code-inner js-file-line"><span class="pl-c1">\{{</span><span class="pl-v">g-maps</span> idle="myIdle"<span class="pl-c1">}}</span></td>
-                    </tr>
-                  </tbody></table>
+                    <tbody>
+                      <tr>
+                        <td id="file-stuff-hbs-L1" class="blob-num js-line-number" data-line-number="1"></td>
+                        <td id="file-stuff-hbs-LC1" class="blob-code blob-code-inner js-file-line"><span class="pl-c1">\{{</span><span class="pl-v">g-map</span> <span class="pl-e"><span class="pl-v">loaded</span>=</span>(<span class="pl-e"><span class="pl-v">action</span> <span class="pl-v">"myLoaded"</span></span>)<span class="pl-c1">}}</span></td>
+                      </tr>
+                    </tbody>
+                  </table>
                 </div>
               </div>
             </div>
@@ -438,8 +466,8 @@
   <h3>maptypeid_changed</h3>
 
   <div class="-mb">
-    <small class="-db">Response</small>
-    <div class="gmaps-inline-code -nml">gMapEvent</div>
+    <small class="-db">Arugments</small>
+    <div class="gmaps-inline-code -nml">mapTypeId</div>
   </div>
 
   <div class="gmaps-snippet">
@@ -452,11 +480,13 @@
               <div id="file-templa-hbs" class="file">
                 <div class="blob-wrapper data type-handlebars">
                   <table class="highlight tab-size js-file-line-container" data-tab-size="8">
-                    <tbody><tr>
-                      <td id="file-templa-hbs-L1" class="blob-num js-line-number" data-line-number="1"></td>
-                      <td id="file-templa-hbs-LC1" class="blob-code blob-code-inner js-file-line"><span class="pl-c1">\{{</span><span class="pl-v">g-maps</span> maptypeid_changed="myMapTypeIdChanged"<span class="pl-c1">}}</span></td>
-                    </tr>
-                  </tbody></table>
+                    <tbody>
+                      <tr>
+                        <td id="file-stuff-hbs-L1" class="blob-num js-line-number" data-line-number="1"></td>
+                        <td id="file-stuff-hbs-LC1" class="blob-code blob-code-inner js-file-line"><span class="pl-c1">\{{</span><span class="pl-v">g-map</span> <span class="pl-e"><span class="pl-v">maptypeid_changed</span>=</span>(<span class="pl-e"><span class="pl-v">action</span> <span class="pl-v">"myMapTypeIdChanged"</span></span>)<span class="pl-c1">}}</span></td>
+                      </tr>
+                    </tbody>
+                  </table>
                 </div>
               </div>
             </div>
@@ -476,8 +506,8 @@
   <h3>mousemove</h3>
 
   <div class="-mb">
-    <small class="-db">Response</small>
-    <div class="gmaps-inline-code -nml">gMapEvent</div>
+    <small class="-db">Arugments</small>
+    <div class="gmaps-inline-code -nml">MouseEvent</div>
   </div>
 
   <div class="gmaps-snippet">
@@ -490,11 +520,13 @@
               <div id="file-templa-hbs" class="file">
                 <div class="blob-wrapper data type-handlebars">
                   <table class="highlight tab-size js-file-line-container" data-tab-size="8">
-                    <tbody><tr>
-                      <td id="file-templa-hbs-L1" class="blob-num js-line-number" data-line-number="1"></td>
-                      <td id="file-templa-hbs-LC1" class="blob-code blob-code-inner js-file-line"><span class="pl-c1">\{{</span><span class="pl-v">g-maps</span> mousemove="myMousemove"<span class="pl-c1">}}</span></td>
-                    </tr>
-                  </tbody></table>
+                    <tbody>
+                      <tr>
+                        <td id="file-stuff-hbs-L1" class="blob-num js-line-number" data-line-number="1"></td>
+                        <td id="file-stuff-hbs-LC1" class="blob-code blob-code-inner js-file-line"><span class="pl-c1">\{{</span><span class="pl-v">g-map</span> <span class="pl-e"><span class="pl-v">mousemove</span>=</span>(<span class="pl-e"><span class="pl-v">action</span> <span class="pl-v">"myMousemove"</span></span>)<span class="pl-c1">}}</span></td>
+                      </tr>
+                    </tbody>
+                  </table>
                 </div>
               </div>
             </div>
@@ -514,8 +546,8 @@
   <h3>mouseout</h3>
 
   <div class="-mb">
-    <small class="-db">Response</small>
-    <div class="gmaps-inline-code -nml">gMapEvent</div>
+    <small class="-db">Arugments</small>
+    <div class="gmaps-inline-code -nml">MouseEvent</div>
   </div>
 
   <div class="gmaps-snippet">
@@ -528,11 +560,53 @@
               <div id="file-templa-hbs" class="file">
                 <div class="blob-wrapper data type-handlebars">
                   <table class="highlight tab-size js-file-line-container" data-tab-size="8">
-                    <tbody><tr>
-                      <td id="file-templa-hbs-L1" class="blob-num js-line-number" data-line-number="1"></td>
-                      <td id="file-templa-hbs-LC1" class="blob-code blob-code-inner js-file-line"><span class="pl-c1">\{{</span><span class="pl-v">g-maps</span> mouseout="myMouseout"<span class="pl-c1">}}</span></td>
-                    </tr>
-                  </tbody></table>
+                    <tbody>
+                      <tr>
+                        <td id="file-stuff-hbs-L1" class="blob-num js-line-number" data-line-number="1"></td>
+                        <td id="file-stuff-hbs-LC1" class="blob-code blob-code-inner js-file-line"><span class="pl-c1">\{{</span><span class="pl-v">g-map</span> <span class="pl-e"><span class="pl-v">mouseout</span>=</span>(<span class="pl-e"><span class="pl-v">action</span> <span class="pl-v">"myMouseout"</span></span>)<span class="pl-c1">}}</span></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="gist-meta">
+            made with ❤ by <a href="https://github.com">GitHub</a>
+          </div>
+        </div>
+      </div>
+    </code>
+  </div>
+</p>
+
+<hr>
+
+<p id="mouseover" class="medium-7">
+  <h3>mouseover</h3>
+
+  <div class="-mb">
+    <small class="-db">Arugments</small>
+    <div class="gmaps-inline-code -nml">MouseEvent</div>
+  </div>
+
+  <div class="gmaps-snippet">
+    <header>Example</header>
+    <code>
+      <div class="gist">
+        <div class="gist-file">
+          <div class="gist-data">
+            <div class="js-gist-file-update-container js-task-list-container file-box">
+              <div id="file-templa-hbs" class="file">
+                <div class="blob-wrapper data type-handlebars">
+                  <table class="highlight tab-size js-file-line-container" data-tab-size="8">
+                    <tbody>
+                      <tr>
+                        <td id="file-stuff-hbs-L1" class="blob-num js-line-number" data-line-number="1"></td>
+                        <td id="file-stuff-hbs-LC1" class="blob-code blob-code-inner js-file-line"><span class="pl-c1">\{{</span><span class="pl-v">g-map</span> <span class="pl-e"><span class="pl-v">mouseover</span>=</span>(<span class="pl-e"><span class="pl-v">action</span> <span class="pl-v">"myMouseover"</span></span>)<span class="pl-c1">}}</span></td>
+                      </tr>
+                    </tbody>
+                  </table>
                 </div>
               </div>
             </div>
@@ -551,11 +625,6 @@
 <p id="projection_changed" class="medium-7">
   <h3>projection_changed</h3>
 
-  <div class="-mb">
-    <small class="-db">Response</small>
-    <div class="gmaps-inline-code -nml">gMapEvent</div>
-  </div>
-
   <div class="gmaps-snippet">
     <header>Example</header>
     <code>
@@ -566,11 +635,13 @@
               <div id="file-templa-hbs" class="file">
                 <div class="blob-wrapper data type-handlebars">
                   <table class="highlight tab-size js-file-line-container" data-tab-size="8">
-                    <tbody><tr>
-                      <td id="file-templa-hbs-L1" class="blob-num js-line-number" data-line-number="1"></td>
-                      <td id="file-templa-hbs-LC1" class="blob-code blob-code-inner js-file-line"><span class="pl-c1">\{{</span><span class="pl-v">g-maps</span> projection_changed="myProjectionChanged"<span class="pl-c1">}}</span></td>
-                    </tr>
-                  </tbody></table>
+                    <tbody>
+                      <tr>
+                        <td id="file-stuff-hbs-L1" class="blob-num js-line-number" data-line-number="1"></td>
+                        <td id="file-stuff-hbs-LC1" class="blob-code blob-code-inner js-file-line"><span class="pl-c1">\{{</span><span class="pl-v">g-map</span> <span class="pl-e"><span class="pl-v">projection_changed</span>=</span>(<span class="pl-e"><span class="pl-v">action</span> <span class="pl-v">"myProjectionChanged"</span></span>)<span class="pl-c1">}}</span></td>
+                      </tr>
+                    </tbody>
+                  </table>
                 </div>
               </div>
             </div>
@@ -589,11 +660,6 @@
 <p id="resize" class="medium-7">
   <h3>resize</h3>
 
-  <div class="-mb">
-    <small class="-db">Response</small>
-    <div class="gmaps-inline-code -nml">gMapEvent</div>
-  </div>
-
   <div class="gmaps-snippet">
     <header>Example</header>
     <code>
@@ -604,11 +670,13 @@
               <div id="file-templa-hbs" class="file">
                 <div class="blob-wrapper data type-handlebars">
                   <table class="highlight tab-size js-file-line-container" data-tab-size="8">
-                    <tbody><tr>
-                      <td id="file-templa-hbs-L1" class="blob-num js-line-number" data-line-number="1"></td>
-                      <td id="file-templa-hbs-LC1" class="blob-code blob-code-inner js-file-line"><span class="pl-c1">\{{</span><span class="pl-v">g-maps</span> resize="myResize"<span class="pl-c1">}}</span></td>
-                    </tr>
-                  </tbody></table>
+                    <tbody>
+                      <tr>
+                        <td id="file-stuff-hbs-L1" class="blob-num js-line-number" data-line-number="1"></td>
+                        <td id="file-stuff-hbs-LC1" class="blob-code blob-code-inner js-file-line"><span class="pl-c1">\{{</span><span class="pl-v">g-map</span> <span class="pl-e"><span class="pl-v">resize</span>=</span>(<span class="pl-e"><span class="pl-v">action</span> <span class="pl-v">"myResize"</span></span>)<span class="pl-c1">}}</span></td>
+                      </tr>
+                    </tbody>
+                  </table>
                 </div>
               </div>
             </div>
@@ -628,8 +696,8 @@
   <h3>rightclick</h3>
 
   <div class="-mb">
-    <small class="-db">Response</small>
-    <div class="gmaps-inline-code -nml">gMapEvent</div>
+    <small class="-db">Arugments</small>
+    <div class="gmaps-inline-code -nml">MouseEvent</div>
   </div>
 
   <div class="gmaps-snippet">
@@ -642,11 +710,13 @@
               <div id="file-templa-hbs" class="file">
                 <div class="blob-wrapper data type-handlebars">
                   <table class="highlight tab-size js-file-line-container" data-tab-size="8">
-                    <tbody><tr>
-                      <td id="file-templa-hbs-L1" class="blob-num js-line-number" data-line-number="1"></td>
-                      <td id="file-templa-hbs-LC1" class="blob-code blob-code-inner js-file-line"><span class="pl-c1">\{{</span><span class="pl-v">g-maps</span> rightclick="myRightClick"<span class="pl-c1">}}</span></td>
-                    </tr>
-                  </tbody></table>
+                    <tbody>
+                      <tr>
+                        <td id="file-stuff-hbs-L1" class="blob-num js-line-number" data-line-number="1"></td>
+                        <td id="file-stuff-hbs-LC1" class="blob-code blob-code-inner js-file-line"><span class="pl-c1">\{{</span><span class="pl-v">g-map</span> <span class="pl-e"><span class="pl-v">rightclick</span>=</span>(<span class="pl-e"><span class="pl-v">action</span> <span class="pl-v">"myRightClick"</span></span>)<span class="pl-c1">}}</span></td>
+                      </tr>
+                    </tbody>
+                  </table>
                 </div>
               </div>
             </div>
@@ -665,11 +735,6 @@
 <p id="tilesloaded" class="medium-7">
   <h3>tilesloaded</h3>
 
-  <div class="-mb">
-    <small class="-db">Response</small>
-    <div class="gmaps-inline-code -nml">gMapEvent</div>
-  </div>
-
   <div class="gmaps-snippet">
     <header>Example</header>
     <code>
@@ -680,11 +745,13 @@
               <div id="file-templa-hbs" class="file">
                 <div class="blob-wrapper data type-handlebars">
                   <table class="highlight tab-size js-file-line-container" data-tab-size="8">
-                    <tbody><tr>
-                      <td id="file-templa-hbs-L1" class="blob-num js-line-number" data-line-number="1"></td>
-                      <td id="file-templa-hbs-LC1" class="blob-code blob-code-inner js-file-line"><span class="pl-c1">\{{</span><span class="pl-v">g-maps</span> tilesloaded="myTilesLoaded"<span class="pl-c1">}}</span></td>
-                    </tr>
-                  </tbody></table>
+                    <tbody>
+                      <tr>
+                        <td id="file-stuff-hbs-L1" class="blob-num js-line-number" data-line-number="1"></td>
+                        <td id="file-stuff-hbs-LC1" class="blob-code blob-code-inner js-file-line"><span class="pl-c1">\{{</span><span class="pl-v">g-map</span> <span class="pl-e"><span class="pl-v">tilesloaded</span>=</span>(<span class="pl-e"><span class="pl-v">action</span> <span class="pl-v">"myTilesLoaded"</span></span>)<span class="pl-c1">}}</span></td>
+                      </tr>
+                    </tbody>
+                  </table>
                 </div>
               </div>
             </div>
@@ -704,8 +771,8 @@
   <h3>tilt_changed</h3>
 
   <div class="-mb">
-    <small class="-db">Response</small>
-    <div class="gmaps-inline-code -nml">googleMapEvent</div>
+    <small class="-db">Arugments</small>
+    <div class="gmaps-inline-code -nml">tilt</div>
   </div>
 
   <div class="gmaps-snippet">
@@ -718,11 +785,13 @@
               <div id="file-templa-hbs" class="file">
                 <div class="blob-wrapper data type-handlebars">
                   <table class="highlight tab-size js-file-line-container" data-tab-size="8">
-                    <tbody><tr>
-                      <td id="file-templa-hbs-L1" class="blob-num js-line-number" data-line-number="1"></td>
-                      <td id="file-templa-hbs-LC1" class="blob-code blob-code-inner js-file-line"><span class="pl-c1">\{{</span><span class="pl-v">g-maps</span> tilt_changed="myTiltChanged"<span class="pl-c1">}}</span></td>
-                    </tr>
-                  </tbody></table>
+                    <tbody>
+                      <tr>
+                        <td id="file-stuff-hbs-L1" class="blob-num js-line-number" data-line-number="1"></td>
+                        <td id="file-stuff-hbs-LC1" class="blob-code blob-code-inner js-file-line"><span class="pl-c1">\{{</span><span class="pl-v">g-map</span> <span class="pl-e"><span class="pl-v">tilt_changed</span>=</span>(<span class="pl-e"><span class="pl-v">action</span> <span class="pl-v">"myTiltChanged"</span></span>)<span class="pl-c1">}}</span></td>
+                      </tr>
+                    </tbody>
+                  </table>
                 </div>
               </div>
             </div>
@@ -742,8 +811,8 @@
   <h3>zoom_changed</h3>
 
   <div class="-mb">
-    <small class="-db">Response</small>
-    <div class="gmaps-inline-code -nml">gMapEvent</div>
+    <small class="-db">Arugments</small>
+    <div class="gmaps-inline-code -nml">zoom</div>
   </div>
 
   <div class="gmaps-snippet">
@@ -756,113 +825,13 @@
               <div id="file-templa-hbs" class="file">
                 <div class="blob-wrapper data type-handlebars">
                   <table class="highlight tab-size js-file-line-container" data-tab-size="8">
-                    <tbody><tr>
-                      <td id="file-templa-hbs-L1" class="blob-num js-line-number" data-line-number="1"></td>
-                      <td id="file-templa-hbs-LC1" class="blob-code blob-code-inner js-file-line"><span class="pl-c1">\{{</span><span class="pl-v">g-maps</span> zoom_changed="myZoomChanged"<span class="pl-c1">}}</span></td>
-                    </tr>
-                  </tbody></table>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="gist-meta">
-            made with ❤ by <a href="https://github.com">GitHub</a>
-          </div>
-        </div>
-      </div>
-    </code>
-  </div>
-</p>
-
-<hr>
-
-<p id="loaded" class="medium-7">
-  <h3>loaded</h3>
-
-  <div class="-mb">
-    <small class="-db">Response</small>
-    <div class="gmaps-inline-code -nml">gMapEvent</div>
-  </div>
-
-  <div class="gmaps-snippet">
-    <header>Example</header>
-    <code>
-      <div class="gist">
-        <div class="gist-file">
-          <div class="gist-data">
-            <div class="js-gist-file-update-container js-task-list-container file-box">
-              <div id="file-templa-hbs" class="file">
-                <div class="blob-wrapper data type-handlebars">
-                  <table class="highlight tab-size js-file-line-container" data-tab-size="8">
-                    <tbody><tr>
-                      <td id="file-templa-hbs-L1" class="blob-num js-line-number" data-line-number="1"></td>
-                      <td id="file-templa-hbs-LC1" class="blob-code blob-code-inner js-file-line"><span class="pl-c1">\{{</span><span class="pl-v">g-maps</span> loaded="myLoaded"<span class="pl-c1">}}</span></td>
-                    </tr>
-                  </tbody></table>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="gist-meta">
-            made with ❤ by <a href="https://github.com">GitHub</a>
-          </div>
-        </div>
-      </div>
-    </code>
-  </div>
-</p>
-
-<hr>
-
-<p id="misc" class="medium-7 -nmb">
-  <h3>Misc</h3>
-  <div class="gmaps-snippet">
-    <header>gMapEvent Object</header>
-    <code>
-      <div class="gist">
-        <div class="gist-file">
-          <div class="gist-data">
-            <div class="js-gist-file-update-container js-task-list-container file-box">
-              <div id="file-ember-cli-g-maps__app-js" class="file">
-                <div class="blob-wrapper data type-javascript">
-                  <table class="highlight tab-size js-file-line-container" data-tab-size="8">
-                    <tbody><tr>
-                      <td id="file-ember-cli-g-maps__app-js-L1" class="blob-num js-line-number" data-line-number="1"></td>
-                      <td id="file-ember-cli-g-maps__app-js-LC1" class="blob-code blob-code-inner js-file-line">{</td>
-                    </tr>
-                    <tr>
-                      <td id="file-ember-cli-g-maps__app-js-L2" class="blob-num js-line-number" data-line-number="2"></td>
-                      <td id="file-ember-cli-g-maps__app-js-LC2" class="blob-code blob-code-inner js-file-line">  map<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>map-name<span class="pl-pds">'</span></span>,</td>
-                    </tr>
-                    <tr>
-                      <td id="file-ember-cli-g-maps__app-js-L4" class="blob-num js-line-number" data-line-number="4"></td>
-                      <td id="file-ember-cli-g-maps__app-js-LC4" class="blob-code blob-code-inner js-file-line">  bounds<span class="pl-k">:</span> [</td>
-                    </tr>
-                    <tr>
-                      <td id="file-ember-cli-g-maps__app-js-L5" class="blob-num js-line-number" data-line-number="5"></td>
-                      <td id="file-ember-cli-g-maps__app-js-LC5" class="blob-code blob-code-inner js-file-line">    { lat<span class="pl-k">:</span> <span class="pl-c1">32.22</span>, lng<span class="pl-k">:</span> <span class="pl-k">-</span><span class="pl-c1">103</span>, location<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>northeast<span class="pl-pds">'</span></span> },</td>
-                    </tr>
-                    <tr>
-                      <td id="file-ember-cli-g-maps__app-js-L6" class="blob-num js-line-number" data-line-number="6"></td>
-                      <td id="file-ember-cli-g-maps__app-js-LC6" class="blob-code blob-code-inner js-file-line">    { lat<span class="pl-k">:</span> <span class="pl-c1">30.34</span>, lng<span class="pl-k">:</span> <span class="pl-k">-</span><span class="pl-c1">99.1</span>, location<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>southwest<span class="pl-pds">'</span></span> }  <span class="pl-c"></span></td>
-                    </tr>
-                    <tr>
-                      <td id="file-ember-cli-g-maps__app-js-L7" class="blob-num js-line-number" data-line-number="7"></td>
-                      <td id="file-ember-cli-g-maps__app-js-LC7" class="blob-code blob-code-inner js-file-line">  ],</td>
-                    </tr>
-                    <tr>
-                      <td id="file-ember-cli-g-maps__app-js-L9" class="blob-num js-line-number" data-line-number="9"></td>
-                      <td id="file-ember-cli-g-maps__app-js-LC9" class="blob-code blob-code-inner js-file-line">  mapIdle<span class="pl-k">:</span> <span class="pl-k">new</span> <span class="pl-en">Ember.RSVP</span>.Promise(),</td>
-                    </tr>
-                    <tr>
-                      <td id="file-ember-cli-g-maps__app-js-L11" class="blob-num js-line-number" data-line-number="11"></td>
-                      <td id="file-ember-cli-g-maps__app-js-LC11" class="blob-code blob-code-inner js-file-line">  mapTilesLoaded<span class="pl-k">:</span> <span class="pl-k">new</span> <span class="pl-en">Ember.RSVP</span>.Promise()</td>
-                    </tr>
-                    <tr>
-                      <td id="file-ember-cli-g-maps__app-js-L12" class="blob-num js-line-number" data-line-number="12"></td>
-                      <td id="file-ember-cli-g-maps__app-js-LC12" class="blob-code blob-code-inner js-file-line">}</td>
-                    </tr>
-                  </tbody></table>
+                    <tbody>
+                      <tr>
+                        <td id="file-stuff-hbs-L1" class="blob-num js-line-number" data-line-number="1"></td>
+                        <td id="file-stuff-hbs-LC1" class="blob-code blob-code-inner js-file-line"><span class="pl-c1">\{{</span><span class="pl-v">g-map</span> <span class="pl-e"><span class="pl-v">zoom_changed</span>=</span>(<span class="pl-e"><span class="pl-v">action</span> <span class="pl-v">"myZoomChanged"</span></span>)<span class="pl-c1">}}</span></td>
+                      </tr>
+                    </tbody>
+                  </table>
                 </div>
               </div>
             </div>
