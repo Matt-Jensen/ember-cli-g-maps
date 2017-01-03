@@ -135,7 +135,7 @@ test('it only allows setting a valid icon value', function(assert) {
   const iconConfig = {
     url,
     anchor: {x: 1, y: 1},
-    size: {height: 10, j: 'px', width: 10, f: 'px'}
+    size: {height: 10, widthUnit: 'px', width: 10, heightUnit: 'px'}
   };
   marker.set('icon', iconConfig);
   assert.deepEqual(marker.get('icon'), iconConfig, 'updated icon with icon configuration');
