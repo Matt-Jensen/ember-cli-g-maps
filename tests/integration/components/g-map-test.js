@@ -21,7 +21,7 @@ test('it sets background color', function(assert) {
 test('it renders all map centering strategies', function(assert) {
   const lat = this.set('lat', 30.2672);
   const lng = this.set('lng', 97.7431);
-  this.set('centerLiteral', {lat, lng});
+  this.set('center', {lat, lng});
   this.set('options', {center: {lat, lng}});
   this.set('optionsLatLng', {lat, lng});
 
@@ -31,7 +31,7 @@ test('it renders all map centering strategies', function(assert) {
 
   assert.equal(this.$('#g-map-test-output').text().trim().slice(0, 15), `${lat},${lng}`, 'set center via `lat` & `lng` properties');
 
-  this.render(hbs`{{#g-map center=centerLiteral as |map|}}
+  this.render(hbs`{{#g-map center=center as |map|}}
     <div id="g-map-test-output">{{map.center.lat}},{{map.center.lng}}</div>
   {{/g-map}}`);
 
@@ -549,13 +549,19 @@ test('it provides the default mouse event argument to all click actions', functi
       assert.equal(mouseEvent, stubMouseEvent, `${event} action was called with mouse event`));
   });
 
-  this.render(hbs`{{g-map click="click" dblclick=(action "dblclick") mousemove=(action "mousemove") mouseout=(action "mouseout") mouseover=(action "mouseover") rightclick=(action "rightclick")}}`);
+  this.render(hbs`{{g-map
+    click="click"
+    dblclick=(action "dblclick")
+    mousemove=(action "mousemove")
+    mouseout=(action "mouseout")
+    mouseover=(action "mouseover")
+    rightclick=(action "rightclick")}}`);
 
   mouseEvents.forEach((event) =>
     triggerGoogleMapEvent(this.$('.ember-cli-g-map'), event, stubMouseEvent));
 });
 
-test('it provides the relevant map state as change action argument', function(assert) {
+test('it provides the relevant map state as change action arguments', function(assert) {
   const changeProperties = {
     center_changed: 'center',
     heading_changed: 'heading',
@@ -573,8 +579,9 @@ test('it provides the relevant map state as change action argument', function(as
   };
 
   // Add map state properties
+  this.set('options', {});
   Object.keys(changeProperties).forEach((event) =>
-    this.set(changeProperties[event], changeValues[event]));
+    this.set(`options.${changeProperties[event]}`, changeValues[event]));
 
   // Add change event listeners
   Object.keys(changeValues).forEach((event) => {
@@ -585,16 +592,12 @@ test('it provides the relevant map state as change action argument', function(as
   });
 
   this.on('center_changed', (value) => {
-    const actual = { lat: parseInt(value.lat, 10), lng: parseInt(value.lng, 10) };
+    const actual = {lat: parseInt(value.lat, 10), lng: parseInt(value.lng, 10)};
     assert.deepEqual(actual, changeValues.center_changed, 'center_changed action was called with map state: `{lat: 34, lng: 32}`');
   });
 
   this.render(hbs`{{g-map
-    center=center
-    heading=heading
-    mapTypeId=mapTypeId
-    tilt=tilt
-    zoom=zoom
+    options=options
     center_changed=(action "center_changed")
     heading_changed=(action "heading_changed")
     maptypeid_changed=(action "maptypeid_changed")
