@@ -50,6 +50,13 @@ export default function mapPointComponent(settings) {
     googleMapsInstanceScope: settings.googleMapsInstanceScope,
 
     /**
+     * @public
+     * @type {Array}
+     * List of Map Point bound options
+     */
+    googleMapsInstanceBoundOptions: settings.bound,
+
+    /**
      * @private
      * Allow test stubbing
      */
@@ -79,67 +86,87 @@ export default function mapPointComponent(settings) {
       return getProperties(this, 'lat', 'lng');
     }),
 
-    _mapPointDidInsertElement: on('didInsertElement', function() {
-      /*
-       * Expect Google Map instance object is lazily instantiated
-       */
-      const scope = this.googleMapsInstanceScope;
-      assert(`"${scope}" is a reserved namespace`, isPresent(get(this, scope)) === false);
+    /**
+     * @private
+     */
+    _mapPointDidInsertElement: on('didInsertElement', didInsertGoogleMapInstanceElement),
 
-      /*
-       * Add any passive settings to options
-       * override top level passive properties with overrided options
-       */
-      const passives = assign({}, get(this, 'passives'));
-      const options = assign(passives, get(this, 'options')); // clone options
-
-      /*
-       * Set center in order of strategy priority
-       */
-      options[this._mapPointCenter] = this._mapPointGetCenter();
-
-      /*
-       * Insert google map instance with options
-       */
-      return this._loadGoogleMaps()
-      .then(bind(this, this.insertGoogleMapInstance, options))
-      .then(bind(this, this.bindGoogleMapsInstanceEvents));
-    }),
-
-    _mapPointDidUpdateAttrs: on('didUpdateAttrs', function() {
-      const mapObjInstance = get(this, this.googleMapsInstanceScope);
-
-      /*
-       * Do not handle updates until Google Maps instance
-       * has been asyncronously set via: `insertGoogleMapInstance`
-       */
-      if (!mapObjInstance) { return; }
-
-      /*
-       * Set center in order of strategy priority
-       */
-      const options = assign({}, get(this, 'options'));
-      options[this._mapPointCenter] = this._mapPointGetCenter();
-
-      /*
-       * Check for changes to bound options and apply to instance
-       */
-      settings.bound
-      .filter((option) => options[option] !== undefined)
-      .forEach((option) => {
-        const value = options[option];
-        const current = mapObjInstance.get(option);
-
-        if (isDiff(value, current)) {
-          mapObjInstance.set(option, value);
-        }
-      });
-    }),
+    /**
+     * @private
+     */
+    _mapPointDidUpdateAttrs: on('didUpdateAttrs', didUpdateOptions),
 
     /**
      * @private
      */
     _mapPointGetCenter: getCenter
+  });
+}
+
+/**
+ * @return {RSVP.Promise}
+ * Invoke Map Points lifecycle hooks once Google Maps libraries
+ * have loaded, ensuring they are given the current instance options
+ */
+function didInsertGoogleMapInstanceElement() {
+  /*
+   * Expect Google Map instance object is lazily instantiated
+   */
+  const scope = this.googleMapsInstanceScope;
+  assert(`"${scope}" is a reserved namespace`, isPresent(get(this, scope)) === false);
+
+  /*
+   * Add any passive settings to options
+   * override top level passive properties with overrided options
+   */
+  const passives = assign({}, get(this, 'passives'));
+  const options = assign(passives, get(this, 'options')); // clone options
+
+  /*
+   * Set center in order of strategy priority
+   */
+  options[this._mapPointCenter] = this._mapPointGetCenter();
+
+  /*
+   * Insert google map instance with options
+   */
+  return this._loadGoogleMaps()
+  .then(bind(this, this.insertGoogleMapInstance, options))
+  .then(bind(this, this.bindGoogleMapsInstanceEvents));
+}
+
+/**
+ * @return {undefined}
+ * Invoke any updates of Google Map Instance defined at
+ * Component's `googleMapsInstanceScope` if change detected
+ */
+function didUpdateOptions() {
+  const mapObjInstance = get(this, this.googleMapsInstanceScope);
+
+  /*
+   * Do not handle updates until Google Maps instance
+   * has been asyncronously set via: `insertGoogleMapInstance`
+   */
+  if (!mapObjInstance) { return; }
+
+  /*
+   * Set center in order of strategy priority
+   */
+  const options = assign({}, get(this, 'options'));
+  options[this._mapPointCenter] = this._mapPointGetCenter();
+
+  /*
+   * Check for changes to bound options and apply to instance
+   */
+  this.googleMapsInstanceBoundOptions
+  .filter((option) => options[option] !== undefined)
+  .forEach((option) => {
+    const value = options[option];
+    const current = mapObjInstance.get(option);
+
+    if (isDiff(value, current)) {
+      mapObjInstance.set(option, value);
+    }
   });
 }
 
