@@ -124,7 +124,13 @@ export default Ember.Mixin.create(Ember.Evented, {
    * @type {Boolean}
    */
   _isTestEnv: computed(function() {
-    return (this.container.lookupFactory('config:environment').environment === 'test');
+    const {getOwner} = Ember;
+
+    if (getOwner) {
+      return getOwner(this).resolveRegistration('config:environment').environment === 'test';
+    } else {
+      return this.container.lookupFactory('config:environment').environment === 'test';
+    }
   }),
 
   _addMapEvents() {
