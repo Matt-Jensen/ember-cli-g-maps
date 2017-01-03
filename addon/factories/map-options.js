@@ -1,6 +1,7 @@
 import computed from 'ember-computed';
 import {assert} from 'ember-metal/utils';
-import {getProperties} from 'ember-metal/get';
+import {assign} from 'ember-platform';
+import {default as get, getProperties} from 'ember-metal/get';
 
 const {isArray} = Array;
 
@@ -9,38 +10,99 @@ const {isArray} = Array;
  * @param  {Array}  passive   Array of strings denoting static properties
  * @return {Object} options   Google Map instance options CP's
  *
- * Create the necessary configuration computed properties for all
+ * Create the necessary configuration computed properties and methods for all
  * Google maps' components including: maps, markers, ploygons ect.
  */
-export default function mapOptions(bound, passive) {
+export default function mapOptions(bound, passive = []) {
   assert('bound options are required', isArray(bound));
 
-  const options = Object.create(null);
-
-  /**
-   * @type {Object}
-   * Return all defined bound options for the Google map instance
-   * NOTE this is designed to be overwritten, by user, if desired
-   */
-  options.options = computed(...bound, function getMapOptions() {
-    return removeUndefinedProperties(
-      getProperties(this, ...bound)
-    );
-  });
-
-  if (isArray(passive)) {
+  return {
     /**
-     * @type {Object}
-     * Return all *top-level* static options for the Google map instance
+     * @public
+     * @type {Array}
+     * List of Google Map Instance bound options
      */
-    options.passives = computed(function getMapPssives() {
-      return removeUndefinedProperties(
-        getProperties(this, ...passive)
-      );
-    });
-  }
+    googleMapsInstanceBoundOptions: bound,
 
-  return options;
+    /**
+     * @public
+     * @type {Array}
+     * List of Google Map Instance static options
+     */
+    googleMapsInstancePassiveOptions: passive,
+
+    /**
+     * @public
+     * @type {Object}
+     * Return all defined bound options for the Google map instance
+     * NOTE this is designed to be overwritten, by user, if desired
+     */
+    options: computed(...bound, getMapOptions),
+
+    /**
+     * @public
+     * @type {Object}
+     */
+    passives: computed(getMapPassives),
+
+    /**
+     * @public
+     * @type {Function}
+     */
+    mapOptionsGetAll: getAllOptions,
+
+    /**
+     * @public
+     * @type {Function}
+     */
+    mapOptionsGetBound: getBoundOptions
+  };
+}
+
+/**
+ * @return {Object}
+ * Return all defined bound options for the Google map instance
+ * NOTE this is designed to be overwritten, by user, if desired
+ */
+function getMapOptions() {
+  return removeUndefinedProperties(
+    getProperties(this, ...this.googleMapsInstanceBoundOptions)
+  );
+}
+
+/**
+ * @return {Object}
+ * Return all *top-level* static options for the Google map instance
+ */
+function getMapPassives() {
+  return removeUndefinedProperties(
+    getProperties(this, ...this.googleMapsInstancePassiveOptions)
+  );
+}
+
+/**
+ * @return {Object}
+ * Return a hash of all defined, passive & bound, options
+ * Set as either top-level properties or within `options` hash
+ * NOTE overrides top-level values with anything defined within `options`
+ */
+function getAllOptions() {
+  const options = assign({}, get(this, 'passives'));
+  assign(options, getProperties(this, ...this.googleMapsInstanceBoundOptions));
+  assign(options, get(this, 'options'));
+  return removeUndefinedProperties(options);
+}
+
+/**
+ * @return {Object}
+ * Return a hash of all defined, bound, options
+ * Set as either top-level properties or within `options` hash
+ * NOTE overrides top-level values with anything defined within `options`
+ */
+function getBoundOptions() {
+  const options = assign({}, getProperties(this, ...this.googleMapsInstanceBoundOptions));
+  assign(options, get(this, 'options'));
+  return removeUndefinedProperties(options);
 }
 
 /**

@@ -353,9 +353,25 @@ test('it sets zIndex', function(assert) {
   });
 });
 
+test('it consumes `options` hash along with top-level values', function(assert) {
+  const label = 'test';
+  const zIndex = this.set('zIndex', 900);
+  this.set('options', {label});
+
+  this.render(hbs`{{#g-map as |map|}}
+    {{g-map-marker map options=options zIndex=zIndex}}
+  {{/g-map}}`);
+
+  return getGoogleMapMarkers(this.$('.ember-cli-g-map')).then(([marker]) => {
+    assert.equal(marker.getZIndex(), zIndex, 'set zIndex via top-level property');
+    assert.equal(marker.getLabel(), label, 'set label via options');
+  });
+});
+
 /*
  * User Actions API
  */
+
 test('it provides the default mouse event argument to all click actions', function(assert) {
   assert.expect(10);
   const stubMouseEvent = {};

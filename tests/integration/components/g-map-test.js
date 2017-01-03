@@ -527,6 +527,18 @@ test('it sets zoom control options', function(assert) {
   assert.equal(this.$('#g-map-test-output').text().trim(), zoomControlOptions.toUpperCase(), 'set via options');
 });
 
+test('it consumes `options` hash along with top-level values', function(assert) {
+  const zoom = 9;
+  const gestureHandling = this.set('gestureHandling', 'cooperative');
+  this.set('options', {zoom});
+
+  this.render(hbs`{{#g-map options=options gestureHandling=gestureHandling as |map|}}
+    <div id="g-map-test-output">{{map.zoom}},{{map.gestureHandling}}</div>
+  {{/g-map}}`);
+
+  assert.equal(this.$('#g-map-test-output').text().trim(), `${zoom},${gestureHandling}`, 'set `zoom` via options and `gestureHandling` via top-level');
+});
+
 /*
  * User Actions API
  */

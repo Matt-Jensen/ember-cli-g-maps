@@ -116,11 +116,9 @@ function didInsertGoogleMapInstanceElement() {
   assert(`"${scope}" is a reserved namespace`, isPresent(get(this, scope)) === false);
 
   /*
-   * Add any passive settings to options
-   * override top level passive properties with overrided options
+   * Get all options including passives
    */
-  const passives = assign({}, get(this, 'passives'));
-  const options = assign(passives, get(this, 'options')); // clone options
+  const options = this.mapOptionsGetAll();
 
   /*
    * Set center in order of strategy priority
@@ -152,7 +150,7 @@ function didUpdateOptions() {
   /*
    * Set center in order of strategy priority
    */
-  const options = assign({}, get(this, 'options'));
+  const options = this.mapOptionsGetBound();
   options[this._mapPointCenter] = this._mapPointGetCenter();
 
   /*

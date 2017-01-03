@@ -455,8 +455,73 @@
   All configuration options may be set as top level properties:
   <span class="gmaps-inline-code">\{{g-map clickableIcons=true}}</span>
   or as attributes in an options hash: <span class="gmaps-inline-code">\{{g-map options=options}}</span>.
-  Please note that these configuration strategies a mututally and exclusive and should not be used together.
+  The options hash can be a convenient way to define shared or static settings.  If you do need to update
+  the values of an options hash be sure to make use of <span class="gmaps-inline-code">this.notifyPropertyChange('myOptions')</span>
+  in order to persist your changes to the Google Map. Please note that values defined within "options"
+  will overwrite values defined as top-level bindings.
 </p>
+
+<div class="gmaps-snippet">
+  <header>Top Level Bindings</header>
+  <code>
+    <div class="gist">
+      <div class="gist-file">
+        <div class="gist-data">
+          <div class="js-gist-file-update-container js-task-list-container file-box">
+            <div id="file-templa-hbs" class="file">
+              <div class="blob-wrapper data type-handlebars">
+                <table class="highlight tab-size js-file-line-container" data-tab-size="8">
+                  <tbody>
+                    <tr>
+                      <td id="file-stuff-hbs-L1" class="blob-num js-line-number" data-line-number="1"></td>
+                      <td id="file-stuff-hbs-LC1" class="blob-code blob-code-inner js-file-line"><span class="pl-c1">\{{</span><span class="pl-v">g-map</span> <span class="pl-e"><span class="pl-v">center</span>=</span><span class="pl-e"><span class="pl-v">center</span> </span><span class="pl-e"><span class="pl-v">backgroundColor</span>=</span><span class="pl-e"><span class="pl-v">backgroundColor</span></span></td>
+                    </tr>
+                    <tr>
+                      <td id="file-stuff-hbs-L19" class="blob-num js-line-number" data-line-number="19"></td>
+                      <td id="file-stuff-hbs-LC19" class="blob-code blob-code-inner js-file-line">  <span class="pl-e"><span class="pl-v">zoomControlOptions</span>=</span><span class="pl-e"><span class="pl-v">zoomControlOptions</span></span><span class="pl-c1">}}</span></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="gist-meta">
+          made with ❤ by <a href="https://github.com">GitHub</a>
+        </div>
+      </div>
+    </div>
+  </code>
+</div>
+
+<div class="gmaps-snippet">
+  <header>Options + Top Level Bindings</header>
+  <code>
+    <div class="gist">
+      <div class="gist-file">
+        <div class="gist-data">
+          <div class="js-gist-file-update-container js-task-list-container file-box">
+            <div id="file-templa-hbs" class="file">
+              <div class="blob-wrapper data type-handlebars">
+                <table class="highlight tab-size js-file-line-container" data-tab-size="8">
+                  <tbody>
+                    <tr>
+                      <td id="file-stuff-hbs-L1" class="blob-num js-line-number" data-line-number="1"></td>
+                      <td id="file-stuff-hbs-LC1" class="blob-code blob-code-inner js-file-line"><span class="pl-c1">\{{</span><span class="pl-v">g-map</span> <span class="pl-e"><span class="pl-v">lat</span>=</span><span class="pl-e"><span class="pl-v">lat</span> </span><span class="pl-e"><span class="pl-v">lng</span>=</span><span class="pl-e"><span class="pl-v">lng</span> </span><span class="pl-e"><span class="pl-v">options</span>=</span><span class="pl-e"><span class="pl-v">options</span></span><span class="pl-c1">}}</span></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="gist-meta">
+          made with ❤ by <a href="https://github.com">GitHub</a>
+        </div>
+      </div>
+    </div>
+  </code>
+</div>
 
 <hr>
 
