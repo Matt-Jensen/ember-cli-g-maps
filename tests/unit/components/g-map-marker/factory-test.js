@@ -219,31 +219,20 @@ test('it only allows setting a valid optimized value', function(assert) {
   assert.equal(marker.get('optimized'), false, 'updated optimized');
 });
 
-test('it returns the position of the Marker instance', function(assert) {
-  const expected = {lat: 1, lng: 1};
-  const marker = googleMapMarker(createGoogleMap(), assign(expected, DEFAULTS));
-  marker.content.setPosition(expected);
-
-  const position = marker.get('position');
-  assert.equal(position.lat, expected.lat, 'resolves correct latitude');
-  assert.equal(position.lng, expected.lng, 'resolves correct longitude');
-});
-
 test('it returns the configured position', function(assert) {
   const expected = {
-    position: {lat: 1, lng: 1}
+    position: {lat: 2, lng: 2}
   };
-  const marker = googleMapMarker(createGoogleMap(), assign(expected, DEFAULTS));
+  const marker = googleMapMarker(createGoogleMap(), expected);
   assert.deepEqual(marker.get('position'), expected.position, 'resolves configured position');
 });
 
-test('it only allows setting a lat lng literal as a position', function(assert) {
-  const latLngLiteral = {lat: 1, lng: 1};
-
+test('it only allows setting a LatLng literal as a position', function(assert) {
   const marker = googleMapMarker(createGoogleMap(), assign({}, DEFAULTS));
   assert.throws(() => marker.set('position', 'non-object'), 'only accepts object');
   assert.throws(() => marker.set('position', {lat: 1}), 'reject invalid lat lng literal');
 
+  const latLngLiteral = {lat: 2, lng: 2};
   marker.set('position', latLngLiteral);
   assert.deepEqual(marker.get('position'), latLngLiteral, 'resolves correct position');
 });

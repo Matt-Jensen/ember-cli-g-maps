@@ -63,5 +63,50 @@ export default {
       'zoomControl',
       'zoomControlOptions'
     ]
+  },
+
+  googleMapMarker: {
+    scope: 'marker',
+
+    events: [
+      'animation_changed',
+      'click',
+      'clickable_changed',
+      'cursor_changed',
+      'dblclick',
+      'drag',
+      'dragend',
+      'draggable_changed',
+      'dragstart',
+      'icon_changed',
+      'mousedown',
+      'mouseout',
+      'mouseover',
+      'mouseup',
+      'position_changed',
+      'rightclick',
+      'shape_changed',
+      'title_changed',
+      'visible_changed',
+      'zindex_changed'
+    ],
+
+    boundOptions: [
+      'anchorPoint',
+      'animation',
+      'clickable',
+      'crossOnDrag',
+      'cursor',
+      'draggable',
+      'icon',
+      'label',
+      'opacity',
+      'optimized',
+      'position',
+      'shape',
+      'title',
+      'visible',
+      'zIndex'
+    ]
   }
 };
