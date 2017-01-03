@@ -1,6 +1,5 @@
 import RSVP from 'rsvp';
 import mapPoint from 'ember-cli-g-maps/factories/map-point';
-import {getCenter} from 'ember-cli-g-maps/factories/map-point';
 import {module, test} from 'qunit';
 import {assign} from 'ember-platform';
 
@@ -86,22 +85,41 @@ test('it invokes `updateGoogleMapInstance` with updated properties', function(as
   instance._mapPointDidUpdateAttrs();
 });
 
-module('Unit | Factory | map point | getCenter');
-
 test('it returns centering strategies in expected order', function(assert) {
-  let actual;
   const expected = {lat: 1, lng: 1};
   const notExpected = {lat: 0, lng: 0};
+  const defaults = expected;
 
-  actual = getCenter({center: expected}, notExpected, notExpected);
-  assert.deepEqual(actual, expected, 'selected options.center');
+  const instance = mapPoint({
+    googleMapsInstanceScope: 'scope',
+    center: 'point',
+    bound: [],
+    defaults,
+    component: {
+      insertGoogleMapInstance() {}
+    }
+  });
 
-  actual = getCenter({lat: expected.lat, lng: expected.lng}, notExpected, notExpected);
-  assert.deepEqual(actual, expected, 'selected options.{lat,lng}');
+  instance.options = {};
+  instance.options.point = expected;
+  instance.options.lat = notExpected.lat;
+  instance.options.lng = notExpected.lng;
+  instance.point = notExpected;
 
-  actual = getCenter({}, expected, notExpected);
-  assert.deepEqual(actual, expected, 'selected top level center/lat/lng');
+  assert.deepEqual(instance._mapPointGetCenter(), expected, 'selected options.center');
 
-  actual = getCenter({}, {}, expected);
-  assert.deepEqual(actual, expected, 'selected default lat/lng');
+  delete instance.options.point;
+  instance.options.lat = expected.lat;
+  instance.options.lng = expected.lng;
+
+  assert.deepEqual(instance._mapPointGetCenter(), expected, 'selected options.{lat,lng}');
+
+  delete instance.options.lat;
+  delete instance.options.lng;
+  instance.point = expected;
+
+  assert.deepEqual(instance._mapPointGetCenter(), expected, 'selected top level center/lat/lng');
+
+  delete instance.point;
+  assert.deepEqual(instance._mapPointGetCenter(), expected, 'selected fallback lat/lng');
 });

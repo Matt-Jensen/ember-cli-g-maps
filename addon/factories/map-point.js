@@ -11,6 +11,7 @@ import mapEvents from './map-events';
 import loadGoogleMaps from '../utils/load-google-maps';
 
 const {isArray} = Array;
+const MAP_POINT_DEFAULTS = {lat: 1, lng: 1};
 
 /**
  * Generate boilerplate for Google map instances that
@@ -24,7 +25,6 @@ const {isArray} = Array;
  * @param {Object} settings
  * @return {Object}
  */
- // TODO dont require: updateGoogleMapInstance or getGoogleMapInstanceValue
 export default function mapPointComponent(settings) {
   const {component} = settings;
 
@@ -58,9 +58,10 @@ export default function mapPointComponent(settings) {
     /**
      * @private
      * @type {Object}
-     * Used for Map Point's fallback behavior
+     * Used for Map Point's fallback (lat,lng) behavior
+     * NOTE ensures that valid lat & lng is set
      */
-    _mapPointDefaults: settings.defaults,
+    _mapPointDefaults: assign(assign({}, MAP_POINT_DEFAULTS), settings.defaults),
 
     /**
      * @private
@@ -95,8 +96,7 @@ export default function mapPointComponent(settings) {
       /*
        * Set center in order of strategy priority
        */
-      const center = this._mapPointCenter;
-      options[center] = getCenter(options, get(this, center), this._mapPointDefaults, center);
+      options[this._mapPointCenter] = this._mapPointGetCenter();
 
       /*
        * Insert google map instance with options
@@ -119,8 +119,7 @@ export default function mapPointComponent(settings) {
        * Set center in order of strategy priority
        */
       const options = assign({}, get(this, 'options'));
-      const center = this._mapPointCenter;
-      options[center] = getCenter(options, get(this, center), this._mapPointDefaults, center);
+      options[this._mapPointCenter] = this._mapPointGetCenter();
 
       /*
        * Check for changes to bound options and apply to instance
@@ -135,44 +134,53 @@ export default function mapPointComponent(settings) {
           mapObjInstance.set(option, value);
         }
       });
-    })
+    }),
+
+    /**
+     * @private
+     */
+    _mapPointGetCenter: getCenter
   });
 }
 
 /**
  * @return {Object} center
- * Ensure that center is configured in order of priority:
+ * Ensure that center is discovered in order of priority:
  * - user override: options.center
  * - user override: options.{lat,lng}
  * - user override: center
  * - top level: lat,lng
  * - fallback
  */
-export function getCenter(options, centerProp, fallback = {}, point = 'center') {
-  const optionsCenter = options[point] || {};
+function getCenter() {
+  const scope = this._mapPointCenter;
+  const optionsCenter = get(this, `options.${scope}`) || {};
 
   // options.center
-  if (isPresent(optionsCenter.lat) && isPresent(optionsCenter.lng)) {
+  if (optionsCenter && isPresent(optionsCenter.lat) && isPresent(optionsCenter.lng)) {
     return optionsCenter;
   }
 
+  const optionsLatLng = getProperties(this, 'options.lat', 'options.lng');
+
   // options.{lat,lng}
-  if (isPresent(options.lat) && isPresent(options.lng)) {
-    return {
-      lat: options.lat,
-      lng: options.lng
-    };
+  if (optionsLatLng && isPresent(optionsLatLng['options.lat']) && isPresent(optionsLatLng['options.lng'])) {
+    return {lat: optionsLatLng['options.lat'], lng: optionsLatLng['options.lng']};
   }
 
+  const centerProp = get(this, scope);
+
   // top-level center... or any top-level {lat,lng}
-  if (isPresent(centerProp.lat) && isPresent(centerProp.lng)) {
+  if (centerProp && isPresent(centerProp.lat) && isPresent(centerProp.lng)) {
     return centerProp;
   }
 
+  const defaults = this._mapPointDefaults;
+
   // fallback
   return {
-    lat: fallback.lat,
-    lng: fallback.lng
+    lat: defaults.lat,
+    lng: defaults.lng
   };
 }
 
