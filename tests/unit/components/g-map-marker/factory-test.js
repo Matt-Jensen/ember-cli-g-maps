@@ -1,4 +1,5 @@
 import googleMapMarker from 'ember-cli-g-maps/components/g-map-marker/factory';
+import {markerIcon, markerSymbol} from 'ember-cli-g-maps/components/g-map-marker/factory';
 import {module, test} from 'qunit';
 import {assign} from 'ember-platform';
 
@@ -7,6 +8,9 @@ module('Unit | Factory | Google Map Marker');
 const DEFAULTS  = {
   position: {lat: 1, lng: 1}
 };
+
+const ICON_URL = 'beachflag.png';
+const SVG_NOTATION = 'M10 10 H 90 V 90 H 10 L 10 10';
 
 test('it returns a Google Map Marker instance as content', function(assert) {
   const marker = googleMapMarker(createGoogleMap(), assign({}, DEFAULTS));
@@ -114,13 +118,13 @@ test('it only allows setting a valid draggable value', function(assert) {
 });
 
 test('it returns the configured icon', function(assert) {
-  const expected = {icon: 'beachflag.png'};
+  const expected = {icon: ICON_URL};
   const marker = googleMapMarker(createGoogleMap(), assign(expected, DEFAULTS));
   assert.equal(marker.get('icon'), expected.icon, 'resolves configured icon');
 });
 
 test('it only allows setting a valid icon value', function(assert) {
-  const url = 'beachflag.png';
+  const url = ICON_URL;
   const marker = googleMapMarker(createGoogleMap(), assign({}, DEFAULTS));
 
   assert.throws(() => marker.set('icon', false), 'rejects invalid');
@@ -144,7 +148,7 @@ test('it only allows setting a valid icon value', function(assert) {
   assert.deepEqual(marker.get('icon'), symbolConstConfig, 'updated icon with symbol constant configuration');
 
   const symbolSvgConfig = {
-    path: 'M10 10 H 90 V 90 H 10 L 10 10',
+    path: SVG_NOTATION,
     anchor: {x: 1, y: 1}
   };
   marker.set('icon', symbolSvgConfig);
@@ -338,6 +342,130 @@ test('it only allows setting a valid zIndex value', function(assert) {
   const expected = 100;
   marker.set('zIndex', expected);
   assert.equal(marker.get('zIndex'), expected, 'updated zIndex');
+});
+
+module('Unit | Factory | Google Map Marker | Marker Icon');
+
+test('it does not change its\' configuration arugment', function(assert) {
+  const actual = {
+    anchor: {x: 1, y: 1},
+    labelOrigin: {x: 1, y: 1},
+    origin: {x: 1, y: 1},
+    scaledSize: {width: 9, height: 9, widthUnit: 'px', heightUnit: 'em'},
+    size: {width: 9, height: 9, widthUnit: 'px', heightUnit: 'em'},
+    url: ICON_URL
+  };
+
+  const expected = JSON.parse(JSON.stringify(actual)); // clone config
+
+  markerIcon(actual);
+  assert.deepEqual(actual, expected, 'config remains unchanged');
+});
+
+test('it converts anchor literal to a google.maps.Point instance', function(assert) {
+  const instance = markerIcon({anchor: {x: 1, y: 1}, url: ICON_URL});
+  assert.ok(instance.anchor instanceof google.maps.Point, 'anchor is a Google Maps Point');
+});
+
+test('it converts labelOrigin literal to a Point instance', function(assert) {
+  const instance = markerIcon({labelOrigin: {x: 1, y: 1}, url: ICON_URL});
+  assert.ok(instance.labelOrigin instanceof google.maps.Point, 'labelOrigin is a Google Maps Point');
+});
+
+test('it converts origin literal to a Point instance', function(assert) {
+  const instance = markerIcon({origin: {x: 1, y: 1}, url: ICON_URL});
+  assert.ok(instance.origin instanceof google.maps.Point, 'origin is a Google Maps Point');
+});
+
+test('it converts scaledSize literal to a size instance', function(assert) {
+  const instance = markerIcon({scaledSize: {width: 1, height: 1, widthUnit: 'px', heightUnit: 'px'}, url: ICON_URL});
+  assert.ok(instance.scaledSize instanceof google.maps.Size, 'scaledSize is a Google Maps Size');
+});
+
+test('it converts size literal to a size instance', function(assert) {
+  const instance = markerIcon({size: {width: 1, height: 1, widthUnit: 'px', heightUnit: 'px'}, url: ICON_URL});
+  assert.ok(instance.size instanceof google.maps.Size, 'size is a Google Maps Size');
+});
+
+test('it returns its\' original config via toJSON', function(assert) {
+  const expected = {
+    anchor: {x: 1, y: 1},
+    labelOrigin: {x: 1, y: 1},
+    origin: {x: 1, y: 1},
+    scaledSize: {width: 9, height: 9},
+    size: {width: 9, height: 9, widthUnit: 'px', heightUnit: 'em'},
+    url: ICON_URL
+  };
+
+  const instance = markerIcon(expected);
+  const actual = instance.toJSON();
+
+  assert.deepEqual(actual, expected, 'toJSON response matches config');
+});
+
+module('Unit | Factory | Google Map Marker | Marker Symbol');
+
+test('it does not change its\' configuration arugment', function(assert) {
+  const actual = {
+    anchor: {x: 1, y: 1},
+    fillColor: '#000000',
+    fillOpacity: 1,
+    labelOrigin: {x: 1, y: 1},
+    path: 'circle',
+    rotation: 90,
+    scale: 2,
+    strokeColor: '#000000',
+    strokeOpacity: 0.5,
+    strokeWeight: 3
+  };
+
+  const expected = JSON.parse(JSON.stringify(actual)); // clone config
+
+  markerSymbol(actual);
+  assert.deepEqual(actual, expected, 'config remains unchanged');
+});
+
+test('it converts anchor literal to a google.maps.Point instance', function(assert) {
+  const instance = markerSymbol({anchor: {x: 1, y: 1}, path: 'circle'});
+  assert.ok(instance.anchor instanceof google.maps.Point, 'anchor is a Google Maps Point');
+});
+
+test('it converts labelOrigin literal to a google.maps.Point instance', function(assert) {
+  const instance = markerSymbol({labelOrigin: {x: 1, y: 1}, path: 'circle'});
+  assert.ok(instance.labelOrigin instanceof google.maps.Point, 'labelOrigin is a Google Maps Point');
+});
+
+test('it sets path with the SymbolPath id matching the given name', function(assert) {
+  const path = 'CIRCLE';
+  const expected = google.maps.SymbolPath[path];
+  const instance = markerSymbol({path});
+  assert.equal(instance.path, expected, 'path is a Symbol Path id');
+});
+
+test('it sets path with valid SVG notation path', function(assert) {
+  const expected = SVG_NOTATION;
+  const instance = markerSymbol({path: expected});
+  assert.equal(instance.path, expected, 'path is in SVG notation');
+});
+
+test('it returns its\' original config via toJSON', function(assert) {
+  const expected = {
+    anchor: {x: 1, y: 1},
+    fillColor: '#000000',
+    fillOpacity: 1,
+    labelOrigin: {x: 1, y: 1},
+    path: 'CIRCLE',
+    rotation: 90,
+    scale: 2,
+    strokeColor: '#000000',
+    strokeOpacity: 0.5,
+    strokeWeight: 3
+  };
+
+  const instance = markerSymbol(expected);
+  const actual = instance.toJSON();
+
+  assert.deepEqual(actual, expected, 'toJSON response matches config');
 });
 
 function createGoogleMap() {

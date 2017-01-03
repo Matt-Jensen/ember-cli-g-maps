@@ -2,9 +2,17 @@ import Ember from 'ember';
 import {assert} from 'ember-metal/utils';
 import {assign} from 'ember-platform';
 import {isPresent} from 'ember-utils';
+import {warn} from 'ember-debug';
 import computed from 'ember-computed';
 
 const {isArray} = Array;
+
+const MARKER_DEFAULTS = {
+  clickable: true,
+  crossOnDrag: true,
+  draggable: false,
+  optimized: true
+};
 
 export const GoogleMapMarkerProxy = Ember.ObjectProxy.extend({
   /**
@@ -41,9 +49,14 @@ export const GoogleMapMarkerProxy = Ember.ObjectProxy.extend({
       const animation = getAnimationId(value);
       assert('g-map-marker `animation` is a valid google maps animation', animation);
 
-      if (this.get('optimized') === true) {
-        Ember.Logger.warn('setting marker to optimized with active animation is not recommended');
-      }
+      const icon = this.get('icon');
+      const optimized = this.get('optimized');
+
+      warn(
+        'Setting Google Map Marker to optimized with an animated icon image is not recommended.\nPlease set: {{g-map-marker optimized=false}}',
+        (optimized ? (icon === undefined || !icon.url) : true),
+        {id: 'ember-cli-g-maps.g-map-marker.factory.animation'}
+      );
 
       this.content.setAnimation(animation);
       return value;
@@ -60,7 +73,7 @@ export const GoogleMapMarkerProxy = Ember.ObjectProxy.extend({
     },
 
     set(key, value) {
-      assert('g-map-marker `clickableIcons` is a boolean', typeof value === 'boolean');
+      assert('g-map-marker `clickableIcons` is a Boolean', typeof value === 'boolean');
       this.content.setClickable(value);
       return value;
     }
@@ -76,7 +89,7 @@ export const GoogleMapMarkerProxy = Ember.ObjectProxy.extend({
     },
 
     set(key, value) {
-      assert('g-map-marker `crossOnDrag` is a boolean', typeof value === 'boolean');
+      assert('g-map-marker `crossOnDrag` is a Boolean', typeof value === 'boolean');
       this.content.setOptions({crossOnDrag: value});
       return value;
     }
@@ -121,7 +134,10 @@ export const GoogleMapMarkerProxy = Ember.ObjectProxy.extend({
   icon: computed({
     get() {
       const icon = this.content.getIcon();
-      return (typeof icon === 'string' ? icon : icon.toJSON());
+
+      if (icon) {
+        return (typeof icon === 'string' ? icon : icon.toJSON());
+      }
     },
 
     set(key, value) {
@@ -131,15 +147,10 @@ export const GoogleMapMarkerProxy = Ember.ObjectProxy.extend({
         this.content.setIcon(value); // set as Icon.url
       } else if (value.url) {
         this.content.setIcon(markerIcon(value));
+      } else if (value.path){
+        this.content.setIcon(markerSymbol(value));
       } else {
-        const symbolConf = assign({}, value);
-        const symbolConst = getSymbolPathId(value.path);
-
-        /*
-         * Use any existing google maps Symbol path constant or SVG path notation
-         */
-        symbolConf.path = (isPresent(symbolConst) ? symbolConst : symbolConf.path);
-        this.content.setIcon(markerSymbol(symbolConf));
+        assert('g-map-marker `icon` has a usable icon configuration');
       }
 
       return this.get('icon');
@@ -159,7 +170,7 @@ export const GoogleMapMarkerProxy = Ember.ObjectProxy.extend({
       assert('g-map-marker `label` is a String or Object', typeof value === 'string' || typeof value === 'object');
 
       if (typeof value === 'object') {
-        assert('g-map-marker `label` object has a text property', value.text);
+        assert('g-map-marker `label` object `text` value is a String', typeof value.text === 'string');
       }
 
       this.content.setLabel(value);
@@ -177,7 +188,7 @@ export const GoogleMapMarkerProxy = Ember.ObjectProxy.extend({
     },
 
     set(key, value) {
-      assert('g-map-marker `opacity` is a number', typeof value === 'number');
+      assert('g-map-marker `opacity` is a Number', typeof value === 'number');
       assert('g-map-marker `opacity` is not greater than 1', value <= 1);
       assert('g-map-marker `opacity` is not less than 0', value >= 0);
 
@@ -323,10 +334,11 @@ export default function googleMapMarker(canvas, options = {}) {
   assert('Google Map Marker requires a position', options.position);
 
   const proxy = GoogleMapMarkerProxy.create({
-    content: new google.maps.Marker({ map: canvas })
+    content: new google.maps.Marker({map: canvas})
   });
 
-  const settings = assign({}, options);
+  const settings = assign({}, MARKER_DEFAULTS);
+  assign(settings, options);
 
   // Set defaults via proxy API
   Object.keys(settings).forEach((key) =>
@@ -345,8 +357,20 @@ const markerIconPrototype = {
     .forEach((property) => {
       const value = this[property];
 
-      if (value instanceof google.maps.Point || value instanceof google.maps.Size) {
-        result[property] = assign({}, value);
+      if (value instanceof google.maps.Point) {
+        result[property] = {x: value.x, y: value.y};
+      } else if (value instanceof google.maps.Size) {
+        result[property] = {width: value.width, height: value.height};
+
+        if (value._hasWidthUnit) {
+          // j === width unit
+          result[property].widthUnit = value.j;
+        }
+
+        if (value._hasHeightUnit) {
+          // f === height unit
+          result[property].heightUnit = value.f;
+        }
       } else if (typeof value !== 'function'){
         result[property] = value;
       }
@@ -364,7 +388,33 @@ const markerIconPrototype = {
  * configuration object via `toJSON` method
  */
 export function markerIcon(config) {
-  return assign(Object.create(markerIconPrototype), config);
+  const icon = assign({}, config);
+
+  assert('Marker Icon requires a `url` String', typeof config.url === 'string');
+
+  ['anchor', 'labelOrigin', 'origin'].forEach((property) => {
+    const literal = icon[property];
+
+    if (literal) {
+      assert(`Marker Icon requires valid Point literal at "${property}"`, literal.x && literal.y);
+      icon[property] = new google.maps.Point(literal.x, literal.y);
+    }
+  });
+
+  ['scaledSize', 'size'].forEach((property) => {
+    const literal = icon[property];
+
+    if (literal) {
+      assert(`Marker Icon requires valid Size literal at "${property}"`, literal.width && literal.height);
+      assert(`Marker Icon requires any widthUnit for "${property}" to be valid`, literal.hasOwnProperty('widthUnit') ? literal.widthUnit.length : true);
+      assert(`Marker Icon requires any heightUnit for "${property}" to be valid`, literal.hasOwnProperty('heightUnit') ? literal.heightUnit.length : true);
+      icon[property] = new google.maps.Size(literal.width, literal.height, literal.widthUnit, literal.heightUnit);
+      icon[property]._hasWidthUnit = Boolean(literal.widthUnit);
+      icon[property]._hasHeightUnit = Boolean(literal.heightUnit);
+    }
+  });
+
+  return assign(Object.create(markerIconPrototype), icon);
 }
 
 const markerSymbolPrototype = {
@@ -402,7 +452,26 @@ const markerSymbolPrototype = {
  * configuration object via `toJSON` method
  */
 export function markerSymbol(config) {
-  return assign(Object.create(markerSymbolPrototype), config);
+  const sym = assign({}, config);
+
+  assert('Marker Symbol `path` is a String', typeof config.path === 'string');
+
+  /*
+   * Use any existing google maps Symbol path constant or SVG path notation
+   */
+  const symbolConst = getSymbolPathId(sym.path);
+  sym.path = (isPresent(symbolConst) ? symbolConst : sym.path);
+
+  ['anchor', 'labelOrigin'].forEach((property) => {
+    const literal = sym[property];
+
+    if (literal) {
+      assert(`Marker Symbol requires valid Point literal at "${property}"`, literal.x && literal.y);
+      sym[property] = new google.maps.Point(literal.x, literal.y);
+    }
+  });
+
+  return assign(Object.create(markerSymbolPrototype), sym);
 }
 
 /**

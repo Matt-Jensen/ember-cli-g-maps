@@ -93,7 +93,6 @@ export default {
 
     boundOptions: [
       'anchorPoint',
-      'animation',
       'clickable',
       'crossOnDrag',
       'cursor',
@@ -106,7 +105,8 @@ export default {
       'shape',
       'title',
       'visible',
-      'zIndex'
+      'zIndex',
+      'animation' // NOTE must be set after icon & optimized
     ]
   }
 };
