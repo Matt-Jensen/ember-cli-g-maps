@@ -42,7 +42,7 @@ test('it allows valid updates of the map center', function(assert) {
   assert.deepEqual(map.get('center'), expected, 'updated center map');
 });
 
-test('it returns the configured clickableIcons', function(assert) {
+test('it returns the configured clickable icons', function(assert) {
   const expected = {clickableIcons: false};
   const map = googleMap(document.createElement('div'), assign(expected, DEFAULTS));
   map.notifyPropertyChange('clickableIcons');
@@ -78,7 +78,7 @@ test('it only allows setting valid fullscreen control options', function(assert)
   assert.equal(map.get('fullscreenControlOptions'), expected, 'resolves new fullscreenControlOptions');
 });
 
-test('it removes fullscreenControlOptions with a falsey value', function(assert) {
+test('it removes fullscreen control options with a falsey value', function(assert) {
   const map = googleMap(document.createElement('div'), assign({fullscreenControlOptions: 'BOTTOM_RIGHT'}, DEFAULTS));
 
   map.set('fullscreenControlOptions', false);
@@ -142,7 +142,7 @@ test('it only allows setting valid map type control options', function(assert) {
   assert.deepEqual(map.get('mapTypeControlOptions'), expected, 'resolves new mapTypeControlOptions');
 });
 
-test('it removes fullscreenControlOptions with a falsey value', function(assert) {
+test('it removes map type control options with a falsey value', function(assert) {
   const map = googleMap(document.createElement('div'), assign({
     mapTypeControlOptions: {
       mapTypeIds: ['ROADMAP', 'SATELLITE'],
