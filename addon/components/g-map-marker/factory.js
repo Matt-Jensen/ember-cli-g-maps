@@ -65,7 +65,7 @@ export const GoogleMapMarkerProxy = Ember.ObjectProxy.extend({
       assert('g-map-marker `animation` is a String', typeof value === 'string');
 
       const animation = getAnimationId(value);
-      assert('g-map-marker `animation` is a valid google maps animation', animation);
+      assert(`g-map-marker "animation" is one of the google maps animation names: ${Object.keys(google.maps.Animation).join(', ')}`, animation);
 
       const icon = this.get('icon');
       const optimized = this.get('optimized');
@@ -449,7 +449,7 @@ export function markerIcon(config) {
     const literal = icon[property];
 
     if (literal) {
-      assert(`Marker Icon requires valid Point literal at "${property}"`, literal.x && literal.y);
+      assert(`Marker Icon requires valid Point literal at "${property}"`, typeof literal.x === 'number' && typeof literal.y === 'number');
       icon[property] = new google.maps.Point(literal.x, literal.y);
     }
   });
@@ -519,7 +519,7 @@ export function markerSymbol(config) {
     const literal = sym[property];
 
     if (literal) {
-      assert(`Marker Symbol requires valid Point literal at "${property}"`, literal.x && literal.y);
+      assert(`Marker Symbol requires valid Point literal at "${property}"`, typeof literal.x === 'number' && typeof literal.y === 'number');
       sym[property] = new google.maps.Point(literal.x, literal.y);
     }
   });
@@ -533,7 +533,7 @@ export function markerSymbol(config) {
  * Get the id of an animation by name
  */
 export function getAnimationId(animation) {
-  animation = `${animation}`.toUpperCase();
+  animation = `${animation}`;
   return google.maps.Animation[animation];
 }
 

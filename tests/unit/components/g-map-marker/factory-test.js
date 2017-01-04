@@ -63,7 +63,7 @@ test('it only allows setting a valid animation name or id number', function(asse
   assert.throws(() => marker.set('animation', 35), 'rejects non-string value');
   assert.throws(() => marker.set('animation', 'bad-animation'), 'rejects non-existent animation name');
 
-  marker.set('animation', 'bounce');
+  marker.set('animation', 'BOUNCE');
   assert.equal(marker.get('animation'), 'BOUNCE', 'resolves new bounce animation');
 });
 
