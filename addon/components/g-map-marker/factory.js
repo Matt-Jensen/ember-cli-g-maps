@@ -93,6 +93,13 @@ export const GoogleMapMarkerProxy = Ember.ObjectProxy.extend({
     set(key, value) {
       if (!value) { value = false; }
       assert('g-map-marker `clickableIcons` is a Boolean', typeof value === 'boolean');
+
+      warn(
+        'Setting Google Map Marker `clickable` to false while marker is draggable will have no effect.\nPlease set: {{g-map-marker draggable=false}}',
+        (value === false ? this.get('draggable') === false : true),
+        {id: 'ember-cli-g-maps.g-map-marker.factory.clickable'}
+      );
+
       this.content.setClickable(value);
       return value;
     }
