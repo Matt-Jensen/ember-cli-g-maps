@@ -12,7 +12,7 @@ const googleMapScope = ENV.googleMap.scope;
 const GMapChildComponent = Component.extend(Evented, {
   init() {
     this._super(...arguments);
-    assert('g-map-child requires a `insertedGoogleMapCanvas` method', this.insertedGoogleMapCanvas);
+    assert('g-map-child requires a `insertedGoogleMapCanvas` method', Boolean(this.insertedGoogleMapCanvas));
   },
 
   /**
