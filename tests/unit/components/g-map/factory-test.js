@@ -78,6 +78,15 @@ test('it only allows setting valid fullscreen control options', function(assert)
   assert.equal(map.get('fullscreenControlOptions'), expected, 'resolves new fullscreenControlOptions');
 });
 
+test('it removes fullscreenControlOptions with a falsey value', function(assert) {
+  const map = googleMap(document.createElement('div'), assign({fullscreenControlOptions: 'BOTTOM_RIGHT'}, DEFAULTS));
+
+  map.set('fullscreenControlOptions', false);
+  map.notifyPropertyChange('fullscreenControlOptions');
+
+  assert.equal(map.get('fullscreenControlOptions'), undefined, 'fullscreenControlOptions is no longer defined');
+});
+
 test('it returns the configured heading', function(assert) {
   const expected = {heading: 0};
   const map = googleMap(document.createElement('div'), assign(expected, DEFAULTS));
@@ -91,7 +100,17 @@ test('it only allows setting a valid heading', function(assert) {
 
   const expected = 0;
   map.set('heading', expected);
-  assert.equal(map.content.getHeading(), expected, 'resolves new heading');
+  assert.equal(map.get('heading'), expected, 'resolves new heading');
+});
+
+test('it resets heading to default after setting a falsey value', function(assert) {
+  const map = googleMap(document.createElement('div'), assign({}, DEFAULTS));
+
+  const defaultHeading = map.get('heading');
+  map.set('heading', 180);
+
+  map.set('heading', false);
+  assert.equal(map.get('heading'), defaultHeading, 'heading is reset to default');
 });
 
 test('it returns the configured map type control options', function(assert) {
@@ -123,6 +142,21 @@ test('it only allows setting valid map type control options', function(assert) {
   assert.deepEqual(map.get('mapTypeControlOptions'), expected, 'resolves new mapTypeControlOptions');
 });
 
+test('it removes fullscreenControlOptions with a falsey value', function(assert) {
+  const map = googleMap(document.createElement('div'), assign({
+    mapTypeControlOptions: {
+      mapTypeIds: ['ROADMAP', 'SATELLITE'],
+      position: 'TOP_LEFT',
+      style: 'HORIZONTAL_BAR'
+    }
+  }, DEFAULTS));
+
+  map.set('mapTypeControlOptions', false);
+  map.notifyPropertyChange('mapTypeControlOptions');
+
+  assert.equal(map.get('mapTypeControlOptions'), undefined, 'mapTypeControlOptions is not defined');
+});
+
 test('it returns the configured map type id', function(assert) {
   const expected = {mapTypeId: 'HYBRID'};
   const map = googleMap(document.createElement('div'), assign(expected, DEFAULTS));
@@ -139,7 +173,16 @@ test('it allows setting a valid map type id', function(assert) {
   assert.equal(map.get('mapTypeId'), expected, 'resolves new map type id');
 });
 
-test('it returns the configured maxZoom', function(assert) {
+test('it removes map type id with a falsey value', function(assert) {
+  const map = googleMap(document.createElement('div'), assign({mapTypeId: 'HYBRID'}, DEFAULTS));
+
+  map.set('mapTypeId', false);
+  map.notifyPropertyChange('mapTypeId');
+
+  assert.equal(map.get('mapTypeId'), undefined, 'mapTypeId is not defined');
+});
+
+test('it returns the configured max zoom', function(assert) {
   const expected = {maxZoom: 12};
   const map = googleMap(document.createElement('div'), assign(expected, DEFAULTS));
   map.notifyPropertyChange('maxZoom');
@@ -156,7 +199,18 @@ test('it only allows setting a valid max zoom', function(assert) {
   assert.equal(map.get('maxZoom'), expected, 'updated max zoom of map');
 });
 
-test('it returns the configured minZoom', function(assert) {
+test('it resets max zoom to default after setting a falsey value', function(assert) {
+  const map = googleMap(document.createElement('div'), assign({}, DEFAULTS));
+
+  const maxZoomDefault = map.get('maxZoom');
+  map.set('maxZoom', 12);
+  map.set('maxZoom', false);
+  map.notifyPropertyChange('maxZoom');
+
+  assert.equal(map.get('maxZoom'), maxZoomDefault, 'maxZoom is reset to default');
+});
+
+test('it returns the configured min zoom', function(assert) {
   const expected = {minZoom: 5};
   const map = googleMap(document.createElement('div'), assign(expected, DEFAULTS));
   map.notifyPropertyChange('minZoom');
@@ -171,6 +225,17 @@ test('it only allows setting a valid min zoom', function(assert) {
   map.set('minZoom', expected);
   map.notifyPropertyChange('minZoom');
   assert.equal(map.get('minZoom'), expected, 'updated min zoom of map');
+});
+
+test('it resets min zoom to default after setting a falsey value', function(assert) {
+  const map = googleMap(document.createElement('div'), assign({}, DEFAULTS));
+
+  const minZoomDefault = map.get('minZoom');
+  map.set('minZoom', 8);
+  map.set('minZoom', false);
+  map.notifyPropertyChange('minZoom');
+
+  assert.equal(map.get('minZoom'), minZoomDefault, 'minZoom is reset to default');
 });
 
 test('it returns the configured pan control options', function(assert) {
@@ -191,6 +256,15 @@ test('it only allows setting valid pan control options', function(assert) {
   assert.equal(map.get('panControlOptions'), expected, 'resolves new panControlOptions');
 });
 
+test('it removes pan control options with a falsey value', function(assert) {
+  const map = googleMap(document.createElement('div'), assign({panControlOptions: 'LEFT_TOP'}, DEFAULTS));
+
+  map.set('panControlOptions', false);
+  map.notifyPropertyChange('panControlOptions');
+
+  assert.equal(map.get('panControlOptions'), undefined, 'panControlOptions is not defined');
+});
+
 test('it returns the configured rotate control options', function(assert) {
   const expected = {rotateControlOptions: 'BOTTOM_RIGHT'};
   const map = googleMap(document.createElement('div'), assign(expected, DEFAULTS));
@@ -209,6 +283,15 @@ test('it only allows setting valid rotate control options', function(assert) {
   assert.equal(map.get('rotateControlOptions'), expected, 'resolves new rotateControlOptions');
 });
 
+test('it removes rotate control options with a falsey value', function(assert) {
+  const map = googleMap(document.createElement('div'), assign({rotateControlOptions: 'LEFT_CENTER'}, DEFAULTS));
+
+  map.set('rotateControlOptions', false);
+  map.notifyPropertyChange('rotateControlOptions');
+
+  assert.equal(map.get('rotateControlOptions'), undefined, 'rotateControlOptions is not defined');
+});
+
 test('it returns the configured scale control options', function(assert) {
   const expected = {scaleControlOptions: 'DEFAULT'};
   const map = googleMap(document.createElement('div'), assign(expected, DEFAULTS));
@@ -225,6 +308,15 @@ test('it only allows setting valid scale control options', function(assert) {
   map.set('scaleControlOptions', expected);
   map.notifyPropertyChange('scaleControlOptions');
   assert.equal(map.get('scaleControlOptions'), expected, 'resolves new scaleControlOptions');
+});
+
+test('it removes scale control options with a falsey value', function(assert) {
+  const map = googleMap(document.createElement('div'), assign({scaleControlOptions: 'DEFAULT'}, DEFAULTS));
+
+  map.set('scaleControlOptions', false);
+  map.notifyPropertyChange('scaleControlOptions');
+
+  assert.equal(map.get('scaleControlOptions'), undefined, 'scaleControlOptions is not defined');
 });
 
 test('it returns the configured street view', function(assert) {
@@ -264,6 +356,15 @@ test('it only allows setting valid street view control options', function(assert
   assert.equal(map.get('streetViewControlOptions'), expected, 'resolves new streetViewControlOptions');
 });
 
+test('it removes street view control options with a falsey value', function(assert) {
+  const map = googleMap(document.createElement('div'), assign({streetViewControlOptions: 'BOTTOM_RIGHT'}, DEFAULTS));
+
+  map.set('streetViewControlOptions', false);
+  map.notifyPropertyChange('streetViewControlOptions');
+
+  assert.equal(map.get('streetViewControlOptions'), undefined, 'streetViewControlOptions is not defined');
+});
+
 test('it returns the configured map tilt', function(assert) {
   const expected = 0; // NOTE 45 creates an unreliable test condition
   const map = googleMap(document.createElement('div'), assign({tilt: expected}, DEFAULTS));
@@ -279,6 +380,15 @@ test('it only calls `setTilt` with a valid tilt perspective', function(assert) {
 
   map.set('tilt', 45);
   assert.equal(wasCalled, true, 'updated tilt of map');
+});
+
+test('it resets tilt to default after setting a falsey value', function(assert) {
+  const map = googleMap(document.createElement('div'), assign({}, DEFAULTS));
+
+  const defaultTilt = map.get('tilt');
+  map.set('tilt', 45);
+  map.set('tilt', false);
+  assert.equal(map.get('tilt'), defaultTilt, 'tilt is reset to default');
 });
 
 test('it returns the configured zoom level', function(assert) {
@@ -314,6 +424,15 @@ test('it only allows setting valid zoom control options', function(assert) {
   map.set('zoomControlOptions', expected);
   map.notifyPropertyChange('zoomControlOptions');
   assert.equal(map.get('zoomControlOptions'), expected, 'resolves new zoomControlOptions');
+});
+
+test('it removes zoom control options with a falsey value', function(assert) {
+  const map = googleMap(document.createElement('div'), assign({zoomControlOptions: 'RIGHT_CENTER'}, DEFAULTS));
+
+  map.set('zoomControlOptions', false);
+  map.notifyPropertyChange('zoomControlOptions');
+
+  assert.equal(map.get('zoomControlOptions'), undefined, 'zoomControlOptions is not defined');
 });
 
 test('it returns the configured static map properties', function(assert) {
@@ -423,4 +542,61 @@ test('it only allows setting valid static map properties', function(assert) {
   assert.equal(map.get('streetViewControl'), expected.streetViewControl, 'resolves new streetViewControl');
   assert.equal(map.get('zoomControl'), expected.zoomControl, 'resolves new zoomControl');
   assert.equal(map.get('styles'), expected.styles, 'resolves new styles');
+});
+
+test('it removes static map properties with a falsey value', function(assert) {
+  const map = googleMap(document.createElement('div'), assign({
+    disableDefaultUI: true,
+    disableDoubleClickZoom: true,
+    draggable: true,
+    draggableCursor: 'pointer',
+    draggingCursor: 'pointer',
+    fullscreenControl: true,
+    gestureHandling: 'greedy',
+    keyboardShortcuts: true,
+    mapTypeControl: true,
+    noClear: true,
+    panControl: true,
+    rotateControl: true,
+    scaleControl: true,
+    scrollwheel: true,
+    streetViewControl: true,
+    zoomControl: true
+  }, DEFAULTS));
+
+  map.setProperties({
+    disableDefaultUI: 0,
+    disableDoubleClickZoom: '',
+    draggable: null,
+    draggableCursor: false,
+    draggingCursor: false,
+    fullscreenControl: null,
+    gestureHandling: false,
+    keyboardShortcuts: null,
+    mapTypeControl: null,
+    noClear: null,
+    panControl: null,
+    rotateControl: null,
+    scaleControl: null,
+    scrollwheel: null,
+    streetViewControl: null,
+    zoomControl: null
+  });
+
+  assert.equal(map.get('disableDefaultUI'), false, 'accepts falsey disableDefaultUI');
+  assert.equal(map.get('disableDoubleClickZoom'), false, 'accepts falsey disableDoubleClickZoom');
+  assert.equal(map.get('draggable'), false, 'accepts falsey draggable');
+  assert.equal(map.get('draggableCursor'), undefined, 'draggableCursor is not defined');
+  assert.equal(map.get('draggingCursor'), undefined, 'draggingCursor is not defined');
+  assert.equal(map.get('fullscreenControl'), false, 'accepts falsey fullscreenControl');
+  assert.equal(map.get('gestureHandling'), undefined, 'gestureHandling is not defined');
+  assert.equal(map.get('keyboardShortcuts'), false, 'accepts falsey keyboardShortcuts');
+  assert.equal(map.get('mapTypeControl'), false, 'accepts falsey mapTypeControl');
+  assert.equal(map.get('noClear'), false, 'accepts falsey noClear');
+  assert.equal(map.get('panControl'), false, 'accepts falsey panControl');
+  assert.equal(map.get('rotateControl'), false, 'accepts falsey rotateControl');
+  assert.equal(map.get('scaleControl'), false, 'accepts falsey scaleControl');
+  assert.equal(map.get('scrollwheel'), false, 'accepts falsey scrollwheel');
+  assert.equal(map.get('streetViewControl'), false, 'accepts falsey streetViewControl');
+  assert.equal(map.get('zoomControl'), false, 'accepts falsey zoomControl');
 });

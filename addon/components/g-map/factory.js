@@ -7,6 +7,7 @@ import {isPresent} from 'ember-utils';
 const {isArray} = Array;
 
 const MAP_DEFAULTS = {
+  heading: 0,
   minZoom: 0,
   maxZoom: Infinity,
   clickableIcons: true,
@@ -15,7 +16,8 @@ const MAP_DEFAULTS = {
 
 export const GoogleMapProxy = Ember.ObjectProxy.extend({
   /**
-   * @type {Object|Undefined}
+   * @required
+   * @type {Object}
    * Update the center of the Google Map instance via LatLng literal
    */
   center: computed({
@@ -43,6 +45,7 @@ export const GoogleMapProxy = Ember.ObjectProxy.extend({
     },
 
     set(key, value) {
+      if (!value) { value = false; }
       assert('g-map `clickableIcons` is a Boolean', typeof value === 'boolean');
       this.content.setClickableIcons(value);
       return value;
@@ -77,7 +80,7 @@ export const GoogleMapProxy = Ember.ObjectProxy.extend({
   }),
 
   /**
-   * @type {String}
+   * @type {String|Undefined}
    * The name or url of the cursor to display when mousing over a draggable map
    */
   draggableCursor: computed({
@@ -86,7 +89,7 @@ export const GoogleMapProxy = Ember.ObjectProxy.extend({
   }),
 
   /**
-   * @type {String}
+   * @type {String|Undefined}
    * The name or url of the cursor to display when the map is being dragged
    */
   draggingCursor: computed({
@@ -116,6 +119,11 @@ export const GoogleMapProxy = Ember.ObjectProxy.extend({
     },
 
     set(key, value) {
+      if (!value) {
+        this.content.setOptions({fullscreenControlOptions: null});
+        return;
+      }
+
       assert('g-map `fullscreenControlOptions` is a String', typeof value === 'string');
 
       const id = getControlPositionId(value);
@@ -130,7 +138,7 @@ export const GoogleMapProxy = Ember.ObjectProxy.extend({
   }),
 
   /**
-   * @type {String}
+   * @type {String|Undefined}
    * Controls how gestures on the map are handled
    */
   gestureHandling: computed({
@@ -149,9 +157,10 @@ export const GoogleMapProxy = Ember.ObjectProxy.extend({
       return this.content.getHeading();
     },
 
-    set(key, heading) {
-      assert('g-map `heading` is a Number', typeof heading === 'number');
-      this.content.setHeading(heading);
+    set(key, value) {
+      if (typeof value !== 'number' && !value) { value = MAP_DEFAULTS.heading; }
+      assert('g-map `heading` is a Number', typeof value === 'number');
+      this.content.setHeading(value);
       return this.get('heading');
     }
   }).volatile(),
@@ -183,35 +192,41 @@ export const GoogleMapProxy = Ember.ObjectProxy.extend({
   _enforceMapTypeControlOptionsStyle: false,
 
   /**
-   * @type {Object}
+   * @type {Object|Undefined}
    * Configuration settings for the map type controls
    */
   mapTypeControlOptions: computed({
     get() {
+      const result = {};
       const {mapTypeControlOptions} = this.content;
 
-      const result = {};
+      if (mapTypeControlOptions) {
+        if (mapTypeControlOptions.mapTypeIds) {
+          result.mapTypeIds = mapTypeControlOptions.mapTypeIds.map(getMapType);
+        }
 
-      if (mapTypeControlOptions.mapTypeIds) {
-        result.mapTypeIds = mapTypeControlOptions.mapTypeIds.map(getMapType);
+        if (mapTypeControlOptions.position) {
+          result.position = getControlPosition(mapTypeControlOptions.position);
+        }
+
+        if (mapTypeControlOptions.style) {
+          result.style = getMapTypeControlStyle(mapTypeControlOptions.style);
+        }
+
+        if (!result.style && this._enforceMapTypeControlOptionsStyle){
+          result.style = 'DEFAULT'; // Enforce style presence
+        }
+
+        return result;
       }
-
-      if (mapTypeControlOptions.position) {
-        result.position = getControlPosition(mapTypeControlOptions.position);
-      }
-
-      if (mapTypeControlOptions.style) {
-        result.style = getMapTypeControlStyle(mapTypeControlOptions.style);
-      }
-
-      if (!result.style && this._enforceMapTypeControlOptionsStyle){
-        result.style = 'DEFAULT'; // Enforce style presence
-      }
-
-      return result;
     },
 
     set(key, value) {
+      if (!value) {
+        this.content.setOptions({mapTypeControlOptions: null});
+        return;
+      }
+
       assert('g-map `mapTypeControlOptions` is an Object', typeof value === 'object');
 
       const mapTypeControlOptions = Object.create(null);
@@ -248,7 +263,7 @@ export const GoogleMapProxy = Ember.ObjectProxy.extend({
   }),
 
   /**
-   * @type {String}
+   * @type {String|Undefined}
    * Type of map rendered, via map type
    */
   mapTypeId: computed({
@@ -257,13 +272,17 @@ export const GoogleMapProxy = Ember.ObjectProxy.extend({
     },
 
     set(key, value) {
+      if (!value) { value = ''; }
       assert('g-map `mapTypeId` is a String', typeof value === 'string');
 
       const mapTypeId = getMapTypesId(value);
-      assert('g-map `mapTypeId` is a valid map type', mapTypeId);
+
+      if (value) {
+        assert('g-map `mapTypeId` is a valid map type', mapTypeId);
+      }
 
       this.content.setMapTypeId(mapTypeId);
-      return getMapType(mapTypeId);
+      return this.get('mapTypeId');
     }
   }).volatile(),
 
@@ -277,6 +296,7 @@ export const GoogleMapProxy = Ember.ObjectProxy.extend({
     },
 
     set(key, value) {
+      if (typeof value !== 'number' && !value) { value = MAP_DEFAULTS.maxZoom; }
       value = (value === Infinity ? value : parseInt(value, 10));
       assert('g-map `maxZoom` is a Number', isNaN(value) === false);
       assert('g-map `maxZoom` is not less than zoom', value >= this.get('zoom'));
@@ -294,6 +314,7 @@ export const GoogleMapProxy = Ember.ObjectProxy.extend({
     },
 
     set(key, value) {
+      if (typeof value !== 'number' && !value) { value = MAP_DEFAULTS.minZoom; }
       value = parseInt(value, 10);
       assert('g-map `minZoom` is a Number', isNaN(value) === false);
       assert('g-map `minZoom` is not greater than zoom', value <= this.get('zoom'));
@@ -320,7 +341,7 @@ export const GoogleMapProxy = Ember.ObjectProxy.extend({
   }),
 
   /**
-   * @type {String}
+   * @type {String|Undefined}
    * Position to render the pan control
    * NOTE replaced configuration object with string
    */
@@ -332,6 +353,11 @@ export const GoogleMapProxy = Ember.ObjectProxy.extend({
     },
 
     set(key, value) {
+      if (!value) {
+        this.content.setOptions({panControlOptions: null});
+        return;
+      }
+
       assert('g-map `panControlOptions` is a String', typeof value === 'string');
 
       const id = getControlPositionId(value);
@@ -355,7 +381,7 @@ export const GoogleMapProxy = Ember.ObjectProxy.extend({
   }),
 
   /**
-   * @type {String}
+   * @type {String|Undefined}
    * Position to render the rotate control
    * NOTE replaced configuration object with string
    */
@@ -367,6 +393,11 @@ export const GoogleMapProxy = Ember.ObjectProxy.extend({
     },
 
     set(key, value) {
+      if (!value) {
+        this.content.setOptions({rotateControlOptions: null});
+        return;
+      }
+
       assert('g-map `rotateControlOptions` is a String', typeof value === 'string');
 
       const id = getControlPositionId(value);
@@ -390,7 +421,7 @@ export const GoogleMapProxy = Ember.ObjectProxy.extend({
   }),
 
   /**
-   * @type {String}
+   * @type {String|Undefined}
    * Style to render the scale control with
    * NOTE replaced configuration object with string
    */
@@ -402,16 +433,21 @@ export const GoogleMapProxy = Ember.ObjectProxy.extend({
      },
 
      set(key, value) {
-      assert('g-map `scaleControlOptions` is a String', typeof value === 'string');
+       if (!value) {
+         this.content.setOptions({scaleControlOptions: undefined});
+         return;
+       }
 
-      const id = getScaleControlStyleId(value);
-      assert('g-map `scaleControlOptions` is a valid scale control style', isPresent(id));
+       assert('g-map `scaleControlOptions` is a String', typeof value === 'string');
 
-      this.content.setOptions({
-        scaleControlOptions: {style: id}
-      });
+       const id = getScaleControlStyleId(value);
+       assert('g-map `scaleControlOptions` is a valid scale control style', isPresent(id));
 
-      return this.get('scaleControlOptions');
+       this.content.setOptions({
+         scaleControlOptions: {style: id}
+       });
+
+       return this.get('scaleControlOptions');
     }
   }),
 
@@ -425,6 +461,7 @@ export const GoogleMapProxy = Ember.ObjectProxy.extend({
   }),
 
   /**
+   * @required
    * @type {google.maps.StreetViewPanorama}
    * Set the street view panorama used by the map
    */
@@ -450,7 +487,7 @@ export const GoogleMapProxy = Ember.ObjectProxy.extend({
   }),
 
   /**
-   * @type {String}
+   * @type {String|Undefined}
    * Position to render the street view control
    * NOTE replaced configuration object with string
    */
@@ -462,6 +499,11 @@ export const GoogleMapProxy = Ember.ObjectProxy.extend({
     },
 
     set(key, value) {
+      if (!value) {
+        this.content.setOptions({streetViewControlOptions: null});
+        return;
+      }
+
       assert('g-map `streetViewControlOptions` is a String', typeof value === 'string');
 
       const id = getControlPositionId(value);
@@ -499,6 +541,7 @@ export const GoogleMapProxy = Ember.ObjectProxy.extend({
     },
 
     set(key, value) {
+      if (typeof value !== 'number' && !value) { value = MAP_DEFAULTS.tilt; }
       assert('g-map `tilt` is a Number', typeof value === 'number');
       assert('g-map `tilt` is `0` or `45`', value === 0 || value === 45);
       this.content.setTilt(value);
@@ -507,6 +550,7 @@ export const GoogleMapProxy = Ember.ObjectProxy.extend({
   }).volatile(),
 
   /**
+   * @required
    * @type {Number}
    * Map zoom level
    */
@@ -535,7 +579,7 @@ export const GoogleMapProxy = Ember.ObjectProxy.extend({
   }),
 
   /**
-   * @type {String}
+   * @type {String|Undefined}
    * Position to render the zoom control
    * NOTE replaced configuration object with string
    */
@@ -547,6 +591,11 @@ export const GoogleMapProxy = Ember.ObjectProxy.extend({
     },
 
     set(key, value) {
+      if (!value) {
+        this.content.setOptions({zoomControlOptions: null});
+        return;
+      }
+
       assert('g-map `zoomControlOptions` is a String', typeof value === 'string');
 
       const id = getControlPositionId(value);
@@ -618,6 +667,7 @@ function getStaticMapOption(key) {
  * Set a boolean option of a proxy's Google Map
  */
 function setStaticMapBooleanOption(key, value) {
+  if (!value) { value = false; }
   assert(`${key} was set without boolean`, typeof value === 'boolean');
   this.content.setOptions({[key]: value});
   return value;
@@ -626,13 +676,14 @@ function setStaticMapBooleanOption(key, value) {
 /**
  * @param {String} key     Google Map option key
  * @param {String} value   Google Map option value
- * @return {Boolean}
+ * @return {String|Undefined}
  * Set a string option of a proxy's Google Map
  */
 function setStaticMapStringOption(key, value) {
+  if (!value) { value = ''; }
   assert(`${key} was set without string`, typeof value === 'string');
   this.content.setOptions({[key]: value});
-  return value;
+  if (value) { return value; }
 }
 
 /**
