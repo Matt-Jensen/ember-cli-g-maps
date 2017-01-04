@@ -2,6 +2,7 @@ import computed from 'ember-computed';
 import {assert} from 'ember-metal/utils';
 import {assign} from 'ember-platform';
 import {default as get, getProperties} from 'ember-metal/get';
+import on from 'ember-evented/on';
 
 const {isArray} = Array;
 
@@ -13,16 +14,24 @@ const {isArray} = Array;
  * Create the necessary configuration computed properties and methods for all
  * Google maps' components including: maps, markers, ploygons ect.
  */
-export default function mapOptions(bound, passive = []) {
-  assert('bound options are required', isArray(bound));
+export default function mapOptions(googleMapsInstanceScope, bound, passive = []) {
+  assert('Map Options expects `googleMapsInstanceScope` argument is a String', typeof googleMapsInstanceScope === 'string');
+  assert('Map Options expects `bound` argument is an Array', isArray(bound));
 
   return {
     /**
      * @public
+     * @type {String}
+     * Location of Google Maps instance object
+     */
+    googleMapsInstanceScope,
+
+    /**
+     * @private
      * @type {Array}
      * List of Google Map Instance bound options
      */
-    googleMapsInstanceBoundOptions: bound,
+    _mapOptionsBoundProperties: bound,
 
     /**
      * @public
@@ -55,7 +64,12 @@ export default function mapOptions(bound, passive = []) {
      * @public
      * @type {Function}
      */
-    mapOptionsGetBound: getBoundOptions
+    mapOptionsGetBound: getBoundOptions,
+
+    /**
+     * @private
+     */
+    _mapOptionsDidUpdateAttrs: on('didUpdateAttrs', updateBoundOptions),
   };
 }
 
@@ -66,7 +80,7 @@ export default function mapOptions(bound, passive = []) {
  */
 function getMapOptions() {
   return removeUndefinedProperties(
-    getProperties(this, ...this.googleMapsInstanceBoundOptions)
+    getProperties(this, ...this._mapOptionsBoundProperties)
   );
 }
 
@@ -88,7 +102,7 @@ function getMapPassives() {
  */
 function getAllOptions() {
   const options = assign({}, get(this, 'passives'));
-  assign(options, getProperties(this, ...this.googleMapsInstanceBoundOptions));
+  assign(options, getProperties(this, ...this._mapOptionsBoundProperties));
   assign(options, get(this, 'options'));
   return removeUndefinedProperties(options);
 }
@@ -100,9 +114,40 @@ function getAllOptions() {
  * NOTE overrides top-level values with anything defined within `options`
  */
 function getBoundOptions() {
-  const options = assign({}, getProperties(this, ...this.googleMapsInstanceBoundOptions));
+  const options = assign({}, getProperties(this, ...this._mapOptionsBoundProperties));
   assign(options, get(this, 'options'));
   return removeUndefinedProperties(options);
+}
+
+/**
+ * @return {undefined}
+ * Invoke any updates of Google Map Instance defined at
+ * Component's `googleMapsInstanceScope` if change detected
+ */
+function updateBoundOptions() {
+  const mapObjInstance = get(this, this.googleMapsInstanceScope);
+
+  /*
+   * Do not handle updates until Google Maps instance
+   * has been asyncronously set via: `insertGoogleMapInstance`
+   */
+  if (!mapObjInstance) { return; }
+
+  const options = this.mapOptionsGetBound();
+
+  /*
+   * Check for changes to bound options and apply to instance
+   */
+  this._mapOptionsBoundProperties
+  .filter((option) => options[option] !== undefined)
+  .forEach((option) => {
+    const value = options[option];
+    const current = mapObjInstance.get(option);
+
+    if (isDiff(value, current)) {
+      mapObjInstance.set(option, value);
+    }
+  });
 }
 
 /**
@@ -121,4 +166,12 @@ function removeUndefinedProperties(obj) {
   });
 
   return result;
+}
+
+function isDiff(a, b) {
+  if (typeof a === 'object') {
+    return JSON.stringify(a).toLowerCase() !== JSON.stringify(b).toLowerCase();
+  } else {
+    return a !== b;
+  }
 }

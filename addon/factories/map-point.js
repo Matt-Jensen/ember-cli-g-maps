@@ -38,7 +38,11 @@ export default function mapPointComponent(settings) {
   }
 
   const componentConfig = assign({}, component);
-  assign(componentConfig, mapOptions(settings.bound, settings.passive));
+  assign(componentConfig, mapOptions(
+    settings.googleMapsInstanceScope,
+    settings.bound.filter((opt) => opt !== settings.center), // center managed here
+    settings.passive)
+  );
   assign(componentConfig, mapEvents(settings));
 
   return assign(componentConfig, {
@@ -94,7 +98,7 @@ export default function mapPointComponent(settings) {
     /**
      * @private
      */
-    _mapPointDidUpdateAttrs: on('didUpdateAttrs', didUpdateOptions),
+    _mapPointDidUpdateAttrs: on('didUpdateAttrs', updateMapInstanceCenter),
 
     /**
      * @private
@@ -138,7 +142,7 @@ function didInsertGoogleMapInstanceElement() {
  * Invoke any updates of Google Map Instance defined at
  * Component's `googleMapsInstanceScope` if change detected
  */
-function didUpdateOptions() {
+function updateMapInstanceCenter() {
   const mapObjInstance = get(this, this.googleMapsInstanceScope);
 
   /*
@@ -150,22 +154,13 @@ function didUpdateOptions() {
   /*
    * Set center in order of strategy priority
    */
-  const options = this.mapOptionsGetBound();
-  options[this._mapPointCenter] = this._mapPointGetCenter();
+  const center = this._mapPointCenter;
+  const updates = this._mapPointGetCenter();
+  const current = mapObjInstance.get(center);
 
-  /*
-   * Check for changes to bound options and apply to instance
-   */
-  this.googleMapsInstanceBoundOptions
-  .filter((option) => options[option] !== undefined)
-  .forEach((option) => {
-    const value = options[option];
-    const current = mapObjInstance.get(option);
-
-    if (isDiff(value, current)) {
-      mapObjInstance.set(option, value);
-    }
-  });
+  if (updates.lat !== current.lat || updates.lng !== current.lng) {
+    mapObjInstance.set(center, updates);
+  }
 }
 
 /**
@@ -203,16 +198,5 @@ function getCenter() {
   const defaults = this._mapPointDefaults;
 
   // fallback
-  return {
-    lat: defaults.lat,
-    lng: defaults.lng
-  };
-}
-
-function isDiff(a, b) {
-  if (typeof a === 'object') {
-    return JSON.stringify(a).toLowerCase() !== JSON.stringify(b).toLowerCase();
-  } else {
-    return a !== b;
-  }
+  return {lat: defaults.lat, lng: defaults.lng};
 }

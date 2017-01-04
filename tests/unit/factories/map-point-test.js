@@ -46,24 +46,19 @@ test('it invokes `insertGoogleMapInstance` with configured options', function(as
   return instance._mapPointDidInsertElement();
 });
 
-test('it invokes `updateGoogleMapInstance` with updated properties', function(assert) {
-  assert.expect(2);
-
+test('it calls set on Google Map instance center property with updated center', function(assert) {
   const newState = {
-    updatedValue: 1,
-    updatedObj: {updated: true},
-    notUpdated: 0
+    point: {lat: 1, lng: 1}
   };
 
   const oldState = {
-    updatedValue: 0,
-    updatedObj: {updated: false},
-    notUpdated: 0
+    point: {lat: 0, lng: 0}
   };
 
   const instance = mapPoint({
     googleMapsInstanceScope: 'scope',
-    bound: ['updatedValue', 'updatedObj', 'notUpdated', 'notDefined'],
+    center: 'point',
+    bound: [],
     component: {
       insertGoogleMapInstance() {}
     }
@@ -79,9 +74,7 @@ test('it invokes `updateGoogleMapInstance` with updated properties', function(as
     }
   };
 
-  instance._super = () => {};
   assign(instance, newState);
-
   instance._mapPointDidUpdateAttrs();
 });
 
