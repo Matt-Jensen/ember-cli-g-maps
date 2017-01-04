@@ -11,6 +11,7 @@ const MARKER_DEFAULTS = {
   clickable: true,
   crossOnDrag: true,
   draggable: false,
+  opacity: 1,
   optimized: true
 };
 
@@ -21,15 +22,27 @@ export const GoogleMapMarkerProxy = Ember.ObjectProxy.extend({
    */
   anchorPoint: computed({
     get() {
-      return assign({}, this.content.anchorPoint); // convert Point to literal
+      const {anchorPoint} = this.content;
+
+      if (anchorPoint) {
+        return assign({}, anchorPoint); // convert Point to literal
+      }
     },
 
     set(key, value) {
+      if (!value) {
+        this.content.setOptions({anchorPoint: null}); // remove anchorPoint
+        return undefined;
+      }
+
       assert('g-map-marker `anchorPoint` is a Object', typeof value === 'object');
       assert('g-map-marker `anchorPoint.x` is a number', typeof value.x === 'number');
       assert('g-map-marker `anchorPoint.y` is a number', typeof value.y === 'number');
 
-      this.content.anchorPoint = new google.maps.Point(value.x, value.y);
+      this.content.setOptions({
+        anchorPoint: new google.maps.Point(value.x, value.y)
+      });
+
       return this.get('anchorPoint');
     }
   }),
@@ -44,6 +57,11 @@ export const GoogleMapMarkerProxy = Ember.ObjectProxy.extend({
     },
 
     set(key, value) {
+      if (!value) {
+        this.content.setAnimation(''); // remove animation
+        return undefined;
+      }
+
       assert('g-map-marker `animation` is a String', typeof value === 'string');
 
       const animation = getAnimationId(value);
@@ -101,10 +119,15 @@ export const GoogleMapMarkerProxy = Ember.ObjectProxy.extend({
    */
   cursor: computed({
     get() {
-      return this.content.getCursor();
+      const cursor = this.content.getCursor();
+      if (cursor) { return cursor; }
     },
 
     set(key, value) {
+      if (!value) {
+        return this.content.setCursor(''); // remove cursor
+      }
+
       assert('g-map-marker `cursor` is a String', typeof value === 'string');
       this.content.setCursor(value);
       return value;
@@ -141,10 +164,12 @@ export const GoogleMapMarkerProxy = Ember.ObjectProxy.extend({
     },
 
     set(key, value) {
-      assert('g-map-marker `icon` is a String or Object', typeof value === 'string' || typeof value === 'object');
+      if (!value) { value = ''; } // setting an icon to '' removes it
+
+      assert('g-map-marker `icon` is a String or Object', typeof value === 'string' || typeof value === 'object' || value === false || value === null);
 
       if (typeof value === 'string') {
-        this.content.setIcon(value); // set as Icon.url
+        this.content.setIcon(value); // set as Icon.url or remove if falsey value
       } else if (value.url) {
         this.content.setIcon(markerIcon(value));
       } else if (value.path){
@@ -163,10 +188,13 @@ export const GoogleMapMarkerProxy = Ember.ObjectProxy.extend({
    */
   label: computed({
     get() {
-      return this.content.getLabel();
+      const label = this.content.getLabel();
+      if (label) { return label; }
     },
 
     set(key, value) {
+      if (!value) { value = ''; } // setting a label to '' removes it
+
       assert('g-map-marker `label` is a String or Object', typeof value === 'string' || typeof value === 'object');
 
       if (typeof value === 'object') {
@@ -188,6 +216,10 @@ export const GoogleMapMarkerProxy = Ember.ObjectProxy.extend({
     },
 
     set(key, value) {
+      if (typeof value !== 'number' && !value) {
+        value = MARKER_DEFAULTS.opacity; // reset opacity
+      }
+
       assert('g-map-marker `opacity` is a Number', typeof value === 'number');
       assert('g-map-marker `opacity` is not greater than 1', value <= 1);
       assert('g-map-marker `opacity` is not less than 0', value >= 0);
@@ -235,15 +267,21 @@ export const GoogleMapMarkerProxy = Ember.ObjectProxy.extend({
   }).volatile(),
 
   /**
-   * @type {Object}
+   * @type {Object|Undefined}
    * Image map region definition used for drag/click
    */
   shape: computed({
     get() {
-      return this.content.getShape();
+      const shape = this.content.getShape();
+      if (shape) { return shape; }
     },
 
     set(key, value) {
+      if (!value) {
+        this.content.setShape(false); // remove shape
+        return undefined;
+      }
+
       assert('g-map-marker `shape` is an Object', typeof value === 'object');
       assert('g-map-marker `shape.type` is a string', typeof value.type === 'string');
       assert('g-map-marker `shape.coords` is a an Array of Numbers', isArray(value.coords) && typeof value.coords[0] === 'number');
@@ -266,18 +304,20 @@ export const GoogleMapMarkerProxy = Ember.ObjectProxy.extend({
   }).volatile(),
 
   /**
-   * @type {String}
+   * @type {String|Undefined}
    * Rollover text
    */
   title: computed({
     get() {
-      return this.content.getTitle();
+      const title = this.content.getTitle();
+      if (title) { return title; }
     },
 
     set(key, value) {
+      if (!value) { value = ''; } // remove title
       assert('g-map-marker `title` is a String', typeof value === 'string');
       this.content.setTitle(value);
-      return value;
+      return this.get('title');
     }
   }).volatile(),
 
@@ -298,15 +338,21 @@ export const GoogleMapMarkerProxy = Ember.ObjectProxy.extend({
   }).volatile(),
 
   /**
-   * @type {Number}
+   * @type {Number|Undefined}
    * Marker display order
    */
   zIndex: computed({
     get() {
-      return this.content.getZIndex();
+      const zIndex = this.content.getZIndex();
+      if (typeof zIndex === 'number') { return zIndex; }
     },
 
     set(key, value) {
+      if (typeof value !== 'number' && !value) {
+        this.content.setZIndex(null);
+        return undefined;
+      }
+
       assert('g-map-marker `zIndex` is a Number', typeof value === 'number');
       assert('g-map-marker `zIndex` is less than max zIndex', value <= google.maps.Marker.MAX_ZINDEX);
 

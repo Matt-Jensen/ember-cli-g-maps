@@ -41,6 +41,17 @@ test('it only allows a point literal as an anchor point', function(assert) {
   assert.equal(actual.y, pointLiteral.y, 'resolves correct anchorPoint longitude');
 });
 
+test('it removes an anchor point with a falsey value', function(assert) {
+  const marker = googleMapMarker(createGoogleMap(), assign({
+    anchorPoint: {x: 1, y: 1}
+  }, DEFAULTS));
+
+  marker.set('anchorPoint', false);
+  marker.notifyPropertyChange('anchorPoint');
+
+  assert.equal(marker.get('anchorPoint'), undefined, 'anchorPoint is no longer defined');
+});
+
 test('it returns the configured animation name', function(assert) {
   const expected = {animation: 'DROP'};
   const marker = googleMapMarker(createGoogleMap(), assign(expected, DEFAULTS));
@@ -54,6 +65,15 @@ test('it only allows setting a valid animation name or id number', function(asse
 
   marker.set('animation', 'bounce');
   assert.equal(marker.get('animation'), 'BOUNCE', 'resolves new bounce animation');
+});
+
+test('it removes an animation with a falsey value', function(assert) {
+  const marker = googleMapMarker(createGoogleMap(), assign({animation: 'DROP'}, DEFAULTS));
+
+  marker.set('animation', false);
+  marker.notifyPropertyChange('animation');
+
+  assert.equal(marker.get('animation'), undefined, 'animation is no longer defined');
 });
 
 test('it returns the configured clickable setting', function(assert) {
@@ -96,10 +116,19 @@ test('it returns the configured cursor setting', function(assert) {
 test('it only allows setting a valid cursor value', function(assert) {
   const marker = googleMapMarker(createGoogleMap(), assign({}, DEFAULTS));
 
-  assert.throws(() => marker.set('cursor', false), 'rejects non-string value');
+  assert.throws(() => marker.set('cursor', {}), 'rejects non-string value');
 
   marker.set('cursor', 'pointer');
   assert.equal(marker.get('cursor'), 'pointer', 'updated cursor');
+});
+
+test('it removes a cursor with a falsey value', function(assert) {
+  const marker = googleMapMarker(createGoogleMap(), assign({cursor: 'pointer'}, DEFAULTS));
+
+  marker.set('cursor', false);
+  marker.notifyPropertyChange('cursor');
+
+  assert.equal(marker.get('cursor'), undefined, 'cursor is no longer defined');
 });
 
 test('it returns the configured draggable setting', function(assert) {
@@ -127,7 +156,7 @@ test('it only allows setting a valid icon value', function(assert) {
   const url = ICON_URL;
   const marker = googleMapMarker(createGoogleMap(), assign({}, DEFAULTS));
 
-  assert.throws(() => marker.set('icon', false), 'rejects invalid');
+  assert.throws(() => marker.set('icon', 4), 'rejects invalid icon value');
 
   marker.set('icon', url);
   assert.equal(marker.get('icon'), url, 'updated icon as string URL');
@@ -155,16 +184,26 @@ test('it only allows setting a valid icon value', function(assert) {
   assert.deepEqual(marker.get('icon'), symbolSvgConfig, 'updated icon with symbol SVG path notation configuration');
 });
 
+test('it removes an icon with a falsey value', function(assert) {
+  const url = ICON_URL;
+  const marker = googleMapMarker(createGoogleMap(), assign({}, DEFAULTS));
+
+  marker.set('icon', url);
+  marker.set('icon', false);
+
+  assert.equal(marker.get('icon'), undefined, 'removed icon with `false` value');
+});
+
 test('it returns the configured label', function(assert) {
   const expected = {label: 'Marker test'};
   const marker = googleMapMarker(createGoogleMap(), assign(expected, DEFAULTS));
   assert.equal(marker.get('label'), expected.label, 'resolves configured label');
 });
 
-test('it only allows setting a valid string label value', function(assert) {
+test('it only allows setting a valid ~string~ label value', function(assert) {
   const marker = googleMapMarker(createGoogleMap(), assign({}, DEFAULTS));
 
-  assert.throws(() => marker.set('label', false), 'rejects invalid label value');
+  assert.throws(() => marker.set('label', 4), 'rejects invalid label value');
 
   const labelStr = 'Marker test';
   marker.set('label', labelStr);
@@ -172,7 +211,7 @@ test('it only allows setting a valid string label value', function(assert) {
   assert.equal(marker.get('label'), labelStr, 'updated label as string');
 });
 
-test('it only allows setting a valid object label value', function(assert) {
+test('it only allows setting a valid ~object~ label value', function(assert) {
   const marker = googleMapMarker(createGoogleMap(), assign({}, DEFAULTS));
 
   const markerLabel = {
@@ -186,6 +225,15 @@ test('it only allows setting a valid object label value', function(assert) {
   marker.set('label', markerLabel);
   marker.notifyPropertyChange('label');
   assert.deepEqual(marker.get('label'), markerLabel, 'updated label with marker label configuration');
+});
+
+test('it removes a label with a falsey value', function(assert) {
+  const marker = googleMapMarker(createGoogleMap(), assign({label: 'test'}, DEFAULTS));
+
+  marker.set('label', false);
+  marker.notifyPropertyChange('label');
+
+  assert.equal(marker.get('label'), undefined, 'label is no longer defined');
 });
 
 test('it returns the configured opacity setting', function(assert) {
@@ -205,6 +253,19 @@ test('it only allows setting a valid opacity value', function(assert) {
   marker.set('opacity', expected);
   marker.notifyPropertyChange('opacity');
   assert.equal(marker.get('opacity'), expected, 'updated opacity');
+});
+
+test('it restores default opacity with a falsey value', function(assert) {
+  const marker = googleMapMarker(createGoogleMap(), assign({}, DEFAULTS));
+
+  const defaultOpacity = marker.get('opacity');
+  marker.set('opacity', 0.5);
+  marker.notifyPropertyChange('opacity');
+
+  marker.set('opacity', false);
+  marker.notifyPropertyChange('opacity');
+
+  assert.equal(marker.get('opacity'), defaultOpacity, 'opacity is reset to default value');
 });
 
 test('it returns the configured optimized setting', function(assert) {
@@ -252,7 +313,7 @@ test('it returns the configured shape', function(assert) {
   assert.equal(marker.get('shape'), expected.shape, 'resolves configured shape');
 });
 
-test('it only allows setting a valid circular marker shape literal as a shape', function(assert) {
+test('it only allows setting a valid ~circular~ marker shape literal as a shape', function(assert) {
   const circleMarkerShapeLiteral = {
     coords: [1, 1, 2],
     type: 'circle'
@@ -268,7 +329,7 @@ test('it only allows setting a valid circular marker shape literal as a shape', 
   assert.deepEqual(marker.content.shape, circleMarkerShapeLiteral, 'resolves correct circle marker shape');
 });
 
-test('it only allows setting a valid polygonal marker shape literal as a shape', function(assert) {
+test('it only allows setting a valid ~polygonal~ marker shape literal as a shape', function(assert) {
   const polyMarkerShapeLiteral = {
     coords: [1, 1, 2, 2],
     type: 'poly'
@@ -282,7 +343,7 @@ test('it only allows setting a valid polygonal marker shape literal as a shape',
   assert.deepEqual(marker.content.shape, polyMarkerShapeLiteral, 'resolves correct poly marker shape');
 });
 
-test('it only allows setting a valid rectangular marker shape literal as a shape', function(assert) {
+test('it only allows setting a valid ~rectangular~ marker shape literal as a shape', function(assert) {
   const rectMarkerShapeLiteral = {
     coords: [1, 1, 2, 2],
     type: 'rect'
@@ -295,6 +356,19 @@ test('it only allows setting a valid rectangular marker shape literal as a shape
   assert.deepEqual(marker.content.shape, rectMarkerShapeLiteral, 'resolves correct rect marker shape');
 });
 
+test('it removes a shape with a falsey value', function(assert) {
+  const marker = googleMapMarker(createGoogleMap(), assign({
+    shape: {
+      coords: [10, 10, 100],
+      type: 'circle'
+    }
+  }, DEFAULTS));
+
+  marker.set('shape', false);
+
+  assert.equal(marker.get('shape'), undefined, 'shape is no longer defined');
+});
+
 test('it returns the configured title setting', function(assert) {
   const expected = {title: 'test'};
   const marker = googleMapMarker(createGoogleMap(), assign(expected, DEFAULTS));
@@ -304,12 +378,21 @@ test('it returns the configured title setting', function(assert) {
 test('it only allows setting a valid title value', function(assert) {
   const marker = googleMapMarker(createGoogleMap(), assign({}, DEFAULTS));
 
-  assert.throws(() => marker.set('title', false), 'rejects non-string value');
+  assert.throws(() => marker.set('title', 4), 'rejects non-string value');
 
   const expected = 'test';
   marker.set('title', expected);
 
   assert.equal(marker.get('title'), expected, 'updated title');
+});
+
+test('it removes title with a falsey value', function(assert) {
+  const marker = googleMapMarker(createGoogleMap(), assign({title: 'test'}, DEFAULTS));
+
+  marker.set('title', false);
+  marker.notifyPropertyChange('title');
+
+  assert.equal(marker.get('title'), undefined, 'title is no longer defined');
 });
 
 test('it returns the configured visible setting', function(assert) {
@@ -342,6 +425,14 @@ test('it only allows setting a valid zIndex value', function(assert) {
   const expected = 100;
   marker.set('zIndex', expected);
   assert.equal(marker.get('zIndex'), expected, 'updated zIndex');
+});
+
+test('it removes zIndex with a, non-numeric, falsey value', function(assert) {
+  const marker = googleMapMarker(createGoogleMap(), assign({zIndex: 100}, DEFAULTS));
+
+  marker.set('zIndex', false);
+
+  assert.equal(marker.get('zIndex'), undefined, 'zIndex is no longer defined');
 });
 
 module('Unit | Factory | Google Map Marker | Marker Icon');
