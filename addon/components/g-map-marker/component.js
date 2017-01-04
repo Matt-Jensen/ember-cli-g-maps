@@ -1,11 +1,8 @@
-import RSVP from 'rsvp';
-import Component from 'ember-component';
 import get from 'ember-metal/get';
 import set from 'ember-metal/set';
 import {assert} from 'ember-metal/utils';
-import run from 'ember-runloop';
-import Evented from 'ember-evented';
 
+import GMapChildComponent from '../g-map-child';
 import mapPoint from '../../factories/map-point';
 import googleMapMarker from './factory';
 import isTest from '../../mixins/is-test';
@@ -33,7 +30,7 @@ const googleMapsInstanceScope = ENV.googleMapMarker.scope;
  * Generate an instance of a map point component
  * as the g-map-marker component class
  */
-const GMapMarker = Component.extend(isTest, Evented, mapPoint({
+export default GMapChildComponent.extend(isTest, mapPoint({
   bound: MARKER_BOUND_OPTIONS,
   defaults: {},
   events: MARKER_EVENTS,
@@ -49,58 +46,57 @@ const GMapMarker = Component.extend(isTest, Evented, mapPoint({
     [googleMapsInstanceScope]: null,
 
     /**
-     * @param {Object} options   Current Map options
-     * @return {RSVP.Promise}    Wait for Marker's map to instantiate
-     * Method invoked when Google Maps libraries have loaded
-     * and the `didInsertElement` lifecycle hook has fired
+     * Required for g-map-child Component
      */
-    insertGoogleMapInstance(options) {
-      return new RSVP.Promise((resolve) => {
-        run.later(() => {
-          const map = get(this, googleMapScope);
+    insertGoogleMapInstance() {
+      return this._super(...arguments);
+    },
 
-          assert(
-            'g-map-marker requires a Google Map or Street View Panorama instance',
-            map && (map.content instanceof google.maps.Map || map.content instanceof google.maps.StreetViewPanorama)
-          );
+    /**
+     * @param {google.maps.Map}  Google Map | Street View Panorama instance
+     * @param {Object} options
+     * Method invoked after Google Maps libraries have loaded
+     * and the the Google Map canvas has instantiated
+     */
+    insertedGoogleMapCanvas(map, options) {
+      this._super(...arguments);
 
-          /*
-           * Set marker position default to map center
-           */
-          this._mapPointDefaults = get(map, 'center');
+      assert(
+        'g-map-marker requires a Google Map or Street View Panorama instance',
+        map && (map.content instanceof google.maps.Map || map.content instanceof google.maps.StreetViewPanorama)
+      );
 
-          if (!options.position.lat) {
-            options.position.lat = this._mapPointDefaults.lat;
-          }
+      /*
+       * Set marker position default to map center
+       */
+      this._mapPointDefaults = get(map, 'center');
 
-          if (!options.position.lng) {
-            options.position.lng = this._mapPointDefaults.lng;
-          }
+      if (!options.position.lat) {
+        options.position.lat = this._mapPointDefaults.lat;
+      }
 
-          const marker = set(this, googleMapsInstanceScope, googleMapMarker(map.content, options));
+      if (!options.position.lng) {
+        options.position.lng = this._mapPointDefaults.lng;
+      }
 
-          /*
-           * Some test helpers require access to the marker instance
-           */
-          if (get(this, '_isTest')) {
-            const canvas = map.content.getDiv();
-            canvas.__GOOGLE_MAP_MARKERS__ = canvas.__GOOGLE_MAP_MARKERS__ || [];
-            canvas.__GOOGLE_MAP_MARKERS__.push(marker.content);
-          }
+      const marker = set(this, googleMapsInstanceScope, googleMapMarker(map.content, options));
 
-          /*
-           * Allow event event binding to occur before `didUpdateAttrs`
-           */
-          run.later(() => this.trigger('didUpdateAttrs'));
-          resolve();
-        });
-      });
+      /*
+       * Some test helpers require access to the marker instance
+       */
+      if (get(this, '_isTest')) {
+        const canvas = map.content.getDiv();
+        canvas.__GOOGLE_MAP_MARKERS__ = canvas.__GOOGLE_MAP_MARKERS__ || [];
+        canvas.__GOOGLE_MAP_MARKERS__.push(marker.content);
+      }
     },
 
     /*
      * Remove any marker instances from Google Map canvas
      */
     willDestroyElement() {
+      this._super(...arguments);
+
       if (get(this, '_isTest')) {
         const canvas = get(this, googleMapScope).content.getDiv();
         const marker = get(this, googleMapsInstanceScope);
@@ -112,9 +108,3 @@ const GMapMarker = Component.extend(isTest, Evented, mapPoint({
     }
   }
 }));
-
-GMapMarker.reopenClass({
-  positionalParams: [googleMapScope]
-});
-
-export default GMapMarker;
