@@ -170,8 +170,12 @@ function removeUndefinedProperties(obj) {
 
 function isDiff(a, b) {
   if (typeof a === 'object') {
-    return JSON.stringify(a).toLowerCase() !== JSON.stringify(b).toLowerCase();
-  } else {
-    return a !== b;
+    a = JSON.stringify(a).toLowerCase();
   }
+
+  if (typeof b === 'object') {
+    b = JSON.stringify(b).toLowerCase();
+  }
+
+  return a !== b;
 }
