@@ -12,6 +12,7 @@ const googleMapScope = ENV.googleMap.scope;
 const GMapChildComponent = Component.extend(Evented, {
   init() {
     this._super(...arguments);
+    assert('g-map-child `googleMapsInstanceScope` is a String', typeof this.googleMapsInstanceScope === 'string');
     assert('g-map-child requires a `insertedGoogleMapCanvas` method', Boolean(this.insertedGoogleMapCanvas));
   },
 
@@ -38,6 +39,19 @@ const GMapChildComponent = Component.extend(Evented, {
         resolve();
       });
     });
+  },
+
+  /**
+   * Handle removal of Google Map instance by
+   * setting its' map to null
+   */
+  willDestroyElement() {
+    this._super(...arguments);
+
+    const googleMapInstance = get(this, this.googleMapsInstanceScope);
+    assert(`g-map-child requires a Google Map Instance defined at ${this.googleMapsInstanceScope}`, googleMapInstance);
+
+    googleMapInstance.content.setMap(null);
   }
 });
 
