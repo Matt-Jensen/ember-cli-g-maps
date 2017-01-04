@@ -471,7 +471,7 @@ export const GoogleMapProxy = Ember.ObjectProxy.extend({
     },
 
     set(key, value) {
-      assert('g-map `streetView` is set a google.maps.StreetViewPanorama instance', value instanceof google.maps.StreetViewPanorama);
+      assert('g-map `streetView` is a google.maps.StreetViewPanorama instance', value instanceof google.maps.StreetViewPanorama);
       this.content.setOptions({streetView: value});
       return value;
     }
