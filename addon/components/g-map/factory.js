@@ -133,7 +133,7 @@ export const GoogleMapProxy = Ember.ObjectProxy.extend({
         fullscreenControlOptions: {position: id}
       });
 
-      return this.get('fullscreenControlOptions');
+      return getControlPosition(id);
     }
   }),
 
@@ -197,28 +197,10 @@ export const GoogleMapProxy = Ember.ObjectProxy.extend({
    */
   mapTypeControlOptions: computed({
     get() {
-      const result = {};
-      const {mapTypeControlOptions} = this.content;
-
-      if (mapTypeControlOptions) {
-        if (mapTypeControlOptions.mapTypeIds) {
-          result.mapTypeIds = mapTypeControlOptions.mapTypeIds.map(getMapType);
-        }
-
-        if (mapTypeControlOptions.position) {
-          result.position = getControlPosition(mapTypeControlOptions.position);
-        }
-
-        if (mapTypeControlOptions.style) {
-          result.style = getMapTypeControlStyle(mapTypeControlOptions.style);
-        }
-
-        if (!result.style && this._enforceMapTypeControlOptionsStyle){
-          result.style = 'DEFAULT'; // Enforce style presence
-        }
-
-        return result;
-      }
+      return userFacingMapTypeControlOptions(
+        this.content.mapTypeControlOptions,
+        this._enforceMapTypeControlOptionsStyle
+      );
     },
 
     set(key, value) {
@@ -258,7 +240,11 @@ export const GoogleMapProxy = Ember.ObjectProxy.extend({
       }
 
       this.content.setOptions({mapTypeControlOptions});
-      return this.get('mapTypeControlOptions');
+
+      return userFacingMapTypeControlOptions(
+        this.content.mapTypeControlOptions,
+        this._enforceMapTypeControlOptionsStyle
+      );
     }
   }),
 
@@ -367,7 +353,7 @@ export const GoogleMapProxy = Ember.ObjectProxy.extend({
         panControlOptions: {position: id}
       });
 
-      return this.get('panControlOptions');
+      return getControlPosition(id);
     }
   }),
 
@@ -407,7 +393,7 @@ export const GoogleMapProxy = Ember.ObjectProxy.extend({
         rotateControlOptions: {position: id}
       });
 
-      return this.get('rotateControlOptions');
+      return getControlPosition(id);;
     }
   }),
 
@@ -447,7 +433,7 @@ export const GoogleMapProxy = Ember.ObjectProxy.extend({
          scaleControlOptions: {style: id}
        });
 
-       return this.get('scaleControlOptions');
+       return getScaleControlStyle(id);
     }
   }),
 
@@ -513,7 +499,7 @@ export const GoogleMapProxy = Ember.ObjectProxy.extend({
         streetViewControlOptions: {position: id}
       });
 
-      return this.get('streetViewControlOptions');
+      return getControlPosition(id);
     }
   }),
 
@@ -605,7 +591,7 @@ export const GoogleMapProxy = Ember.ObjectProxy.extend({
         zoomControlOptions: {position: id}
       });
 
-      return this.get('zoomControlOptions');
+      return getControlPosition(id);
     }
   })
 });
@@ -768,4 +754,36 @@ export function getScaleControlStyle(id) {
   id = parseInt(id, 10);
   return Object.keys(google.maps.ScaleControlStyle).filter((style) =>
     google.maps.ScaleControlStyle[style] === id)[0];
+}
+
+/**
+ * @private
+ * @param {Object}
+ * @param {Boolean}
+ * @return {Object|Undefined}
+ * Construct a user facing Map Type Control options configuration
+ * from a Google Maps `mapTypeControlOptions` configuration
+ */
+function userFacingMapTypeControlOptions(mapTypeControlOptions, enforceMapTypeControlOptionsStyle = false) {
+  const result = {};
+
+  if (mapTypeControlOptions) {
+    if (mapTypeControlOptions.mapTypeIds) {
+      result.mapTypeIds = mapTypeControlOptions.mapTypeIds.map(getMapType);
+    }
+
+    if (mapTypeControlOptions.position) {
+      result.position = getControlPosition(mapTypeControlOptions.position);
+    }
+
+    if (mapTypeControlOptions.style) {
+      result.style = getMapTypeControlStyle(mapTypeControlOptions.style);
+    }
+
+    if (!result.style && enforceMapTypeControlOptionsStyle){
+      result.style = 'DEFAULT'; // Enforce style presence
+    }
+
+    return result;
+  }
 }
