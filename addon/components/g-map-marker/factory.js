@@ -39,11 +39,11 @@ export const GoogleMapMarkerProxy = Ember.ObjectProxy.extend({
       assert('g-map-marker `anchorPoint.x` is a number', typeof value.x === 'number');
       assert('g-map-marker `anchorPoint.y` is a number', typeof value.y === 'number');
 
-      this.content.setOptions({
-        anchorPoint: new google.maps.Point(value.x, value.y)
-      });
+      const anchorPoint = new google.maps.Point(value.x, value.y);
 
-      return this.get('anchorPoint');
+      this.content.setOptions({anchorPoint});
+
+      return assign({}, anchorPoint);
     }
   }),
 
