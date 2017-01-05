@@ -1,225 +1,391 @@
-<h2>Markers</h2>
+<h2>Marker Properties</h2>
 
-<p class="medium-7 large-5">
-  <a href="https://developers.google.com/maps/documentation/javascript/3.exp/reference#MarkerOptions" target="_blank">Goolge Map Markers</a> allow you to add an indicator to a specific coordinate. Use Google's default marker, or apply your own custom marker.  Markers support a range of user interactions and are draggable as well.  Also if you want to add context or information about a location you can use the marker's <span class="gmaps-inline-code">infoWindow</span> property.
+<div class="grid-block -mb">
+  <ul class="grid-content large-3 medium-5 small-12 -nml -nmb -lis-none">
+    <li><a {{action "scrollToId" "anchorPoint"}}>anchorPoint</a></li>
+    <li><a {{action "scrollToId" "animation"}}>animation</a></li>
+    <li><a {{action "scrollToId" "clickable"}}>clickable</a></li>
+    <li><a {{action "scrollToId" "crossOnDrag"}}>crossOnDrag</a></li>
+    <li><a {{action "scrollToId" "cursor"}}>cursor</a></li>
+  </ul>
+  <ul class="grid-content large-3 medium-5 small-12 -nml -nmb -lis-none">
+    <li><a {{action "scrollToId" "draggable"}}>draggable</a></li>
+    <li><a {{action "scrollToId" "icon"}}>icon</a></li>
+    <li><a {{action "scrollToId" "label"}}>label</a></li>
+    <li><a {{action "scrollToId" "opacity"}}>opacity</a></li>
+    <li><a {{action "scrollToId" "optimized"}}>optimized</a></li>
+  </ul>
+  <ul class="grid-content large-3 medium-5 small-12 -nml -nmb -lis-none">
+    <li><a {{action "scrollToId" "position"}}>position</a></li>
+    <li><a {{action "scrollToId" "shape"}}>shape</a></li>
+    <li><a {{action "scrollToId" "title"}}>title</a></li>
+    <li><a {{action "scrollToId" "visible"}}>visible</a></li>
+    <li><a {{action "scrollToId" "zIndex"}}>zIndex</a></li>
+  </ul>
+</div>
+
+<h2>Marker Events</h2>
+
+<div class="grid-block -mb">
+  <ul class="grid-content large-3 medium-5 small-12 -nml -nmb -lis-none">
+    <li><a {{action "scrollToId" "animation_changed"}}>animation_changed</a></li>
+    <li><a {{action "scrollToId" "click"}}>click</a></li>
+    <li><a {{action "scrollToId" "clickable_changed"}}>clickable_changed</a></li>
+    <li><a {{action "scrollToId" "cursor_changed"}}>cursor_changed</a></li>
+    <li><a {{action "scrollToId" "dblclick"}}>dblclick</a></li>
+    <li><a {{action "scrollToId" "drag"}}>drag</a></li>
+    <li><a {{action "scrollToId" "dragend"}}>dragend</a></li>
+  </ul>
+
+  <ul class="grid-content large-3 medium-5 small-12 -nml -nmb -lis-none">
+    <li><a {{action "scrollToId" "draggable_changed"}}>draggable_changed</a></li>
+    <li><a {{action "scrollToId" "dragstart"}}>dragstart</a></li>
+    <li><a {{action "scrollToId" "icon_changed"}}>icon_changed</a></li>
+    <li><a {{action "scrollToId" "mousedown"}}>mousedown</a></li>
+    <li><a {{action "scrollToId" "mouseout"}}>mouseout</a></li>
+    <li><a {{action "scrollToId" "mouseover"}}>mouseover</a></li>
+    <li><a {{action "scrollToId" "mouseup"}}>mouseup</a></li>
+  </ul>
+
+  <ul class="grid-content large-3 medium-5 small-12 -nml -nmb -lis-none">
+    <li><a {{action "scrollToId" "position_changed"}}>position_changed</a></li>
+    <li><a {{action "scrollToId" "rightclick"}}>rightclick</a></li>
+    <li><a {{action "scrollToId" "shape_changed"}}>shape_changed</a></li>
+    <li><a {{action "scrollToId" "title_changed"}}>title_changed</a></li>
+    <li><a {{action "scrollToId" "visible_changed"}}>visible_changed</a></li>
+    <li><a {{action "scrollToId" "zindex_changed"}}>zindex_changed</a></li>
+  </ul>
+</div>
+
+<div class="grid-content -np -mb">
+  {{#g-map
+    class="gmaps-docs-map"
+    lat=lat
+    lng=lng
+    zoom=zoom
+    draggable=false
+    disableDoubleClickZoom=true
+    streetViewControl=false
+    mapTypeControl=false
+    scrollwheel=false
+    zoomControl=false as |map|}}
+
+    {{g-map-marker map
+      lat=options.lat
+      lng=options.lng
+      animation=options.animation
+      clickable=options.clickable
+      crossOnDrag=options.crossOnDrag
+      cursor=options.cursor
+      draggable=options.draggable
+      icon=options.icon
+      label=options.label
+      optimized=options.opacity
+      optimized=options.optimized
+      shape=options.shape
+      title=options.title
+      visible=options.visible
+      zIndex=options.zIndex
+      animation_changed=(route-action "registerEvent" "animation_changed")
+      click=(route-action "registerEvent" "click")
+      clickable_changed=(route-action "registerEvent" "clickable_changed")
+      cursor_changed=(route-action "registerEvent" "cursor_changed")
+      dblclick=(route-action "registerEvent" "dblclick")
+      drag=(pipe (route-action "drag") (route-action "registerEvent" "drag"))
+      dragend=(route-action "registerEvent" "dragend")
+      draggable_changed=(route-action "registerEvent" "draggable_changed")
+      dragstart=(route-action "registerEvent" "dragstart")
+      icon_changed=(route-action "registerEvent" "icon_changed")
+      mousedown=(route-action "registerEvent" "mousedown")
+      mouseout=(route-action "registerEvent" "mouseout")
+      mouseover=(route-action "registerEvent" "mouseover")
+      mouseup=(pipe (route-action "mouseup") (route-action "registerEvent" "mouseup"))
+      position_changed=(route-action "registerEvent" "position_changed")
+      rightclick=(route-action "registerEvent" "rightclick")
+      shape_changed=(route-action "registerEvent" "shape_changed")
+      title_changed=(route-action "registerEvent" "title_changed")
+      visible_changed=(route-action "registerEvent" "visible_changed")
+      zindex_changed=(route-action "registerEvent" "zindex_changed")}}
+
+  {{/g-map}}
+</div>
+
+<h3 class="grid-content -npl">Active Events</h3>
+
+<div id="g-map-marker-event-states" class="grid-block -pb">
+  <div class="grid-content small-12 medium-4 -smb">
+    <div class="gmaps-fade-text {{if isanimation_changed '-fade'}}" data-test-updated={{if wasanimation_changed 'animation_changed'}}>animation_changed</div>
+    <div class="gmaps-fade-text {{if isclick '-fade'}}" data-test-updated={{if wasclick 'click'}}>click</div>
+    <div class="gmaps-fade-text {{if isclickable_changed '-fade'}}" data-test-updated={{if wasclickable_changed 'clickable_changed'}}>clickable_changed</div>
+    <div class="gmaps-fade-text {{if iscursor_changed '-fade'}}" data-test-updated={{if wascursor_changed 'cursor_changed'}}>cursor_changed</div>
+    <div class="gmaps-fade-text {{if isdblclick '-fade'}}" data-test-updated={{if wasdblclick 'dblclick'}}>dblclick</div>
+    <div class="gmaps-fade-text {{if isdrag '-fade'}}" data-test-updated={{if wasdrag 'drag'}}>drag</div>
+    <div class="gmaps-fade-text {{if isdragend '-fade'}}" data-test-updated={{if wasdragend 'dragend'}}>dragend</div>
+  </div>
+
+  <div class="grid-content small-12 medium-4 -smb">
+    <div class="gmaps-fade-text {{if isdraggable_changed '-fade'}}" data-test-updated={{if wasdraggable_changed 'draggable_changed'}}>draggable_changed</div>
+    <div class="gmaps-fade-text {{if isdragstart '-fade'}}" data-test-updated={{if wasdragstart 'dragstart'}}>dragstart</div>
+    <div class="gmaps-fade-text {{if isicon_changed '-fade'}}" data-test-updated={{if wasicon_changed 'icon_changed'}}>icon_changed</div>
+    <div class="gmaps-fade-text {{if ismousedown '-fade'}}" data-test-updated={{if wasmousedown 'mousedown'}}>mousedown</div>
+    <div class="gmaps-fade-text {{if ismouseout '-fade'}}" data-test-updated={{if wasmouseout 'mouseout'}}>mouseout</div>
+    <div class="gmaps-fade-text {{if ismouseover '-fade'}}" data-test-updated={{if wasmouseover 'mouseover'}}>mouseover</div>
+    <div class="gmaps-fade-text {{if ismouseup '-fade'}}" data-test-updated={{if wasmouseup 'mouseup'}}>mouseup</div>
+  </div>
+
+  <div class="grid-content small-12 medium-4 -smb">
+    <div class="gmaps-fade-text {{if isposition_changed '-fade'}}" data-test-updated={{if wasposition_changed 'position_changed'}}>position_changed</div>
+    <div class="gmaps-fade-text {{if isrightclick '-fade'}}" data-test-updated={{if wasrightclick 'rightclick'}}>rightclick</div>
+    <div class="gmaps-fade-text {{if isshape_changed '-fade'}}" data-test-updated={{if wasshape_changed 'shape_changed'}}>shape_changed</div>
+    <div class="gmaps-fade-text {{if istitle_changed '-fade'}}" data-test-updated={{if wastitle_changed 'title_changed'}}>title_changed</div>
+    <div class="gmaps-fade-text {{if isvisible_changed '-fade'}}" data-test-updated={{if wasvisible_changed 'drag'}}>visible_changed</div>
+    <div class="gmaps-fade-text {{if iszindex_changed '-fade'}}" data-test-updated={{if waszindex_changed 'drag'}}>zindex_changed</div>
+  </div>
+</div>
+
+<div class="grid-block -lmb">
+  <div class="grid-content small-6 medium-3 -mb">
+    <small class="-db -smb">clickable</small>
+    <button
+      class="th-google-button--xsmall -ilb"
+      data-test-update="clickable"
+      {{action (route-action "toggleOption" "clickable")}}>{{if options.clickable 'Enabled' 'Disabled'}}</button>
+  </div>
+
+  <div class="grid-content small-6 medium-3 -mb">
+    <small class="-db -smb">crossOnDrag</small>
+    <button
+      class="th-google-button--xsmall -ilb"
+      data-test-update="crossOnDrag"
+      {{action (route-action "toggleOption" "crossOnDrag")}}>{{if options.crossOnDrag 'Enabled' 'Disabled'}}</button>
+  </div>
+
+  <div class="grid-content small-6 medium-3 -mb">
+    <small class="-db -smb">cursor</small>
+    <button
+      class="th-google-button--xsmall -ilb"
+      data-test-update="cursor"
+      {{action "setToNext" "cursor" "cursor"}}>{{options.cursor}}</button>
+  </div>
+
+  <div class="grid-content small-6 medium-3 -mb">
+    <small class="-db -smb">draggable</small>
+    <button
+      class="th-google-button--xsmall -ilb"
+      data-test-update="draggable"
+      {{action (route-action "toggleOption" "draggable")}}>{{if options.draggable 'Enabled' 'Disabled'}}</button>
+  </div>
+
+  <div class="grid-content small-6 medium-3 -smb">
+    <small class="-db -smb">icon</small>
+    <button
+      class="th-google-button--xsmall -ilb"
+      data-test-update="icon"
+      {{action (route-action "toggleCustomMarker")}}>{{if options.icon 'Custom' 'Normal'}}</button>
+  </div>
+
+  <div class="grid-content small-6 medium-3 -smb">
+    <small class="-db -smb">label</small>
+    <button
+      class="th-google-button--xsmall -ilb"
+      data-test-update="label"
+      {{action (route-action "toggleLabel")}}>{{if options.label 'Text' 'None'}}</button>
+  </div>
+
+  <div class="grid-content small-6 medium-3 -smb">
+    <small class="-db -smb">lat</small>
+    <div class="th-google-button-bar">
+      <button
+        class="th-google-button--xsmall -fz-large -np"
+        {{action (pipe (route-action "decrement" "lat") (route-action "syncMapCenter"))}}
+        data-test-update="opacity"
+        disabled={{lte (dec options.lat) 15}}>-</button>
+      <button data-test-value="position.lat" class="th-google-button--xsmall">{{slice options.lat 0 7}}</button>
+      <button
+        class="th-google-button--xsmall -fz-large -np"
+        {{action (pipe (route-action "increment" "lat") (route-action "syncMapCenter"))}}
+        disabled={{gte (inc options.lat) 40}}>+</button>
+    </div>
+  </div>
+
+  <div class="grid-content small-6 medium-3 -smb">
+    <small class="-db -smb">lng</small>
+    <div class="th-google-button-bar">
+      <button
+        class="th-google-button--xsmall -fz-large -np"
+        {{action (pipe (route-action "decrement" "lng") (route-action "syncMapCenter"))}}
+        data-test-update="opacity"
+        disabled={{lte (dec options.lng) -115}}>-</button>
+      <button data-test-value="position.lng" class="th-google-button--xsmall">{{slice options.lng 0 7}}</button>
+      <button
+        class="th-google-button--xsmall -fz-large -np"
+        {{action (pipe (route-action "increment" "lng") (route-action "syncMapCenter"))}}
+        disabled={{gte (inc options.lng) -80}}>+</button>
+    </div>
+  </div>
+
+  <div class="grid-content small-6 medium-3 -smb">
+    <small class="-db -smb">opacity</small>
+    <div class="th-google-button-bar">
+      <button
+        class="th-google-button--xsmall -fz-large -np"
+        {{action (route-action "decrement" "opacity" 0.1)}}
+        data-test-update="opacity"
+        disabled={{lte options.opacity 0.1}}>-</button>
+      <button data-test-value="opacity" class="th-google-button--xsmall">{{slice options.opacity 0 4}}</button>
+      <button
+        class="th-google-button--xsmall -fz-large -np"
+        {{action (route-action "increment" "opacity" 0.1)}}
+        disabled={{gte options.opacity 0.99}}>+</button>
+    </div>
+  </div>
+
+  <div class="grid-content small-6 medium-3 -mb">
+    <small class="-db -smb">optimized</small>
+    <button
+      class="th-google-button--xsmall -ilb"
+      data-test-update="optimized"
+      {{action (route-action "toggleOption" "optimized")}}>{{if options.optimized 'Enabled' 'Disabled'}}</button>
+  </div>
+
+  <div class="grid-content small-6 medium-3 -smb">
+    <small class="-db -smb">title</small>
+    <button
+      class="th-google-button--xsmall -ilb"
+      data-test-update="title"
+      {{action (route-action "toggleTitle")}}>{{if options.title 'Rollover' 'None'}}</button>
+  </div>
+
+  <div class="grid-content small-6 medium-3 -mb">
+    <small class="-db -smb">visible</small>
+    <button
+      class="th-google-button--xsmall -ilb"
+      data-test-update="visible"
+      {{action (route-action "toggleOption" "visible")}}>{{if options.visible 'Enabled' 'Disabled'}}</button>
+  </div>
+
+  <div class="grid-content small-6 medium-3 -smb">
+    <small class="-db -smb">zIndex</small>
+    <div class="th-google-button-bar">
+      <button
+        class="th-google-button--xsmall -fz-large -np"
+        {{action (route-action "decrement" "zIndex")}}
+        data-test-update="zIndex"
+        disabled={{eq options.zIndex 0}}>-</button>
+      <button data-test-value="zIndex" class="th-google-button--xsmall">{{options.zIndex}}</button>
+      <button
+        class="th-google-button--xsmall -fz-large -np"
+        {{action (route-action "increment" "zIndex")}}
+        disabled={{gte options.zIndex 100}}>+</button>
+    </div>
+  </div>
+</div>
+
+<div class="grid-block">
+  <div class="grid-content shrink -pb" style="min-height: 59px;">
+    <small class="-db -smb">animation</small>
+    <div class="th-google-button-bar">
+      {{#each animations as |animation|}}
+        <button class="th-google-button--small
+          {{if (eq animation options.animation) 'active'}}"
+          {{action "setAnimation" animation}}
+          data-test-update="animation">
+          {{animation}}
+        </button>
+      {{/each}}
+
+      <button class="th-google-button--small
+        {{if (not options.animation) 'active'}}"
+        {{action "setAnimation" false}}
+        data-test-update="animation">
+        None
+      </button>
+    </div>
+  </div>
+</div>
+
+<div class="grid-block">
+  <div class="grid-content shrink -pb" style="min-height: 59px;">
+    <small class="-db -smb">shape</small>
+    <div class="th-google-button-bar">
+      {{#each (array 'circle' 'poly' 'rect') as |type|}}
+        <button class="th-google-button--small
+          {{if (eq type options.shape.type) 'active'}}"
+          {{action "setShapeType" type}}
+          data-test-update="shape.type">
+          {{type}}
+        </button>
+      {{/each}}
+
+      <button class="th-google-button--small
+        {{if (not options.shape) 'active'}}"
+        {{action "setShapeType" false}}>
+        None
+      </button>
+    </div>
+  </div>
+</div>
+
+<hr>
+
+<h2>Overview</h2>
+<p class="medium-7">
+  <a href="https://developers.google.com/maps/documentation/javascript/3.exp/reference#MarkerOptions" target="_blank"> Goolge Map Markers</a>
+  allow you to add an indicator to a specific coordinate.
+
+  Markers belong to a specific g-map instance and are given access like so:
+
+  {{#gmaps-snippet class="-mt" header="Test"}}
+    <table class="highlight tab-size js-file-line-container" data-tab-size="8">
+      <tbody>
+        <tr>
+          <td id="file-test-hbs-L1" class="blob-num js-line-number" data-line-number="1"></td>
+          <td id="file-test-hbs-LC1" class="blob-code blob-code-inner js-file-line">  <span class="pl-c1">\{{#g-map</span> <span class="pl-v">as</span> |<span class="pl-e"><span class="pl-v">map</span></span>|<span class="pl-c1">}}</span></td>
+        </tr>
+        <tr>
+          <td id="file-test-hbs-L2" class="blob-num js-line-number" data-line-number="2"></td>
+          <td id="file-test-hbs-LC2" class="blob-code blob-code-inner js-file-line">    <span class="pl-c1">\{{</span><span class="pl-v">g-map-marker</span> <span class="pl-e"><span class="pl-v">map</span></span><span class="pl-c1">}}</span></td>
+        </tr>
+        <tr>
+          <td id="file-test-hbs-L3" class="blob-num js-line-number" data-line-number="3"></td>
+          <td id="file-test-hbs-LC3" class="blob-code blob-code-inner js-file-line">  <span class="pl-c1">\{{/g-map}}</span></td>
+        </tr>
+      </tbody>
+    </table>
+   {{/gmaps-snippet}}
+
+  All marker configuration options may be set as top level properties:
+  <span class="gmaps-inline-code">\{{g-map-marker label="My Marker"}}</span>
+  or as attributes in an options hash: <span class="gmaps-inline-code">\{{g-map-marker options=options}}</span>.
+  The options hash can be a convenient way to define shared or static settings.  If you do need to update
+  the values of an options hash be sure to make use of <span class="gmaps-inline-code">this.notifyPropertyChange('myOptions')</span>
+  in order to persist your changes to the Google Marker. Please note that values defined within "options"
+  will overwrite values defined as top-level bindings.
 </p>
 
-<div class="grid-block -spb">
-  <div class="grid-content small-12 medium-3 -smb">
-    <small class="-db">Latitude</small>
-    {{marker.lat}}
+<hr>
+
+<h3>Configuration Options</h3>
+
+<p id="backgroundColor" class="medium-7 large-5">
+  <h3>backgroundColor</h3>
+
+  <div class="-mb">
+    <small class="-db">Type</small>
+    String
   </div>
 
-  <div class="grid-content small-12 medium-3 -smb">
-    <small class="-db">Longitude</small>
-    {{marker.lng}}
+  <div class="-mb">
+    <small class="-db">Default</small>
+    <span class="gmaps-inline-code -nml">rgb(229, 227, 223)</span>
   </div>
 
-  <div class="grid-content small-12 medium-3 -smb">
-    <small class="-db">Is Dragging</small>
-    {{isMarkerDragging}}
+  <div class="-mb">
+    <small class="-db">Resources</small>
+    <a href="https://developers.google.com/maps/documentation/javascript/reference#MapOptions" target="_blank">Google Map Type Docs</a>
   </div>
-
-  <div class="grid-content small-12 medium-3 -smb">
-    <small class="-db">Custom Icon</small>
-    <input type="checkbox" value=isCustomIcon {{action "toggleCustomMarker" on="change"}}>
-  </div>
-</div>
-
-<div class="grid-content -np -lmb">
-  {{g-maps class="gmaps-docs-map" lat=lat lng=lng zoom=zoom markers=markers}}
-</div>
-
-<article class="grid-block">
-
-  <div class="grid-content gmaps-snippet">
-    <header>Supported Marker Config</header>
-    <code>
-    <div class="gist">
-        <div class="gist-file">
-          <div class="gist-data">
-            <div class="js-gist-file-update-container js-task-list-container file-box">
-              <div class="file">
-                <div class="blob-wrapper data type-javascript">
-                  <table class="highlight tab-size js-file-line-container" data-tab-size="8">
-                    <tbody><tr>
-                      <td id="file-templa-js-L1" class="blob-num js-line-number" data-line-number="1"></td>
-                      <td id="file-templa-js-LC1" class="blob-code blob-code-inner js-file-line"><span class="pl-k">export</span> <span class="pl-k">default</span> Ember.Route.extend({</td>
-                    </tr>
-                    <tr>
-                      <td id="file-templa-js-L2" class="blob-num js-line-number" data-line-number="2"></td>
-                      <td id="file-templa-js-LC2" class="blob-code blob-code-inner js-file-line">  <span class="pl-en">setupController</span><span class="pl-k">:</span> <span class="pl-k">function</span>(<span class="pl-smi">controller</span>) {</td>
-                    </tr>
-                    <tr>
-                      <td id="file-templa-js-L3" class="blob-num js-line-number" data-line-number="3"></td>
-                      <td id="file-templa-js-LC3" class="blob-code blob-code-inner js-file-line">    controller.setProperties({</td>
-                    </tr>
-                    <tr>
-                      <td id="file-templa-js-L4" class="blob-num js-line-number" data-line-number="4"></td>
-                      <td id="file-templa-js-LC4" class="blob-code blob-code-inner js-file-line">      <span class="pl-c">// Must be an Ember Array</span></td>
-                    </tr>
-                    <tr>
-                      <td id="file-templa-js-L5" class="blob-num js-line-number" data-line-number="5"></td>
-                      <td id="file-templa-js-LC5" class="blob-code blob-code-inner js-file-line">      markers<span class="pl-k">:</span> Ember.A([</td>
-                    </tr>
-                    <tr>
-                      <td id="file-templa-js-L6" class="blob-num js-line-number" data-line-number="6"></td>
-                      <td id="file-templa-js-LC6" class="blob-code blob-code-inner js-file-line">        {</td>
-                    </tr>
-                    <tr>
-                      <td id="file-templa-js-L7" class="blob-num js-line-number" data-line-number="7"></td>
-                      <td id="file-templa-js-LC7" class="blob-code blob-code-inner js-file-line">          id<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>unique-id<span class="pl-pds">'</span></span>,        <span class="pl-c">// Recommended</span></td>
-                    </tr>
-                    <tr>
-                      <td id="file-templa-js-L8" class="blob-num js-line-number" data-line-number="8"></td>
-                      <td id="file-templa-js-LC8" class="blob-code blob-code-inner js-file-line">          lat<span class="pl-k">:</span> <span class="pl-c1">32.75494243654723</span>, <span class="pl-c">// Required</span></td>
-                    </tr>
-                    <tr>
-                      <td id="file-templa-js-L9" class="blob-num js-line-number" data-line-number="9"></td>
-                      <td id="file-templa-js-LC9" class="blob-code blob-code-inner js-file-line">          lng<span class="pl-k">:</span> <span class="pl-k">-</span><span class="pl-c1">86.8359375</span>,       <span class="pl-c">// Required</span></td>
-                    </tr>
-                    <tr>
-                      <td id="file-templa-js-L10" class="blob-num js-line-number" data-line-number="10"></td>
-                      <td id="file-templa-js-LC10" class="blob-code blob-code-inner js-file-line">          <span class="pl-en">click</span><span class="pl-k">:</span> <span class="pl-k">function</span>(<span class="pl-smi">event</span>, <span class="pl-smi">marker</span>) {},</td>
-                    </tr>
-                    <tr>
-                      <td id="file-templa-js-L11" class="blob-num js-line-number" data-line-number="11"></td>
-                      <td id="file-templa-js-LC11" class="blob-code blob-code-inner js-file-line">          <span class="pl-en">rightclick</span><span class="pl-k">:</span> <span class="pl-k">function</span>(<span class="pl-smi">event</span>, <span class="pl-smi">marker</span>) {},</td>
-                    </tr>
-                    <tr>
-                      <td id="file-templa-js-L12" class="blob-num js-line-number" data-line-number="12"></td>
-                      <td id="file-templa-js-LC12" class="blob-code blob-code-inner js-file-line">          <span class="pl-en">dblclick</span><span class="pl-k">:</span> <span class="pl-k">function</span>(<span class="pl-smi">event</span>, <span class="pl-smi">marker</span>) {},</td>
-                    </tr>
-                    <tr>
-                      <td id="file-templa-js-L13" class="blob-num js-line-number" data-line-number="13"></td>
-                      <td id="file-templa-js-LC13" class="blob-code blob-code-inner js-file-line">          <span class="pl-en">mouseover</span><span class="pl-k">:</span> <span class="pl-k">function</span>(<span class="pl-smi">event</span>, <span class="pl-smi">marker</span>) {},</td>
-                    </tr>
-                    <tr>
-                      <td id="file-templa-js-L14" class="blob-num js-line-number" data-line-number="14"></td>
-                      <td id="file-templa-js-LC14" class="blob-code blob-code-inner js-file-line">          <span class="pl-en">mouseout</span><span class="pl-k">:</span> <span class="pl-k">function</span>(<span class="pl-smi">event</span>, <span class="pl-smi">marker</span>) {},</td>
-                    </tr>
-                    <tr>
-                      <td id="file-templa-js-L15" class="blob-num js-line-number" data-line-number="15"></td>
-                      <td id="file-templa-js-LC15" class="blob-code blob-code-inner js-file-line">          <span class="pl-en">mouseup</span><span class="pl-k">:</span> <span class="pl-k">function</span>(<span class="pl-smi">event</span>, <span class="pl-smi">marker</span>) {},</td>
-                    </tr>
-                    <tr>
-                      <td id="file-templa-js-L16" class="blob-num js-line-number" data-line-number="16"></td>
-                      <td id="file-templa-js-LC16" class="blob-code blob-code-inner js-file-line">          <span class="pl-en">mousedown</span><span class="pl-k">:</span> <span class="pl-k">function</span>(<span class="pl-smi">event</span>, <span class="pl-smi">marker</span>) {},</td>
-                    </tr>
-                    <tr>
-                      <td id="file-templa-js-L16" class="blob-num js-line-number" data-line-number="16"></td>
-                      <td id="file-templa-js-LC16" class="blob-code blob-code-inner js-file-line">          <span class="pl-en">drag</span><span class="pl-k">:</span> <span class="pl-k">function</span>(<span class="pl-smi">event</span>, <span class="pl-smi">marker</span>) {},</td>
-                    </tr>
-                    <tr>
-                      <td id="file-templa-js-L16" class="blob-num js-line-number" data-line-number="16"></td>
-                      <td id="file-templa-js-LC16" class="blob-code blob-code-inner js-file-line">          <span class="pl-en">dragstart</span><span class="pl-k">:</span> <span class="pl-k">function</span>(<span class="pl-smi">event</span>, <span class="pl-smi">marker</span>) {},</td>
-                    </tr>
-                    <tr>
-                      <td id="file-templa-js-L16" class="blob-num js-line-number" data-line-number="16"></td>
-                      <td id="file-templa-js-LC16" class="blob-code blob-code-inner js-file-line">          <span class="pl-en">dragend</span><span class="pl-k">:</span> <span class="pl-k">function</span>(<span class="pl-smi">event</span>, <span class="pl-smi">marker</span>) {},</td>
-                    </tr>
-                    <tr>
-                      <td id="file-templa-js-L17" class="blob-num js-line-number" data-line-number="17"></td>
-                      <td id="file-templa-js-LC17" class="blob-code blob-code-inner js-file-line">          anchorPoint<span class="pl-k">:</span> <span class="pl-k">new</span> <span class="pl-en">google.maps</span>.Point(),</td>
-                    </tr>
-                    <tr>
-                      <td id="file-templa-js-L18" class="blob-num js-line-number" data-line-number="18"></td>
-                      <td id="file-templa-js-LC18" class="blob-code blob-code-inner js-file-line">          animation<span class="pl-k">:</span> google.maps.Animation.DROP,</td>
-                    </tr>
-                    <tr>
-                      <td id="file-templa-js-L19" class="blob-num js-line-number" data-line-number="19"></td>
-                      <td id="file-templa-js-LC19" class="blob-code blob-code-inner js-file-line">          attribution<span class="pl-k">:</span> <span class="pl-k">new</span> <span class="pl-en">google.maps</span>.Attribution(),</td>
-                    </tr>
-                    <tr>
-                      <td id="file-templa-js-L20" class="blob-num js-line-number" data-line-number="20"></td>
-                      <td id="file-templa-js-LC20" class="blob-code blob-code-inner js-file-line">          clickable<span class="pl-k">:</span> <span class="pl-c1">true</span>,</td>
-                    </tr>
-                    <tr>
-                      <td id="file-templa-js-L21" class="blob-num js-line-number" data-line-number="21"></td>
-                      <td id="file-templa-js-LC21" class="blob-code blob-code-inner js-file-line">          crossOnDrag<span class="pl-k">:</span> <span class="pl-c1">true</span>,</td>
-                    </tr>
-                    <tr>
-                      <td id="file-templa-js-L22" class="blob-num js-line-number" data-line-number="22"></td>
-                      <td id="file-templa-js-LC22" class="blob-code blob-code-inner js-file-line">          cursor<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>pointer<span class="pl-pds">'</span></span>,</td>
-                    </tr>
-                    <tr>
-                      <td id="file-templa-js-L23" class="blob-num js-line-number" data-line-number="23"></td>
-                      <td id="file-templa-js-LC23" class="blob-code blob-code-inner js-file-line">          draggable<span class="pl-k">:</span> <span class="pl-c1">true</span>,</td>
-                    </tr>
-                    <tr>
-                      <td id="file-templa-js-L24" class="blob-num js-line-number" data-line-number="24"></td>
-                      <td id="file-templa-js-LC24" class="blob-code blob-code-inner js-file-line">          icon<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>beachflag.png<span class="pl-pds">'</span></span>,</td>
-                    </tr>
-                    <tr>
-                      <td id="file-templa-js-L25" class="blob-num js-line-number" data-line-number="25"></td>
-                      <td id="file-templa-js-LC25" class="blob-code blob-code-inner js-file-line">          label<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>A<span class="pl-pds">'</span></span>,</td>
-                    </tr>
-                    <tr>
-                      <td id="file-templa-js-L26" class="blob-num js-line-number" data-line-number="26"></td>
-                      <td id="file-templa-js-LC26" class="blob-code blob-code-inner js-file-line">          opacity<span class="pl-k">:</span> <span class="pl-c1">0.3</span>,</td>
-                    </tr>
-                    <tr>
-                      <td id="file-templa-js-L27" class="blob-num js-line-number" data-line-number="27"></td>
-                      <td id="file-templa-js-LC27" class="blob-code blob-code-inner js-file-line">          optimized<span class="pl-k">:</span> <span class="pl-c1">true</span>,</td>
-                    </tr>
-                    <tr>
-                      <td id="file-templa-js-L28" class="blob-num js-line-number" data-line-number="28"></td>
-                      <td id="file-templa-js-LC28" class="blob-code blob-code-inner js-file-line">          place<span class="pl-k">:</span> <span class="pl-k">new</span> <span class="pl-en">google.maps</span>.MarkerPlace(),</td>
-                    </tr>
-                    <tr>
-                      <td id="file-templa-js-L29" class="blob-num js-line-number" data-line-number="29"></td>
-                      <td id="file-templa-js-LC29" class="blob-code blob-code-inner js-file-line">          position<span class="pl-k">:</span> <span class="pl-k">new</span> <span class="pl-en">google.maps</span>.LatLng(),</td>
-                    </tr>
-                    <tr>
-                      <td id="file-templa-js-L30" class="blob-num js-line-number" data-line-number="30"></td>
-                      <td id="file-templa-js-LC30" class="blob-code blob-code-inner js-file-line">          shape<span class="pl-k">:</span> <span class="pl-k">new</span> <span class="pl-en">google.maps</span>.MarkerShape(),</td>
-                    </tr>
-                    <tr>
-                      <td id="file-templa-js-L31" class="blob-num js-line-number" data-line-number="31"></td>
-                      <td id="file-templa-js-LC31" class="blob-code blob-code-inner js-file-line">          title<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>string<span class="pl-pds">'</span></span>,</td>
-                    </tr>
-                    <tr>
-                      <td id="file-templa-js-L32" class="blob-num js-line-number" data-line-number="32"></td>
-                      <td id="file-templa-js-LC32" class="blob-code blob-code-inner js-file-line">          visible<span class="pl-k">:</span> <span class="pl-c1">true</span>,</td>
-                    </tr>
-                    <tr>
-                      <td id="file-templa-js-L33" class="blob-num js-line-number" data-line-number="33"></td>
-                      <td id="file-templa-js-LC33" class="blob-code blob-code-inner js-file-line">          zIndex<span class="pl-k">:</span> <span class="pl-c1">999</span></td>
-                    </tr>
-                    <tr>
-                      <td id="file-templa-js-L34" class="blob-num js-line-number" data-line-number="34"></td>
-                      <td id="file-templa-js-LC34" class="blob-code blob-code-inner js-file-line">        }</td>
-                    </tr>
-                    <tr>
-                      <td id="file-templa-js-L35" class="blob-num js-line-number" data-line-number="35"></td>
-                      <td id="file-templa-js-LC35" class="blob-code blob-code-inner js-file-line">      ])</td>
-                    </tr>
-                    <tr>
-                      <td id="file-templa-js-L36" class="blob-num js-line-number" data-line-number="36"></td>
-                      <td id="file-templa-js-LC36" class="blob-code blob-code-inner js-file-line">    })</td>
-                    </tr>
-                    <tr>
-                      <td id="file-templa-js-L37" class="blob-num js-line-number" data-line-number="37"></td>
-                      <td id="file-templa-js-LC37" class="blob-code blob-code-inner js-file-line">  }</td>
-                    </tr>
-                    <tr>
-                      <td id="file-templa-js-L38" class="blob-num js-line-number" data-line-number="38"></td>
-                      <td id="file-templa-js-LC38" class="blob-code blob-code-inner js-file-line">});</td>
-                    </tr>
-                  </tbody></table>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="gist-meta">
-            made with ❤ by <a href="https://github.com">GitHub</a>
-          </div>
-        </div>
-      </div>
-    </code>
-  </div>
-</article>
+</p>
 
 <p class="medium-7 large-5">
-  For in depth documentation and further customization you can read more in <a href="https://developers.google.com/maps/documentation/javascript/3.exp/reference#MarkerOptions" target="_blank">the Google Maps Marker Docs.</a>
+  For complete documentation you can read more at <a href="https://developers.google.com/maps/documentation/javascript/3.exp/reference#MarkerOptions" target="_blank">the Google Maps Marker Docs.</a>
 </p>

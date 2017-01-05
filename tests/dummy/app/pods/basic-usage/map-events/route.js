@@ -1,6 +1,8 @@
 import Ember from 'ember';
 
-export default Ember.Route.extend({
+import DocumentationHelpers from '../../../mixins/documentation-actions';
+
+export default Ember.Route.extend(DocumentationHelpers, {
   setupController(controller) {
     controller.setProperties({
       lat: 32.75494243654723,
@@ -318,13 +320,5 @@ export default Ember.Route.extend({
         'wasLoaded': false
       });
     }
-  },
-
-  _debounceRemove(event) {
-    Ember.run(() => {
-      if (this.controller.isDestroyed === false) {
-        this.controller.set(event, false);
-      }
-    });
   }
 });
