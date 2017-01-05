@@ -2,20 +2,12 @@ import Route from 'ember-route';
 import get from 'ember-metal/get';
 import set from 'ember-metal/set';
 import {assign} from 'ember-platform';
-import run from 'ember-runloop';
 
 import DocumentationHelpers from '../../../mixins/documentation-actions';
 
 const MAP_DEFAULTS = {
   lat: 30.2672,
-  lng: -97.74310000000003,
-  zoom: 6
-};
-
-const CUSTOM_ICON = {
-  url: 'beachflag.png',
-  anchor: {x: 1, y: 30},
-  size: {width: 20, height: 75}
+  lng: -97.74310000000003
 };
 
 const MARKER_DEFAULTS = {
@@ -27,31 +19,27 @@ const MARKER_DEFAULTS = {
   cursor: 'default',
   draggable: true,
   icon: undefined,
-  label: 'It\'s Remarkable',
+  label: undefined,
   opacity: 1,
   optimized: false,
   shape: undefined,
-  title: 'Nice rollover',
+  title: undefined,
   visible: true,
   zIndex: 10
 };
 
-const ANIMATIONS = [
-  'BOUNCE',
-  'DROP',
-  'So',
-  'Uo'
-];
-
 export default Route.extend(DocumentationHelpers, {
-  setupController(controller) {
+  setupController(controller, googleMaps) {
+    this._super(...arguments);
+
     controller.setProperties({
       lat: MAP_DEFAULTS.lat,
       lng: MAP_DEFAULTS.lng,
-      zoom: MAP_DEFAULTS.zoom,
+      zoom: 6,
 
       options: assign({}, MARKER_DEFAULTS),
-      animations: ANIMATIONS,
+      animations: Object.keys(googleMaps.Animation),
+      symbolPaths: Object.keys(googleMaps.SymbolPath),
 
       shapes: {
         circle: [0, 0, 100],
@@ -71,21 +59,25 @@ export default Route.extend(DocumentationHelpers, {
     toggleCustomMarker() {
       const {controller} = this;
       const hasCustomIcon = Boolean(get(controller, 'options.icon'));
-      set(controller, 'options.icon', hasCustomIcon ? false : CUSTOM_ICON);
+      set(controller, 'options.icon', hasCustomIcon ? false : {
+        url: 'beachflag.png',
+        anchor: {x: 1, y: 30},
+        size: {width: 20, height: 75}
+      });
       controller.notifyPropertyChange('options');
     },
 
     toggleLabel() {
       const {controller} = this;
       const hasLabel = Boolean(get(controller, 'options.label'));
-      set(controller, 'options.label', hasLabel ? false : MARKER_DEFAULTS.label);
+      set(controller, 'options.label', hasLabel ? false : 'It\'s Remarkable');
       controller.notifyPropertyChange('options');
     },
 
     toggleTitle() {
       const {controller} = this;
       const hasTitle = Boolean(get(controller, 'options.title'));
-      set(controller, 'options.title', hasTitle ? false : MARKER_DEFAULTS.title);
+      set(controller, 'options.title', hasTitle ? false : 'Nice rollover');
       controller.notifyPropertyChange('options');
     },
 

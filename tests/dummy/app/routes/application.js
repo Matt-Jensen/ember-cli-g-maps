@@ -1,10 +1,11 @@
-import Ember from 'ember';
+import $ from 'jquery';
+import Route from 'ember-route';
 
-export default Ember.Route.extend({
+export default Route.extend({
   actions: {
     scrollToId(id) {
-      Ember.$('.grid-frame.-scroll-y').animate({
-        scrollTop: Ember.$(`#${id}`).offset().top
+      $('.grid-frame.-scroll-y').animate({
+        scrollTop: document.getElementById(id).offsetTop
       }, 300);
     }
   }

@@ -3,6 +3,7 @@ import get from 'ember-metal/get';
 import set from 'ember-metal/set';
 import {assert} from 'ember-metal/utils';
 import run from 'ember-runloop';
+import loadGoogleMaps from 'ember-cli-g-maps/utils/load-google-maps';
 
 const CSS_CURSORS = ['default', 'pointer', 'crosshair', 'alias', 'move', 'zoom-in', 'grab'];
 const CONTROL_POSITIONS = ['BOTTOM_CENTER', 'BOTTOM_LEFT', 'BOTTOM_RIGHT', 'LEFT_BOTTOM', 'LEFT_CENTER', 'LEFT_TOP', 'RIGHT_BOTTOM', 'RIGHT_CENTER', 'RIGHT_TOP', 'TOP_CENTER', 'TOP_LEFT', 'TOP_RIGHT'];
@@ -11,6 +12,11 @@ const MAP_TYPE_CONTROL_STYLES = ['DEFAULT', 'DROPDOWN_MENU', 'HORIZONTAL_BAR'];
 const SCALE_CONTROL_STYLES = ['DEFAULT'];
 
 export default Mixin.create({
+  model() {
+    this._super(...arguments);
+    return loadGoogleMaps();
+  },
+
   actions: {
     setToNext(scope, type) {
       const {controller} = this;

@@ -393,7 +393,7 @@ export const GoogleMapProxy = Ember.ObjectProxy.extend({
         rotateControlOptions: {position: id}
       });
 
-      return getControlPosition(id);;
+      return getControlPosition(id);
     }
   }),
 

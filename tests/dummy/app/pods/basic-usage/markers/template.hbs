@@ -7,11 +7,13 @@
     <li><a {{action "scrollToId" "clickable"}}>clickable</a></li>
     <li><a {{action "scrollToId" "crossOnDrag"}}>crossOnDrag</a></li>
     <li><a {{action "scrollToId" "cursor"}}>cursor</a></li>
+    <li><a {{action "scrollToId" "draggable"}}>draggable</a></li>
   </ul>
   <ul class="grid-content large-3 medium-5 small-12 -nml -nmb -lis-none">
-    <li><a {{action "scrollToId" "draggable"}}>draggable</a></li>
     <li><a {{action "scrollToId" "icon"}}>icon</a></li>
     <li><a {{action "scrollToId" "label"}}>label</a></li>
+    <li><a {{action "scrollToId" "lat"}}>lat</a></li>
+    <li><a {{action "scrollToId" "lng"}}>lng</a></li>
     <li><a {{action "scrollToId" "opacity"}}>opacity</a></li>
     <li><a {{action "scrollToId" "optimized"}}>optimized</a></li>
   </ul>
@@ -80,7 +82,7 @@
       draggable=options.draggable
       icon=options.icon
       label=options.label
-      optimized=options.opacity
+      opacity=options.opacity
       optimized=options.optimized
       shape=options.shape
       title=options.title
@@ -289,7 +291,7 @@
         <button class="th-google-button--small
           {{if (eq animation options.animation) 'active'}}"
           {{action "setAnimation" animation}}
-          data-test-update="animation">
+          data-test-update="animation" style="text-transform: none;">
           {{animation}}
         </button>
       {{/each}}
@@ -297,8 +299,8 @@
       <button class="th-google-button--small
         {{if (not options.animation) 'active'}}"
         {{action "setAnimation" false}}
-        data-test-update="animation">
-        None
+        data-test-update="animation" style="text-transform: none;">
+        false
       </button>
     </div>
   </div>
@@ -312,15 +314,15 @@
         <button class="th-google-button--small
           {{if (eq type options.shape.type) 'active'}}"
           {{action "setShapeType" type}}
-          data-test-update="shape.type">
+          data-test-update="shape.type" style="text-transform: none;">
           {{type}}
         </button>
       {{/each}}
 
       <button class="th-google-button--small
         {{if (not options.shape) 'active'}}"
-        {{action "setShapeType" false}}>
-        None
+        {{action "setShapeType" false}} style="text-transform: none;">
+        false
       </button>
     </div>
   </div>
@@ -335,7 +337,7 @@
 
   Markers belong to a specific g-map instance and are given access like so:
 
-  {{#gmaps-snippet class="-mt" header="Test"}}
+  {{#gmaps-snippet class="-mt" header="Adding Marker to Map"}}
     <table class="highlight tab-size js-file-line-container" data-tab-size="8">
       <tbody>
         <tr>
@@ -356,7 +358,7 @@
 
   All marker configuration options may be set as top level properties:
   <span class="gmaps-inline-code">\{{g-map-marker label="My Marker"}}</span>
-  or as attributes in an options hash: <span class="gmaps-inline-code">\{{g-map-marker options=options}}</span>.
+  or as properties in an options hash: <span class="gmaps-inline-code">\{{g-map-marker options=options}}</span>.
   The options hash can be a convenient way to define shared or static settings.  If you do need to update
   the values of an options hash be sure to make use of <span class="gmaps-inline-code">this.notifyPropertyChange('myOptions')</span>
   in order to persist your changes to the Google Marker. Please note that values defined within "options"
@@ -365,27 +367,1005 @@
 
 <hr>
 
-<h3>Configuration Options</h3>
-
-<p id="backgroundColor" class="medium-7 large-5">
-  <h3>backgroundColor</h3>
+<p id="anchorPoint" class="medium-7 large-5">
+  <h2>anchorPoint</h2>
+  The offset from the marker's position to the tip of an InfoWindow that has been opened with the marker as anchor.
 
   <div class="-mb">
+    <small class="-db">Type</small>
+    Object
+  </div>
+
+  <div class="-mb">
+    <small class="-db">Default</small>
+    <span class="gmaps-inline-code -nml">None</span>
+  </div>
+
+  <div class="-mb">
+    <small class="-db">Example</small>
+    {{#gmaps-snippet class="-smt" type="js" header="Anchor Point"}}
+      <table class="highlight tab-size js-file-line-container" data-tab-size="8">
+        <tbody>
+          <tr>
+            <td id="file-stuff-js-L1" class="blob-num js-line-number" data-line-number="1"></td>
+            <td id="file-stuff-js-LC1" class="blob-code blob-code-inner js-file-line">{</td>
+          </tr>
+          <tr>
+            <td id="file-stuff-js-L2" class="blob-num js-line-number" data-line-number="2"></td>
+            <td id="file-stuff-js-LC2" class="blob-code blob-code-inner js-file-line">  x<span class="pl-k">:</span> <span class="pl-c1">1,</span></td>
+          </tr>
+          <tr>
+            <td id="file-stuff-js-L3" class="blob-num js-line-number" data-line-number="3"></td>
+            <td id="file-stuff-js-LC3" class="blob-code blob-code-inner js-file-line">  y<span class="pl-k">:</span> <span class="pl-c1">2</span></td>
+          </tr>
+          <tr>
+            <td id="file-stuff-js-L4" class="blob-num js-line-number" data-line-number="4"></td>
+            <td id="file-stuff-js-LC4" class="blob-code blob-code-inner js-file-line">}</td>
+          </tr>
+        </tbody>
+      </table>
+    {{/gmaps-snippet}}
+  </div>
+
+  <div class="-mb">
+    <small class="-db">Resources</small>
+    <a href="https://developers.google.com/maps/documentation/javascript/3.exp/reference#Point" target="_blank">Google Map Point</a>
+  </div>
+</p>
+
+<hr>
+
+<p id="animation" class="medium-7 large-5">
+  <h2>animation</h2>
+  Which animation to play when marker is added to a map.
+
+  <div class="-smt -mb">
     <small class="-db">Type</small>
     String
   </div>
 
   <div class="-mb">
+    <small class="-db">Options</small>
+    {{#each animations as |animation|}}<div class="gmaps-inline-code -nml">{{animation}}</div>{{/each}}
+  </div>
+</p>
+
+<hr>
+
+<p id="clickable" class="medium-7 large-5">
+  <h2>clickable</h2>
+  If true, the marker receives mouse and touch events. Default value is true.
+
+  <div class="-smt -mb">
+    <small class="-db">Type</small>
+    Boolean
+  </div>
+
+  <div class="-mb">
     <small class="-db">Default</small>
-    <span class="gmaps-inline-code -nml">rgb(229, 227, 223)</span>
+    <span class="gmaps-inline-code -nml">true</span>
+  </div>
+</p>
+
+<hr>
+
+<p id="crossOnDrag" class="medium-7 large-5">
+  <h2>crossOnDrag</h2>
+  If false, disables cross that appears beneath the marker when dragging. This option is true by default.
+
+  <div class="-smt -mb">
+    <small class="-db">Type</small>
+    Boolean
+  </div>
+
+  <div class="-mb">
+    <small class="-db">Default</small>
+    <span class="gmaps-inline-code -nml">true</span>
+  </div>
+</p>
+
+<hr>
+
+<p id="cursor" class="medium-7 large-5">
+  <h2>cursor</h2>
+  Mouse cursor to show on hover
+
+  <div class="-smt -mb">
+    <small class="-db">Type</small>
+    Boolean
+  </div>
+
+  <div class="-mb">
+    <small class="-db">Default</small>
+    <span class="gmaps-inline-code -nml">"default"</span>
+  </div>
+
+  <div class="-mb">
+    <small class="-db">Options</small>
+    <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/cursor" target="_blank">CSS cursor property values</a>
+  </div>
+</p>
+
+<hr>
+
+<p id="draggable" class="medium-7 large-5">
+  <h2>draggable</h2>
+  If true, the marker can be dragged. Default value is false.
+
+  <div class="-smt -mb">
+    <small class="-db">Type</small>
+    Boolean
+  </div>
+
+  <div class="-mb">
+    <small class="-db">Default</small>
+    <span class="gmaps-inline-code -nml">false</span>
+  </div>
+</p>
+
+<hr>
+
+<p id="icon" class="medium-7 large-5">
+  <h2>icon</h2>
+  Icon for the foreground. If a string is provided, it is treated as though it were an Icon with the string as url.
+
+  <div class="-smt -mb">
+    <small class="-db">Type</small>
+    String | Object
+  </div>
+
+  <div class="-mb">
+    <small class="-db">Examples</small>
+    {{#gmaps-snippet class="-smt" type="js" header="Icon Configuration"}}
+      <table class="highlight tab-size js-file-line-container" data-tab-size="8">
+        <tbody>
+          <tr>
+            <td id="file-stuff-js-L3" class="blob-num js-line-number" data-line-number="1"></td>
+            <td id="file-stuff-js-LC3" class="blob-code blob-code-inner js-file-line">{</td>
+          </tr>
+          <tr>
+            <td id="file-stuff-js-L4" class="blob-num js-line-number" data-line-number="2"></td>
+            <td id="file-stuff-js-LC4" class="blob-code blob-code-inner js-file-line">  anchor<span class="pl-k">:</span> { x<span class="pl-k">:</span> <span class="pl-c1">1</span>, y<span class="pl-k">:</span> <span class="pl-c1">1</span> },</td>
+          </tr>
+          <tr>
+            <td id="file-stuff-js-L5" class="blob-num js-line-number" data-line-number="3"></td>
+            <td id="file-stuff-js-LC5" class="blob-code blob-code-inner js-file-line">  labelOrigin<span class="pl-k">:</span> { x<span class="pl-k">:</span> <span class="pl-c1">1</span>, y<span class="pl-k">:</span> <span class="pl-c1">1</span> },</td>
+          </tr>
+          <tr>
+            <td id="file-stuff-js-L6" class="blob-num js-line-number" data-line-number="4"></td>
+            <td id="file-stuff-js-LC6" class="blob-code blob-code-inner js-file-line">  origin<span class="pl-k">:</span> { x<span class="pl-k">:</span> <span class="pl-c1">1</span>, y<span class="pl-k">:</span> <span class="pl-c1">1</span> },</td>
+          </tr>
+          <tr>
+            <td id="file-stuff-js-L7" class="blob-num js-line-number" data-line-number="5"></td>
+            <td id="file-stuff-js-LC7" class="blob-code blob-code-inner js-file-line">  scaledSize<span class="pl-k">:</span> { width<span class="pl-k">:</span> <span class="pl-c1">10</span>, height<span class="pl-k">:</span> <span class="pl-c1">10</span> },</td>
+          </tr>
+          <tr>
+            <td id="file-stuff-js-L8" class="blob-num js-line-number" data-line-number="6"></td>
+            <td id="file-stuff-js-LC8" class="blob-code blob-code-inner js-file-line">  size<span class="pl-k">:</span> { width<span class="pl-k">:</span> <span class="pl-c1">10</span>, height<span class="pl-k">:</span> <span class="pl-c1">10</span> },</td>
+          </tr>
+          <tr>
+            <td id="file-stuff-js-L9" class="blob-num js-line-number" data-line-number="7"></td>
+            <td id="file-stuff-js-LC9" class="blob-code blob-code-inner js-file-line">  url<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>my-icon-url.png<span class="pl-pds">'</span></span> <span class="pl-c"><span class="pl-c">//</span> required</span></td>
+          </tr>
+          <tr>
+            <td id="file-stuff-js-L10" class="blob-num js-line-number" data-line-number="8"></td>
+            <td id="file-stuff-js-LC10" class="blob-code blob-code-inner js-file-line">}</td>
+          </tr>
+        </tbody>
+     </table>
+   {{/gmaps-snippet}}
+
+   {{#gmaps-snippet class="-smt" type="js" header="Symbol Configuration"}}
+     <table class="highlight tab-size js-file-line-container" data-tab-size="8">
+       <tbody>
+         <tr>
+           <td id="file-stuff-js-L1" class="blob-num js-line-number" data-line-number="1"></td>
+           <td id="file-stuff-js-LC1" class="blob-code blob-code-inner js-file-line">{</td>
+         </tr>
+         <tr>
+           <td id="file-stuff-js-L2" class="blob-num js-line-number" data-line-number="2"></td>
+           <td id="file-stuff-js-LC2" class="blob-code blob-code-inner js-file-line">  anchor<span class="pl-k">:</span> { x<span class="pl-k">:</span> <span class="pl-c1">1</span>, y<span class="pl-k">:</span> <span class="pl-c1">1</span> },</td>
+         </tr>
+         <tr>
+           <td id="file-stuff-js-L3" class="blob-num js-line-number" data-line-number="3"></td>
+           <td id="file-stuff-js-LC3" class="blob-code blob-code-inner js-file-line">  fillColor<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>#4285f4<span class="pl-pds">'</span></span>,</td>
+         </tr>
+         <tr>
+           <td id="file-stuff-js-L4" class="blob-num js-line-number" data-line-number="4"></td>
+           <td id="file-stuff-js-LC4" class="blob-code blob-code-inner js-file-line">  fillOpacity<span class="pl-k">:</span> <span class="pl-c1">0.5</span>, <span class="pl-c"><span class="pl-c">//</span> default 0</span></td>
+         </tr>
+         <tr>
+           <td id="file-stuff-js-L5" class="blob-num js-line-number" data-line-number="5"></td>
+           <td id="file-stuff-js-LC5" class="blob-code blob-code-inner js-file-line">  labelOrigin<span class="pl-k">:</span> { x<span class="pl-k">:</span> <span class="pl-c1">1</span>, y<span class="pl-k">:</span> <span class="pl-c1">1</span> },</td>
+         </tr>
+         <tr>
+           <td id="file-stuff-js-L6" class="blob-num js-line-number" data-line-number="6"></td>
+           <td id="file-stuff-js-LC6" class="blob-code blob-code-inner js-file-line">  path<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>CIRCLE<span class="pl-pds">'</span></span>, <span class="pl-c"><span class="pl-c">//</span> required</span></td>
+         </tr>
+         <tr>
+           <td id="file-stuff-js-L7" class="blob-num js-line-number" data-line-number="7"></td>
+           <td id="file-stuff-js-LC7" class="blob-code blob-code-inner js-file-line"> <span class="pl-c"><span class="pl-c">/*</span></span></td>
+         </tr>
+         <tr>
+           <td id="file-stuff-js-L8" class="blob-num js-line-number" data-line-number="8"></td>
+           <td id="file-stuff-js-LC8" class="blob-code blob-code-inner js-file-line"><span class="pl-c">  * Alternative SVG Notation</span></td>
+         </tr>
+         <tr>
+           <td id="file-stuff-js-L9" class="blob-num js-line-number" data-line-number="9"></td>
+           <td id="file-stuff-js-LC9" class="blob-code blob-code-inner js-file-line"><span class="pl-c">  * path: 'M10 10 H 90 V 90 H 10 L 10 10',</span></td>
+         </tr>
+         <tr>
+           <td id="file-stuff-js-L10" class="blob-num js-line-number" data-line-number="10"></td>
+           <td id="file-stuff-js-LC10" class="blob-code blob-code-inner js-file-line"><span class="pl-c">  <span class="pl-c">*/</span></span></td>
+         </tr>
+         <tr>
+           <td id="file-stuff-js-L11" class="blob-num js-line-number" data-line-number="11"></td>
+           <td id="file-stuff-js-LC11" class="blob-code blob-code-inner js-file-line">  rotation<span class="pl-k">:</span> <span class="pl-c1">90</span>, <span class="pl-c"><span class="pl-c">//</span> default 0</span></td>
+         </tr>
+         <tr>
+           <td id="file-stuff-js-L12" class="blob-num js-line-number" data-line-number="12"></td>
+           <td id="file-stuff-js-LC12" class="blob-code blob-code-inner js-file-line">  scale<span class="pl-k">:</span> <span class="pl-c1">2</span>, <span class="pl-c"><span class="pl-c">//</span> default 1</span></td>
+         </tr>
+         <tr>
+           <td id="file-stuff-js-L13" class="blob-num js-line-number" data-line-number="13"></td>
+           <td id="file-stuff-js-LC13" class="blob-code blob-code-inner js-file-line">  strokeColor<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>#4285f4<span class="pl-pds">'</span></span>,</td>
+         </tr>
+         <tr>
+           <td id="file-stuff-js-L14" class="blob-num js-line-number" data-line-number="14"></td>
+           <td id="file-stuff-js-LC14" class="blob-code blob-code-inner js-file-line">  strokeOpacity<span class="pl-k">:</span> <span class="pl-c1">0.85</span>, <span class="pl-c"><span class="pl-c">//</span> default 1</span></td>
+         </tr>
+         <tr>
+           <td id="file-stuff-js-L15" class="blob-num js-line-number" data-line-number="15"></td>
+           <td id="file-stuff-js-LC15" class="blob-code blob-code-inner js-file-line">  strokeWeight<span class="pl-k">:</span> <span class="pl-c1">4</span></td>
+         </tr>
+         <tr>
+           <td id="file-stuff-js-L16" class="blob-num js-line-number" data-line-number="16"></td>
+           <td id="file-stuff-js-LC16" class="blob-code blob-code-inner js-file-line">}</td>
+         </tr>
+       </tbody>
+     </table>
+   {{/gmaps-snippet}}
   </div>
 
   <div class="-mb">
     <small class="-db">Resources</small>
-    <a href="https://developers.google.com/maps/documentation/javascript/reference#MapOptions" target="_blank">Google Map Type Docs</a>
+    <a href="https://developers.google.com/maps/documentation/javascript/3.exp/reference#Icon" target="_blank">Google Map Icon object spec</a>
+    <br>
+    <a href="https://developers.google.com/maps/documentation/javascript/3.exp/reference#Symbol" target="_blank">Google Map Symbol object spec</a>
+    <br>
+    <a href="https://developers.google.com/maps/documentation/javascript/3.exp/reference#Point" target="_blank">Google Map Point</a>
+    <br>
+    <a href="https://developers.google.com/maps/documentation/javascript/3.exp/reference#Size" target="_blank">Google Map Size</a>
+    <br>
+    <a {{action "scrollToId" "symbol-paths"}}>Preconfigured symbol path options</a>
   </div>
 </p>
 
-<p class="medium-7 large-5">
-  For complete documentation you can read more at <a href="https://developers.google.com/maps/documentation/javascript/3.exp/reference#MarkerOptions" target="_blank">the Google Maps Marker Docs.</a>
+<hr>
+
+<p id="label" class="medium-7 large-5">
+  <h2>label</h2>
+  Adds a label to the marker. The label can either be a string, or a MarkerLabel object.
+
+  <div class="-smt -mb">
+    <small class="-db">Type</small>
+    String | Object
+  </div>
+
+  <div class="-mb">
+    <small class="-db">Examples</small>
+    {{#gmaps-snippet class="-smt" type="js" header="Marker Label Configuration"}}
+      <table class="highlight tab-size js-file-line-container" data-tab-size="8">
+        <tbody>
+          <tr>
+            <td id="file-stuff-js-L1" class="blob-num js-line-number" data-line-number="1"></td>
+            <td id="file-stuff-js-LC1" class="blob-code blob-code-inner js-file-line">{</td>
+          </tr>
+          <tr>
+            <td id="file-stuff-js-L2" class="blob-num js-line-number" data-line-number="2"></td>
+            <td id="file-stuff-js-LC2" class="blob-code blob-code-inner js-file-line">  color<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>#4285f4<span class="pl-pds">'</span></span>,</td>
+          </tr>
+          <tr>
+            <td id="file-stuff-js-L3" class="blob-num js-line-number" data-line-number="3"></td>
+            <td id="file-stuff-js-LC3" class="blob-code blob-code-inner js-file-line">  fontFamily<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>helvetica<span class="pl-pds">'</span></span>,</td>
+          </tr>
+          <tr>
+            <td id="file-stuff-js-L4" class="blob-num js-line-number" data-line-number="4"></td>
+            <td id="file-stuff-js-LC4" class="blob-code blob-code-inner js-file-line">  fontSize<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>16px<span class="pl-pds">'</span></span>, <span class="pl-c"><span class="pl-c">//</span> default 14px</span></td>
+          </tr>
+          <tr>
+            <td id="file-stuff-js-L5" class="blob-num js-line-number" data-line-number="5"></td>
+            <td id="file-stuff-js-LC5" class="blob-code blob-code-inner js-file-line">  fontWeight<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>bold<span class="pl-pds">'</span></span>,</td>
+          </tr>
+          <tr>
+            <td id="file-stuff-js-L6" class="blob-num js-line-number" data-line-number="6"></td>
+            <td id="file-stuff-js-LC6" class="blob-code blob-code-inner js-file-line">  text<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>label text<span class="pl-pds">'</span></span> <span class="pl-c"><span class="pl-c">//</span> required</span></td>
+          </tr>
+          <tr>
+            <td id="file-stuff-js-L7" class="blob-num js-line-number" data-line-number="7"></td>
+            <td id="file-stuff-js-LC7" class="blob-code blob-code-inner js-file-line">}</td>
+          </tr>
+        </tbody>
+      </table>
+    {{/gmaps-snippet}}
+  </div>
+
+  <div class="-mb">
+    <small class="-db">Resources</small>
+    <a href="https://developers.google.com/maps/documentation/javascript/3.exp/reference#MarkerLabel" target="_blank">Google Map Marker Label object spec</a>
+  </div>
+</p>
+
+<hr>
+
+<p id="lat" class="medium-7 large-5">
+  <h2>lat</h2>
+  The marker's latitude coordinate.
+
+  <div class="-smt -mb">
+    <small class="-db">Type</small>
+    Number
+  </div>
+
+  <div class="-mb">
+    <small class="-db">Default</small>
+    Latitude of Google Map
+  </div>
+
+  <div class="-mb">
+    <small class="-db">Notes</small>
+    If used in addition to
+    <a {{action "scrollToId" "position"}}>position</a> lat will be overwritten.
+  </div>
+</p>
+
+<hr>
+
+<p id="lng" class="medium-7 large-5">
+  <h2>lng</h2>
+  The marker's longitude coordinate.
+
+  <div class="-smt -mb">
+    <small class="-db">Type</small>
+    Number
+  </div>
+
+  <div class="-mb">
+    <small class="-db">Default</small>
+    Longitude of Google Map
+  </div>
+
+  <div class="-mb">
+    <small class="-db">Notes</small>
+    If used in addition to
+    <a {{action "scrollToId" "position"}}>position</a> lng will be overwritten.
+  </div>
+</p>
+
+<hr>
+
+<p id="opacity" class="medium-7 large-5">
+  <h2>opacity</h2>
+  The marker's opacity between 0.0 and 1.0.
+
+  <div class="-smt -mb">
+    <small class="-db">Type</small>
+    Number
+  </div>
+
+  <div class="-mb">
+    <small class="-db">Default</small>
+    <span class="gmaps-inline-code -nml">1</span>
+  </div>
+</p>
+
+<hr>
+
+<p id="optimized" class="medium-7 large-5">
+  <h2>optimized</h2>
+  Optimization renders many markers as a single static element.
+  Optimized rendering is enabled by default. Disable optimized rendering for animated GIFs or PNGs,
+  or when each marker must be rendered as a separate DOM element (advanced usage only).
+
+  <div class="-smt -mb">
+    <small class="-db">Type</small>
+    Boolean
+  </div>
+
+  <div class="-mb">
+    <small class="-db">Default</small>
+    <span class="gmaps-inline-code -nml">true</span>
+  </div>
+</p>
+
+<hr>
+
+<p id="position" class="medium-7 large-5">
+  <h2>position</h2>
+  Marker latitude and longitude location.
+
+  <div class="-smt -mb">
+    <small class="-db">Type</small>
+    Object
+  </div>
+
+  <div class="-mb">
+    <small class="-db">Default</small>
+    Center of Google Map
+  </div>
+
+  <div class="-mb">
+    <small class="-db">Example</small>
+    {{#gmaps-snippet type="js" header="Position Configuration"}}
+      <table class="highlight tab-size js-file-line-container" data-tab-size="8">
+        <tbody>
+          <tr>
+            <td id="file-stuff-js-L1" class="blob-num js-line-number" data-line-number="1"></td>
+            <td id="file-stuff-js-LC1" class="blob-code blob-code-inner js-file-line">{</td>
+          </tr>
+          <tr>
+            <td id="file-stuff-js-L2" class="blob-num js-line-number" data-line-number="2"></td>
+            <td id="file-stuff-js-LC2" class="blob-code blob-code-inner js-file-line">  lat<span class="pl-k">:</span> <span class="pl-c1">34</span>,</td>
+          </tr>
+          <tr>
+            <td id="file-stuff-js-L3" class="blob-num js-line-number" data-line-number="3"></td>
+            <td id="file-stuff-js-LC3" class="blob-code blob-code-inner js-file-line">  lng<span class="pl-k">:</span> <span class="pl-k">-</span><span class="pl-c1">90</span></td>
+          </tr>
+          <tr>
+            <td id="file-stuff-js-L4" class="blob-num js-line-number" data-line-number="4"></td>
+            <td id="file-stuff-js-LC4" class="blob-code blob-code-inner js-file-line">}</td>
+          </tr>
+        </tbody>
+      </table>
+    {{/gmaps-snippet}}
+  </div>
+
+  <div class="-mb">
+    <small class="-db">Notes</small>
+    Position will override
+    <a {{action "scrollToId" "lat"}}>lat</a> and <a {{action "scrollToId" "lng"}}>lng</a> properties.
+  </div>
+</p>
+
+<hr>
+
+<p id="shape" class="medium-7 large-5">
+  <h2>shape</h2>
+  Image map region definition used for drag/click.
+
+  <div class="-smt -mb">
+    <small class="-db">Type</small>
+    Object
+  </div>
+
+  <div class="-mb">
+    <small class="-db">Examples</small>
+    {{#gmaps-snippet class="-smt" type="js" header="Marker Shape Configuration"}}
+        <table class="highlight tab-size js-file-line-container" data-tab-size="8">
+          <tbody>
+            <tr>
+              <td id="file-stuff-js-L1" class="blob-num js-line-number" data-line-number="1"></td>
+              <td id="file-stuff-js-LC1" class="blob-code blob-code-inner js-file-line">{</td>
+            </tr>
+            <tr>
+              <td id="file-stuff-js-L2" class="blob-num js-line-number" data-line-number="2"></td>
+              <td id="file-stuff-js-LC2" class="blob-code blob-code-inner js-file-line">  coords<span class="pl-k">:</span> [<span class="pl-c1">0</span>, <span class="pl-c1">0</span>, <span class="pl-c1">150</span>],</td>
+            </tr>
+            <tr>
+              <td id="file-stuff-js-L3" class="blob-num js-line-number" data-line-number="3"></td>
+              <td id="file-stuff-js-LC3" class="blob-code blob-code-inner js-file-line">  type<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>circle<span class="pl-pds">'</span></span> <span class="pl-c"><span class="pl-c">//</span> Options: 'poly' &amp; 'rect'</span></td>
+            </tr>
+            <tr>
+              <td id="file-stuff-js-L4" class="blob-num js-line-number" data-line-number="4"></td>
+              <td id="file-stuff-js-LC4" class="blob-code blob-code-inner js-file-line">}</td>
+            </tr>
+        </tbody>
+      </table>
+    {{/gmaps-snippet}}
+  </div>
+
+  <div class="-mb">
+    <small class="-db">Resources</small>
+    <a href="https://developers.google.com/maps/documentation/javascript/3.exp/reference#MarkerShape" target="_blank">Google Map Marker Shape object spec</a>
+  </div>
+</p>
+
+<hr>
+
+<p id="title" class="medium-7 large-5">
+  <h2>title</h2>
+  Rollover text
+
+  <div class="-smt -mb">
+    <small class="-db">Type</small>
+    String
+  </div>
+</p>
+
+<hr>
+
+<p id="visible" class="medium-7 large-5">
+  <h2>visible</h2>
+  If true, the marker is visible
+
+  <div class="-smt -mb">
+    <small class="-db">Type</small>
+    Boolean
+  </div>
+
+  <div class="-mb">
+    <small class="-db">Default</small>
+    <span class="gmaps-inline-code -nml">true</span>
+  </div>
+</p>
+
+<hr>
+
+<p id="zIndex" class="medium-7 large-5">
+  <h2>zIndex</h2>
+  All markers are displayed on the map in order of their zIndex,
+  with higher values displaying in front of markers with lower values.
+  By default, markers are displayed according to their vertical position on screen,
+  with lower markers appearing in front of markers further up the screen.
+
+  <div class="-smt -mb">
+    <small class="-db">Type</small>
+    Number
+  </div>
+</p>
+
+<hr>
+
+<p id="animation_changed" class="medium-7 large-5">
+  <h3>animation_changed</h3>
+
+  <div class="-mb">
+    <small class="-db">Arugments</small>
+    <a {{action "scrollToId" "animation"}}>animation</a>
+  </div>
+
+  {{#gmaps-snippet}}
+    <table class="highlight tab-size js-file-line-container" data-tab-size="8">
+      <tbody>
+        <tr>
+          <td id="file-stuff-hbs-L1" class="blob-num js-line-number" data-line-number="1"></td>
+          <td id="file-stuff-hbs-LC1" class="blob-code blob-code-inner js-file-line"><span class="pl-c1">\{{</span><span class="pl-v">g-map-marker</span> <span class="pl-e"><span class="pl-v">map</span> </span><span class="pl-e"><span class="pl-v">animation_changed</span>=</span>(<span class="pl-e"><span class="pl-v">action</span> <span class="pl-v">"animation_changed"</span></span>)<span class="pl-c1">}}</span></td>
+        </tr>
+      </tbody>
+    </table>
+  {{/gmaps-snippet}}
+</p>
+
+<hr>
+
+<p id="click" class="medium-7 large-5">
+  <h3>click</h3>
+
+  <div class="-mb">
+    <small class="-db">Arugments</small>
+    <a href="https://developers.google.com/maps/documentation/javascript/3.exp/reference#MouseEvent" target="_blank">MouseEvent</a>
+  </div>
+
+  {{#gmaps-snippet}}
+    <table class="highlight tab-size js-file-line-container" data-tab-size="8">
+      <tbody>
+        <tr>
+          <td id="file-stuff-hbs-L1" class="blob-num js-line-number" data-line-number="1"></td>
+          <td id="file-stuff-hbs-LC1" class="blob-code blob-code-inner js-file-line"><span class="pl-c1">\{{</span><span class="pl-v">g-map-marker</span> <span class="pl-e"><span class="pl-v">map</span> </span><span class="pl-e"><span class="pl-v">click</span>=</span>(<span class="pl-e"><span class="pl-v">action</span> <span class="pl-v">"click"</span></span>)<span class="pl-c1">}}</span></td>
+        </tr>
+      </tbody>
+    </table>
+  {{/gmaps-snippet}}
+</p>
+
+<hr>
+
+<p id="clickable_changed" class="medium-7 large-5">
+  <h3>clickable_changed</h3>
+
+  <div class="-mb">
+    <small class="-db">Arugments</small>
+    <a {{action "scrollToId" "clickable"}}>clickable</a>
+  </div>
+
+  {{#gmaps-snippet}}
+    <table class="highlight tab-size js-file-line-container" data-tab-size="8">
+      <tbody>
+        <tr>
+          <td id="file-stuff-hbs-L1" class="blob-num js-line-number" data-line-number="1"></td>
+          <td id="file-stuff-hbs-LC1" class="blob-code blob-code-inner js-file-line"><span class="pl-c1">\{{</span><span class="pl-v">g-map-marker</span> <span class="pl-e"><span class="pl-v">map</span> </span><span class="pl-e"><span class="pl-v">clickable_changed</span>=</span>(<span class="pl-e"><span class="pl-v">action</span> <span class="pl-v">"clickable_changed"</span></span>)<span class="pl-c1">}}</span></td>
+        </tr>
+      </tbody>
+    </table>
+  {{/gmaps-snippet}}
+</p>
+
+<hr>
+
+<p id="cursor_changed" class="medium-7 large-5">
+  <h3>cursor_changed</h3>
+
+  <div class="-mb">
+    <small class="-db">Arugments</small>
+    <a {{action "scrollToId" "cursor"}}>cursor</a>
+  </div>
+
+  {{#gmaps-snippet}}
+    <table class="highlight tab-size js-file-line-container" data-tab-size="8">
+      <tbody>
+        <tr>
+          <td id="file-stuff-hbs-L1" class="blob-num js-line-number" data-line-number="1"></td>
+          <td id="file-stuff-hbs-LC1" class="blob-code blob-code-inner js-file-line"><span class="pl-c1">\{{</span><span class="pl-v">g-map-marker</span> <span class="pl-e"><span class="pl-v">map</span> </span><span class="pl-e"><span class="pl-v">cursor_changed</span>=</span>(<span class="pl-e"><span class="pl-v">action</span> <span class="pl-v">"cursor_changed"</span></span>)<span class="pl-c1">}}</span></td>
+        </tr>
+      </tbody>
+    </table>
+  {{/gmaps-snippet}}
+</p>
+
+<hr>
+
+<p id="dblclick" class="medium-7 large-5">
+  <h3>dblclick</h3>
+
+  <div class="-mb">
+    <small class="-db">Arugments</small>
+    <a href="https://developers.google.com/maps/documentation/javascript/3.exp/reference#MouseEvent" target="_blank">MouseEvent</a>
+  </div>
+
+  {{#gmaps-snippet}}
+    <table class="highlight tab-size js-file-line-container" data-tab-size="8">
+      <tbody>
+        <tr>
+          <td id="file-stuff-hbs-L1" class="blob-num js-line-number" data-line-number="1"></td>
+          <td id="file-stuff-hbs-LC1" class="blob-code blob-code-inner js-file-line"><span class="pl-c1">\{{</span><span class="pl-v">g-map-marker</span> <span class="pl-e"><span class="pl-v">map</span> </span><span class="pl-e"><span class="pl-v">dblclick</span>=</span>(<span class="pl-e"><span class="pl-v">action</span> <span class="pl-v">"dblclick"</span></span>)<span class="pl-c1">}}</span></td>
+        </tr>
+      </tbody>
+    </table>
+  {{/gmaps-snippet}}
+</p>
+
+<hr>
+
+<p id="drag" class="medium-7 large-5">
+  <h3>drag</h3>
+
+  <div class="-mb">
+    <small class="-db">Arugments</small>
+    <a href="https://developers.google.com/maps/documentation/javascript/3.exp/reference#MouseEvent" target="_blank">MouseEvent</a>
+  </div>
+
+  {{#gmaps-snippet}}
+    <table class="highlight tab-size js-file-line-container" data-tab-size="8">
+      <tbody>
+        <tr>
+          <td id="file-stuff-hbs-L1" class="blob-num js-line-number" data-line-number="1"></td>
+          <td id="file-stuff-hbs-LC1" class="blob-code blob-code-inner js-file-line"><span class="pl-c1">\{{</span><span class="pl-v">g-map-marker</span> <span class="pl-e"><span class="pl-v">map</span> </span><span class="pl-e"><span class="pl-v">drag</span>=</span>(<span class="pl-e"><span class="pl-v">action</span> <span class="pl-v">"drag"</span></span>)<span class="pl-c1">}}</span></td>
+        </tr>
+      </tbody>
+    </table>
+  {{/gmaps-snippet}}
+</p>
+
+<hr>
+
+<p id="dragend" class="medium-7 large-5">
+  <h3>dragend</h3>
+
+  <div class="-mb">
+    <small class="-db">Arugments</small>
+    <a href="https://developers.google.com/maps/documentation/javascript/3.exp/reference#MouseEvent" target="_blank">MouseEvent</a>
+  </div>
+
+  {{#gmaps-snippet}}
+    <table class="highlight tab-size js-file-line-container" data-tab-size="8">
+      <tbody>
+        <tr>
+          <td id="file-stuff-hbs-L1" class="blob-num js-line-number" data-line-number="1"></td>
+          <td id="file-stuff-hbs-LC1" class="blob-code blob-code-inner js-file-line"><span class="pl-c1">\{{</span><span class="pl-v">g-map-marker</span> <span class="pl-e"><span class="pl-v">map</span> </span><span class="pl-e"><span class="pl-v">dragend</span>=</span>(<span class="pl-e"><span class="pl-v">action</span> <span class="pl-v">"dragend"</span></span>)<span class="pl-c1">}}</span></td>
+        </tr>
+      </tbody>
+    </table>
+  {{/gmaps-snippet}}
+</p>
+
+<hr>
+
+<p id="draggable_changed" class="medium-7 large-5">
+  <h3>draggable_changed</h3>
+
+  <div class="-mb">
+    <small class="-db">Arugments</small>
+    <a {{action "scrollToId" "draggable"}}>draggable</a>
+  </div>
+
+  {{#gmaps-snippet}}
+    <table class="highlight tab-size js-file-line-container" data-tab-size="8">
+      <tbody>
+        <tr>
+          <td id="file-stuff-hbs-L1" class="blob-num js-line-number" data-line-number="1"></td>
+          <td id="file-stuff-hbs-LC1" class="blob-code blob-code-inner js-file-line"><span class="pl-c1">\{{</span><span class="pl-v">g-map-marker</span> <span class="pl-e"><span class="pl-v">map</span> </span><span class="pl-e"><span class="pl-v">draggable_changed</span>=</span>(<span class="pl-e"><span class="pl-v">action</span> <span class="pl-v">"draggable_changed"</span></span>)<span class="pl-c1">}}</span></td>
+        </tr>
+      </tbody>
+    </table>
+  {{/gmaps-snippet}}
+</p>
+
+<hr>
+
+<p id="dragstart" class="medium-7 large-5">
+  <h3>dragstart</h3>
+
+  <div class="-mb">
+    <small class="-db">Arugments</small>
+    <a href="https://developers.google.com/maps/documentation/javascript/3.exp/reference#MouseEvent" target="_blank">MouseEvent</a>
+  </div>
+
+  {{#gmaps-snippet}}
+    <table class="highlight tab-size js-file-line-container" data-tab-size="8">
+      <tbody>
+        <tr>
+          <td id="file-stuff-hbs-L1" class="blob-num js-line-number" data-line-number="1"></td>
+          <td id="file-stuff-hbs-LC1" class="blob-code blob-code-inner js-file-line"><span class="pl-c1">\{{</span><span class="pl-v">g-map-marker</span> <span class="pl-e"><span class="pl-v">map</span> </span><span class="pl-e"><span class="pl-v">dragstart</span>=</span>(<span class="pl-e"><span class="pl-v">action</span> <span class="pl-v">"dragstart"</span></span>)<span class="pl-c1">}}</span></td>
+        </tr>
+      </tbody>
+    </table>
+  {{/gmaps-snippet}}
+</p>
+
+<hr>
+
+<p id="icon_changed" class="medium-7 large-5">
+  <h3>icon_changed</h3>
+
+  <div class="-mb">
+    <small class="-db">Arugments</small>
+    <a {{action "scrollToId" "icon"}}>icon</a>
+  </div>
+
+  {{#gmaps-snippet}}
+    <table class="highlight tab-size js-file-line-container" data-tab-size="8">
+      <tbody>
+        <tr>
+          <td id="file-stuff-hbs-L1" class="blob-num js-line-number" data-line-number="1"></td>
+          <td id="file-stuff-hbs-LC1" class="blob-code blob-code-inner js-file-line"><span class="pl-c1">\{{</span><span class="pl-v">g-map-marker</span> <span class="pl-e"><span class="pl-v">map</span> </span><span class="pl-e"><span class="pl-v">icon_changed</span>=</span>(<span class="pl-e"><span class="pl-v">action</span> <span class="pl-v">"icon_changed"</span></span>)<span class="pl-c1">}}</span></td>
+        </tr>
+      </tbody>
+    </table>
+  {{/gmaps-snippet}}
+</p>
+
+<hr>
+
+<p id="mousedown" class="medium-7 large-5">
+  <h3>mousedown</h3>
+
+  <div class="-mb">
+    <small class="-db">Arugments</small>
+    <a href="https://developers.google.com/maps/documentation/javascript/3.exp/reference#MouseEvent" target="_blank">MouseEvent</a>
+  </div>
+
+  {{#gmaps-snippet}}
+    <table class="highlight tab-size js-file-line-container" data-tab-size="8">
+      <tbody>
+        <tr>
+          <td id="file-stuff-hbs-L1" class="blob-num js-line-number" data-line-number="1"></td>
+          <td id="file-stuff-hbs-LC1" class="blob-code blob-code-inner js-file-line"><span class="pl-c1">\{{</span><span class="pl-v">g-map-marker</span> <span class="pl-e"><span class="pl-v">map</span> </span><span class="pl-e"><span class="pl-v">mousedown</span>=</span>(<span class="pl-e"><span class="pl-v">action</span> <span class="pl-v">"mousedown"</span></span>)<span class="pl-c1">}}</span></td>
+        </tr>
+      </tbody>
+    </table>
+  {{/gmaps-snippet}}
+</p>
+
+<hr>
+
+<p id="mouseout" class="medium-7 large-5">
+  <h3>mouseout</h3>
+
+  <div class="-mb">
+    <small class="-db">Arugments</small>
+    <a href="https://developers.google.com/maps/documentation/javascript/3.exp/reference#MouseEvent" target="_blank">MouseEvent</a>
+  </div>
+
+  {{#gmaps-snippet}}
+    <table class="highlight tab-size js-file-line-container" data-tab-size="8">
+      <tbody>
+        <tr>
+          <td id="file-stuff-hbs-L1" class="blob-num js-line-number" data-line-number="1"></td>
+          <td id="file-stuff-hbs-LC1" class="blob-code blob-code-inner js-file-line"><span class="pl-c1">\{{</span><span class="pl-v">g-map-marker</span> <span class="pl-e"><span class="pl-v">map</span> </span><span class="pl-e"><span class="pl-v">mouseout</span>=</span>(<span class="pl-e"><span class="pl-v">action</span> <span class="pl-v">"mouseout"</span></span>)<span class="pl-c1">}}</span></td>
+        </tr>
+      </tbody>
+    </table>
+  {{/gmaps-snippet}}
+</p>
+
+<hr>
+
+<p id="mouseover" class="medium-7 large-5">
+  <h3>mouseover</h3>
+
+  <div class="-mb">
+    <small class="-db">Arugments</small>
+    <a href="https://developers.google.com/maps/documentation/javascript/3.exp/reference#MouseEvent" target="_blank">MouseEvent</a>
+  </div>
+
+  {{#gmaps-snippet}}
+    <table class="highlight tab-size js-file-line-container" data-tab-size="8">
+      <tbody>
+        <tr>
+          <td id="file-stuff-hbs-L1" class="blob-num js-line-number" data-line-number="1"></td>
+          <td id="file-stuff-hbs-LC1" class="blob-code blob-code-inner js-file-line"><span class="pl-c1">\{{</span><span class="pl-v">g-map-marker</span> <span class="pl-e"><span class="pl-v">map</span> </span><span class="pl-e"><span class="pl-v">mouseover</span>=</span>(<span class="pl-e"><span class="pl-v">action</span> <span class="pl-v">"mouseover"</span></span>)<span class="pl-c1">}}</span></td>
+        </tr>
+      </tbody>
+    </table>
+  {{/gmaps-snippet}}
+</p>
+
+<hr>
+
+<p id="mouseup" class="medium-7 large-5">
+  <h3>mouseup</h3>
+
+  <div class="-mb">
+    <small class="-db">Arugments</small>
+    <a href="https://developers.google.com/maps/documentation/javascript/3.exp/reference#MouseEvent" target="_blank">MouseEvent</a>
+  </div>
+
+  {{#gmaps-snippet}}
+    <table class="highlight tab-size js-file-line-container" data-tab-size="8">
+      <tbody>
+        <tr>
+          <td id="file-stuff-hbs-L1" class="blob-num js-line-number" data-line-number="1"></td>
+          <td id="file-stuff-hbs-LC1" class="blob-code blob-code-inner js-file-line"><span class="pl-c1">\{{</span><span class="pl-v">g-map-marker</span> <span class="pl-e"><span class="pl-v">map</span> </span><span class="pl-e"><span class="pl-v">mouseup</span>=</span>(<span class="pl-e"><span class="pl-v">action</span> <span class="pl-v">"mouseup"</span></span>)<span class="pl-c1">}}</span></td>
+        </tr>
+      </tbody>
+    </table>
+  {{/gmaps-snippet}}
+</p>
+
+<hr>
+
+<p id="position_changed" class="medium-7 large-5">
+  <h3>position_changed</h3>
+
+  <div class="-mb">
+    <small class="-db">Arugments</small>
+    <a {{action "scrollToId" "position"}}>position</a>
+  </div>
+
+  {{#gmaps-snippet}}
+    <table class="highlight tab-size js-file-line-container" data-tab-size="8">
+      <tbody>
+        <tr>
+          <td id="file-stuff-hbs-L1" class="blob-num js-line-number" data-line-number="1"></td>
+          <td id="file-stuff-hbs-LC1" class="blob-code blob-code-inner js-file-line"><span class="pl-c1">\{{</span><span class="pl-v">g-map-marker</span> <span class="pl-e"><span class="pl-v">map</span> </span><span class="pl-e"><span class="pl-v">position_changed</span>=</span>(<span class="pl-e"><span class="pl-v">action</span> <span class="pl-v">"position_changed"</span></span>)<span class="pl-c1">}}</span></td>
+        </tr>
+      </tbody>
+    </table>
+  {{/gmaps-snippet}}
+</p>
+
+<hr>
+
+<p id="rightclick" class="medium-7 large-5">
+  <h3>rightclick</h3>
+
+  <div class="-mb">
+    <small class="-db">Arugments</small>
+    <a href="https://developers.google.com/maps/documentation/javascript/3.exp/reference#MouseEvent" target="_blank">MouseEvent</a>
+  </div>
+
+  {{#gmaps-snippet}}
+    <table class="highlight tab-size js-file-line-container" data-tab-size="8">
+      <tbody>
+        <tr>
+          <td id="file-stuff-hbs-L1" class="blob-num js-line-number" data-line-number="1"></td>
+          <td id="file-stuff-hbs-LC1" class="blob-code blob-code-inner js-file-line"><span class="pl-c1">\{{</span><span class="pl-v">g-map-marker</span> <span class="pl-e"><span class="pl-v">map</span> </span><span class="pl-e"><span class="pl-v">rightclick</span>=</span>(<span class="pl-e"><span class="pl-v">action</span> <span class="pl-v">"rightclick"</span></span>)<span class="pl-c1">}}</span></td>
+        </tr>
+      </tbody>
+    </table>
+  {{/gmaps-snippet}}
+</p>
+
+<hr>
+
+<p id="shape_changed" class="medium-7 large-5">
+  <h3>shape_changed</h3>
+
+  <div class="-mb">
+    <small class="-db">Arugments</small>
+    <a {{action "scrollToId" "shape"}}>shape</a>
+  </div>
+
+  {{#gmaps-snippet}}
+    <table class="highlight tab-size js-file-line-container" data-tab-size="8">
+      <tbody>
+        <tr>
+          <td id="file-stuff-hbs-L1" class="blob-num js-line-number" data-line-number="1"></td>
+          <td id="file-stuff-hbs-LC1" class="blob-code blob-code-inner js-file-line"><span class="pl-c1">\{{</span><span class="pl-v">g-map-marker</span> <span class="pl-e"><span class="pl-v">map</span> </span><span class="pl-e"><span class="pl-v">shape_changed</span>=</span>(<span class="pl-e"><span class="pl-v">action</span> <span class="pl-v">"shape_changed"</span></span>)<span class="pl-c1">}}</span></td>
+        </tr>
+      </tbody>
+    </table>
+  {{/gmaps-snippet}}
+</p>
+
+<hr>
+
+<p id="title_changed" class="medium-7 large-5">
+  <h3>title_changed</h3>
+
+  <div class="-mb">
+    <small class="-db">Arugments</small>
+    <a {{action "scrollToId" "title"}}>title</a>
+  </div>
+
+  {{#gmaps-snippet}}
+    <table class="highlight tab-size js-file-line-container" data-tab-size="8">
+      <tbody>
+        <tr>
+          <td id="file-stuff-hbs-L1" class="blob-num js-line-number" data-line-number="1"></td>
+          <td id="file-stuff-hbs-LC1" class="blob-code blob-code-inner js-file-line"><span class="pl-c1">\{{</span><span class="pl-v">g-map-marker</span> <span class="pl-e"><span class="pl-v">map</span> </span><span class="pl-e"><span class="pl-v">title_changed</span>=</span>(<span class="pl-e"><span class="pl-v">action</span> <span class="pl-v">"title_changed"</span></span>)<span class="pl-c1">}}</span></td>
+        </tr>
+      </tbody>
+    </table>
+  {{/gmaps-snippet}}
+</p>
+
+<hr>
+
+<p id="visible_changed" class="medium-7 large-5">
+  <h3>visible_changed</h3>
+
+  <div class="-mb">
+    <small class="-db">Arugments</small>
+    <a {{action "scrollToId" "visible"}}>visible</a>
+  </div>
+
+  {{#gmaps-snippet}}
+    <table class="highlight tab-size js-file-line-container" data-tab-size="8">
+      <tbody>
+        <tr>
+          <td id="file-stuff-hbs-L1" class="blob-num js-line-number" data-line-number="1"></td>
+          <td id="file-stuff-hbs-LC1" class="blob-code blob-code-inner js-file-line"><span class="pl-c1">\{{</span><span class="pl-v">g-map-marker</span> <span class="pl-e"><span class="pl-v">map</span> </span><span class="pl-e"><span class="pl-v">visible_changed</span>=</span>(<span class="pl-e"><span class="pl-v">action</span> <span class="pl-v">"visible_changed"</span></span>)<span class="pl-c1">}}</span></td>
+        </tr>
+      </tbody>
+    </table>
+  {{/gmaps-snippet}}
+</p>
+
+<hr>
+
+<p id="zindex_changed" class="medium-7 large-5">
+  <h3>zindex_changed</h3>
+
+  <div class="-mb">
+    <small class="-db">Arugments</small>
+    <a {{action "scrollToId" "zIndex"}}>zIndex</a>
+  </div>
+
+  {{#gmaps-snippet}}
+    <table class="highlight tab-size js-file-line-container" data-tab-size="8">
+      <tbody>
+        <tr>
+          <td id="file-stuff-hbs-L1" class="blob-num js-line-number" data-line-number="1"></td>
+          <td id="file-stuff-hbs-LC1" class="blob-code blob-code-inner js-file-line"><span class="pl-c1">\{{</span><span class="pl-v">g-map-marker</span> <span class="pl-e"><span class="pl-v">map</span> </span><span class="pl-e"><span class="pl-v">zindex_changed</span>=</span>(<span class="pl-e"><span class="pl-v">action</span> <span class="pl-v">"zindex_changed"</span></span>)<span class="pl-c1">}}</span></td>
+        </tr>
+      </tbody>
+    </table>
+  {{/gmaps-snippet}}
+</p>
+
+<hr>
+
+<h1>Misc</h1>
+<p>Supplimentary Information</p>
+
+<p id="symbol-paths">
+  <h2>Symbol Path types</h2>
+
+  <p>Preconfigured path types you can use as a Marker icon's symbol "path" value.</p>
+
+  <div class="-mb">
+    <small class="-db">Options</small>
+    {{#each symbolPaths as |path|}}<div class="gmaps-inline-code -nml">{{path}}</div>{{/each}}
+  </div>
 </p>
