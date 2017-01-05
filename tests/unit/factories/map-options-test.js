@@ -1,4 +1,4 @@
-import mapOptions from 'ember-cli-g-maps/factories/map-options';
+import {default as mapOptions, isDiff} from 'ember-cli-g-maps/factories/map-options';
 import {module, test} from 'qunit';
 import {assign} from 'ember-platform';
 import get from 'ember-metal/get';
@@ -58,6 +58,24 @@ test('it calls set on Google Map instance property with updated value', function
   assign(instance, newState);
 
   instance._mapOptionsDidUpdateAttrs();
+});
+
+module('Unit | Factory | map options | isDiff');
+
+test('it returns false if arguments are functionally the same', function(assert) {
+  assert.equal(isDiff('one', 'One'), false, 'no difference of case-insensitive string values');
+  assert.equal(isDiff({one: 1}, {One: 1}), false, 'no difference of case-insensitive object values');
+  assert.equal(isDiff(null, false), false, 'no difference of two falsey values');
+  assert.equal(isDiff(0, 0), false, 'no difference of two zero values');
+});
+
+test('it returns true if arguments are functionally different', function(assert) {
+  assert.equal(isDiff('one', 'two'), true, 'detects different string values');
+  assert.equal(isDiff({one: {two: [1, 2]}}, {one: {two: [1]}}), true, 'detects different nested object values');
+});
+
+test('it returns true if a is `0` and b is a non-numeric falsey value', function(assert) {
+  assert.equal(isDiff(0, false), true, 'detects difference of 2 falsey values if a is `0`');
 });
 
 function hasOwnProperty(o, property) {
