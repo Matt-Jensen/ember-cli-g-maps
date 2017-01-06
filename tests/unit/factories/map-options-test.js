@@ -28,6 +28,18 @@ test('it creates passives CP that return all defined passive properties', functi
   assert.equal(hasOwnProperty(get(instance, 'passives'), 'notFound'), false, 'ignores undefined passive option');
 });
 
+
+test('it overwrites settings found in `options` with competing top-level settings', function(assert) {
+  const expected = 'expected';
+  const instance = mapOptions('scope', ['bound']);
+
+  instance.options = {bound: 'not-expected'};
+  instance.bound = expected;
+
+  assert.equal(instance.mapOptionsGetAll().bound, expected, 'accepted `bound` of top-level over `options.bound`');
+  assert.equal(instance.mapOptionsGetBound().bound, expected, 'accepted `bound` of top-level over `options.bound`');
+});
+
 test('it calls set on Google Map instance property with updated value', function(assert) {
   assert.expect(2);
 

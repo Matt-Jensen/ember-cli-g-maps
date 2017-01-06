@@ -98,12 +98,12 @@ function getMapPassives() {
  * @return {Object}
  * Return a hash of all defined, passive & bound, options
  * Set as either top-level properties or within `options` hash
- * NOTE overrides top-level values with anything defined within `options`
+ * NOTE overrides `options` values with anything defined top-level
  */
 function getAllOptions() {
   const options = assign({}, get(this, 'passives'));
-  assign(options, getProperties(this, ...this._mapOptionsBoundProperties));
   assign(options, get(this, 'options'));
+  assign(options, getDefinedProperties(this, this._mapOptionsBoundProperties));
   return removeUndefinedProperties(options);
 }
 
@@ -111,11 +111,11 @@ function getAllOptions() {
  * @return {Object}
  * Return a hash of all defined, bound, options
  * Set as either top-level properties or within `options` hash
- * NOTE overrides top-level values with anything defined within `options`
+ * NOTE overrides `options` values with anything defined top-level
  */
 function getBoundOptions() {
-  const options = assign({}, getProperties(this, ...this._mapOptionsBoundProperties));
-  assign(options, get(this, 'options'));
+  const options = assign({}, get(this, 'options'));
+  assign(options, getDefinedProperties(this, this._mapOptionsBoundProperties));
   return removeUndefinedProperties(options);
 }
 
@@ -166,6 +166,16 @@ function removeUndefinedProperties(obj) {
   });
 
   return result;
+}
+
+/**
+ * @param  {Object} context
+ * @param  {Array}  properties
+ * @return {Object}
+ * Get an Object containing all properties NOT undefined
+ */
+function getDefinedProperties(context, properties = []) {
+  return removeUndefinedProperties(getProperties(context, ...properties));
 }
 
 /**

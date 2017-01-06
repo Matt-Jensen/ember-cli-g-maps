@@ -458,7 +458,7 @@
   The options hash can be a convenient way to define shared or static settings.  If you do need to update
   the values of an options hash be sure to make use of <span class="gmaps-inline-code">this.notifyPropertyChange('myOptions')</span>
   in order to persist your changes to the Google Map. Please note that values defined within "options"
-  will overwrite values defined as top-level bindings.
+  will be overwritten by values defined as top-level bindings.
 </p>
 
 <div class="gmaps-snippet">
@@ -547,9 +547,10 @@
 <hr>
 
 <p id="center" class="medium-7">
-  <h3>center</h3>
+  <h2>center</h2>
+  Map latitude and longitude location.
 
-  <div class="-mb">
+  <div class="-smt -mb">
     <small class="-db">Type</small>
     Object
   </div>
@@ -560,9 +561,35 @@
   </div>
 
   <div class="-mb">
+    <small class="-db">Example</small>
+    {{#gmaps-snippet type="js" header="Center Configuration"}}
+      <table class="highlight tab-size js-file-line-container" data-tab-size="8">
+        <tbody>
+          <tr>
+            <td id="file-stuff-js-L1" class="blob-num js-line-number" data-line-number="1"></td>
+            <td id="file-stuff-js-LC1" class="blob-code blob-code-inner js-file-line">{</td>
+          </tr>
+          <tr>
+            <td id="file-stuff-js-L2" class="blob-num js-line-number" data-line-number="2"></td>
+            <td id="file-stuff-js-LC2" class="blob-code blob-code-inner js-file-line">  lat<span class="pl-k">:</span> <span class="pl-c1">34</span>,</td>
+          </tr>
+          <tr>
+            <td id="file-stuff-js-L3" class="blob-num js-line-number" data-line-number="3"></td>
+            <td id="file-stuff-js-LC3" class="blob-code blob-code-inner js-file-line">  lng<span class="pl-k">:</span> <span class="pl-k">-</span><span class="pl-c1">90</span></td>
+          </tr>
+          <tr>
+            <td id="file-stuff-js-L4" class="blob-num js-line-number" data-line-number="4"></td>
+            <td id="file-stuff-js-LC4" class="blob-code blob-code-inner js-file-line">}</td>
+          </tr>
+        </tbody>
+      </table>
+    {{/gmaps-snippet}}
+  </div>
+
+  <div class="-mb">
     <small class="-db">Notes</small>
-    Center is a LatLng object literal <span class="gmaps-inline-code">{lat: 32, lng: 34}</span>.
-    Please note: center will override "lat" and "lng" properties.
+    Center will override
+    <a {{action "scrollToId" "lat"}}>lat</a> and <a {{action "scrollToId" "lng"}}>lng</a> properties.
   </div>
 
   <div class="-mb">
