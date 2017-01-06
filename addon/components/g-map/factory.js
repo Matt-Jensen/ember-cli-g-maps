@@ -28,8 +28,12 @@ export const GoogleMapProxy = Ember.ObjectProxy.extend({
 
     set(key, value) {
       assert('g-map `center` is an Object', typeof value === 'object');
-      assert('g-map `center.lat` is a number', typeof value.lat === 'number');
-      assert('g-map `center.lng` is a number', typeof value.lng === 'number');
+
+      const {lat, lng} = value;
+
+      assert('g-map `center.lat` is a number', typeof lat === 'number' && lat === lat);
+      assert('g-map `center.lng` is a number', typeof lng === 'number' && lng === lng);
+
       this.content.setCenter(value);
       return value;
     }
@@ -46,7 +50,9 @@ export const GoogleMapProxy = Ember.ObjectProxy.extend({
 
     set(key, value) {
       if (!value) { value = false; }
+
       assert('g-map `clickableIcons` is a Boolean', typeof value === 'boolean');
+
       this.content.setClickableIcons(value);
       return value;
     }
@@ -158,8 +164,12 @@ export const GoogleMapProxy = Ember.ObjectProxy.extend({
     },
 
     set(key, value) {
-      if (typeof value !== 'number' && !value) { value = MAP_DEFAULTS.heading; }
+      if (!value && value !== 0) {
+        value = MAP_DEFAULTS.heading;
+      }
+
       assert('g-map `heading` is a Number', typeof value === 'number');
+
       this.content.setHeading(value);
       return this.get('heading');
     }
@@ -282,10 +292,17 @@ export const GoogleMapProxy = Ember.ObjectProxy.extend({
     },
 
     set(key, value) {
-      if (typeof value !== 'number' && !value) { value = MAP_DEFAULTS.maxZoom; }
-      value = (value === Infinity ? value : parseInt(value, 10));
-      assert('g-map `maxZoom` is a Number', isNaN(value) === false);
+      if (!value && value !== 0) {
+        value = MAP_DEFAULTS.maxZoom;
+      }
+
+      assert('g-map `maxZoom` is a Number', typeof value === 'number');
       assert('g-map `maxZoom` is not less than zoom', value >= this.get('zoom'));
+
+      if (value !== Infinity) {
+        assert('g-map `maxZoom` is a Whole Number', value % 1 === 0);
+      }
+
       return this.content.maxZoom = value;
     }
   }),
@@ -300,10 +317,14 @@ export const GoogleMapProxy = Ember.ObjectProxy.extend({
     },
 
     set(key, value) {
-      if (typeof value !== 'number' && !value) { value = MAP_DEFAULTS.minZoom; }
-      value = parseInt(value, 10);
-      assert('g-map `minZoom` is a Number', isNaN(value) === false);
+      if (!value && value !== 0) {
+        value = MAP_DEFAULTS.minZoom;
+      }
+
+      assert('g-map `minZoom` is a Number', typeof value === 'number');
       assert('g-map `minZoom` is not greater than zoom', value <= this.get('zoom'));
+      assert('g-map `minZoom` is a Whole Number', value % 1 === 0);
+
       return this.content.minZoom = value;
     }
   }),
@@ -527,9 +548,13 @@ export const GoogleMapProxy = Ember.ObjectProxy.extend({
     },
 
     set(key, value) {
-      if (typeof value !== 'number' && !value) { value = MAP_DEFAULTS.tilt; }
+      if (!value && value !== 0) {
+        value = MAP_DEFAULTS.tilt;
+      }
+
       assert('g-map `tilt` is a Number', typeof value === 'number');
       assert('g-map `tilt` is `0` or `45`', value === 0 || value === 45);
+
       this.content.setTilt(value);
       return this.get('tilt');
     }
@@ -546,11 +571,12 @@ export const GoogleMapProxy = Ember.ObjectProxy.extend({
     },
 
     set(key, value) {
-      assert('g-map `zoom` is a Number', isNaN(value) === false);
+      assert('g-map `zoom` is a Number', typeof value === 'number' && value === value);
       assert('g-map `zoom` is not greater than maxZoom', value <= this.get('maxZoom'));
       assert('g-map `zoom` is not less than minZoom', value >= this.get('minZoom'));
+      assert('g-map `zoom` is a Whole Number', value % 1 === 0);
 
-      this.content.setZoom(Math.round(value));
+      this.content.setZoom(value);
       return this.get('zoom');
     }
   }).volatile(),
