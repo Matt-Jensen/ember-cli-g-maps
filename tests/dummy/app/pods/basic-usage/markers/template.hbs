@@ -72,49 +72,78 @@
     scrollwheel=false
     zoomControl=false as |map|}}
 
-    {{g-map-marker map
-      lat=options.lat
-      lng=options.lng
-      animation=options.animation
-      clickable=options.clickable
-      crossOnDrag=options.crossOnDrag
-      cursor=options.cursor
-      draggable=options.draggable
-      icon=options.icon
-      label=options.label
-      opacity=options.opacity
-      optimized=options.optimized
-      shape=options.shape
-      title=options.title
-      visible=options.visible
-      zIndex=options.zIndex
-      animation_changed=(route-action "registerEvent" "animation_changed")
-      click=(route-action "registerEvent" "click")
-      clickable_changed=(route-action "registerEvent" "clickable_changed")
-      cursor_changed=(route-action "registerEvent" "cursor_changed")
-      dblclick=(route-action "registerEvent" "dblclick")
-      drag=(pipe (route-action "drag") (route-action "registerEvent" "drag"))
-      dragend=(route-action "registerEvent" "dragend")
-      draggable_changed=(route-action "registerEvent" "draggable_changed")
-      dragstart=(route-action "registerEvent" "dragstart")
-      icon_changed=(route-action "registerEvent" "icon_changed")
-      mousedown=(route-action "registerEvent" "mousedown")
-      mouseout=(route-action "registerEvent" "mouseout")
-      mouseover=(route-action "registerEvent" "mouseover")
-      mouseup=(pipe (route-action "mouseup") (route-action "registerEvent" "mouseup"))
-      position_changed=(route-action "registerEvent" "position_changed")
-      rightclick=(route-action "registerEvent" "rightclick")
-      shape_changed=(route-action "registerEvent" "shape_changed")
-      title_changed=(route-action "registerEvent" "title_changed")
-      visible_changed=(route-action "registerEvent" "visible_changed")
-      zindex_changed=(route-action "registerEvent" "zindex_changed")}}
+    {{#if useOptions}}
+      {{g-map-marker map
+        options=options
+        animation_changed=(route-action "registerEvent" "animation_changed")
+        click=(route-action "registerEvent" "click")
+        clickable_changed=(route-action "registerEvent" "clickable_changed")
+        cursor_changed=(route-action "registerEvent" "cursor_changed")
+        dblclick=(route-action "registerEvent" "dblclick")
+        drag=(pipe (route-action "drag") (route-action "registerEvent" "drag"))
+        dragend=(route-action "registerEvent" "dragend")
+        draggable_changed=(route-action "registerEvent" "draggable_changed")
+        dragstart=(route-action "registerEvent" "dragstart")
+        icon_changed=(route-action "registerEvent" "icon_changed")
+        mousedown=(route-action "registerEvent" "mousedown")
+        mouseout=(route-action "registerEvent" "mouseout")
+        mouseover=(route-action "registerEvent" "mouseover")
+        mouseup=(pipe (route-action "mouseup") (route-action "registerEvent" "mouseup"))
+        position_changed=(route-action "registerEvent" "position_changed")
+        rightclick=(route-action "registerEvent" "rightclick")
+        shape_changed=(route-action "registerEvent" "shape_changed")
+        title_changed=(route-action "registerEvent" "title_changed")
+        visible_changed=(route-action "registerEvent" "visible_changed")
+        zindex_changed=(route-action "registerEvent" "zindex_changed")}}
+    {{else}}
+      {{g-map-marker map
+        lat=options.lat
+        lng=options.lng
+        anchorPoint=options.anchorPoint
+        animation=options.animation
+        clickable=options.clickable
+        crossOnDrag=options.crossOnDrag
+        cursor=options.cursor
+        draggable=options.draggable
+        icon=options.icon
+        label=options.label
+        opacity=options.opacity
+        optimized=options.optimized
+        shape=options.shape
+        title=options.title
+        visible=options.visible
+        zIndex=options.zIndex
+        animation_changed=(route-action "registerEvent" "animation_changed")
+        click=(route-action "registerEvent" "click")
+        clickable_changed=(route-action "registerEvent" "clickable_changed")
+        cursor_changed=(route-action "registerEvent" "cursor_changed")
+        dblclick=(route-action "registerEvent" "dblclick")
+        drag=(pipe (route-action "drag") (route-action "registerEvent" "drag"))
+        dragend=(route-action "registerEvent" "dragend")
+        draggable_changed=(route-action "registerEvent" "draggable_changed")
+        dragstart=(route-action "registerEvent" "dragstart")
+        icon_changed=(route-action "registerEvent" "icon_changed")
+        mousedown=(route-action "registerEvent" "mousedown")
+        mouseout=(route-action "registerEvent" "mouseout")
+        mouseover=(route-action "registerEvent" "mouseover")
+        mouseup=(pipe (route-action "mouseup") (route-action "registerEvent" "mouseup"))
+        position_changed=(route-action "registerEvent" "position_changed")
+        rightclick=(route-action "registerEvent" "rightclick")
+        shape_changed=(route-action "registerEvent" "shape_changed")
+        title_changed=(route-action "registerEvent" "title_changed")
+        visible_changed=(route-action "registerEvent" "visible_changed")
+        zindex_changed=(route-action "registerEvent" "zindex_changed")}}
+      {{/if}}
 
   {{/g-map}}
+
+  <button data-test="reset-state" style="display: none;" {{action (route-action "resetMapState" true)}}></button>
+  <button data-test="use-options" style="display: none;" {{action (toggle-action "useOptions" this)}}></button>
 </div>
 
 <h3 class="grid-content -npl">Active Events</h3>
 
-<div id="g-map-marker-event-states" class="grid-block -pb">
+<div id="g-map-event-states" class="grid-block -pb">
   <div class="grid-content small-12 medium-4 -smb">
     <div class="gmaps-fade-text {{if isanimation_changed '-fade'}}" data-test-updated={{if wasanimation_changed 'animation_changed'}}>animation_changed</div>
     <div class="gmaps-fade-text {{if isclick '-fade'}}" data-test-updated={{if wasclick 'click'}}>click</div>
@@ -140,12 +169,20 @@
     <div class="gmaps-fade-text {{if isrightclick '-fade'}}" data-test-updated={{if wasrightclick 'rightclick'}}>rightclick</div>
     <div class="gmaps-fade-text {{if isshape_changed '-fade'}}" data-test-updated={{if wasshape_changed 'shape_changed'}}>shape_changed</div>
     <div class="gmaps-fade-text {{if istitle_changed '-fade'}}" data-test-updated={{if wastitle_changed 'title_changed'}}>title_changed</div>
-    <div class="gmaps-fade-text {{if isvisible_changed '-fade'}}" data-test-updated={{if wasvisible_changed 'drag'}}>visible_changed</div>
-    <div class="gmaps-fade-text {{if iszindex_changed '-fade'}}" data-test-updated={{if waszindex_changed 'drag'}}>zindex_changed</div>
+    <div class="gmaps-fade-text {{if isvisible_changed '-fade'}}" data-test-updated={{if wasvisible_changed 'visible_changed'}}>visible_changed</div>
+    <div class="gmaps-fade-text {{if iszindex_changed '-fade'}}" data-test-updated={{if waszindex_changed 'zindex_changed'}}>zindex_changed</div>
   </div>
 </div>
 
 <div class="grid-block -lmb">
+  <div class="grid-content small-6 medium-3 -mb" style="display: none;">
+    <small class="-db -smb">anchorPoint</small>
+    <button
+      class="th-google-button--xsmall -ilb"
+      data-test-update="anchorPoint"
+      {{action (route-action "toggleAnchorPoint")}}></button>
+  </div>
+
   <div class="grid-content small-6 medium-3 -mb">
     <small class="-db -smb">clickable</small>
     <button
@@ -200,7 +237,7 @@
       <button
         class="th-google-button--xsmall -fz-large -np"
         {{action (pipe (route-action "decrement" "lat") (route-action "syncMapCenter"))}}
-        data-test-update="opacity"
+        data-test-update="lat"
         disabled={{lte (dec options.lat) 15}}>-</button>
       <button data-test-value="position.lat" class="th-google-button--xsmall">{{slice options.lat 0 7}}</button>
       <button
@@ -216,7 +253,7 @@
       <button
         class="th-google-button--xsmall -fz-large -np"
         {{action (pipe (route-action "decrement" "lng") (route-action "syncMapCenter"))}}
-        data-test-update="opacity"
+        data-test-update="lng"
         disabled={{lte (dec options.lng) -115}}>-</button>
       <button data-test-value="position.lng" class="th-google-button--xsmall">{{slice options.lng 0 7}}</button>
       <button
@@ -291,7 +328,7 @@
         <button class="th-google-button--small
           {{if (eq animation options.animation) 'active'}}"
           {{action "setAnimation" animation}}
-          data-test-update="animation" style="text-transform: none;">
+          style="text-transform: none;">
           {{animation}}
         </button>
       {{/each}}
@@ -321,7 +358,9 @@
 
       <button class="th-google-button--small
         {{if (not options.shape) 'active'}}"
-        {{action "setShapeType" false}} style="text-transform: none;">
+        {{action "setShapeType" false}}
+        data-test-update="shape"
+        style="text-transform: none;">
         false
       </button>
     </div>

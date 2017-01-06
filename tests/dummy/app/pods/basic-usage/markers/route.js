@@ -22,7 +22,10 @@ const MARKER_DEFAULTS = {
   label: undefined,
   opacity: 1,
   optimized: false,
-  shape: undefined,
+  shape: {
+    type: 'circle',
+    coords: [0, 0, 100]
+  },
   title: undefined,
   visible: true,
   zIndex: 10
@@ -36,6 +39,8 @@ export default Route.extend(DocumentationHelpers, {
       lat: MAP_DEFAULTS.lat,
       lng: MAP_DEFAULTS.lng,
       zoom: 6,
+
+      useOptions: true,
 
       options: assign({}, MARKER_DEFAULTS),
       animations: Object.keys(googleMaps.Animation),
@@ -64,6 +69,13 @@ export default Route.extend(DocumentationHelpers, {
         anchor: {x: 1, y: 30},
         size: {width: 20, height: 75}
       });
+      controller.notifyPropertyChange('options');
+    },
+
+    toggleAnchorPoint() {
+      const {controller} = this;
+      const hasAnchorPoint = Boolean(get(controller, 'options.anchorPoint'));
+      set(controller, 'options.anchorPoint', hasAnchorPoint ? false : {x: 10, y: 10});
       controller.notifyPropertyChange('options');
     },
 
@@ -107,8 +119,14 @@ export default Route.extend(DocumentationHelpers, {
      */
     mouseup(e) {
       const {controller} = this;
-      set(controller, 'lat', e.latLng.lat());
-      set(controller, 'lng', e.latLng.lng());
+
+      /*
+       * Accpetance tests events don't provide a Mouse event
+       */
+      if (e) {
+        set(controller, 'lat', e.latLng.lat());
+        set(controller, 'lng', e.latLng.lng());
+      }
     },
 
     /**
@@ -116,9 +134,19 @@ export default Route.extend(DocumentationHelpers, {
      */
     drag(e) {
       const {controller} = this;
-      set(controller, 'options.lat', e.latLng.lat());
-      set(controller, 'options.lng', e.latLng.lng());
-      controller.notifyPropertyChange('options');
+
+      /*
+       * Accpetance tests events don't provide a Mouse event
+       */
+      if (e) {
+        set(controller, 'options.lat', e.latLng.lat());
+        set(controller, 'options.lng', e.latLng.lng());
+        controller.notifyPropertyChange('options');
+      }
+    },
+
+    resetMapState() {
+      this.controller.set('options', MARKER_DEFAULTS);
     }
   }
 });
