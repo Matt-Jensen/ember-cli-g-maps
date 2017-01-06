@@ -2,6 +2,7 @@ import googleMapMarker from 'ember-cli-g-maps/components/g-map-marker/factory';
 import {markerIcon, markerSymbol} from 'ember-cli-g-maps/components/g-map-marker/factory';
 import {module, test} from 'qunit';
 import {assign} from 'ember-platform';
+import {createGoogleMap} from '../../../helpers/google-maps';
 
 module('Unit | Factory | Google Map Marker');
 
@@ -31,6 +32,8 @@ test('it only allows a point literal as an anchor point', function(assert) {
   const marker = googleMapMarker(createGoogleMap(), assign({}, DEFAULTS));
   assert.throws(() => marker.set('anchorPoint', 'non-object'), 'only accepts object');
   assert.throws(() => marker.set('anchorPoint', {x: 1}), 'rejects invalid point literal');
+  assert.throws(() => marker.set('anchorPoint', {y: 1}), 'rejects invalid point literal');
+  assert.throws(() => marker.set('anchorPoint', {x: 1, y: NaN}), 'rejects invalid point literal');
 
   marker.set('anchorPoint', pointLiteral);
   marker.notifyPropertyChange('anchorPoint');
@@ -48,18 +51,19 @@ test('it removes an anchor point with a falsey value', function(assert) {
 
   marker.set('anchorPoint', false);
   marker.notifyPropertyChange('anchorPoint');
-
   assert.equal(marker.get('anchorPoint'), undefined, 'anchorPoint is no longer defined');
 });
 
 test('it returns the configured animation name', function(assert) {
   const expected = {animation: 'DROP'};
   const marker = googleMapMarker(createGoogleMap(), assign(expected, DEFAULTS));
+
   assert.equal(marker.get('animation'), expected.animation, 'resolves configured animation');
 });
 
 test('it only allows setting a valid animation name or id number', function(assert) {
   const marker = googleMapMarker(createGoogleMap(), assign({}, DEFAULTS));
+
   assert.throws(() => marker.set('animation', 35), 'rejects non-string value');
   assert.throws(() => marker.set('animation', 'bad-animation'), 'rejects non-existent animation name');
 
@@ -72,13 +76,13 @@ test('it removes an animation with a falsey value', function(assert) {
 
   marker.set('animation', false);
   marker.notifyPropertyChange('animation');
-
   assert.equal(marker.get('animation'), undefined, 'animation is no longer defined');
 });
 
 test('it returns the configured clickable setting', function(assert) {
   const expected = {clickable: false};
   const marker = googleMapMarker(createGoogleMap(), assign(expected, DEFAULTS));
+
   assert.equal(marker.get('clickable'), expected.clickable, 'resolves configured clickable');
 });
 
@@ -89,6 +93,14 @@ test('it only allows setting a valid clickable value', function(assert) {
 
   marker.set('clickable', false);
   assert.equal(marker.get('clickable'), false, 'updated clickable');
+});
+
+test('it removes an clickable with a falsey value', function(assert) {
+  const marker = googleMapMarker(createGoogleMap(), assign({clickable: true}, DEFAULTS));
+
+  marker.set('clickable', null);
+  marker.notifyPropertyChange('clickable');
+  assert.equal(marker.get('clickable'), false, 'clickable is false');
 });
 
 test('it returns the configured crossOnDrag setting', function(assert) {
@@ -105,6 +117,14 @@ test('it only allows setting a valid crossOnDrag value', function(assert) {
   marker.set('crossOnDrag', false);
   marker.notifyPropertyChange('crossOnDrag');
   assert.equal(marker.get('crossOnDrag'), false, 'updated crossOnDrag');
+});
+
+test('it removes an crossOnDrag with a falsey value', function(assert) {
+  const marker = googleMapMarker(createGoogleMap(), assign({crossOnDrag: true}, DEFAULTS));
+
+  marker.set('crossOnDrag', null);
+  marker.notifyPropertyChange('crossOnDrag');
+  assert.equal(marker.get('crossOnDrag'), false, 'crossOnDrag is false');
 });
 
 test('it returns the configured cursor setting', function(assert) {
@@ -125,15 +145,15 @@ test('it only allows setting a valid cursor value', function(assert) {
 test('it removes a cursor with a falsey value', function(assert) {
   const marker = googleMapMarker(createGoogleMap(), assign({cursor: 'pointer'}, DEFAULTS));
 
-  marker.set('cursor', false);
+  marker.set('cursor', null);
   marker.notifyPropertyChange('cursor');
-
   assert.equal(marker.get('cursor'), undefined, 'cursor is no longer defined');
 });
 
 test('it returns the configured draggable setting', function(assert) {
   const expected = {draggable: true};
   const marker = googleMapMarker(createGoogleMap(), assign(expected, DEFAULTS));
+
   assert.equal(marker.get('draggable'), expected.draggable, 'resolves configured draggable');
 });
 
@@ -144,6 +164,14 @@ test('it only allows setting a valid draggable value', function(assert) {
 
   marker.set('draggable', true);
   assert.equal(marker.get('draggable'), true, 'updated draggable');
+});
+
+test('it removes a draggable with a falsey value', function(assert) {
+  const marker = googleMapMarker(createGoogleMap(), assign({draggable: true}, DEFAULTS));
+
+  marker.set('draggable', null);
+  marker.notifyPropertyChange('draggable');
+  assert.equal(marker.get('draggable'), false, 'draggable is no longer defined');
 });
 
 test('it returns the configured icon', function(assert) {
@@ -232,7 +260,6 @@ test('it removes a label with a falsey value', function(assert) {
 
   marker.set('label', false);
   marker.notifyPropertyChange('label');
-
   assert.equal(marker.get('label'), undefined, 'label is no longer defined');
 });
 
@@ -264,7 +291,6 @@ test('it restores default opacity with a falsey value', function(assert) {
 
   marker.set('opacity', false);
   marker.notifyPropertyChange('opacity');
-
   assert.equal(marker.get('opacity'), defaultOpacity, 'opacity is reset to default value');
 });
 
@@ -364,14 +390,14 @@ test('it removes a shape with a falsey value', function(assert) {
     }
   }, DEFAULTS));
 
-  marker.set('shape', false);
-
+  marker.set('shape', null);
   assert.equal(marker.get('shape'), undefined, 'shape is no longer defined');
 });
 
 test('it returns the configured title setting', function(assert) {
   const expected = {title: 'test'};
   const marker = googleMapMarker(createGoogleMap(), assign(expected, DEFAULTS));
+
   assert.equal(marker.get('title'), expected.title, 'resolves configured title');
 });
 
@@ -398,6 +424,7 @@ test('it removes title with a falsey value', function(assert) {
 test('it returns the configured visible setting', function(assert) {
   const expected = {visible: false};
   const marker = googleMapMarker(createGoogleMap(), assign(expected, DEFAULTS));
+
   assert.equal(marker.get('visible'), expected.visible, 'resolves configured visible');
 });
 
@@ -413,6 +440,7 @@ test('it only allows setting a valid visible value', function(assert) {
 test('it returns the configured zIndex setting', function(assert) {
   const expected = {zIndex: 100};
   const marker = googleMapMarker(createGoogleMap(), assign(expected, DEFAULTS));
+
   assert.equal(marker.get('zIndex'), expected.zIndex, 'resolves configured zIndex');
 });
 
@@ -430,7 +458,7 @@ test('it only allows setting a valid zIndex value', function(assert) {
 test('it removes zIndex with a, non-numeric, falsey value', function(assert) {
   const marker = googleMapMarker(createGoogleMap(), assign({zIndex: 100}, DEFAULTS));
 
-  marker.set('zIndex', false);
+  marker.set('zIndex', NaN);
 
   assert.equal(marker.get('zIndex'), undefined, 'zIndex is no longer defined');
 });
@@ -558,7 +586,3 @@ test('it returns its\' original config via toJSON', function(assert) {
 
   assert.deepEqual(actual, expected, 'toJSON response matches config');
 });
-
-function createGoogleMap() {
-  return new google.maps.Map(document.createElement('div'));
-}
