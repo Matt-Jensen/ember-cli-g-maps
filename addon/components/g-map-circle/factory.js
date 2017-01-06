@@ -98,7 +98,7 @@ export const GoogleMapCircleProxy = Ember.ObjectProxy.extend({
   }),
 
   /**
-   * @type {String}
+   * @type {String|Undefined}
    * The fill color. All CSS3 colors are supported except for extended
    * named colors.
    */
@@ -161,7 +161,7 @@ export const GoogleMapCircleProxy = Ember.ObjectProxy.extend({
   }).volatile(),
 
   /**
-   * @type {String}
+   * @type {String|Undefined}
    * The stroke color. All CSS3 colors are supported except for extended
    * named colors.
    */
@@ -227,7 +227,7 @@ export const GoogleMapCircleProxy = Ember.ObjectProxy.extend({
   }),
 
   /**
-   * @type {Number}
+   * @type {Number|Undefined}
    * The stroke width in pixels.
    */
   strokeWeight: computed({
@@ -247,7 +247,6 @@ export const GoogleMapCircleProxy = Ember.ObjectProxy.extend({
 
   /**
    * @type {Boolean}
-   * @default {true}
    * Whether this circle is visible on the map.
    */
   visible: computed({
