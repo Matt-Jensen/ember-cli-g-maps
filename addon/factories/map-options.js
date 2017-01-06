@@ -175,10 +175,10 @@ function removeUndefinedProperties(obj) {
  * - falsey values are NOT different unless a is 0
  *   and b is a non-zero value
  */
-export function isDiff(a, b) {
-  a = a && typeof a === 'object' ? JSON.stringify(a) : a;
-  b = b && typeof b === 'object' ? JSON.stringify(b) : b;
-  a = typeof a === 'string' ? a.toLowerCase() : a;
-  b = typeof b === 'string' ? b.toLowerCase() : b;
+export function isDiff(...args) {
+  const [a, b] = args.map((c) => {
+    c = c && typeof c === 'object' ? JSON.stringify(c) : c;
+    return typeof c === 'string' ? c.toLowerCase() : c;
+  });
   return a || b ? a !== b : a === 0 && b !== 0;
 }
