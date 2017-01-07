@@ -4,8 +4,6 @@ import {moduleForComponent, test} from 'ember-qunit';
 import hbs from 'htmlbars-inline-precompile';
 import run from 'ember-runloop';
 
-import {circleIcon, circleSymbol} from 'ember-cli-g-maps/components/g-map-circle/factory';
-
 moduleForComponent('g-map-circle', 'Integration | Component | g map circle', {
   integration: true
 });
@@ -352,7 +350,7 @@ test('it provides the relevant map state as change action arguments', function(a
       this.on('center_changed', (value) => {
         const actual = {lat: parseInt(value.lat, 10), lng: parseInt(value.lng, 10)};
         assert.deepEqual(actual, changeValues.center_changed, 'center_changed action was called with circle state: `{lat: 34, lng: 32}`');
-      })
+      });
     }
   });
 
