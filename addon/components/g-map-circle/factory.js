@@ -52,7 +52,7 @@ export const GoogleMapCircleProxy = Ember.ObjectProxy.extend({
 
       // TODO is clickable while dragging warning
 
-      this.content.clickable = value;
+      this.content.setOptions({clickable: value});
       return value;
     }
   }),
@@ -112,7 +112,7 @@ export const GoogleMapCircleProxy = Ember.ObjectProxy.extend({
 
       assert('g-map-circle `fillColor` is a String', typeof value === 'string');
 
-      this.content.fillColor = value;
+      this.content.setOptions({fillColor: value});
       return value;
     }
   }),
@@ -135,7 +135,7 @@ export const GoogleMapCircleProxy = Ember.ObjectProxy.extend({
       assert('g-map-circle `fillOpacity` is not greater than 1', value <= 1);
       assert('g-map-circle `fillOpacity` is not less than 0', value >= 0);
 
-      this.content.fillOpacity = value;
+      this.content.setOptions({fillOpacity: value});
       return value;
     }
   }),
@@ -175,7 +175,7 @@ export const GoogleMapCircleProxy = Ember.ObjectProxy.extend({
 
       assert('g-map-circle `strokeColor` is a String', typeof value === 'string');
 
-      this.content.strokeColor = value;
+      this.content.setOptions({strokeColor: value});
       return value;
     }
   }),
@@ -198,7 +198,7 @@ export const GoogleMapCircleProxy = Ember.ObjectProxy.extend({
       assert('g-map-circle `strokeOpacity` is not greater than 1', value <= 1);
       assert('g-map-circle `strokeOpacity` is not less than 0', value >= 0);
 
-      this.content.strokeOpacity = value;
+      this.content.setOptions({strokeOpacity: value});
       return value;
     }
   }),
@@ -221,7 +221,7 @@ export const GoogleMapCircleProxy = Ember.ObjectProxy.extend({
 
       assert('g-map-circle `strokePosition` is a valid stroke position', typeof id === 'number');
 
-      this.content.strokePosition = id;
+      this.content.setOptions({strokePosition: id});
       return value;
     }
   }),
@@ -240,7 +240,7 @@ export const GoogleMapCircleProxy = Ember.ObjectProxy.extend({
 
       assert('g-map-circle `strokeWeight` is a Number', typeof value === 'number');
 
-      this.content.strokeWeight = value;
+      this.content.setOptions({strokeWeight: value});
       return value;
     }
   }),
@@ -275,14 +275,14 @@ export const GoogleMapCircleProxy = Ember.ObjectProxy.extend({
 
     set(key, value) {
       if (!value && value !== 0) {
-        this.content.zIndex = null; // remove
+        this.content.setOptions({zIndex: null}); // remove
         return;
       }
 
       assert('g-map-circle `zIndex` is a Number', typeof value === 'number');
       assert('g-map-circle `zIndex` is a Whole Number', value % 1 === 0);
 
-      this.content.zIndex = value;
+      this.content.setOptions({zIndex: value});
       return value;
     }
   })

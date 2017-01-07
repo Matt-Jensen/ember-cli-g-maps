@@ -108,5 +108,41 @@ export default {
       'zIndex',
       'animation' // NOTE must be set after icon & optimized
     ]
+  },
+
+  googleMapCircle: {
+    scope: 'circle',
+
+    events: [
+      'center_changed',
+      'click',
+      'dblclick',
+      'drag',
+      'dragend',
+      'dragstart',
+      'mousedown',
+      'mousemove',
+      'mouseout',
+      'mouseover',
+      'mouseup',
+      'radius_changed',
+      'rightclick'
+    ],
+
+    boundOptions: [
+      'center',
+      'clickable',
+      'draggable',
+      'editable',
+      'fillColor',
+      'fillOpacity',
+      'radius',
+      'strokeColor',
+      'strokeOpacity',
+      'strokePosition',
+      'strokeWeight',
+      'visible',
+      'zIndex'
+    ]
   }
 };
