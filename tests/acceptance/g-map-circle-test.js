@@ -4,14 +4,14 @@ import run from 'ember-runloop';
 
 import ENV from 'ember-cli-g-maps/configuration';
 
-const EVENTS = ENV.googleMapMarker.events;
-const PROPERTIES = ENV.googleMapMarker.boundOptions.filter((p) => p !== 'position');
+const EVENTS = ENV.googleMapCircle.events.filter((e) => e === 'center_changed'); // NOTE center_changed throws error
+const PROPERTIES = ENV.googleMapCircle.boundOptions.filter((p) => p !== 'center');
 PROPERTIES.push('lat', 'lng');
 
-moduleForAcceptance('Acceptance | g-map-marker');
+moduleForAcceptance('Acceptance | g-map-circle');
 
-test('g-map-marker properties & events', function(assert) {
-  visit('/basic-usage/markers');
+test('g-map-circle properties & events', function(assert) {
+  visit('/basic-usage/circles');
 
   waitForGoogleMap();
 
@@ -22,19 +22,18 @@ test('g-map-marker properties & events', function(assert) {
    * Test map using top-level configuration
    */
   andThen(() => {
-    topLevel = getMarkerState(PROPERTIES);
+    topLevel = getCircleState(PROPERTIES);
     updateAllProperties(PROPERTIES);
   });
 
   andThen(() => {
-    const updated = getMarkerState(PROPERTIES);
-
+    const updated = getCircleState(PROPERTIES);
     assertAllPropertiesUpdated(topLevel, updated);
 
-    // Reset marker state to original
+    // Reset circle state to original
     click('[data-test=reset-state]');
 
-    // User marker configured with `options`
+    // User circle configured with `options`
     click('[data-test=use-options]');
   });
 
@@ -42,12 +41,12 @@ test('g-map-marker properties & events', function(assert) {
    * Test map using options configuration
    */
   andThen(() => {
-    options = getMarkerState(PROPERTIES);
+    options = getCircleState(PROPERTIES);
     updateAllProperties(PROPERTIES);
   });
 
   andThen(() => {
-    const updated = getMarkerState(PROPERTIES);
+    const updated = getCircleState(PROPERTIES);
     assertAllPropertiesUpdated(options, updated);
   });
 
@@ -56,7 +55,7 @@ test('g-map-marker properties & events', function(assert) {
    */
   andThen(() => {
     EVENTS.forEach((evt) =>
-      triggerGoogleMapMarkerEvent(evt));
+      triggerGoogleMapCircleEvent(evt));
   });
 
   andThen(() => {
@@ -69,8 +68,9 @@ test('g-map-marker properties & events', function(assert) {
     .forEach((property) => {
       const o = original[property];
       const u = updated[property];
-      const msg = `g-map-marker property ${property} updated`;
+      const msg = `g-map-circle property ${property} updated`;
 
+      console.log(property);
       if (typeof o === 'object' && typeof u === 'object') {
         assert.notDeepEqual(o, u, msg);
       } else {
@@ -81,44 +81,44 @@ test('g-map-marker properties & events', function(assert) {
 });
 
 /**
- * @param {String} option    Google Maps Marker option
+ * @param {String} option    Google Maps Circle option
  * @param {String} selector  jQuery selector to a g-map canvas
  * @return {any}
- * Return an option value from google map marker at a given selector
+ * Return an option value from google map circle at a given selector
  */
-function getGoogleMarkerOption(option, selector = '.ember-cli-g-map') {
+function getGoogleCircleOption(option, selector = '.ember-cli-g-map') {
   const element = find(selector);
 
   if (!element.length) {
     throw new Error('G-map canvas element was not found');
   }
 
-  const [marker] = element.get(0).__GOOGLE_MAP_MARKERS__;
+  const [circle] = element.get(0).__GOOGLE_MAP_CIRCLES__;
 
-  if (!marker) {
-    throw new Error('Google Map has no marker(s)');
+  if (!circle) {
+    throw new Error('Google Map has no circle(s)');
   }
 
   if (option === 'lat') {
-    return marker.position.lat();
+    return circle.center.lat();
   }
 
   if (option === 'lng') {
-    return marker.position.lng();
+    return circle.center.lng();
   }
 
-  return marker[option];
+  return circle[option];
 }
 
 /**
  * @return {Object} Google Map State
   * Return current map state of all properties
  */
-function getMarkerState(properties) {
+function getCircleState(properties) {
   const state = {};
 
   properties.forEach((option) =>
-    state[option] = getGoogleMarkerOption(option));
+    state[option] = getGoogleCircleOption(option));
 
   return state;
 }
@@ -129,26 +129,26 @@ function getMarkerState(properties) {
  */
 function updateAllProperties(properties) {
   properties.forEach((property) =>
-    click(`[data-test-update=${property}]:first`));
+    click(`[data-test-update=${property}]:not(.active):first`));
 }
 
 /**
  * @param  {String} eventName
  * @param  {String} selector g-map canvas selector
- * Trigger a given event on a Google Map Marker instance
+ * Trigger a given event on a Google Map Circle instance
  */
-function triggerGoogleMapMarkerEvent(eventName, selector = '.ember-cli-g-map') {
+function triggerGoogleMapCircleEvent(eventName, selector = '.ember-cli-g-map') {
   const element = find(selector);
 
   if (!element.length) {
     throw new Error('G-map canvas element was not found');
   }
 
-  const [marker] = element.get(0).__GOOGLE_MAP_MARKERS__;
+  const [circle] = element.get(0).__GOOGLE_MAP_CIRCLES__;
 
-  if (!marker) {
-    throw new Error('Google Map has no marker(s)');
+  if (!circle) {
+    throw new Error('Google Map has no circle(s)');
   }
 
-  run(() => google.maps.event.trigger(marker, eventName));
+  run(() => google.maps.event.trigger(circle, eventName));
 }
