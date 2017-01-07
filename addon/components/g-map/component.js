@@ -11,7 +11,7 @@ import layout from '../../templates/components/g-map';
 import isTest from '../../mixins/is-test';
 import ENV from '../../configuration';
 
-const GOOGLE_MAP_DEFAULTS = {
+export const GOOGLE_MAP_DEFAULTS = {
   lat: 30.2672,
   lng: -97.7431,
   zoom: 4

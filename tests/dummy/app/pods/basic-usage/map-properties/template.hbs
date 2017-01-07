@@ -557,7 +557,7 @@
 
   <div class="-mb">
     <small class="-db">Default</small>
-    <span class="gmaps-inline-code -nml">g-map default lat,lng</span>
+    <span class="gmaps-inline-code -nml">{ lat: {{defaultLat}}, lng: {{defaultLng}} }</span>
   </div>
 
   <div class="-mb">
@@ -857,6 +857,11 @@
   </div>
 
   <div class="-mb">
+    <small class="-db">Default</small>
+    <span class="gmaps-inline-code -nml">{{defaultLat}}</span>
+  </div>
+
+  <div class="-mb">
     <small class="-db">Notes</small>
     A latitude corrdinate that will be overridden if used with the center option.
     Lat is used in conjunction with lng.
@@ -871,6 +876,11 @@
   <div class="-mb">
     <small class="-db">Type</small>
     Number
+  </div>
+
+  <div class="-mb">
+    <small class="-db">Default</small>
+    <span class="gmaps-inline-code -nml">{{defaultLng}}</span>
   </div>
 
   <div class="-mb">
@@ -1290,7 +1300,7 @@
 
   <div class="-mb">
     <small class="-db">Default</small>
-    The initial Map zoom level
+    <span class="gmaps-inline-code -nml">{{defaultZoom}}</span>
   </div>
 
   <div class="-mb">
