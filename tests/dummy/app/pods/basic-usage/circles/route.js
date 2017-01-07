@@ -2,7 +2,9 @@ import Route from 'ember-route';
 import get from 'ember-metal/get';
 import set from 'ember-metal/set';
 import {assign} from 'ember-platform';
+
 import DocumentationHelpers from '../../../mixins/documentation-actions';
+import {GOOGLE_CIRCLE_DEFAULTS} from 'ember-cli-g-maps/components/g-map-circle/component';
 
 const MAP_DEFAULTS = {
   lat: 30.2672,
@@ -34,7 +36,8 @@ export default Route.extend(DocumentationHelpers, {
       zoom: 5,
       useOptions: false,
       options: assign({}, CIRCLE_DEFAULTS),
-      strokePositions: Object.keys(googleMaps.StrokePosition)
+      strokePositions: Object.keys(googleMaps.StrokePosition),
+      defaultRadius: GOOGLE_CIRCLE_DEFAULTS.radius
     });
   },
 

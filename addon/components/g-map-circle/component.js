@@ -7,7 +7,7 @@ import googleMapCircle from './factory';
 import isTest from '../../mixins/is-test';
 import ENV from '../../configuration';
 
-const GOOGLE_CIRCLE_DEFAULTS = {radius: 100000};
+export const GOOGLE_CIRCLE_DEFAULTS = {radius: 100000};
 
 const EVENTS = ENV.googleMapCircle.events;
 const BOUND_OPTIONS = ENV.googleMapCircle.boundOptions;

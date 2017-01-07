@@ -318,6 +318,617 @@
   </div>
 </div>
 
+<hr>
+
+<h2>Overview</h2>
 <p class="medium-7 large-5">
-  <a href="https://developers.google.com/maps/documentation/javascript/3.exp/reference#Circle" target="_blank">Google Map Circles</a> allow you to draw an interactive, draggable, skinable, and editable radius on a map.
+  <a href="https://developers.google.com/maps/documentation/javascript/3.exp/reference#Circle" target="_blank">
+    Google Map Circles
+  </a>
+
+  Circles belong to a specific g-map instance and are given access like so:
+
+  {{#gmaps-snippet class="-mt" header="Adding Marker to Map"}}
+    <table class="highlight tab-size js-file-line-container" data-tab-size="8">
+      <tbody>
+        <tr>
+          <td id="file-test-hbs-L1" class="blob-num js-line-number" data-line-number="1"></td>
+          <td id="file-test-hbs-LC1" class="blob-code blob-code-inner js-file-line">  <span class="pl-c1">\{{#g-map</span> <span class="pl-v">as</span> |<span class="pl-e"><span class="pl-v">map</span></span>|<span class="pl-c1">}}</span></td>
+        </tr>
+        <tr>
+          <td id="file-test-hbs-L2" class="blob-num js-line-number" data-line-number="2"></td>
+          <td id="file-test-hbs-LC2" class="blob-code blob-code-inner js-file-line">    <span class="pl-c1">\{{</span><span class="pl-v">g-map-circle</span> <span class="pl-e"><span class="pl-v">map</span></span><span class="pl-c1">}}</span></td>
+        </tr>
+        <tr>
+          <td id="file-test-hbs-L3" class="blob-num js-line-number" data-line-number="3"></td>
+          <td id="file-test-hbs-LC3" class="blob-code blob-code-inner js-file-line">  <span class="pl-c1">\{{/g-map}}</span></td>
+        </tr>
+      </tbody>
+    </table>
+   {{/gmaps-snippet}}
+</p>
+
+<hr>
+
+<p id="center" class="medium-7 large-5">
+  <h2>center</h2>
+  Circle latitude and longitude location.
+
+  <div class="-smt -mb">
+    <small class="-db">Type</small>
+    Object
+  </div>
+
+  <div class="-mb">
+    <small class="-db">Default</small>
+    Center of Google Map
+  </div>
+
+  <div class="-mb">
+    <small class="-db">Example</small>
+    {{#gmaps-snippet type="js" header="Center Configuration"}}
+      <table class="highlight tab-size js-file-line-container" data-tab-size="8">
+        <tbody>
+          <tr>
+            <td id="file-stuff-js-L1" class="blob-num js-line-number" data-line-number="1"></td>
+            <td id="file-stuff-js-LC1" class="blob-code blob-code-inner js-file-line">{</td>
+          </tr>
+          <tr>
+            <td id="file-stuff-js-L2" class="blob-num js-line-number" data-line-number="2"></td>
+            <td id="file-stuff-js-LC2" class="blob-code blob-code-inner js-file-line">  lat<span class="pl-k">:</span> <span class="pl-c1">34</span>,</td>
+          </tr>
+          <tr>
+            <td id="file-stuff-js-L3" class="blob-num js-line-number" data-line-number="3"></td>
+            <td id="file-stuff-js-LC3" class="blob-code blob-code-inner js-file-line">  lng<span class="pl-k">:</span> <span class="pl-k">-</span><span class="pl-c1">90</span></td>
+          </tr>
+          <tr>
+            <td id="file-stuff-js-L4" class="blob-num js-line-number" data-line-number="4"></td>
+            <td id="file-stuff-js-LC4" class="blob-code blob-code-inner js-file-line">}</td>
+          </tr>
+        </tbody>
+      </table>
+    {{/gmaps-snippet}}
+  </div>
+
+  <div class="-mb">
+    <small class="-db">Notes</small>
+    Center will override
+    <a {{action "scrollToId" "lat"}}>lat</a> and <a {{action "scrollToId" "lng"}}>lng</a> properties.
+  </div>
+</p>
+
+<hr>
+
+<p id="clickable" class="medium-7 large-5">
+  <h2>clickable</h2>
+  Indicates whether this Circle handles mouse events.
+
+  <div class="-smt -mb">
+    <small class="-db">Type</small>
+    Boolean
+  </div>
+
+  <div class="-mb">
+    <small class="-db">Default</small>
+    <span class="gmaps-inline-code -nml">true</span>
+  </div>
+</p>
+
+<hr>
+
+<p id="draggable" class="medium-7 large-5">
+  <h2>draggable</h2>
+  If set to true, the user can drag this circle over the map.
+
+  <div class="-smt -mb">
+    <small class="-db">Type</small>
+    Boolean
+  </div>
+
+  <div class="-mb">
+    <small class="-db">Default</small>
+    <span class="gmaps-inline-code -nml">false</span>
+  </div>
+</p>
+
+<hr>
+
+<p id="editable" class="medium-7 large-5">
+  <h2>editable</h2>
+  If set to true, the user can edit this circle by dragging the control points shown at the center and around the circumference of the circle.
+
+  <div class="-smt -mb">
+    <small class="-db">Type</small>
+    Boolean
+  </div>
+
+  <div class="-mb">
+    <small class="-db">Default</small>
+    <span class="gmaps-inline-code -nml">false</span>
+  </div>
+</p>
+
+<hr>
+
+<p id="fillColor" class="medium-7 large-5">
+  <h2>fillColor</h2>
+  The fill color. All CSS3 colors are supported except for extended named colors.
+
+  <div class="-smt -mb">
+    <small class="-db">Type</small>
+    String
+  </div>
+
+  <div class="-mb">
+    <small class="-db">Default</small>
+    <span class="gmaps-inline-code -nml">#000000</span>
+  </div>
+</p>
+
+<hr>
+
+<p id="fillOpacity" class="medium-7 large-5">
+  <h2>fillOpacity</h2>
+  The fill opacity between 0.0 and 1.0.
+
+  <div class="-smt -mb">
+    <small class="-db">Type</small>
+    Number
+  </div>
+
+  <div class="-mb">
+    <small class="-db">Default</small>
+    <span class="gmaps-inline-code -nml">1</span>
+  </div>
+</p>
+
+<hr>
+
+<p id="lat" class="medium-7 large-5">
+  <h2>lat</h2>
+  The circle's latitude coordinate.
+
+  <div class="-smt -mb">
+    <small class="-db">Type</small>
+    Number
+  </div>
+
+  <div class="-mb">
+    <small class="-db">Default</small>
+    Latitude of Google Map
+  </div>
+
+  <div class="-mb">
+    <small class="-db">Notes</small>
+    If used in addition to
+    <a {{action "scrollToId" "center"}}>center</a> lat will be overwritten.
+  </div>
+</p>
+
+<hr>
+
+<p id="lng" class="medium-7 large-5">
+  <h2>lng</h2>
+  The circle's longitude coordinate.
+
+  <div class="-smt -mb">
+    <small class="-db">Type</small>
+    Number
+  </div>
+
+  <div class="-mb">
+    <small class="-db">Default</small>
+    Longitude of Google Map
+  </div>
+
+  <div class="-mb">
+    <small class="-db">Notes</small>
+    If used in addition to
+    <a {{action "scrollToId" "center"}}>center</a> lng will be overwritten.
+  </div>
+</p>
+
+<hr>
+
+<p id="radius" class="medium-7 large-5">
+  <h2>radius</h2>
+  The radius in meters on the Earth's surface.
+
+  <div class="-smt -mb">
+    <small class="-db">Type</small>
+    Number
+  </div>
+
+  <div class="-mb">
+    <small class="-db">Default</small>
+    <span class="gmaps-inline-code -nml">{{defaultRadius}}</span>
+  </div>
+</p>
+
+<hr>
+
+<p id="strokeColor" class="medium-7 large-5">
+  <h2>strokeColor</h2>
+  The stroke color. All CSS3 colors are supported except for extended named colors.
+
+  <div class="-smt -mb">
+    <small class="-db">Type</small>
+    String
+  </div>
+
+  <div class="-mb">
+    <small class="-db">Default</small>
+    <span class="gmaps-inline-code -nml">#000000</span>
+  </div>
+</p>
+
+<hr>
+
+<p id="strokeOpacity" class="medium-7 large-5">
+  <h2>strokeOpacity</h2>
+  The stroke opacity between 0.0 and 1.0.
+
+  <div class="-smt -mb">
+    <small class="-db">Type</small>
+    Number
+  </div>
+
+  <div class="-mb">
+    <small class="-db">Default</small>
+    <span class="gmaps-inline-code -nml">1</span>
+  </div>
+</p>
+
+<hr>
+
+<p id="strokePosition" class="medium-7 large-5">
+  <h2>strokePosition</h2>
+  The stroke position. This property is not supported on Internet Explorer 8 and earlier.
+
+  <div class="-smt -mb">
+    <small class="-db">Type</small>
+    String
+  </div>
+
+  <div class="-mb">
+    <small class="-db">Default</small>
+    <span class="gmaps-inline-code -nml">CENTER</span>
+  </div>
+
+  <div class="-mb">
+    <small class="-db">Options</small>
+    {{#each strokePositions as |position|}}<span class="gmaps-inline-code -nml">{{position}}</span>{{/each}}
+  </div>
+</p>
+
+<hr>
+
+<p id="strokeWeight" class="medium-7 large-5">
+  <h2>strokeWeight</h2>
+  The stroke width in pixels.
+
+  <div class="-smt -mb">
+    <small class="-db">Type</small>
+    Number
+  </div>
+
+  <div class="-mb">
+    <small class="-db">Default</small>
+    <span class="gmaps-inline-code -nml">3</span>
+  </div>
+</p>
+
+<hr>
+
+<p id="visible" class="medium-7 large-5">
+  <h2>visible</h2>
+  Whether this circle is visible on the map.
+
+  <div class="-smt -mb">
+    <small class="-db">Type</small>
+    Boolean
+  </div>
+
+  <div class="-mb">
+    <small class="-db">Default</small>
+    <span class="gmaps-inline-code -nml">true</span>
+  </div>
+</p>
+
+<hr>
+
+<p id="zIndex" class="medium-7 large-5">
+  <h2>zIndex</h2>
+  The zIndex compared to other polys.
+
+  <div class="-smt -mb">
+    <small class="-db">Type</small>
+    Number
+  </div>
+</p>
+
+<hr>
+
+<p id="center_changed" class="medium-7 large-5">
+  <h3>center_changed</h3>
+
+  <div class="-mb">
+    <small class="-db">Arugments</small>
+    <a {{action "scrollToId" "center"}}>center</a>
+  </div>
+
+  {{#gmaps-snippet}}
+    <table class="highlight tab-size js-file-line-container" data-tab-size="8">
+      <tbody>
+        <tr>
+          <td id="file-stuff-hbs-L1" class="blob-num js-line-number" data-line-number="1"></td>
+          <td id="file-stuff-hbs-LC1" class="blob-code blob-code-inner js-file-line"><span class="pl-c1">\{{</span><span class="pl-v">g-map-circle</span> <span class="pl-e"><span class="pl-v">map</span> </span><span class="pl-e"><span class="pl-v">center_changed</span>=</span>(<span class="pl-e"><span class="pl-v">action</span> <span class="pl-v">"center_changed"</span></span>)<span class="pl-c1">}}</span></td>
+        </tr>
+      </tbody>
+    </table>
+  {{/gmaps-snippet}}
+</p>
+
+<hr>
+
+<p id="click" class="medium-7 large-5">
+  <h3>click</h3>
+
+  <div class="-mb">
+    <small class="-db">Arugments</small>
+    <a href="https://developers.google.com/maps/documentation/javascript/3.exp/reference#MouseEvent" target="_blank">MouseEvent</a>
+  </div>
+
+  {{#gmaps-snippet}}
+    <table class="highlight tab-size js-file-line-container" data-tab-size="8">
+      <tbody>
+        <tr>
+          <td id="file-stuff-hbs-L1" class="blob-num js-line-number" data-line-number="1"></td>
+          <td id="file-stuff-hbs-LC1" class="blob-code blob-code-inner js-file-line"><span class="pl-c1">\{{</span><span class="pl-v">g-map-circle</span> <span class="pl-e"><span class="pl-v">map</span> </span><span class="pl-e"><span class="pl-v">click</span>=</span>(<span class="pl-e"><span class="pl-v">action</span> <span class="pl-v">"click"</span></span>)<span class="pl-c1">}}</span></td>
+        </tr>
+      </tbody>
+    </table>
+  {{/gmaps-snippet}}
+</p>
+
+<hr>
+
+<p id="dblclick" class="medium-7 large-5">
+  <h3>dblclick</h3>
+
+  <div class="-mb">
+    <small class="-db">Arugments</small>
+    <a href="https://developers.google.com/maps/documentation/javascript/3.exp/reference#MouseEvent" target="_blank">MouseEvent</a>
+  </div>
+
+  {{#gmaps-snippet}}
+    <table class="highlight tab-size js-file-line-container" data-tab-size="8">
+      <tbody>
+        <tr>
+          <td id="file-stuff-hbs-L1" class="blob-num js-line-number" data-line-number="1"></td>
+          <td id="file-stuff-hbs-LC1" class="blob-code blob-code-inner js-file-line"><span class="pl-c1">\{{</span><span class="pl-v">g-map-circle</span> <span class="pl-e"><span class="pl-v">map</span> </span><span class="pl-e"><span class="pl-v">dblclick</span>=</span>(<span class="pl-e"><span class="pl-v">action</span> <span class="pl-v">"dblclick"</span></span>)<span class="pl-c1">}}</span></td>
+        </tr>
+      </tbody>
+    </table>
+  {{/gmaps-snippet}}
+</p>
+
+<hr>
+
+<p id="drag" class="medium-7 large-5">
+  <h3>drag</h3>
+
+  <div class="-mb">
+    <small class="-db">Arugments</small>
+    <a href="https://developers.google.com/maps/documentation/javascript/3.exp/reference#MouseEvent" target="_blank">MouseEvent</a>
+  </div>
+
+  {{#gmaps-snippet}}
+    <table class="highlight tab-size js-file-line-container" data-tab-size="8">
+      <tbody>
+        <tr>
+          <td id="file-stuff-hbs-L1" class="blob-num js-line-number" data-line-number="1"></td>
+          <td id="file-stuff-hbs-LC1" class="blob-code blob-code-inner js-file-line"><span class="pl-c1">\{{</span><span class="pl-v">g-map-circle</span> <span class="pl-e"><span class="pl-v">map</span> </span><span class="pl-e"><span class="pl-v">drag</span>=</span>(<span class="pl-e"><span class="pl-v">action</span> <span class="pl-v">"drag"</span></span>)<span class="pl-c1">}}</span></td>
+        </tr>
+      </tbody>
+    </table>
+  {{/gmaps-snippet}}
+</p>
+
+<hr>
+
+<p id="dragend" class="medium-7 large-5">
+  <h3>dragend</h3>
+
+  <div class="-mb">
+    <small class="-db">Arugments</small>
+    <a href="https://developers.google.com/maps/documentation/javascript/3.exp/reference#MouseEvent" target="_blank">MouseEvent</a>
+  </div>
+
+  {{#gmaps-snippet}}
+    <table class="highlight tab-size js-file-line-container" data-tab-size="8">
+      <tbody>
+        <tr>
+          <td id="file-stuff-hbs-L1" class="blob-num js-line-number" data-line-number="1"></td>
+          <td id="file-stuff-hbs-LC1" class="blob-code blob-code-inner js-file-line"><span class="pl-c1">\{{</span><span class="pl-v">g-map-circle</span> <span class="pl-e"><span class="pl-v">map</span> </span><span class="pl-e"><span class="pl-v">dragend</span>=</span>(<span class="pl-e"><span class="pl-v">action</span> <span class="pl-v">"dragend"</span></span>)<span class="pl-c1">}}</span></td>
+        </tr>
+      </tbody>
+    </table>
+  {{/gmaps-snippet}}
+</p>
+
+<hr>
+
+<p id="dragstart" class="medium-7 large-5">
+  <h3>dragstart</h3>
+
+  <div class="-mb">
+    <small class="-db">Arugments</small>
+    <a href="https://developers.google.com/maps/documentation/javascript/3.exp/reference#MouseEvent" target="_blank">MouseEvent</a>
+  </div>
+
+  {{#gmaps-snippet}}
+    <table class="highlight tab-size js-file-line-container" data-tab-size="8">
+      <tbody>
+        <tr>
+          <td id="file-stuff-hbs-L1" class="blob-num js-line-number" data-line-number="1"></td>
+          <td id="file-stuff-hbs-LC1" class="blob-code blob-code-inner js-file-line"><span class="pl-c1">\{{</span><span class="pl-v">g-map-circle</span> <span class="pl-e"><span class="pl-v">map</span> </span><span class="pl-e"><span class="pl-v">dragstart</span>=</span>(<span class="pl-e"><span class="pl-v">action</span> <span class="pl-v">"dragstart"</span></span>)<span class="pl-c1">}}</span></td>
+        </tr>
+      </tbody>
+    </table>
+  {{/gmaps-snippet}}
+</p>
+
+<hr>
+
+<p id="mousedown" class="medium-7 large-5">
+  <h3>mousedown</h3>
+
+  <div class="-mb">
+    <small class="-db">Arugments</small>
+    <a href="https://developers.google.com/maps/documentation/javascript/3.exp/reference#MouseEvent" target="_blank">MouseEvent</a>
+  </div>
+
+  {{#gmaps-snippet}}
+    <table class="highlight tab-size js-file-line-container" data-tab-size="8">
+      <tbody>
+        <tr>
+          <td id="file-stuff-hbs-L1" class="blob-num js-line-number" data-line-number="1"></td>
+          <td id="file-stuff-hbs-LC1" class="blob-code blob-code-inner js-file-line"><span class="pl-c1">\{{</span><span class="pl-v">g-map-circle</span> <span class="pl-e"><span class="pl-v">map</span> </span><span class="pl-e"><span class="pl-v">mousedown</span>=</span>(<span class="pl-e"><span class="pl-v">action</span> <span class="pl-v">"mousedown"</span></span>)<span class="pl-c1">}}</span></td>
+        </tr>
+      </tbody>
+    </table>
+  {{/gmaps-snippet}}
+</p>
+
+<hr>
+
+<p id="mousemove" class="medium-7 large-5">
+  <h3>mousemove</h3>
+
+  <div class="-mb">
+    <small class="-db">Arugments</small>
+    <a href="https://developers.google.com/maps/documentation/javascript/3.exp/reference#MouseEvent" target="_blank">MouseEvent</a>
+  </div>
+
+  {{#gmaps-snippet}}
+    <table class="highlight tab-size js-file-line-container" data-tab-size="8">
+      <tbody>
+        <tr>
+          <td id="file-stuff-hbs-L1" class="blob-num js-line-number" data-line-number="1"></td>
+          <td id="file-stuff-hbs-LC1" class="blob-code blob-code-inner js-file-line"><span class="pl-c1">\{{</span><span class="pl-v">g-map-circle</span> <span class="pl-e"><span class="pl-v">map</span> </span><span class="pl-e"><span class="pl-v">mousemove</span>=</span>(<span class="pl-e"><span class="pl-v">action</span> <span class="pl-v">"mousemove"</span></span>)<span class="pl-c1">}}</span></td>
+        </tr>
+      </tbody>
+    </table>
+  {{/gmaps-snippet}}
+</p>
+
+<hr>
+
+<p id="mouseout" class="medium-7 large-5">
+  <h3>mouseout</h3>
+
+  <div class="-mb">
+    <small class="-db">Arugments</small>
+    <a href="https://developers.google.com/maps/documentation/javascript/3.exp/reference#MouseEvent" target="_blank">MouseEvent</a>
+  </div>
+
+  {{#gmaps-snippet}}
+    <table class="highlight tab-size js-file-line-container" data-tab-size="8">
+      <tbody>
+        <tr>
+          <td id="file-stuff-hbs-L1" class="blob-num js-line-number" data-line-number="1"></td>
+          <td id="file-stuff-hbs-LC1" class="blob-code blob-code-inner js-file-line"><span class="pl-c1">\{{</span><span class="pl-v">g-map-circle</span> <span class="pl-e"><span class="pl-v">map</span> </span><span class="pl-e"><span class="pl-v">mouseout</span>=</span>(<span class="pl-e"><span class="pl-v">action</span> <span class="pl-v">"mouseout"</span></span>)<span class="pl-c1">}}</span></td>
+        </tr>
+      </tbody>
+    </table>
+  {{/gmaps-snippet}}
+</p>
+
+<hr>
+
+<p id="mouseover" class="medium-7 large-5">
+  <h3>mouseover</h3>
+
+  <div class="-mb">
+    <small class="-db">Arugments</small>
+    <a href="https://developers.google.com/maps/documentation/javascript/3.exp/reference#MouseEvent" target="_blank">MouseEvent</a>
+  </div>
+
+  {{#gmaps-snippet}}
+    <table class="highlight tab-size js-file-line-container" data-tab-size="8">
+      <tbody>
+        <tr>
+          <td id="file-stuff-hbs-L1" class="blob-num js-line-number" data-line-number="1"></td>
+          <td id="file-stuff-hbs-LC1" class="blob-code blob-code-inner js-file-line"><span class="pl-c1">\{{</span><span class="pl-v">g-map-circle</span> <span class="pl-e"><span class="pl-v">map</span> </span><span class="pl-e"><span class="pl-v">mouseover</span>=</span>(<span class="pl-e"><span class="pl-v">action</span> <span class="pl-v">"mouseover"</span></span>)<span class="pl-c1">}}</span></td>
+        </tr>
+      </tbody>
+    </table>
+  {{/gmaps-snippet}}
+</p>
+
+<hr>
+
+<p id="mouseup" class="medium-7 large-5">
+  <h3>mouseup</h3>
+
+  <div class="-mb">
+    <small class="-db">Arugments</small>
+    <a href="https://developers.google.com/maps/documentation/javascript/3.exp/reference#MouseEvent" target="_blank">MouseEvent</a>
+  </div>
+
+  {{#gmaps-snippet}}
+    <table class="highlight tab-size js-file-line-container" data-tab-size="8">
+      <tbody>
+        <tr>
+          <td id="file-stuff-hbs-L1" class="blob-num js-line-number" data-line-number="1"></td>
+          <td id="file-stuff-hbs-LC1" class="blob-code blob-code-inner js-file-line"><span class="pl-c1">\{{</span><span class="pl-v">g-map-circle</span> <span class="pl-e"><span class="pl-v">map</span> </span><span class="pl-e"><span class="pl-v">mouseup</span>=</span>(<span class="pl-e"><span class="pl-v">action</span> <span class="pl-v">"mouseup"</span></span>)<span class="pl-c1">}}</span></td>
+        </tr>
+      </tbody>
+    </table>
+  {{/gmaps-snippet}}
+</p>
+
+<hr>
+
+<p id="radius_changed" class="medium-7 large-5">
+  <h3>radius_changed</h3>
+
+  <div class="-mb">
+    <small class="-db">Arugments</small>
+    <a {{action "scrollToId" "radius"}}>radius</a>
+  </div>
+
+  {{#gmaps-snippet}}
+    <table class="highlight tab-size js-file-line-container" data-tab-size="8">
+      <tbody>
+        <tr>
+          <td id="file-stuff-hbs-L1" class="blob-num js-line-number" data-line-number="1"></td>
+          <td id="file-stuff-hbs-LC1" class="blob-code blob-code-inner js-file-line"><span class="pl-c1">\{{</span><span class="pl-v">g-map-circle</span> <span class="pl-e"><span class="pl-v">map</span> </span><span class="pl-e"><span class="pl-v">radius_changed</span>=</span>(<span class="pl-e"><span class="pl-v">action</span> <span class="pl-v">"radius_changed"</span></span>)<span class="pl-c1">}}</span></td>
+        </tr>
+      </tbody>
+    </table>
+  {{/gmaps-snippet}}
+</p>
+
+<hr>
+
+<p id="rightclick" class="medium-7 large-5">
+  <h3>rightclick</h3>
+
+  <div class="-mb">
+    <small class="-db">Arugments</small>
+    <a href="https://developers.google.com/maps/documentation/javascript/3.exp/reference#MouseEvent" target="_blank">MouseEvent</a>
+  </div>
+
+  {{#gmaps-snippet}}
+    <table class="highlight tab-size js-file-line-container" data-tab-size="8">
+      <tbody>
+        <tr>
+          <td id="file-stuff-hbs-L1" class="blob-num js-line-number" data-line-number="1"></td>
+          <td id="file-stuff-hbs-LC1" class="blob-code blob-code-inner js-file-line"><span class="pl-c1">\{{</span><span class="pl-v">g-map-marker</span> <span class="pl-e"><span class="pl-v">map</span> </span><span class="pl-e"><span class="pl-v">rightclick</span>=</span>(<span class="pl-e"><span class="pl-v">action</span> <span class="pl-v">"rightclick"</span></span>)<span class="pl-c1">}}</span></td>
+        </tr>
+      </tbody>
+    </table>
+  {{/gmaps-snippet}}
 </p>
