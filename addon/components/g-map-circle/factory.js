@@ -7,7 +7,9 @@ const CIRCLE_DEFAULTS = {
   clickable: true,
   draggable: false,
   editable: false,
+  fillColor: '#000000',
   fillOpacity: 1,
+  strokeColor: '#000000',
   strokeOpacity: 1,
   strokePosition: 'CENTER'
 };
@@ -49,8 +51,6 @@ export const GoogleMapCircleProxy = Ember.ObjectProxy.extend({
     set(key, value) {
       if (!value) { value = false; } // remove
       assert('g-map-circle `clickableIcons` is a Boolean', typeof value === 'boolean');
-
-      // TODO is clickable while dragging warning
 
       this.content.setOptions({clickable: value});
       return value;
@@ -108,7 +108,9 @@ export const GoogleMapCircleProxy = Ember.ObjectProxy.extend({
     },
 
     set(key, value) {
-      if (!value) { value = ''; } // remove
+      if (!value) {
+        value = CIRCLE_DEFAULTS.fillColor;
+      }
 
       assert('g-map-circle `fillColor` is a String', typeof value === 'string');
 
@@ -171,7 +173,9 @@ export const GoogleMapCircleProxy = Ember.ObjectProxy.extend({
     },
 
     set(key, value) {
-      if (!value) { value = ''; } // remove
+      if (!value) {
+        value = CIRCLE_DEFAULTS.strokeColor;
+      }
 
       assert('g-map-circle `strokeColor` is a String', typeof value === 'string');
 

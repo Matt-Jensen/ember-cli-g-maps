@@ -119,11 +119,14 @@ test('it only allows setting a valid fillColor value', function(assert) {
   assert.equal(circle.get('fillColor'), expected, 'updated fillColor');
 });
 
-test('it allows setting fillColor to none with any falsey value', function(assert) {
-  const circle = googleMapCircle(createGoogleMap(), assign({fillColor: '#000000'}, DEFAULTS));
+test('it allows setting fillColor to default with any falsey value', function(assert) {
+  const circle = googleMapCircle(createGoogleMap(), assign({}, DEFAULTS));
+  const expected = circle.get('fillColor');
+
+  circle.set('fillColor', '#D43029');
   circle.set('fillColor', null);
   circle.notifyPropertyChange('fillColor');
-  assert.equal(circle.get('fillColor'), '', 'updated fillColor with `null`');
+  assert.equal(circle.get('fillColor'), expected, 'updated fillColor with `null`');
 });
 
 test('it returns the configured fillOpacity setting', function(assert) {
@@ -148,6 +151,7 @@ test('it only allows setting a valid fillOpacity value', function(assert) {
 test('it allows reseting fillOpacity to default with any falsey value', function(assert) {
   const circle = googleMapCircle(createGoogleMap(), assign({}, DEFAULTS));
   const expected = circle.get('fillOpacity');
+
   circle.set('fillOpacity', 0.85);
   circle.set('fillOpacity', null);
   circle.notifyPropertyChange('fillOpacity');
@@ -188,10 +192,13 @@ test('it only allows setting a valid strokeColor value', function(assert) {
 });
 
 test('it allows setting strokeColor to none with any falsey value', function(assert) {
-  const circle = googleMapCircle(createGoogleMap(), assign({strokeColor: '#000000'}, DEFAULTS));
+  const circle = googleMapCircle(createGoogleMap(), assign({}, DEFAULTS));
+  const expected = circle.get('strokeColor');
+
+  circle.set('strokeColor', '#D43029');
   circle.set('strokeColor', null);
   circle.notifyPropertyChange('strokeColor');
-  assert.equal(circle.get('strokeColor'), '', 'updated strokeColor with `null`');
+  assert.equal(circle.get('strokeColor'), expected, 'updated strokeColor with `null`');
 });
 
 test('it returns the configured strokeOpacity setting', function(assert) {
