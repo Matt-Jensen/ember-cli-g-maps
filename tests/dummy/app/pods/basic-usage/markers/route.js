@@ -40,7 +40,7 @@ export default Route.extend(DocumentationHelpers, {
       lng: MAP_DEFAULTS.lng,
       zoom: 6,
 
-      useOptions: true,
+      useOptions: false,
 
       options: assign({}, MARKER_DEFAULTS),
       animations: Object.keys(googleMaps.Animation),
@@ -106,12 +106,6 @@ export default Route.extend(DocumentationHelpers, {
       }
 
       controller.notifyPropertyChange('options');
-    },
-
-    syncMapCenter() {
-      const {controller} = this;
-      set(controller, 'lat', get(controller, 'options.lat'));
-      set(controller, 'lng', get(controller, 'options.lng'));
     },
 
     /**

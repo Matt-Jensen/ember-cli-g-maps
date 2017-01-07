@@ -50,6 +50,12 @@ export default Mixin.create({
       controller.notifyPropertyChange('options');
     },
 
+    setOption(scope, value) {
+      const {controller} = this;
+      controller.set(`options.${scope}`, value);
+      controller.notifyPropertyChange('options');
+    },
+
     increment(option, by = 1) {
       const {controller} = this;
       const value = controller.get(`options.${option}`) + by;
@@ -79,7 +85,13 @@ export default Mixin.create({
       }
 
       set(this, toEvent, window.setTimeout(() => this._debounceRemove(isEvent), 300));
-    }
+    },
+
+    syncMapCenter() {
+      const {controller} = this;
+      set(controller, 'lat', get(controller, 'options.lat'));
+      set(controller, 'lng', get(controller, 'options.lng'));
+    },
   },
 
   _debounceRemove(event) {
