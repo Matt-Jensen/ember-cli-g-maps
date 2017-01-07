@@ -11,7 +11,8 @@ const CIRCLE_DEFAULTS = {
   fillOpacity: 1,
   strokeColor: '#000000',
   strokeOpacity: 1,
-  strokePosition: 'CENTER'
+  strokePosition: 'CENTER',
+  strokeWeight: 3
 };
 
 export const GoogleMapCircleProxy = Ember.ObjectProxy.extend({
@@ -240,7 +241,9 @@ export const GoogleMapCircleProxy = Ember.ObjectProxy.extend({
     },
 
     set(key, value) {
-      if (!value) { value = 0; } // remove
+      if (!value && value !== 0) {
+        value = CIRCLE_DEFAULTS.strokeWeight; // reset
+      }
 
       assert('g-map-circle `strokeWeight` is a Number', typeof value === 'number');
 

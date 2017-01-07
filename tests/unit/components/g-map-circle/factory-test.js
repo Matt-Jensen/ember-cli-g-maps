@@ -272,11 +272,14 @@ test('it only allows setting a valid strokeWeight value', function(assert) {
   assert.equal(circle.get('strokeWeight'), expected, 'updated strokeWeight');
 });
 
-test('it allows setting strokeWeight to 0 with any falsey value', function(assert) {
-  const circle = googleMapCircle(createGoogleMap(), assign({strokeWeight: 30}, DEFAULTS));
+test('it allows reset strokeWeight to default with any falsey value', function(assert) {
+  const circle = googleMapCircle(createGoogleMap(), assign({}, DEFAULTS));
+  const expected = circle.get('strokeWeight');
+
+  circle.set('strokeWeight', 30);
   circle.set('strokeWeight', NaN);
   circle.notifyPropertyChange('strokeWeight');
-  assert.equal(circle.get('strokeWeight'), 0, 'updated strokeWeight with `NaN`');
+  assert.equal(circle.get('strokeWeight'), expected, 'reset strokeWeight with `NaN`');
 });
 
 test('it returns the configured visible setting', function(assert) {
