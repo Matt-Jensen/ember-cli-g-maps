@@ -1,4 +1,19 @@
 export default {
+  propertyDefaults: {
+    clickable: true,
+    draggable: false,
+    editable: false,
+    fillColor: '#000000',
+    fillOpacity: 1,
+    geodesic: false,
+    opacity: 1,
+    strokeColor: '#000000',
+    strokeOpacity: 1,
+    strokePosition: 'CENTER',
+    strokeWeight: 3,
+    visible: true
+  },
+
   googleMap: {
     scope: 'map',
 
