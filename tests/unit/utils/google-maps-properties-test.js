@@ -1,5 +1,5 @@
 import EmberObject from 'ember-object';
-import googleMapsCps from 'dummy/utils/google-maps-cps';
+import googleMapsCps from 'dummy/utils/google-maps-properties';
 import {module, test} from 'qunit';
 
 module('Unit | Utility | google maps cps');

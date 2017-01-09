@@ -4,7 +4,7 @@ import {assign} from 'ember-platform';
 import computed from 'ember-computed';
 
 import configuration from '../../configuration';
-import cps from '../../utils/google-maps-cps';
+import cps from '../../utils/google-maps-properties';
 
 const DEFAULTS = Ember.getProperties(
   configuration.propertyDefaults,
