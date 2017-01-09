@@ -269,31 +269,6 @@ test('it returns the configured opacity setting', function(assert) {
   assert.equal(marker.get('opacity'), expected.opacity, 'resolves configured opacity');
 });
 
-test('it only allows setting a valid opacity value', function(assert) {
-  const marker = googleMapMarker(createGoogleMap(), assign({}, DEFAULTS));
-
-  assert.throws(() => marker.set('opacity', 'non-numeric'), 'rejects non-numeric value');
-  assert.throws(() => marker.set('opacity', 1.1), 'rejects opacity above 1');
-  assert.throws(() => marker.set('opacity', -0.6), 'rejects opacity below 0');
-
-  const expected = 0.75;
-  marker.set('opacity', expected);
-  marker.notifyPropertyChange('opacity');
-  assert.equal(marker.get('opacity'), expected, 'updated opacity');
-});
-
-test('it restores default opacity with a falsey value', function(assert) {
-  const marker = googleMapMarker(createGoogleMap(), assign({}, DEFAULTS));
-
-  const defaultOpacity = marker.get('opacity');
-  marker.set('opacity', 0.5);
-  marker.notifyPropertyChange('opacity');
-
-  marker.set('opacity', false);
-  marker.notifyPropertyChange('opacity');
-  assert.equal(marker.get('opacity'), defaultOpacity, 'opacity is reset to default value');
-});
-
 test('it returns the configured optimized setting', function(assert) {
   const expected = {optimized: false};
   const marker = googleMapMarker(createGoogleMap(), assign(expected, DEFAULTS));
