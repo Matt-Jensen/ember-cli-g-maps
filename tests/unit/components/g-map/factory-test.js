@@ -29,16 +29,6 @@ test('it returns the configured center of the Map instance', function(assert) {
   assert.deepEqual(map.get('center'), DEFAULTS.center, 'resolves correct center');
 });
 
-test('it allows valid updates of the map center', function(assert) {
-  const expected = {lat: 2, lng: 2};
-  const map = googleMap(document.createElement('div'), assign({}, DEFAULTS));
-
-  assert.throws(() => map.set('center', [-34, 151]), 'only accepts latLng literal');
-
-  map.set('center', expected);
-  assert.deepEqual(map.get('center'), expected, 'updated map center');
-});
-
 test('it returns the configured clickable icons', function(assert) {
   const expected = {clickableIcons: false};
   const map = googleMap(document.createElement('div'), assign(expected, DEFAULTS));

@@ -4,9 +4,11 @@ import {assert} from 'ember-metal/utils';
 import {assign} from 'ember-platform';
 import {isPresent} from 'ember-utils';
 
+import cps from '../../utils/google-maps-properties';
+
 const {isArray} = Array;
 
-const MAP_DEFAULTS = {
+const DEFAULTS = {
   heading: 0,
   minZoom: 0,
   maxZoom: Infinity,
@@ -16,28 +18,23 @@ const MAP_DEFAULTS = {
 
 export const GoogleMapProxy = Ember.ObjectProxy.extend({
   /**
+   * @type {Object}
+   * Default property values
+   */
+  defaults: DEFAULTS,
+
+  /**
+   * @type {String}
+   * Defines namespace used for assertions
+   */
+  name: 'g-map',
+
+  /**
    * @required
    * @type {Object}
    * Update the center of the Google Map instance via LatLng literal
    */
-  center: computed({
-    get() {
-      const center = this.content.getCenter();
-      return {lat: center.lat(), lng: center.lng()};
-    },
-
-    set(key, value) {
-      assert('g-map `center` is an Object', typeof value === 'object');
-
-      const {lat, lng} = value;
-
-      assert('g-map `center.lat` is a number', typeof lat === 'number' && lat === lat);
-      assert('g-map `center.lng` is a number', typeof lng === 'number' && lng === lng);
-
-      this.content.setCenter(value);
-      return value;
-    }
-  }).volatile(),
+  center: cps.center,
 
   /**
    * @type {Boolean}
@@ -51,7 +48,7 @@ export const GoogleMapProxy = Ember.ObjectProxy.extend({
     set(key, value) {
       if (!value) { value = false; }
 
-      assert('g-map `clickableIcons` is a Boolean', typeof value === 'boolean');
+      assert(`${this.name} "clickableIcons" is a Boolean`, typeof value === 'boolean');
 
       this.content.setClickableIcons(value);
       return value;
@@ -130,10 +127,10 @@ export const GoogleMapProxy = Ember.ObjectProxy.extend({
         return;
       }
 
-      assert('g-map `fullscreenControlOptions` is a String', typeof value === 'string');
+      assert(`${this.name} "fullscreenControlOptions" is a String`, typeof value === 'string');
 
       const id = getControlPositionId(value);
-      assert('g-map `fullscreenControlOptions` is a valid control position', isPresent(id));
+      assert(`${this.name} "fullscreenControlOptions" is a valid control position`, isPresent(id));
 
       this.content.setOptions({
         fullscreenControlOptions: {position: id}
@@ -165,10 +162,10 @@ export const GoogleMapProxy = Ember.ObjectProxy.extend({
 
     set(key, value) {
       if (!value && value !== 0) {
-        value = MAP_DEFAULTS.heading;
+        value = this.defaults.heading;
       }
 
-      assert('g-map `heading` is a Number', typeof value === 'number');
+      assert(`${this.name} "heading" is a Number`, typeof value === 'number');
 
       this.content.setHeading(value);
       return this.get('heading');
@@ -219,29 +216,29 @@ export const GoogleMapProxy = Ember.ObjectProxy.extend({
         return;
       }
 
-      assert('g-map `mapTypeControlOptions` is an Object', typeof value === 'object');
+      assert(`${this.name} "mapTypeControlOptions" is an Object`, typeof value === 'object');
 
       const mapTypeControlOptions = Object.create(null);
 
       if (value.mapTypeIds) {
-        assert('g-map `mapTypeControlOptions.mapTypeIds` is an Array', isArray(value.mapTypeIds));
+        assert(`${this.name} "mapTypeControlOptions.mapTypeIds" is an Array`, isArray(value.mapTypeIds));
         mapTypeControlOptions.mapTypeIds = value.mapTypeIds.map(getMapTypesId);
       }
 
       if (value.position) {
-        assert('g-map `mapTypeControlOptions.position` is a String', typeof value.position === 'string');
+        assert(`${this.name} "mapTypeControlOptions.position" is a String`, typeof value.position === 'string');
 
         const position = getControlPositionId(value.position);
-        assert('g-map `mapTypeControlOptions.position` is a valid control position', isPresent(position));
+        assert(`${this.name} "mapTypeControlOptions.position" is a valid control position`, isPresent(position));
 
         mapTypeControlOptions.position = position;
       }
 
       if (value.style) {
-        assert('g-map `mapTypeControlOptions.style` is a String', typeof value.style === 'string');
+        assert(`${this.name} "mapTypeControlOptions.style" is a String`, typeof value.style === 'string');
 
         const style = getMapTypeControlStyleId(value.style);
-        assert('g-map `mapTypeControlOptions.style` is a valid map type control style', isPresent(style));
+        assert(`${this.name} "mapTypeControlOptions.style" is a valid map type control style`, isPresent(style));
 
         mapTypeControlOptions.style = style;
         this._enforceMapTypeControlOptionsStyle = true;
@@ -269,12 +266,12 @@ export const GoogleMapProxy = Ember.ObjectProxy.extend({
 
     set(key, value) {
       if (!value) { value = ''; }
-      assert('g-map `mapTypeId` is a String', typeof value === 'string');
+      assert(`${this.name} "mapTypeId" is a String`, typeof value === 'string');
 
       const mapTypeId = getMapTypesId(value);
 
       if (value) {
-        assert('g-map `mapTypeId` is a valid map type', mapTypeId);
+        assert(`${this.name} "mapTypeId" is a valid map type`, mapTypeId);
       }
 
       this.content.setMapTypeId(mapTypeId);
@@ -293,14 +290,14 @@ export const GoogleMapProxy = Ember.ObjectProxy.extend({
 
     set(key, value) {
       if (!value && value !== 0) {
-        value = MAP_DEFAULTS.maxZoom;
+        value = this.defaults.maxZoom;
       }
 
-      assert('g-map `maxZoom` is a Number', typeof value === 'number');
-      assert('g-map `maxZoom` is not less than zoom', value >= this.get('zoom'));
+      assert(`${this.name} "maxZoom" is a Number`, typeof value === 'number');
+      assert(`${this.name} "maxZoom" is not less than zoom`, value >= this.get('zoom'));
 
       if (value !== Infinity) {
-        assert('g-map `maxZoom` is a Whole Number', value % 1 === 0);
+        assert(`${this.name} "maxZoom" is a Whole Number`, value % 1 === 0);
       }
 
       return this.content.maxZoom = value;
@@ -318,12 +315,12 @@ export const GoogleMapProxy = Ember.ObjectProxy.extend({
 
     set(key, value) {
       if (!value && value !== 0) {
-        value = MAP_DEFAULTS.minZoom;
+        value = this.defaults.minZoom;
       }
 
-      assert('g-map `minZoom` is a Number', typeof value === 'number');
-      assert('g-map `minZoom` is not greater than zoom', value <= this.get('zoom'));
-      assert('g-map `minZoom` is a Whole Number', value % 1 === 0);
+      assert(`${this.name} "minZoom" is a Number`, typeof value === 'number');
+      assert(`${this.name} "minZoom" is not greater than zoom`, value <= this.get('zoom'));
+      assert(`${this.name} "minZoom" is a Whole Number`, value % 1 === 0);
 
       return this.content.minZoom = value;
     }
@@ -365,10 +362,10 @@ export const GoogleMapProxy = Ember.ObjectProxy.extend({
         return;
       }
 
-      assert('g-map `panControlOptions` is a String', typeof value === 'string');
+      assert(`${this.name} "panControlOptions" is a String`, typeof value === 'string');
 
       const id = getControlPositionId(value);
-      assert('g-map `panControlOptions` is a valid control position', isPresent(id));
+      assert(`${this.name} "panControlOptions" is a valid control position`, isPresent(id));
 
       this.content.setOptions({
         panControlOptions: {position: id}
@@ -405,10 +402,10 @@ export const GoogleMapProxy = Ember.ObjectProxy.extend({
         return;
       }
 
-      assert('g-map `rotateControlOptions` is a String', typeof value === 'string');
+      assert(`${this.name} "rotateControlOptions" is a String`, typeof value === 'string');
 
       const id = getControlPositionId(value);
-      assert('g-map `rotateControlOptions` is a valid control position', isPresent(id));
+      assert(`${this.name} "rotateControlOptions" is a valid control position`, isPresent(id));
 
       this.content.setOptions({
         rotateControlOptions: {position: id}
@@ -445,10 +442,10 @@ export const GoogleMapProxy = Ember.ObjectProxy.extend({
          return;
        }
 
-       assert('g-map `scaleControlOptions` is a String', typeof value === 'string');
+       assert(`${this.name} "scaleControlOptions" is a String`, typeof value === 'string');
 
        const id = getScaleControlStyleId(value);
-       assert('g-map `scaleControlOptions` is a valid scale control style', isPresent(id));
+       assert(`${this.name} "scaleControlOptions" is a valid scale control style`, isPresent(id));
 
        this.content.setOptions({
          scaleControlOptions: {style: id}
@@ -478,8 +475,10 @@ export const GoogleMapProxy = Ember.ObjectProxy.extend({
     },
 
     set(key, value) {
-      assert('g-map `streetView` is a google.maps.StreetViewPanorama instance', value instanceof google.maps.StreetViewPanorama);
+      assert(`${this.name} "streetView" is a google.maps.StreetViewPanorama instance`, value instanceof google.maps.StreetViewPanorama);
+
       this.content.setOptions({streetView: value});
+
       return value;
     }
   }),
@@ -511,10 +510,10 @@ export const GoogleMapProxy = Ember.ObjectProxy.extend({
         return;
       }
 
-      assert('g-map `streetViewControlOptions` is a String', typeof value === 'string');
+      assert(`${this.name} "streetViewControlOptions" is a String`, typeof value === 'string');
 
       const id = getControlPositionId(value);
-      assert('g-map `streetViewControlOptions` is a valid control position', isPresent(id));
+      assert(`${this.name} "streetViewControlOptions" is a valid control position`, isPresent(id));
 
       this.content.setOptions({
         streetViewControlOptions: {position: id}
@@ -531,8 +530,10 @@ export const GoogleMapProxy = Ember.ObjectProxy.extend({
   styles: computed({
     get: getStaticMapOption,
     set(key, styles) {
-      assert('g-map `styles` is an Array', isArray(styles));
+      assert(`${this.name} "styles" is an Array`, isArray(styles));
+
       this.content.setOptions({styles});
+
       return styles;
     }
   }),
@@ -549,11 +550,11 @@ export const GoogleMapProxy = Ember.ObjectProxy.extend({
 
     set(key, value) {
       if (!value && value !== 0) {
-        value = MAP_DEFAULTS.tilt;
+        value = this.defaults.tilt;
       }
 
-      assert('g-map `tilt` is a Number', typeof value === 'number');
-      assert('g-map `tilt` is `0` or `45`', value === 0 || value === 45);
+      assert(`${this.name} "tilt" is a Number`, typeof value === 'number');
+      assert(`${this.name} "tilt" is 0 or 45`, value === 0 || value === 45);
 
       this.content.setTilt(value);
       return this.get('tilt');
@@ -571,10 +572,10 @@ export const GoogleMapProxy = Ember.ObjectProxy.extend({
     },
 
     set(key, value) {
-      assert('g-map `zoom` is a Number', typeof value === 'number' && value === value);
-      assert('g-map `zoom` is not greater than maxZoom', value <= this.get('maxZoom'));
-      assert('g-map `zoom` is not less than minZoom', value >= this.get('minZoom'));
-      assert('g-map `zoom` is a Whole Number', value % 1 === 0);
+      assert(`${this.name} "zoom" is a Number`, typeof value === 'number' && value === value);
+      assert(`${this.name} "zoom" is not greater than maxZoom`, value <= this.get('maxZoom'));
+      assert(`${this.name} "zoom" is not less than minZoom`, value >= this.get('minZoom'));
+      assert(`${this.name} "zoom" is a Whole Number`, value % 1 === 0);
 
       this.content.setZoom(value);
       return this.get('zoom');
@@ -608,10 +609,10 @@ export const GoogleMapProxy = Ember.ObjectProxy.extend({
         return;
       }
 
-      assert('g-map `zoomControlOptions` is a String', typeof value === 'string');
+      assert(`${this.name} "zoomControlOptions" is a String`, typeof value === 'string');
 
       const id = getControlPositionId(value);
-      assert('g-map `zoomControlOptions` is a valid control position', isPresent(id));
+      assert(`${this.name} "zoomControlOptions" is a valid control position`, isPresent(id));
 
       this.content.setOptions({
         zoomControlOptions: {position: id}
@@ -643,10 +644,10 @@ export default function googleMap(element, options = {}) {
 
   const proxy = GoogleMapProxy.create({
     //  Google Map instance
-    content: new google.maps.Map(element, assign(initalDefaults, MAP_DEFAULTS))
+    content: new google.maps.Map(element, assign(initalDefaults, DEFAULTS))
   });
 
-  let settings = assign({}, MAP_DEFAULTS);
+  let settings = assign({}, DEFAULTS);
   assign(settings, options);
 
   // Set required options via proxy
