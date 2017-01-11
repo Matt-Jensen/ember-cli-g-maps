@@ -1,6 +1,5 @@
-import computed from 'ember-computed';
 import {assert} from 'ember-metal/utils';
-import {default as get, getProperties} from 'ember-metal/get';
+import get from 'ember-metal/get';
 import {assign} from 'ember-platform';
 import {isPresent} from 'ember-utils';
 import {bind} from 'ember-runloop';
