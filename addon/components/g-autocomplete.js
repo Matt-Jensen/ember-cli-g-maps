@@ -35,7 +35,7 @@ export default TextField.extend({
    * @param {String} input
    */
   setup(input) {
-    const autocomplete = new google.maps.places.Autocomplete(input);
+    const autocomplete = new google.maps.places.Autocomplete(input, get(this, 'options'));
 
     set(this, 'autocomplete', autocomplete);
     set(this, 'listener', autocomplete.addListener('place_changed', () => {
