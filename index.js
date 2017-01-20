@@ -1,14 +1,26 @@
 /* jshint node: true */
+/* global process */
 'use strict';
 
 module.exports = {
   name: 'ember-cli-g-maps',
 
-  // Include Gmaps code in consuming app
+  // Import gmaps-for-apps
   included: function(app) {
-    this._super.included(app);
+    this._super.included.apply(this, arguments);
 
-    app.import(app.bowerDirectory + '/gmaps-for-apps/gmaps.js');
+    // see: https://github.com/ember-cli/ember-cli/issues/3718
+    if (typeof app.import !== 'function' && app.app) {
+      app = app.app;
+    }
+
+    if (!process.env.EMBER_CLI_FASTBOOT) {
+      if (app.env === 'production') {
+        app.import(app.bowerDirectory + '/gmaps-for-apps/gmaps.min.js');
+      } else {
+        app.import(app.bowerDirectory + '/gmaps-for-apps/gmaps.js');
+      }
+    }
   },
 
   // Request Google Maps script in consuming app
