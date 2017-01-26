@@ -86,10 +86,31 @@ export const GoogleMapPolygonProxy = Ember.ObjectProxy.extend({
 
       set(key, value) {
         assert(`${this.name} "path" is an Array`, isArray(value));
-        assert(`${this.name} "path" contains coordinates`, value.length);
         assert(`${this.name} "path" contains only valid LatLng literals`, value.filter(isLatLng).length === value.length);
 
-        this.content.setPath(value);
+        /*
+         * NOTE: Avoid `setPath(s)` Polygon methods, as that will replace the paths'
+         * google.maps.MVCArray instance and it's associated event listeners
+         */
+        const pathMVC = this.content.getPath();
+
+        /*
+         * Update pathMVC's existing LatLng
+         * instances to match the source path
+         */
+        value.forEach((val, i) => {
+          const coord = pathMVC.getAt(i);
+
+          if (!coord || coord.lat() !== val.lat || coord.lng() !== val.lng) {
+            pathMVC.setAt(i, new google.maps.LatLng(val.lat, val.lng));
+          }
+        });
+
+        /*
+         * Remove any extra LatLng instances from pathMVC
+         */
+        while (pathMVC.getLength() > value.length) { pathMVC.pop(); }
+
         return value;
       }
     }).volatile(),
