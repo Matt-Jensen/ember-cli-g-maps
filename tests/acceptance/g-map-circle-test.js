@@ -70,7 +70,6 @@ test('g-map-circle properties & events', function(assert) {
       const u = updated[property];
       const msg = `g-map-circle property ${property} updated`;
 
-      console.log(property);
       if (typeof o === 'object' && typeof u === 'object') {
         assert.notDeepEqual(o, u, msg);
       } else {

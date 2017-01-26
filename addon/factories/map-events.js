@@ -5,6 +5,8 @@ import {assert} from 'ember-metal/utils';
 
 const {isArray} = Array;
 
+const UPDATE_PATH_EVENTS = ['insert_at', 'remove_at', 'set_at'];
+
 /**
  * @param  {Array}  events
  * @param  {Array}  augmentedEvents
@@ -73,19 +75,29 @@ export function bindGoogleMapsInstanceEvents() {
     const action = this.attrs[event];
 
     if (action) {
-      mapObjInstance.content.addListener(event, (...args) => {
-        /*
-        * Accept both closure and declarative actions
-        */
+      const eventTarget = UPDATE_PATH_EVENTS.indexOf(event) !== -1 ?
+        mapObjInstance.content.getPath() : // use path MVCArray for update path event
+        mapObjInstance.content; // use Google Map instance
+
+      /*
+       * Use `run.next` to silence update path events until after setup
+       */
+      run.next(() => {
         const closureAction = (typeof action === 'function' ? action : run.bind(this, 'sendAction', event));
-        const augmentedEventProperty = this._googleMapInstanceAugmentedEvents[event];
 
-        if (augmentedEventProperty) {
-          args.push(get(this, `${this.googleMapsInstanceScope}.${augmentedEventProperty}`)); // Event augmentation
-        }
+        eventTarget.addListener(event, (...args) => {
+         /*
+          * Accept both closure and declarative actions
+          */
+          const augmentedEventProperty = this._googleMapInstanceAugmentedEvents[event];
 
-        // Invoke with all arguments
-        return closureAction(...args);
+          if (augmentedEventProperty) {
+            args.push(get(this, `${this.googleMapsInstanceScope}.${augmentedEventProperty}`)); // Event augmentation
+          }
+
+          // Invoke with all arguments
+          closureAction(...args);
+        });
       });
     }
   });

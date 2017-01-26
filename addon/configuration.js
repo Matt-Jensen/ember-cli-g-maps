@@ -170,12 +170,15 @@ export default {
       'drag',
       'dragend',
       'dragstart',
+      'insert_at',
       'mousedown',
       'mousemove',
       'mouseout',
       'mouseover',
       'mouseup',
-      'rightclick'
+      'remove_at',
+      'rightclick',
+      'set_at'
     ],
 
     boundOptions: [

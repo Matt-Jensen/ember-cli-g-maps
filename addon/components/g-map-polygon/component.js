@@ -9,6 +9,11 @@ import ENV from '../../configuration';
 
 const EVENTS = ENV.googleMapPolygon.events;
 const BOUND_OPTIONS = ENV.googleMapPolygon.boundOptions;
+const AUGMENTED_EVENTS = {
+  drag: 'path',
+  insert_at: 'path',
+  set_at: 'path'
+};
 
 const googleMapScope = ENV.googleMap.scope;
 const googleMapsInstanceScope = ENV.googleMapPolygon.scope;
@@ -20,6 +25,7 @@ const googleMapsInstanceScope = ENV.googleMapPolygon.scope;
 export default GMapChildComponent.extend(isTest, mapPoly({
   bound: BOUND_OPTIONS,
   events: EVENTS,
+  augmentedEvents: AUGMENTED_EVENTS,
   path: 'path',
   googleMapsInstanceScope,
   component: {

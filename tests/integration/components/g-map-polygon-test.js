@@ -1,3 +1,4 @@
+import Ember from 'ember';
 import RSVP from 'rsvp';
 import $ from 'jquery';
 import {moduleForComponent, test} from 'ember-qunit';
@@ -24,7 +25,7 @@ test('it renders a triangular polygon in center of map if a path is not given', 
   this.render(hbs`{{#g-map center=center as |map|}}{{g-map-polygon map}}{{/g-map}}`);
 
   return getGoogleMapPolygons(this.$('.ember-cli-g-map')).then(([polygon]) => {
-    const actual = getPolygonPath(polygon);
+    const actual = getPolygonPathLiteral(polygon);
     assert.deepEqual(actual, expected, 'rendered polygon in center of g-map instance');
   });
 });
@@ -41,10 +42,10 @@ test('it renders all polygon path strategies', function(assert) {
   {{/g-map}}`);
 
   return getGoogleMapPolygons(this.$('.ember-cli-g-map')).then(([topLevel, options]) => {
-    const actualPath = getPolygonPath(topLevel);
+    const actualPath = getPolygonPathLiteral(topLevel);
     assert.deepEqual(actualPath, expected, 'rendered polygon at top-level path');
 
-    const actualOptions = getPolygonPath(options);
+    const actualOptions = getPolygonPathLiteral(options);
     assert.deepEqual(actualOptions, expected, 'rendered polygon at options.path');
   });
 });
@@ -316,11 +317,42 @@ test('it provides the default mouse event argument to all click actions', functi
   });
 });
 
+test('it provides expected argument(s) to path update events', function(assert) {
+  const stubIndex = 0;
+
+  this.on('insert_at', (index, path) => {
+    assert.ok(path, 'insert_at action was called with the path');
+    assert.equal(index, stubIndex, 'insert_at action was called with index');
+  });
+
+  this.on('remove_at', (index) => {
+    assert.equal(index, stubIndex, 'remove_at action was called with index');
+  });
+
+  this.on('set_at', (index, path) => {
+    assert.ok(path, 'set_at action was called with the path');
+    assert.equal(index, stubIndex, 'set_at action was called with index');
+  });
+
+  this.render(hbs`{{#g-map as |map|}}
+    {{g-map-polygon map
+      insert_at=(action "insert_at")
+      remove_at=(action "remove_at")
+      set_at=(action "set_at")}}
+    {{/g-map}}`);
+
+  return getGoogleMapPolygons(this.$('.ember-cli-g-map')).then(([polygon]) => {
+    triggerPolygonPathUpdateEvent(polygon, 'insert_at', stubIndex);
+    triggerPolygonPathUpdateEvent(polygon, 'remove_at', stubIndex);
+    triggerPolygonPathUpdateEvent(polygon, 'set_at', stubIndex);
+  });
+});
+
 /**
  * @param  {google.maps.polygon} polygon
  * @return {Object}        LatLng literal
  */
-function getPolygonPath(polygon) {
+function getPolygonPathLiteral(polygon) {
   const center = polygon.getPath();
   return center.getArray().map((latLng) => ({lat: latLng.lat(), lng: latLng.lng()}));
 }
@@ -337,4 +369,14 @@ function getGoogleMapPolygons(element) {
   return new RSVP.Promise((resolve) => {
     run.later(() => resolve(element.__GOOGLE_MAP_POLYGONS__), 100);
   });
+}
+
+/**
+ * @param  {google.maps.Polygon} polygon
+ * @param  {String} eventName    Path update event name
+ * @param  {Array} args          Optional event arguments
+ */
+function triggerPolygonPathUpdateEvent(polygon, eventName, ...args) {
+  const path = polygon.getPath();
+  Ember.run.next(() => google.maps.event.trigger(path, eventName, ...args));
 }
