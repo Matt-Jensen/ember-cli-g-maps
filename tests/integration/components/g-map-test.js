@@ -1,3 +1,4 @@
+import Ember from 'ember';
 import $ from 'jquery';
 import { moduleForComponent, test } from 'ember-qunit';
 import hbs from 'htmlbars-inline-precompile';
@@ -637,5 +638,5 @@ function triggerGoogleMapEvent(element, eventName, ...args) {
   assert('invalid g-map map element', map);
   assert('invalid google map event', eventName);
 
-  google.maps.event.trigger(map, eventName, ...args);
+  Ember.run.next(() => google.maps.event.trigger(map, eventName, ...args));
 }
