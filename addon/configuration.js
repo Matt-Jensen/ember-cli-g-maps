@@ -159,5 +159,38 @@ export default {
       'visible',
       'zIndex'
     ]
+  },
+
+  googleMapPolygon: {
+    scope: 'polygon',
+
+    events: [
+      'click',
+      'dblclick',
+      'drag',
+      'dragend',
+      'dragstart',
+      'mousedown',
+      'mousemove',
+      'mouseout',
+      'mouseover',
+      'mouseup',
+      'rightclick'
+    ],
+
+    boundOptions: [
+      'clickable',
+      'draggable',
+      'editable',
+      'fillColor',
+      'fillOpacity',
+      'geodesic',
+      'strokeColor',
+      'strokeOpacity',
+      'strokePosition',
+      'strokeWeight',
+      'visible',
+      'zIndex'
+    ]
   }
 };
