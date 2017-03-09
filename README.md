@@ -111,16 +111,12 @@ Usage
 
 [Full simple map documentation](http://matt-jensen.github.io/ember-cli-g-maps/#/basic-usage/index)
 
-In your route:
+In your controller:
 ```js
-export default Ember.Route.extend({
-  setupController: function(controller) {
-    controller.setProperties({
-      lat: 32.75494243654723,
-      lng: -86.8359375,
-      zoom: 4
-    });
-  }
+export default Ember.Controller.extend({
+  lat: 32.75494243654723,
+  lng: -86.8359375,
+  zoom: 4
 });
 ```
 
@@ -134,32 +130,31 @@ In your template:
 [Full marker documentation](http://matt-jensen.github.io/ember-cli-g-maps/#/basic-usage/markers)
 
 ```js
-export default Ember.Route.extend({
-  setupController: function(controller) {
-    controller.setProperties({
-      // Must be an Ember Array
-      markers: Ember.A([
-        {
-          id: 'unique-marker-id',  // Recommended
-          lat: 33.516674497188255, // Required
-          lng: -86.80091857910156, // Required
-          infoWindow: {
-            content: '<p>Birmingham</p>',
-            visible: true
-          },
-          click: function(event, marker) {},
-          rightclick: function(event, marker) {},
-          dblclick: function(event, marker) {},
-          mouseover: function(event, marker) {},
-          mouseout: function(event, marker) {},
-          mouseup: function(event, marker) {},
-          mousedown: function(event, marker) {},
-          drag: function(e, marker) {},
-          dragstart: function(e, marker) {},
-          dragend: function(e, marker) {}
-        }
-     ]);
-    });
+export default Ember.Controller.extend({
+  markers: null,
+  
+  init() {
+    this.set('markers', [
+      {
+        id: 'unique-marker-id',  // Recommended
+        lat: 33.516674497188255, // Required
+        lng: -86.80091857910156, // Required
+        infoWindow: {
+          content: '<p>Birmingham</p>',
+          visible: true
+        },
+        click(event, marker) {},
+        rightclick(event, marker) {},
+        dblclick(event, marker) {},
+        mouseover(event, marker) {},
+        mouseout(event, marker) {},
+        mouseup(event, marker) {},
+        mousedown(event, marker) {},
+        drag(e, marker) {},
+        dragstart(e, marker) {},
+        dragend(e, marker) {}
+      }
+    ]);
   }
 });
 ```
@@ -411,22 +406,18 @@ export default Ember.Route.extend({
 
 ```js
 // Default settings
-export default Ember.Route.extend({
-  setupController: function(controller) {
-    controller.setProperties({
-      lat: 33.5205556,
-      lng: -86.8025,
-      mapType: 'satellite', // Accepts 'roadmap', 'satellite', 'hybrid', or 'terrain'
-      showMapTypeControl: true,
-      clickableIcons: true,
-      draggable: true,
-      disableDefaultUI: false,
-      disableDoubleClickZoom: false,
-      scrollwheel: true,
-      showZoomControl: true,
-      showScaleControl: true
-    });
-  }
+export default Ember.Controller.extend({
+  lat: 33.5205556,
+  lng: -86.8025,
+  mapType: 'satellite', // Accepts 'roadmap', 'satellite', 'hybrid', or 'terrain'
+  showMapTypeControl: true,
+  clickableIcons: true,
+  draggable: true,
+  disableDefaultUI: false,
+  disableDoubleClickZoom: false,
+  scrollwheel: true,
+  showZoomControl: true,
+  showScaleControl: true
 });
 ```
 
@@ -470,7 +461,7 @@ export default Ember.Route.extend({
 ```js
 export default Ember.Route.extend({
   actions: {
-    onMapLoad: function(e) {
+    onMapLoad(e) {
       console.log(e.map +' has finished loading!');
       // > "my-map has finished loading!"
     }
