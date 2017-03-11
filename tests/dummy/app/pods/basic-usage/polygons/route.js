@@ -10,19 +10,28 @@ export default Route.extend(DocumentationHelpers, {
   actions: {
     upsert_at(i, path, altPath) {
       const {controller} = this;
-      if (altPath) path = altPath;
-      set(controller, 'options.path', A(path));
+
+      if (altPath) {
+        path = altPath;
+      }
+
+      if (typeof i === 'number') {
+        set(controller, 'options.path', A(path));
+      }
     },
 
-    remove_at(i, path) {
+    remove_at(i/*, path*/) {
       const {controller} = this;
-      get(controller, 'options.path').removeAt(i);
+
+      if (typeof i === 'number') {
+        get(controller, 'options.path').removeAt(i);
+      }
     },
 
     /**
      * Move map center to polygon center
      */
-    mouseup(e, path) {
+    mouseup(e/*, path*/) {
       const {controller} = this;
 
       /*
@@ -42,7 +51,12 @@ export default Route.extend(DocumentationHelpers, {
       const path = get(controller, 'options.path');
       const [start, end] = getRandomEdge(path);
       const vertex = getPathAverage([path[start], path[end]]);
-      start < end ? path.insertAt(end, vertex) : path.pushObject(vertex);
+
+      if (start < end) {
+        path.insertAt(end, vertex);
+      } else {
+        path.pushObject(vertex);
+      }
     },
 
     removeVertex() {
@@ -59,19 +73,13 @@ export default Route.extend(DocumentationHelpers, {
 
     resetMapState() {
       const {controller} = this;
-      controller.set('lat', controller.mapDefaults.lat);
-      controller.set('lng', controller.mapDefaults.lng);
-      controller.set(this, 'zoom', controller.mapDefaults.zoom);
-      controller.set('options', assign({}, controller.polygonDefaults));
+      set(controller, 'lat', controller.mapDefaults.lat);
+      set(controller, 'lng', controller.mapDefaults.lng);
+      set(controller, 'zoom', controller.mapDefaults.zoom);
+      set(controller, 'options', assign({}, controller.polygonDefaults));
     }
   }
 });
-
-function getPaths(paths) {
-  const newPaths = [];
-  paths.forEach((p) => newPaths.push([p.lat(), p.lng()]));
-  return newPaths;
-}
 
 function getRandomEdge(path) {
   const start = Math.round(Math.random() * (path.length - 1));

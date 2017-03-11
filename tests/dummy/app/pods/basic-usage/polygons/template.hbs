@@ -68,12 +68,15 @@
         drag=(route-action "registerEvent" "drag")
         dragend=(route-action "registerEvent" "dragend")
         dragstart=(route-action "registerEvent" "dragstart")
+        insert_at=(pipe (route-action "upsert_at") (route-action "registerEvent" "insert_at"))
         mousedown=(route-action "registerEvent" "mousedown")
         mousemove=(route-action "registerEvent" "mousemove")
         mouseout=(route-action "registerEvent" "mouseout")
         mouseover=(route-action "registerEvent" "mouseover")
         mouseup=(route-action "registerEvent" "mouseup")
-        rightclick=(route-action "registerEvent" "rightclick")}}
+        remove_at=(pipe (route-action "remove_at") (route-action "registerEvent" "remove_at"))
+        rightclick=(route-action "registerEvent" "rightclick")
+        set_at=(pipe (route-action "upsert_at") (route-action "registerEvent" "set_at"))}}
     {{else}}
       {{g-map-polygon map
         clickable=options.clickable
@@ -137,13 +140,6 @@
   </div>
 </div>
 
-{{!-- <div class="grid-block -spb">
-  <div class="grid-content small-12 medium-3 -smb">
-    <small class="-db">Path</small>
-    <small>{{#each options.path as |path|}}<div>{{path.lat}},{{path.lng}}</div>{{/each}}</small>
-  </div>
-</div> --}}
-
 <div class="grid-block -lmb">
   <div class="grid-content small-6 medium-3 -mb">
     <small class="-db -smb">clickable</small>
@@ -199,11 +195,11 @@
       <button
         class="th-google-button--xsmall -fz-large -np"
         {{action (route-action "removeVertex")}}
-        data-test-update="path-length"
         disabled={{lte options.path.length 3}}>-</button>
-      <button data-test-value="path-length" class="th-google-button--xsmall">{{options.path.length}}</button>
+      <button data-test-value="path" class="th-google-button--xsmall">{{options.path.length}}</button>
       <button
         class="th-google-button--xsmall -fz-large -np"
+        data-test-update="path"
         {{action (route-action "addVertex")}}
         disabled={{gte options.path.length 10}}>+</button>
     </div>

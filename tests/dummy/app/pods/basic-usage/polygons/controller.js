@@ -6,6 +6,12 @@ import {assign} from 'ember-platform';
 import GoogleMapConstants from '../../../mixins/google-map-constants';
 
 export default Controller.extend(GoogleMapConstants, {
+  /**
+   * Whether to use the instance `options` or top-level properties as configuration
+   * @type {Boolean}
+   */
+  useOptions: false,
+
   mapDefaults: {
     lat: 30.2672,
     lng: -97.74310000000003,
@@ -32,12 +38,6 @@ export default Controller.extend(GoogleMapConstants, {
     zIndex: 10
   },
 
-  /**
-   * Whether to use the instance `options` or top-level properties as configuration
-   * @type {Boolean}
-   */
-  useOptions: false,
-
   init() {
     this._super(...arguments);
 
@@ -46,4 +46,4 @@ export default Controller.extend(GoogleMapConstants, {
     set(this, 'zoom', this.mapDefaults.zoom);
     set(this, 'options', assign({}, this.polygonDefaults));
   }
-})
+});
