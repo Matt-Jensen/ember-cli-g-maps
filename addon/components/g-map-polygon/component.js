@@ -19,8 +19,8 @@ const googleMapScope = ENV.googleMap.scope;
 const googleMapsInstanceScope = ENV.googleMapPolygon.scope;
 
 /*
- * Generate an instance of a map point component
- * as the g-map-polygon component class
+ * Generate an instance of map poly
+ * as the g-map-polygon component configuration
  */
 export default GMapChildComponent.extend(isTest, mapPoly({
   bound: BOUND_OPTIONS,
