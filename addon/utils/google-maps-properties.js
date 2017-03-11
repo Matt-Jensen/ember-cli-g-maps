@@ -1,5 +1,6 @@
 import computed from 'ember-computed';
 import {assert} from 'ember-metal/utils';
+import {isPresent} from 'ember-utils';
 
 export default {
   /**
@@ -29,13 +30,14 @@ export default {
    */
   clickable: computed({
     get() {
-      return this.content.clickable;
+      const {clickable} = this.content;
+      return isPresent(clickable) ? clickable : this.defaults.clickable;
     },
 
     set(key, value) {
       if (!value) { value = false; } // remove
 
-      assert(`${this.name} "clickableIcons" is a Boolean`, typeof value === 'boolean');
+      assert(`${this.name} "clickable" is a Boolean`, typeof value === 'boolean');
 
       this.content.setOptions({clickable: value});
       return value;
@@ -47,7 +49,8 @@ export default {
    */
   draggable: computed({
     get() {
-      return this.content.draggable;
+      const {draggable} = this.content;
+      return isPresent(draggable) ? draggable : this.defaults.draggable;
     },
 
     set(key, value) {
@@ -65,7 +68,8 @@ export default {
    */
   editable: computed({
     get() {
-      return this.content.editable;
+      const {editable} = this.content;
+      return isPresent(editable) ? editable : this.defaults.editable;
     },
 
     set(key, value) {
@@ -83,7 +87,8 @@ export default {
    */
   fillColor: computed({
     get() {
-      return this.content.fillColor;
+      const {fillColor} = this.content;
+      return isPresent(fillColor) ? fillColor : this.defaults.fillColor;
     },
 
     set(key, value) {
@@ -103,7 +108,8 @@ export default {
    */
   fillOpacity: computed({
     get() {
-      return this.content.fillOpacity;
+      const {fillOpacity} = this.content;
+      return isPresent(fillOpacity) ? fillOpacity : this.defaults.fillOpacity;
     },
 
     set(key, value) {
@@ -125,7 +131,8 @@ export default {
    */
   geodesic: computed({
     get() {
-      return this.content.geodesic;
+      const {geodesic} = this.content;
+      return isPresent(geodesic) ? geodesic : this.defaults.geodesic;
     },
 
     set(key, value) {
@@ -143,7 +150,8 @@ export default {
    */
   opacity: computed({
     get() {
-      return this.content.opacity;
+      const {opacity} = this.content;
+      return isPresent(opacity) ? opacity : this.defaults.opacity;
     },
 
     set(key, value) {
@@ -165,7 +173,8 @@ export default {
    */
   strokeColor: computed({
     get() {
-      return this.content.strokeColor;
+      const {strokeColor} = this.content;
+      return isPresent(strokeColor) ? strokeColor : this.defaults.strokeColor;
     },
 
     set(key, value) {
@@ -185,7 +194,8 @@ export default {
    */
   strokeOpacity: computed({
     get() {
-      return this.content.strokeOpacity;
+      const {strokeOpacity} = this.content;
+      return isPresent(strokeOpacity) ? strokeOpacity : this.defaults.strokeOpacity;
     },
 
     set(key, value) {
@@ -207,7 +217,7 @@ export default {
    */
   strokePosition: computed({
     get() {
-      return getStrokePosition(this.content.strokePosition);
+      return isPresent(this.content.strokePosition) ? getStrokePosition(this.content.strokePosition) : this.defaults.strokePosition;
     },
 
     set(key, value) {
@@ -227,11 +237,12 @@ export default {
   }),
 
   /**
-   * @type {Number|Undefined}
+   * @type {Number}
    */
   strokeWeight: computed({
     get() {
-      return this.content.strokeWeight;
+      const {strokeWeight} = this.content;
+      return isPresent(strokeWeight) ? strokeWeight : this.defaults.strokeWeight;
     },
 
     set(key, value) {
@@ -251,7 +262,8 @@ export default {
    */
   visible: computed({
     get() {
-      return this.content.visible;
+      const {visible} = this.content;
+      return isPresent(visible) ? visible : this.defaults.visible;
     },
 
     set(key, value) {

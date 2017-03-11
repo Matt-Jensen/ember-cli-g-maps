@@ -29,6 +29,18 @@ test('it calls `setCenter` with valid center coordinate', function(assert) {
   assert.deepEqual(instance.get('center'), expected, 'resolved updated center');
 });
 
+test('it returns the `defaults.clickable` value if not explicitly set', function(assert) {
+  const expected = false;
+
+  const CPClass = EmberObject.extend({clickable: googleMapsCps.clickable});
+  const instance = CPClass.create({
+    content: {},
+    defaults: {clickable: expected}
+  });
+
+  assert.equal(instance.get('clickable'), expected);
+});
+
 test('it only allows setting a valid clickable value', function(assert) {
   assert.expect(3);
 
@@ -61,6 +73,18 @@ test('it allows setting clickable to false with any falsey value', function(asse
   });
 
   instance.set('clickable', null);
+});
+
+test('it returns the `defaults.draggable` value if not explicitly set', function(assert) {
+  const expected = true;
+
+  const CPClass = EmberObject.extend({draggable: googleMapsCps.draggable});
+  const instance = CPClass.create({
+    content: {},
+    defaults: {draggable: expected}
+  });
+
+  assert.equal(instance.get('draggable'), expected);
 });
 
 test('it only allows setting a valid draggable value', function(assert) {
@@ -97,6 +121,18 @@ test('it allows setting draggable to false with any falsey value', function(asse
   instance.set('draggable', null);
 });
 
+test('it returns the `defaults.editable` value if not explicitly set', function(assert) {
+  const expected = true;
+
+  const CPClass = EmberObject.extend({editable: googleMapsCps.editable});
+  const instance = CPClass.create({
+    content: {},
+    defaults: {editable: expected}
+  });
+
+  assert.equal(instance.get('editable'), expected);
+});
+
 test('it only allows setting a valid editable value', function(assert) {
   assert.expect(3);
 
@@ -129,6 +165,18 @@ test('it allows setting editable to false with any falsey value', function(asser
   });
 
   instance.set('editable', null);
+});
+
+test('it returns the `defaults.fillColor` value if not explicitly set', function(assert) {
+  const expected = '#ffffff';
+
+  const CPClass = EmberObject.extend({fillColor: googleMapsCps.fillColor});
+  const instance = CPClass.create({
+    content: {},
+    defaults: {fillColor: expected}
+  });
+
+  assert.equal(instance.get('fillColor'), expected);
 });
 
 test('it only allows setting a valid fillColor value', function(assert) {
@@ -165,6 +213,18 @@ test('it allows setting fillColor to default with any falsey value', function(as
   });
 
   instance.set('fillColor', null);
+});
+
+test('it returns the `defaults.fillOpacity` value if not explicitly set', function(assert) {
+  const expected = 0.5;
+
+  const CPClass = EmberObject.extend({fillOpacity: googleMapsCps.fillOpacity});
+  const instance = CPClass.create({
+    content: {},
+    defaults: {fillOpacity: expected}
+  });
+
+  assert.equal(instance.get('fillOpacity'), expected);
 });
 
 test('it only allows setting a valid fillOpacity value', function(assert) {
@@ -205,6 +265,18 @@ test('it allows setting fillOpacity to default with any falsey value', function(
   instance.set('fillOpacity', NaN);
 });
 
+test('it returns the `defaults.geodesic` value if not explicitly set', function(assert) {
+  const expected = true;
+
+  const CPClass = EmberObject.extend({geodesic: googleMapsCps.geodesic});
+  const instance = CPClass.create({
+    content: {},
+    defaults: {geodesic: expected}
+  });
+
+  assert.equal(instance.get('geodesic'), expected);
+});
+
 test('it only allows setting a valid geodesic value', function(assert) {
   assert.expect(3);
 
@@ -237,6 +309,18 @@ test('it allows setting geodesic to false with any falsey value', function(asser
   });
 
   instance.set('geodesic', null);
+});
+
+test('it returns the `defaults.opacity` value if not explicitly set', function(assert) {
+  const expected = 0.5;
+
+  const CPClass = EmberObject.extend({opacity: googleMapsCps.opacity});
+  const instance = CPClass.create({
+    content: {},
+    defaults: {opacity: expected}
+  });
+
+  assert.equal(instance.get('opacity'), expected);
 });
 
 test('it only allows setting a valid opacity value', function(assert) {
@@ -277,6 +361,18 @@ test('it allows setting opacity to default with any falsey value', function(asse
   instance.set('opacity', NaN);
 });
 
+test('it returns the `defaults.strokeColor` value if not explicitly set', function(assert) {
+  const expected = '#ffffff';
+
+  const CPClass = EmberObject.extend({strokeColor: googleMapsCps.strokeColor});
+  const instance = CPClass.create({
+    content: {},
+    defaults: {strokeColor: expected}
+  });
+
+  assert.equal(instance.get('strokeColor'), expected);
+});
+
 test('it only allows setting a valid strokeColor value', function(assert) {
   assert.expect(3);
 
@@ -311,6 +407,18 @@ test('it allows setting strokeColor to default with any falsey value', function(
   });
 
   instance.set('strokeColor', null);
+});
+
+test('it returns the `defaults.strokeOpacity` value if not explicitly set', function(assert) {
+  const expected = 0.5;
+
+  const CPClass = EmberObject.extend({strokeOpacity: googleMapsCps.strokeOpacity});
+  const instance = CPClass.create({
+    content: {},
+    defaults: {strokeOpacity: expected}
+  });
+
+  assert.equal(instance.get('strokeOpacity'), expected);
 });
 
 test('it only allows setting a valid strokeOpacity value', function(assert) {
@@ -351,6 +459,18 @@ test('it allows setting strokeOpacity to default with any falsey value', functio
   instance.set('strokeOpacity', NaN);
 });
 
+test('it returns the `defaults.strokePosition` value if not explicitly set', function(assert) {
+  const expected = 'INSIDE';
+
+  const CPClass = EmberObject.extend({strokePosition: googleMapsCps.strokePosition});
+  const instance = CPClass.create({
+    content: {},
+    defaults: {strokePosition: expected}
+  });
+
+  assert.equal(instance.get('strokePosition'), expected);
+});
+
 test('it only allows setting a valid strokePosition value', function(assert) {
   assert.expect(4);
 
@@ -388,6 +508,18 @@ test('it allows reseting strokePosition to default with any falsey value', funct
   instance.set('strokePosition', null);
 });
 
+test('it returns the `defaults.strokeWeight` value if not explicitly set', function(assert) {
+  const expected = 2;
+
+  const CPClass = EmberObject.extend({strokeWeight: googleMapsCps.strokeWeight});
+  const instance = CPClass.create({
+    content: {},
+    defaults: {strokeWeight: expected}
+  });
+
+  assert.equal(instance.get('strokeWeight'), expected);
+});
+
 test('it only allows setting a valid strokeWeight value', function(assert) {
   assert.expect(3);
 
@@ -422,6 +554,18 @@ test('it allows reset strokeWeight to default with any falsey value', function(a
   });
 
   instance.set('strokeWeight', NaN);
+});
+
+test('it returns the `defaults.visible` value if not explicitly set', function(assert) {
+  const expected = 2;
+
+  const CPClass = EmberObject.extend({visible: googleMapsCps.visible});
+  const instance = CPClass.create({
+    content: {},
+    defaults: {visible: expected}
+  });
+
+  assert.equal(instance.get('visible'), expected);
 });
 
 test('it only allows setting a valid visible value', function(assert) {
