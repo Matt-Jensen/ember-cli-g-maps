@@ -328,7 +328,7 @@
 
   Circles belong to a specific g-map instance and are given access like so:
 
-  {{#gmaps-snippet class="-mt" header="Adding Marker to Map"}}
+  {{#gmaps-snippet class="-mt" header="Adding a Circle to Map"}}
     <table class="highlight tab-size js-file-line-container" data-tab-size="8">
       <tbody>
         <tr>
@@ -401,7 +401,7 @@
 
 <p id="clickable" class="medium-7 large-5">
   <h2>clickable</h2>
-  Indicates whether this Circle handles mouse events.
+  Indicates whether this instance handles mouse events.
 
   <div class="-smt -mb">
     <small class="-db">Type</small>
@@ -418,7 +418,7 @@
 
 <p id="draggable" class="medium-7 large-5">
   <h2>draggable</h2>
-  If set to true, the user can drag this circle over the map.
+  If set to true, the user can initiate drag actions.
 
   <div class="-smt -mb">
     <small class="-db">Type</small>
@@ -435,7 +435,7 @@
 
 <p id="editable" class="medium-7 large-5">
   <h2>editable</h2>
-  If set to true, the user can edit this circle by dragging the control points shown at the center and around the circumference of the circle.
+  If set to true, the user can edit the geometry of this instance by dragging the control points.
 
   <div class="-smt -mb">
     <small class="-db">Type</small>
@@ -622,7 +622,7 @@
 
 <p id="visible" class="medium-7 large-5">
   <h2>visible</h2>
-  Whether this circle is visible on the map.
+  Whether this instance is visible on the map.
 
   <div class="-smt -mb">
     <small class="-db">Type</small>
@@ -639,7 +639,7 @@
 
 <p id="zIndex" class="medium-7 large-5">
   <h2>zIndex</h2>
-  The zIndex compared to other polys.
+  The zIndex compared to other map instances.
 
   <div class="-smt -mb">
     <small class="-db">Type</small>

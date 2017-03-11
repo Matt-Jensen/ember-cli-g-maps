@@ -1,51 +1,69 @@
-import Ember from 'ember';
+import Route from 'ember-route';
+import get from 'ember-metal/get';
+import set from 'ember-metal/set';
+import {A} from 'ember-array/utils';
+import {assign} from 'ember-platform';
 
-const { computed } = Ember;
+import DocumentationHelpers from '../../../mixins/documentation-actions';
 
-export default Ember.Route.extend({
-  setupController: function(controller) {
-    controller.setProperties({
-      lat: 32.75494243654723,
-      lng: -86.8359375,
-      zoom: 5,
-      polygons: Ember.A([
-        {
-          id: 'lakdj2-23klf-324lkd',
-          editable: true,
-          paths: [
-            [34.84748359721185, -88.49430490212399],
-            [33.702902055376036, -84.99747778496362],
-            [31.711731375210594, -84.77907335431985],
-            [31.521255572586213, -88.99936034397501],
-            [32.939329395182014, -89.26768954918873]
-          ],
-          strokeColor: '#03a9f4',
-          fillColor: '#03a9f4',
-          draggable: true,
-          dragstart: function() {
-            controller.set('isPolygonDragging', true);
-          },
-          dragend: function() {
-            controller.set('isPolygonDragging', false);
-          },
-          set_at: function(polygonPath) {
-            controller.set('polygons.[].0.paths', getPaths(polygonPath));
-          },
-          insert_at: function(polygonPath) {
-            controller.set('polygons.[].0.paths', getPaths(polygonPath));
-          },
-          remove_at: function(polygonPath) {
-            controller.set('polygons.[].0.paths', getPaths(polygonPath));
-          }
-        }
-      ]),
+export default Route.extend(DocumentationHelpers, {
+  actions: {
+    upsert_at(i, path, altPath) {
+      const {controller} = this;
+      if (altPath) path = altPath;
+      set(controller, 'options.path', A(path));
+    },
 
-      polygon: computed.oneWay('polygons.[].0'),
-      polygonPathStr: computed('polygon.paths.[]', function() {
-        return this.get('polygon.paths').map((p) => `[${p[0]},${p[1]}]`).join(', ');
-      }),
-      isPolygonDragging: false
-    });
+    remove_at(i, path) {
+      const {controller} = this;
+      get(controller, 'options.path').removeAt(i);
+    },
+
+    /**
+     * Move map center to polygon center
+     */
+    mouseup(e, path) {
+      const {controller} = this;
+
+      /*
+       * Accpetance tests events don't provide a Mouse event
+       */
+      if (e) {
+        const path = getPathAverage(
+          get(controller, 'options.path').toArray()
+        );
+        set(controller, 'lat', path.lat);
+        set(controller, 'lng', path.lng);
+      }
+    },
+
+    addVertex() {
+      const {controller} = this;
+      const path = get(controller, 'options.path');
+      const [start, end] = getRandomEdge(path);
+      const vertex = getPathAverage([path[start], path[end]]);
+      start < end ? path.insertAt(end, vertex) : path.pushObject(vertex);
+    },
+
+    removeVertex() {
+      const {controller} = this;
+      get(controller, 'options.path').removeAt(0);
+    },
+
+    toggleColor(option) {
+      const {controller} = this;
+      const hasColor = Boolean(get(controller, `options.${option}`));
+      set(controller, `options.${option}`, hasColor ? false : controller.polygonDefaults[option]);
+      controller.notifyPropertyChange('options');
+    },
+
+    resetMapState() {
+      const {controller} = this;
+      controller.set('lat', controller.mapDefaults.lat);
+      controller.set('lng', controller.mapDefaults.lng);
+      controller.set(this, 'zoom', controller.mapDefaults.zoom);
+      controller.set('options', assign({}, controller.polygonDefaults));
+    }
   }
 });
 
@@ -53,4 +71,15 @@ function getPaths(paths) {
   const newPaths = [];
   paths.forEach((p) => newPaths.push([p.lat(), p.lng()]));
   return newPaths;
+}
+
+function getRandomEdge(path) {
+  const start = Math.round(Math.random() * (path.length - 1));
+  const end = path[start + 1] ? start + 1 : 0;
+  return [start, end];
+}
+
+function getPathAverage(path) {
+  return path.reduce((coord1, coord2) =>
+    ({lat: (coord1.lat + coord2.lat) / 2, lng: (coord1.lng + coord2.lng) / 2}));
 }
