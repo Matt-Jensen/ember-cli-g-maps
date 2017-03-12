@@ -18,8 +18,7 @@ const DEFAULTS = Ember.getProperties(
   'strokeOpacity',
   'strokePosition',
   'strokeWeight',
-  'visible',
-  'zIndex'
+  'visible'
 );
 
 /**
@@ -31,42 +30,43 @@ const DEFAULTS = Ember.getProperties(
  */
 export const GoogleMapPolygonProxy = GoogleMapPolyProxy.extend({
   /**
-   * @type {Object}
    * Default property values
+   * @type {Object}
    */
   defaults: DEFAULTS,
 
   /**
-   * @type {String}
    * Defines namespace used for assertions
+   * @type {String}
    */
   name: 'g-map-polygon',
 
   /**
-   * @type {String}
    * The fill color. All CSS3 colors are supported except for extended named colors.
+   * @type {String}
    */
   fillColor: cps.fillColor,
 
   /**
-   * @type {Number}
    * The fill opacity between 0.0 and 1.0
+   * @type {Number}
    */
   fillOpacity: cps.fillOpacity,
 
   /**
-   * @type {String}
    * The stroke position.
+   * @type {String}
    */
   strokePosition: cps.strokePosition
 });
 
 /**
+ * Render a new Google Map Polygon on a canvas with the given options
+ * and return its' Google Map Polygon Proxy instance
+ *
  * @param  {Map}     canvas   Google Maps' Map
  * @param  {Object}  options
  * @return {ObjectProxy}  Ember.ObjectProxy instance
- * Render a new Google Map Polygon on a canvas with the given options
- * and return its' Google Map Polygon Proxy instance
  */
 export default function googleMapPolygon(map, options = {}) {
   assert('Google Map Polygon requires a Google Map instance', map instanceof google.maps.Map);
