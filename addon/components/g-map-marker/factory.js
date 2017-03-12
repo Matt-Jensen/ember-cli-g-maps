@@ -1,12 +1,14 @@
 import Ember from 'ember';
 import {assert} from 'ember-metal/utils';
 import {assign} from 'ember-platform';
-import {isPresent} from 'ember-utils';
 import {warn} from 'ember-debug';
 import computed from 'ember-computed';
 
 import configuration from '../../configuration';
 import cps from '../../utils/google-maps-properties';
+import mapIcon from '../../factories/map-icon';
+import mapSymbol from '../../factories/map-symbol';
+import {getAnimation, getAnimationId} from '../../utils/map-constant-helpers';
 
 const {isArray} = Array;
 
@@ -22,20 +24,20 @@ const DEFAULTS = assign(Ember.getProperties(
 
 export const GoogleMapMarkerProxy = Ember.ObjectProxy.extend({
   /**
-   * @type {Object}
    * Default property values
+   * @type {Object}
    */
   defaults: DEFAULTS,
 
   /**
-   * @type {String}
    * Defines namespace used for assertions
+   * @type {String}
    */
   name: 'g-map-marker',
 
   /**
-   * @type {Object|Undefined}
    * Offset from the marker's position to the tip of an InfoWindow
+   * @type {Object|Undefined}
    */
   anchorPoint: computed({
     get() {
@@ -67,8 +69,8 @@ export const GoogleMapMarkerProxy = Ember.ObjectProxy.extend({
   }),
 
   /**
-   * @type {String|Undefined}
    * Which animation to play when marker is added to a map
+   * @type {String|Undefined}
    */
   animation: computed({
     get() {
@@ -84,15 +86,15 @@ export const GoogleMapMarkerProxy = Ember.ObjectProxy.extend({
       assert(`${this.name} "animation" is a String`, typeof value === 'string');
 
       const animation = getAnimationId(value);
-      assert(`g-map-marker "animation" is one of the google maps animation names: ${Object.keys(google.maps.Animation).join(', ')}`, animation);
+      assert(`${this.name} "animation" is one of the google maps animation names: ${Object.keys(google.maps.Animation).join(', ')}`, animation);
 
       const icon = this.get('icon');
       const optimized = this.get('optimized');
 
       warn(
-        'Setting Google Map Marker to optimized with an animated icon image is not recommended.\nPlease set: {{g-map-marker optimized=false}}',
+        `Setting Google Map Marker to optimized with an animated icon image is not recommended.\nPlease set: {{${this.name} optimized=false}}`,
         (optimized ? (icon === undefined || !icon.url) : true),
-        {id: 'ember-cli-g-maps.g-map-marker.factory.animation'}
+        {id: `ember-cli-g-maps.${this.name}.factory.animation`}
       );
 
       this.content.setAnimation(animation);
@@ -101,8 +103,8 @@ export const GoogleMapMarkerProxy = Ember.ObjectProxy.extend({
   }).volatile(),
 
   /**
-   * @type {Boolean}
    * The marker receives mouse and touch events
+   * @type {Boolean}
    */
   clickable: computed({
     get() {
@@ -115,9 +117,9 @@ export const GoogleMapMarkerProxy = Ember.ObjectProxy.extend({
       assert(`${this.name} "clickableIcons" is a Boolean`, typeof value === 'boolean');
 
       warn(
-        'Setting Google Map Marker `clickable` to false while marker is draggable will have no effect.\nPlease set: {{g-map-marker draggable=false}}',
+        `Setting Google Map Marker "clickable" to false while marker is draggable will have no effect.\nPlease set: {{${this.name} draggable=false}}`,
         (value === false ? this.get('draggable') === false : true),
-        {id: 'ember-cli-g-maps.g-map-marker.factory.clickable'}
+        {id: `ember-cli-g-maps.${this.name}.factory.clickable`}
       );
 
       this.content.setClickable(value);
@@ -126,8 +128,8 @@ export const GoogleMapMarkerProxy = Ember.ObjectProxy.extend({
   }).volatile(),
 
   /**
-   * @type {Boolean}
    * Disables cross that appears beneath the marker when dragging
+   * @type {Boolean}
    */
   crossOnDrag: computed({
     get() {
@@ -145,8 +147,8 @@ export const GoogleMapMarkerProxy = Ember.ObjectProxy.extend({
   }),
 
   /**
-   * @type {String|Undefined}
    * Mouse cursor to show on hover
+   * @type {String|Undefined}
    */
   cursor: computed({
     get() {
@@ -168,8 +170,8 @@ export const GoogleMapMarkerProxy = Ember.ObjectProxy.extend({
   }).volatile(),
 
   /**
-   * @type {Boolean}
    * The marker can be dragged
+   * @type {Boolean}
    */
   draggable: computed({
     get() {
@@ -187,8 +189,8 @@ export const GoogleMapMarkerProxy = Ember.ObjectProxy.extend({
   }).volatile(),
 
   /**
-   * @type {String|Object|Undefined}
    * Icon for the foreground
+   * @type {String|Object|Undefined}
    */
   icon: computed({
     get() {
@@ -207,9 +209,9 @@ export const GoogleMapMarkerProxy = Ember.ObjectProxy.extend({
       if (typeof value === 'string') {
         this.content.setIcon(value); // set as Icon.url or remove if falsey value
       } else if (value.url) {
-        this.content.setIcon(markerIcon(value));
+        this.content.setIcon(mapIcon(value));
       } else if (value.path){
-        this.content.setIcon(markerSymbol(value));
+        this.content.setIcon(mapSymbol(value));
       } else {
         assert(`${this.name} "icon" has a usable icon configuration`);
       }
@@ -219,8 +221,8 @@ export const GoogleMapMarkerProxy = Ember.ObjectProxy.extend({
   }).volatile(),
 
   /**
-   * @type {String|Object|Undefined}
    * Adds a label to the marker
+   * @type {String|Object|Undefined}
    */
   label: computed({
     get() {
@@ -243,15 +245,15 @@ export const GoogleMapMarkerProxy = Ember.ObjectProxy.extend({
   }),
 
   /**
-   * @type {Number}
    * Marker's opacity between 0.0 and 1.0
+   * @type {Number}
    */
   opacity: cps.opacity,
 
   /**
-   * @type {Boolean}
    * Optimization renders many markers as a single static element
    * Enabled by default
+   * @type {Boolean}
    */
   optimized: computed({
     get() {
@@ -269,9 +271,9 @@ export const GoogleMapMarkerProxy = Ember.ObjectProxy.extend({
   }),
 
   /**
+   * Marker position
    * @required
    * @type {Object}
-   * Marker position
    */
   position: computed({
     get() {
@@ -292,8 +294,8 @@ export const GoogleMapMarkerProxy = Ember.ObjectProxy.extend({
   }).volatile(),
 
   /**
-   * @type {Object|Undefined}
    * Image map region definition used for drag/click
+   * @type {Object|Undefined}
    */
   shape: computed({
     get() {
@@ -329,8 +331,8 @@ export const GoogleMapMarkerProxy = Ember.ObjectProxy.extend({
   }).volatile(),
 
   /**
-   * @type {String|Undefined}
    * Rollover text
+   * @type {String|Undefined}
    */
   title: computed({
     get() {
@@ -349,8 +351,8 @@ export const GoogleMapMarkerProxy = Ember.ObjectProxy.extend({
   }).volatile(),
 
   /**
-   * @type {Boolean}
    * Marker visiblity
+   * @type {Boolean}
    */
   visible: computed({
     get() {
@@ -368,8 +370,8 @@ export const GoogleMapMarkerProxy = Ember.ObjectProxy.extend({
   }).volatile(),
 
   /**
-   * @type {Number|Undefined}
    * Marker display order
+   * @type {Number|Undefined}
    */
   zIndex: computed({
     get() {
@@ -396,11 +398,11 @@ export const GoogleMapMarkerProxy = Ember.ObjectProxy.extend({
 });
 
 /**
+ * Render a new Google Map Marker on a canvas with the given options
+ * and return its' Google Map Marker Proxy instance
  * @param  {Map|StreetViewPanorama} canvas   Google Maps' Map or Street View Panorama
  * @param  {Object}                 options  Marker instance defaults (requires position)
  * @return {ObjectProxy}  Ember.ObjectProxy instance
- * Render a new Google Map Marker on a canvas with the given options
- * and return its' Google Map Marker Proxy instance
  */
 export default function googleMapMarker(canvas, options = {}) {
   assert(
@@ -422,173 +424,4 @@ export default function googleMapMarker(canvas, options = {}) {
     proxy.set(key, settings[key]));
 
   return proxy;
-}
-
-const markerIconPrototype = {
-  constructor: markerIcon,
-
-  toJSON() {
-    const result = Object.create(null);
-
-    Object.keys(this)
-    .forEach((property) => {
-      const value = this[property];
-
-      if (value instanceof google.maps.Point) {
-        result[property] = {x: value.x, y: value.y};
-      } else if (value instanceof google.maps.Size) {
-        result[property] = {width: value.width, height: value.height};
-
-        if (value._hasWidthUnit) {
-          // j === width unit
-          result[property].widthUnit = value.j;
-        }
-
-        if (value._hasHeightUnit) {
-          // f === height unit
-          result[property].heightUnit = value.f;
-        }
-      } else if (typeof value !== 'function'){
-        result[property] = value;
-      }
-    });
-
-    return result;
-  }
-};
-
-/**
- * @param  {Object} config
- * @return {Object}
- * Create a marker icon instance that is consumable by
- * the google maps API and convertable back to it's original
- * configuration object via `toJSON` method
- */
-export function markerIcon(config) {
-  const icon = assign({}, config);
-
-  assert('Marker Icon requires a `url` String', typeof config.url === 'string');
-
-  ['anchor', 'labelOrigin', 'origin'].forEach((property) => {
-    const literal = icon[property];
-
-    if (literal) {
-      assert(`Marker Icon requires valid Point literal at "${property}"`, typeof literal.x === 'number' && typeof literal.y === 'number');
-      icon[property] = new google.maps.Point(literal.x, literal.y);
-    }
-  });
-
-  ['scaledSize', 'size'].forEach((property) => {
-    const literal = icon[property];
-
-    if (literal) {
-      assert(`Marker Icon requires valid Size literal at "${property}"`, literal.width && literal.height);
-      assert(`Marker Icon requires any widthUnit for "${property}" to be valid`, literal.hasOwnProperty('widthUnit') ? literal.widthUnit.length : true);
-      assert(`Marker Icon requires any heightUnit for "${property}" to be valid`, literal.hasOwnProperty('heightUnit') ? literal.heightUnit.length : true);
-      icon[property] = new google.maps.Size(literal.width, literal.height, literal.widthUnit, literal.heightUnit);
-      icon[property]._hasWidthUnit = Boolean(literal.widthUnit);
-      icon[property]._hasHeightUnit = Boolean(literal.heightUnit);
-    }
-  });
-
-  return assign(Object.create(markerIconPrototype), icon);
-}
-
-const markerSymbolPrototype = {
-  constructor: markerSymbol,
-
-  toJSON() {
-    const result = Object.create(null);
-
-    Object.keys(this)
-    .forEach((property) => {
-      const value = this[property];
-
-      if (value instanceof google.maps.Point) {
-        result[property] = assign({}, value);
-      } else if (property === 'path') {
-
-        /*
-         * Return google maps Symbol Path name or SVG notation as path
-         */
-        result[property] = (typeof value === 'number' ? getSymbolPath(value) : value);
-      } else if (typeof value !== 'function'){
-        result[property] = value;
-      }
-    });
-
-    return result;
-  }
-};
-
-/**
- * @param  {Object} config
- * @return {Object}
- * Create a marker symbol instance that is consumable by
- * the google maps API and convertable back to it's original
- * configuration object via `toJSON` method
- */
-export function markerSymbol(config) {
-  const sym = assign({}, config);
-
-  assert('Marker Symbol `path` is a String', typeof config.path === 'string');
-
-  /*
-   * Use any existing google maps Symbol path constant or SVG path notation
-   */
-  const symbolConst = getSymbolPathId(sym.path);
-  sym.path = (isPresent(symbolConst) ? symbolConst : sym.path);
-
-  ['anchor', 'labelOrigin'].forEach((property) => {
-    const literal = sym[property];
-
-    if (literal) {
-      assert(`Marker Symbol requires valid Point literal at "${property}"`, typeof literal.x === 'number' && typeof literal.y === 'number');
-      sym[property] = new google.maps.Point(literal.x, literal.y);
-    }
-  });
-
-  return assign(Object.create(markerSymbolPrototype), sym);
-}
-
-/**
- * @param  {String} animation  Animation
- * @return {Number}            Animation id
- * Get the id of an animation by name
- */
-export function getAnimationId(animation) {
-  animation = `${animation}`;
-  return google.maps.Animation[animation];
-}
-
-/**
- * @param  {Number} id Animation id
- * @return {String}    Animation
- * Get a name of an animation from its' id value
- */
-export function getAnimation(id) {
-  id = parseInt(id, 10);
-  return Object.keys(google.maps.Animation).filter((path) =>
-    google.maps.Animation[path] === id)[0];
-}
-
-/**
- * @param  {String} path   Symbol path
- * @return {Number}        Symbol path id
- * Get the id of a preconfigured symbol path by name
- */
-export function getSymbolPathId(path) {
-  path = `${path}`.toUpperCase();
-  return google.maps.SymbolPath[path];
-}
-
-/**
- * @param  {Number} id Symbol path id
- * @return {String}    Symbol path
- * Get a name of a preconfigured symbol path from its' id value
- */
-export function getSymbolPath(id) {
-  id = parseInt(id, 10);
-  return Object.keys(google.maps.SymbolPath).filter((path) =>
-    google.maps.SymbolPath[path] === id)[0];
 }

@@ -4,7 +4,8 @@ import {moduleForComponent, test} from 'ember-qunit';
 import hbs from 'htmlbars-inline-precompile';
 import run from 'ember-runloop';
 
-import {markerIcon, markerSymbol} from 'ember-cli-g-maps/components/g-map-marker/factory';
+import mapIcon from 'dummy/factories/map-icon';
+import mapSymbol from 'dummy/factories/map-symbol';
 
 moduleForComponent('g-map-marker', 'Integration | Component | g map marker', {
   integration: true
@@ -168,7 +169,7 @@ test('it sets draggable', function(assert) {
 test('it sets all icon strategies', function(assert) {
   const iconUrl = this.set('iconUrl', ICON_URL);
 
-  const markerIcon = this.set('markerIcon', {
+  const configIcon = this.set('markerIcon', {
     anchor: {x: 1, y: 1},
     labelOrigin: {x: 1, y: 1},
     origin: {x: 1, y: 1},
@@ -177,7 +178,7 @@ test('it sets all icon strategies', function(assert) {
     url: ICON_URL
   });
 
-  const markerSymbol= this.set('markerSymbol', {
+  const configSymbol= this.set('markerSymbol', {
     anchor: {x: 1, y: 1},
     fillColor: '#000000',
     fillOpacity: 1,
@@ -202,8 +203,8 @@ test('it sets all icon strategies', function(assert) {
   return getGoogleMapMarkers(this.$('.ember-cli-g-map'))
   .then(([topLevelStr, topLevelIcon, topLevelSymbol, options]) => {
     assert.equal(topLevelStr.getIcon(), iconUrl, 'rendered marker icon with URL string');
-    assert.deepEqual(markerIconToJSON(topLevelIcon.getIcon()), markerIcon, 'rendered marker icon with Icon literal');
-    assert.deepEqual(markerSymbolToJSON(topLevelSymbol.getIcon()), markerSymbol, 'rendered marker icon with Symbol literal');
+    assert.deepEqual(mapIconToJSON(topLevelIcon.getIcon()), configIcon, 'rendered marker icon with Icon literal');
+    assert.deepEqual(mapSymbolToJSON(topLevelSymbol.getIcon()), configSymbol, 'rendered marker icon with Symbol literal');
     assert.equal(options.getIcon(), iconUrl, 'rendered marker icon at options.icon');
   });
 });
@@ -512,15 +513,15 @@ function getGoogleMapMarkers(element) {
  * @return {Object}
  * Convert raw Google Maps Marker Icon to JSON config
  */
-function markerIconToJSON(data) {
-  return markerIcon({url: ICON_URL}).toJSON.call(data);
+function mapIconToJSON(data) {
+  return mapIcon({url: ICON_URL}).toJSON.call(data);
 }
 
 /**
  * @param  {Object} data
  * @return {Object}
- * Convert raw Google Maps Marker Symbol to JSON config
+ * Convert Map Symbol to JSON config
  */
-function markerSymbolToJSON(data) {
-  return markerSymbol({path: 'CIRCLE'}).toJSON.call(data);
+function mapSymbolToJSON(data) {
+  return mapSymbol({path: 'CIRCLE'}).toJSON.call(data);
 }
