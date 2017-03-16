@@ -69,6 +69,10 @@ export default Ember.Service.extend({
           }
         });
 
+        if (typeof Object.freeze === 'function') {
+          Object.freeze(mapItem);
+        }
+
         maps.pushObject(mapItem);
 
         return mapItem;

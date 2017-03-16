@@ -27,6 +27,22 @@ test('it should add a map that can be selected by name', (assert) => {
   const result = gMap.maps.add(name, expected);
   assert.equal(typeof result, 'object', 'returns added item');
 
+  assert.throws(
+    function () {
+      result.name = 'Let It Go';
+    },
+    TypeError,
+    'name is frozen'
+  );
+
+  assert.throws(
+    function () {
+      delete result.map;
+    },
+    TypeError,
+    'map is frozen'
+  );
+
   const actual = gMap.maps.select(name).map;
   assert.equal(actual, expected, msg);
 });
