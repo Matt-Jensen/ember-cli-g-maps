@@ -2,8 +2,11 @@ import Ember from 'ember';
 
 const {
   get,
-  typeOf
+  typeOf,
+  computed
 } = Ember;
+
+let mapIter = 0;
 
 export default Ember.Service.extend({
   maps: (function() {
@@ -107,6 +110,10 @@ export default Ember.Service.extend({
         }
 
         return isSuccessful;
+      },
+
+      list() {
+        return maps.mapBy('name');
       }
     };
   })(),
@@ -146,7 +153,7 @@ export default Ember.Service.extend({
     return request;
   },
 
-  autocompletes: Ember.computed({
+  autocompletes: computed({
     get() {
       let autocompletes = {};
       return {
@@ -169,8 +176,129 @@ export default Ember.Service.extend({
     }
   }),
 
-  googleAPI: Ember.computed({
+  googleAPI: computed({
     get() {
     }
-  })
+  }),
+
+  /**
+   @public
+
+   Add a new map instance to store by name. Map names must be unique.
+
+   Example:
+
+   ```
+   import Ember from 'ember';
+
+    export default Ember.Component.extend({
+      gMap: Ember.inject.service(),
+
+      addMapWithName(name) {
+        var map = new google.maps.Map();
+
+        this.get('gMap').addMap(name, map); // {name: 'main-map', map: (Map instance)}
+      },
+
+      addMapWithoutName() {
+        var map = new google.maps.Map();
+
+        this.get('gMap').addMap(map); // {name: 'map-1', map: (Map instance)}
+      }
+    });
+   ```
+
+   @method addMap
+   @param {String} name
+   @param {Object} mapItem [GMap.maps store item]
+   @return {Object} A "plain" object with a name and the map instance
+  */
+  addMap(name, map) {
+    mapIter++;
+
+    if (name instanceof google.maps.Map) {
+      map = name;
+      name = `map-${mapIter.toString(36)}`;
+    }
+
+    return this.maps.add(name, map);
+  },
+
+  /**
+   @public
+
+   List the names of maps managed by the service.
+
+   @method list
+   @return {Array} A "plain" object with a name and the map instance
+  */
+  list() {
+    return this.maps.list();
+  },
+
+  /**
+   @public
+
+   Refresh a Google Map instance by name.
+
+   @method refreshMap
+   @param {String} name
+   @return {Boolean} True is success. False if refresh failed.
+  */
+  refreshMap(name = '') {
+    return this.maps.refresh(name);
+  },
+
+  /**
+   @public
+
+   Remove all registered maps from the service. Mostly used for unit testing.
+
+   @method removeAll
+   @return {Boolean} True is success. False if any removal failed.
+  */
+  removeAll() {
+    let list = this.list();
+
+    for (var i = list.length - 1; i >= 0; i--) {
+      this.removeMap(list[i]);
+    }
+
+    list = this.list();
+    mapIter = list.length;
+
+    return (list.length === 0) ? true : false;
+  },
+
+  /**
+   @public
+
+   Remove a registerd Google Map instance by name.
+
+   @method removeMap
+   @param {String} name
+   @return {Boolean} True is success. False if removal failed.
+  */
+  removeMap(name = '') {
+    return this.maps.remove(name);
+  },
+
+  /**
+   @public
+
+   Find a Google Map instance by name.
+
+   @method selectMap
+   @param {String} name
+   @return {Object|Null} found [GMap.maps store item] or null
+  */
+  selectMap(name = '') {
+    var result = this.maps.select(name);
+
+    if (result && result.map) {
+      return result.map;
+    }
+
+    return null;
+  }
 });
