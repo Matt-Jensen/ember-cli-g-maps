@@ -37,7 +37,7 @@ module.exports = function(environment) {
 
   ENV.googleMap = {
     libraries: ['drawing', 'visualization', 'places'],
-    lazyLoad: true
+    lazyLoad: false
   };
 
   if (environment === 'development') {
