@@ -1,4 +1,4 @@
-import {assign as emberAssign} from 'ember-platform';
+import {assign} from 'ember-platform';
 import {assert} from 'ember-metal/utils';
 import {isPresent} from 'ember-utils';
 
@@ -20,7 +20,7 @@ const prototype = {
       const value = this[property];
 
       if (value instanceof google.maps.Point) {
-        result[property] = emberAssign({}, value);
+        result[property] = assign({}, value);
       } else if (property === 'path') {
 
         /*
@@ -48,7 +48,7 @@ const prototype = {
  * @return {Object} instance
  */
 export default function mapSymbol(config) {
-  const instance = emberAssign({}, config);
+  const instance = assign({}, config);
 
   assert('mapSymbol `config.path` must be a String', typeof config.path === 'string');
 
@@ -75,5 +75,5 @@ export default function mapSymbol(config) {
     }
   });
 
-  return emberAssign(Object.create(prototype), instance);
+  return assign(Object.create(prototype), instance);
 }

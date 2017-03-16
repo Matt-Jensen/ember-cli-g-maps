@@ -1,4 +1,4 @@
-import {assign as emberAssign} from 'ember-platform';
+import {assign} from 'ember-platform';
 import {assert} from 'ember-metal/utils';
 
 const prototype = {
@@ -16,7 +16,7 @@ const prototype = {
       const value = this[property];
 
       if (value instanceof google.maps.Point) {
-        result[property] = emberAssign({}, value);
+        result[property] = assign({}, value);
       } else if (value instanceof google.maps.Size) {
         const sizeLiteral = Object.create(null);
 
@@ -53,7 +53,7 @@ const prototype = {
  * @return {Object}
  */
 export default function mapIcon(config) {
-  const instance = emberAssign({}, config);
+  const instance = assign({}, config);
 
   assert('mapIcon requires a `url` String', typeof config.url === 'string');
 
@@ -91,5 +91,5 @@ export default function mapIcon(config) {
     }
   });
 
-  return emberAssign(Object.create(prototype), instance);
+  return assign(Object.create(prototype), instance);
 }

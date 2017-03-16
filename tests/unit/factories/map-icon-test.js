@@ -1,5 +1,5 @@
 import mapIcon from 'dummy/factories/map-icon';
-import {assign as emberAssign} from 'ember-platform';
+import {assign} from 'ember-platform';
 import {module, test} from 'qunit';
 
 const ICON_URL = 'beachflag.png';
@@ -16,7 +16,7 @@ test('it does not change its\' configuration arugment', function(assert) {
     url: ICON_URL
   };
 
-  const expected = emberAssign({}, actual);
+  const expected = assign({}, actual);
 
   mapIcon(actual);
   assert.deepEqual(actual, expected, 'config remains unchanged');
