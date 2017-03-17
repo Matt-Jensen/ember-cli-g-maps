@@ -3,6 +3,12 @@ import {assert} from 'ember-metal/utils';
 
 import mapSymbol from './map-symbol';
 
+const DEFAULTS = {
+  fixedRotation: false,
+  offset: '100%',
+  repeat: '0'
+};
+
 /**
  * Factory to generate objects matching `google.maps.IconSequence`
  * object specification with utility methods for converting
@@ -15,13 +21,7 @@ import mapSymbol from './map-symbol';
  * @return {Object}
  */
 export default function mapIconSequence(config = {}) {
-  const defaults = {
-    fixedRotation: false,
-    offset: '100%',
-    repeat: '0'
-  };
-
-  const instance = assign(defaults, config);
+  const instance = assign(DEFAULTS, config);
 
   assert('mapIconSequence configuration icon is an object', typeof instance.icon === 'object');
   assert('mapIconSequence configuration fixedRotation is a boolean', typeof instance.fixedRotation === 'boolean');
