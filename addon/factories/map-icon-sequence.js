@@ -23,10 +23,10 @@ export default function mapIconSequence(config = {}) {
 
   const instance = assign(defaults, config);
 
-  assert('mapIconSequence config.icon is an object', typeof config.icon === 'object');
-  assert('mapIconSequence config.fixedRotation is a boolean', typeof config.fixedRotation === 'boolean');
-  assert('mapIconSequence config.offset is a string', typeof config.offset === 'string');
-  assert('mapIconSequence config.repeat is a string', typeof config.repeat === 'string');
+  assert('mapIconSequence configuration icon is an object', typeof instance.icon === 'object');
+  assert('mapIconSequence configuration fixedRotation is a boolean', typeof instance.fixedRotation === 'boolean');
+  assert('mapIconSequence configuration offset is a string', typeof instance.offset === 'string');
+  assert('mapIconSequence configuration repeat is a string', typeof instance.repeat === 'string');
 
   instance.icon = mapSymbol(instance.icon);
 
