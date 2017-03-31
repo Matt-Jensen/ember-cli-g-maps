@@ -195,5 +195,39 @@ export default {
       'visible',
       'zIndex'
     ]
+  },
+
+  googleMapPolyline: {
+    scope: 'polyline',
+
+    events: [
+      'click',
+      'dblclick',
+      'drag',
+      'dragend',
+      'dragstart',
+      'insert_at',
+      'mousedown',
+      'mousemove',
+      'mouseout',
+      'mouseover',
+      'mouseup',
+      'remove_at',
+      'rightclick',
+      'set_at'
+    ],
+
+    boundOptions: [
+      'clickable',
+      'draggable',
+      'editable',
+      'geodesic',
+      'icons',
+      'strokeColor',
+      'strokeOpacity',
+      'strokeWeight',
+      'visible',
+      'zIndex'
+    ]
   }
 };

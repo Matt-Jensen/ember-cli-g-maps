@@ -1,215 +1,857 @@
-<h2>Markers</h2>
+<h2>Polyline Properties</h2>
 
-<p class="medium-7 large-5">
-  <a href="https://developers.google.com/maps/documentation/javascript/3.exp/reference#Polyline" target="_blank">Goolge Map Polylines</a> allow you to draw skinnable and editable lines on your maps. Very useful for marking boundaries, distance, and routes between two coordinates.
-</p>
+<div class="grid-block -mb">
+  <ul class="grid-content large-3 medium-4 small-12 -nml -nmb -lis-none">
+    <li><a {{action "scrollToId" "clickable"}}>clickable</a></li>
+    <li><a {{action "scrollToId" "draggable"}}>draggable</a></li>
+    <li><a {{action "scrollToId" "editable"}}>editable</a></li>
+    <li><a {{action "scrollToId" "fillColor"}}>fillColor</a></li>
+    <li><a {{action "scrollToId" "fillOpacity"}}>fillOpacity</a></li>
+  </ul>
+  <ul class="grid-content large-3 medium-4 small-12 -nml -nmb -lis-none">
+    <li><a {{action "scrollToId" "geodesic"}}>geodesic</a></li>
+    <li><a {{action "scrollToId" "path"}}>path</a></li>
+    <li><a {{action "scrollToId" "strokeColor"}}>strokeColor</a></li>
+    <li><a {{action "scrollToId" "strokeOpacity"}}>strokeOpacity</a></li>
+  </ul>
+  <ul class="grid-content large-3 medium-4 small-12 -nml -nmb -lis-none">
+    <li><a {{action "scrollToId" "strokePosition"}}>strokePosition</a></li>
+    <li><a {{action "scrollToId" "strokeWeight"}}>strokeWeight</a></li>
+    <li><a {{action "scrollToId" "visible"}}>visible</a></li>
+    <li><a {{action "scrollToId" "zIndex"}}>zIndex</a></li>
+  </ul>
+</div>
 
+<h2>Polyline Events</h2>
 
-<div class="grid-block -spb">
-  <div class="grid-content small-12 medium-9 -smb">
-    <small class="-db">Path</small>
-    <small>{{polylinePathStr}}</small>
-  </div>
-
-  <div class="grid-content small-12 medium-3 -smb">
-    <small class="-db">Points</small>
-    {{polyline.path.length}}
-  </div>
+<div class="grid-block -mb">
+  <ul class="grid-content large-3 medium-4 small-12 -nml -nmb -lis-none">
+    <li><a {{action "scrollToId" "click"}}>click</a></li>
+    <li><a {{action "scrollToId" "dblclick"}}>dblclick</a></li>
+    <li><a {{action "scrollToId" "drag"}}>drag</a></li>
+    <li><a {{action "scrollToId" "dragend"}}>dragend</a></li>
+    <li><a {{action "scrollToId" "dragstart"}}>dragstart</a></li>
+  </ul>
+  <ul class="grid-content large-3 medium-4 small-12 -nml -nmb -lis-none">
+    <li><a {{action "scrollToId" "insert_at"}}>insert_at</a></li>
+    <li><a {{action "scrollToId" "mousedown"}}>mousedown</a></li>
+    <li><a {{action "scrollToId" "mousemove"}}>mousemove</a></li>
+    <li><a {{action "scrollToId" "mouseout"}}>mouseout</a></li>
+    <li><a {{action "scrollToId" "mouseover"}}>mouseover</a></li>
+  </ul>
+  <ul class="grid-content large-3 medium-4 small-12 -nml -nmb -lis-none">
+    <li><a {{action "scrollToId" "mouseup"}}>mouseup</a></li>
+    <li><a {{action "scrollToId" "remove_at"}}>remove_at</a></li>
+    <li><a {{action "scrollToId" "rightclick"}}>rightclick</a></li>
+    <li><a {{action "scrollToId" "set_at"}}>set_at</a></li>
+  </ul>
 </div>
 
 <div class="grid-content -np -lmb">
-  {{g-maps class="gmaps-docs-map" lat=lat lng=lng zoom=zoom polylines=polylines}}
+  {{#g-map
+    class="gmaps-docs-map"
+    lat=lat
+    lng=lng
+    zoom=zoom
+    draggable=false
+    disableDoubleClickZoom=true
+    streetViewControl=false
+    mapTypeControl=false
+    scrollwheel=false
+    zoomControl=false as |map|}}
+
+    {{#if useOptions}}
+      {{g-map-polyline map
+        options=options
+        click=(route-action "registerEvent" "click")
+        dblclick=(route-action "registerEvent" "dblclick")
+        drag=(route-action "registerEvent" "drag")
+        dragend=(route-action "registerEvent" "dragend")
+        dragstart=(route-action "registerEvent" "dragstart")
+        insert_at=(pipe (route-action "upsert_at") (route-action "registerEvent" "insert_at"))
+        mousedown=(route-action "registerEvent" "mousedown")
+        mousemove=(route-action "registerEvent" "mousemove")
+        mouseout=(route-action "registerEvent" "mouseout")
+        mouseover=(route-action "registerEvent" "mouseover")
+        mouseup=(route-action "registerEvent" "mouseup")
+        remove_at=(pipe (route-action "remove_at") (route-action "registerEvent" "remove_at"))
+        rightclick=(route-action "registerEvent" "rightclick")
+        set_at=(pipe (route-action "upsert_at") (route-action "registerEvent" "set_at"))}}
+    {{else}}
+      {{g-map-polyline map
+        clickable=options.clickable
+        draggable=options.draggable
+        editable=options.editable
+        icons=options.icons
+        geodesic=options.geodesic
+        path=options.path
+        strokeColor=options.strokeColor
+        strokeOpacity=options.strokeOpacity
+        strokePosition=options.strokePosition
+        strokeWeight=options.strokeWeight
+        visible=options.visible
+        zIndex=options.zIndex
+        click=(route-action "registerEvent" "click")
+        dblclick=(route-action "registerEvent" "dblclick")
+        drag=(route-action "registerEvent" "drag")
+        dragend=(route-action "registerEvent" "dragend")
+        dragstart=(route-action "registerEvent" "dragstart")
+        insert_at=(pipe (route-action "upsert_at") (route-action "registerEvent" "insert_at"))
+        mousedown=(route-action "registerEvent" "mousedown")
+        mousemove=(route-action "registerEvent" "mousemove")
+        mouseout=(route-action "registerEvent" "mouseout")
+        mouseover=(route-action "registerEvent" "mouseover")
+        mouseup=(pipe (route-action "mouseup") (route-action "registerEvent" "mouseup"))
+        remove_at=(pipe (route-action "remove_at") (route-action "registerEvent" "remove_at"))
+        rightclick=(route-action "registerEvent" "rightclick")
+        set_at=(pipe (route-action "upsert_at") (route-action "registerEvent" "set_at"))}}
+    {{/if}}
+  {{/g-map}}
+
+  <button data-test="reset-state" style="display: none;" {{action (route-action "resetMapState" true)}}></button>
+  <button data-test="use-options" style="display: none;" {{action (toggle-action "useOptions" this)}}></button>
 </div>
 
-<article class="grid-block">
-  <div class="grid-content gmaps-snippet">
-    <header>Supported Polyline Config</header>
-    <code>
-      <div class="gist">
-        <div class="gist-file">
-          <div class="gist-data">
-            <div class="js-gist-file-update-container js-task-list-container file-box">
-              <div id="file-templa-js" class="file">
-                <div class="blob-wrapper data type-javascript">
-                  <table class="highlight tab-size js-file-line-container" data-tab-size="8">
-                    <tbody><tr>
-                      <td id="file-templa-js-L1" class="blob-num js-line-number" data-line-number="1"></td>
-                      <td id="file-templa-js-LC1" class="blob-code blob-code-inner js-file-line"><span class="pl-k">export</span> <span class="pl-k">default</span> Ember.Route.extend({</td>
-                    </tr>
-                    <tr>
-                      <td id="file-templa-js-L2" class="blob-num js-line-number" data-line-number="2"></td>
-                      <td id="file-templa-js-LC2" class="blob-code blob-code-inner js-file-line">  <span class="pl-en">setupController</span><span class="pl-k">:</span> <span class="pl-k">function</span>(<span class="pl-smi">controller</span>) {</td>
-                    </tr>
-                    <tr>
-                      <td id="file-templa-js-L3" class="blob-num js-line-number" data-line-number="3"></td>
-                      <td id="file-templa-js-LC3" class="blob-code blob-code-inner js-file-line">    controller.setProperties({</td>
-                    </tr>
-                    <tr>
-                      <td id="file-templa-js-L4" class="blob-num js-line-number" data-line-number="4"></td>
-                      <td id="file-templa-js-LC4" class="blob-code blob-code-inner js-file-line">      <span class="pl-c">// Must be an Ember Array</span></td>
-                    </tr>
-                    <tr>
-                      <td id="file-templa-js-L5" class="blob-num js-line-number" data-line-number="5"></td>
-                      <td id="file-templa-js-LC5" class="blob-code blob-code-inner js-file-line">      polylines<span class="pl-k">:</span> Ember.A([</td>
-                    </tr>
-                    <tr>
-                      <td id="file-templa-js-L6" class="blob-num js-line-number" data-line-number="6"></td>
-                      <td id="file-templa-js-LC6" class="blob-code blob-code-inner js-file-line">        {</td>
-                    </tr>
-                    <tr>
-                      <td id="file-templa-js-L7" class="blob-num js-line-number" data-line-number="7"></td>
-                      <td id="file-templa-js-LC7" class="blob-code blob-code-inner js-file-line">          id<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>unique-id<span class="pl-pds">'</span></span>, <span class="pl-c">// Recommended</span></td>
-                    </tr>
-                    <tr>
-                      <td id="file-templa-js-L8" class="blob-num js-line-number" data-line-number="8"></td>
-                      <td id="file-templa-js-LC8" class="blob-code blob-code-inner js-file-line">          path<span class="pl-k">:</span> [ <span class="pl-c">// Required</span></td>
-                    </tr>
-                    <tr>
-                      <td id="file-templa-js-L9" class="blob-num js-line-number" data-line-number="9"></td>
-                      <td id="file-templa-js-LC9" class="blob-code blob-code-inner js-file-line">            [<span class="pl-c1">34.220</span>, <span class="pl-k">-</span><span class="pl-c1">100.7</span>], <span class="pl-c">// Lat, Lng</span></td>
-                    </tr>
-                    <tr>
-                      <td id="file-templa-js-L10" class="blob-num js-line-number" data-line-number="10"></td>
-                      <td id="file-templa-js-LC10" class="blob-code blob-code-inner js-file-line">            [<span class="pl-c1">33.783</span>, <span class="pl-k">-</span><span class="pl-c1">92.81</span>]  <span class="pl-c">// Lat, Lng</span></td>
-                    </tr>
-                    <tr>
-                      <td id="file-templa-js-L11" class="blob-num js-line-number" data-line-number="11"></td>
-                      <td id="file-templa-js-LC11" class="blob-code blob-code-inner js-file-line">          ],</td>
-                    </tr>
-                    <tr>
-                      <td id="file-templa-js-L12" class="blob-num js-line-number" data-line-number="12"></td>
-                      <td id="file-templa-js-LC12" class="blob-code blob-code-inner js-file-line">          <span class="pl-en">click</span><span class="pl-k">:</span> <span class="pl-k">function</span>(<span class="pl-smi">event</span>, <span class="pl-smi">polyline</span>) {},</td>
-                    </tr>
-                    <tr>
-                      <td id="file-templa-js-L13" class="blob-num js-line-number" data-line-number="13"></td>
-                      <td id="file-templa-js-LC13" class="blob-code blob-code-inner js-file-line">          <span class="pl-en">rightclick</span><span class="pl-k">:</span> <span class="pl-k">function</span>(<span class="pl-smi">event</span>, <span class="pl-smi">polyline</span>) {},</td>
-                    </tr>
-                    <tr>
-                      <td id="file-templa-js-L14" class="blob-num js-line-number" data-line-number="14"></td>
-                      <td id="file-templa-js-LC14" class="blob-code blob-code-inner js-file-line">          <span class="pl-en">dblclick</span><span class="pl-k">:</span> <span class="pl-k">function</span>(<span class="pl-smi">event</span>, <span class="pl-smi">polyline</span>) {},</td>
-                    </tr>
-                    <tr>
-                      <td id="file-templa-js-L15" class="blob-num js-line-number" data-line-number="15"></td>
-                      <td id="file-templa-js-LC15" class="blob-code blob-code-inner js-file-line">          <span class="pl-en">mouseover</span><span class="pl-k">:</span> <span class="pl-k">function</span>(<span class="pl-smi">event</span>, <span class="pl-smi">polyline</span>) {},</td>
-                    </tr>
-                    <tr>
-                      <td id="file-templa-js-L16" class="blob-num js-line-number" data-line-number="16"></td>
-                      <td id="file-templa-js-LC16" class="blob-code blob-code-inner js-file-line">          <span class="pl-en">mouseout</span><span class="pl-k">:</span> <span class="pl-k">function</span>(<span class="pl-smi">event</span>, <span class="pl-smi">polyline</span>) {},</td>
-                    </tr>
-                    <tr>
-                      <td id="file-templa-js-L17" class="blob-num js-line-number" data-line-number="17"></td>
-                      <td id="file-templa-js-LC17" class="blob-code blob-code-inner js-file-line">          <span class="pl-en">mouseup</span><span class="pl-k">:</span> <span class="pl-k">function</span>(<span class="pl-smi">event</span>, <span class="pl-smi">polyline</span>) {},</td>
-                    </tr>
-                    <tr>
-                      <td id="file-templa-js-L18" class="blob-num js-line-number" data-line-number="18"></td>
-                      <td id="file-templa-js-LC18" class="blob-code blob-code-inner js-file-line">          <span class="pl-en">mousedown</span><span class="pl-k">:</span> <span class="pl-k">function</span>(<span class="pl-smi">event</span>, <span class="pl-smi">polyline</span>) {},</td>
-                    </tr>
-                    <tr>
-                      <td id="file-templa-js-L19" class="blob-num js-line-number" data-line-number="19"></td>
-                      <td id="file-templa-js-LC19" class="blob-code blob-code-inner js-file-line">          <span class="pl-en">mousemove</span><span class="pl-k">:</span> <span class="pl-k">function</span>(<span class="pl-smi">event</span>, <span class="pl-smi">polyline</span>) {},</td>
-                    </tr>
-                    <tr>
-                      <td id="file-templa-js-L20" class="blob-num js-line-number" data-line-number="20"></td>
-                      <td id="file-templa-js-LC20" class="blob-code blob-code-inner js-file-line">          <span class="pl-en">set_at</span><span class="pl-k">:</span> <span class="pl-k">function</span>(<span class="pl-smi">polylinePath</span>) {},</td>
-                    </tr>
-                    <tr>
-                      <td id="file-templa-js-L21" class="blob-num js-line-number" data-line-number="21"></td>
-                      <td id="file-templa-js-LC21" class="blob-code blob-code-inner js-file-line">          <span class="pl-en">insert_at</span><span class="pl-k">:</span> <span class="pl-k">function</span>(<span class="pl-smi">polylinePath</span>) {},</td>
-                    </tr>
-                    <tr>
-                      <td id="file-templa-js-L22" class="blob-num js-line-number" data-line-number="22"></td>
-                      <td id="file-templa-js-LC22" class="blob-code blob-code-inner js-file-line">          <span class="pl-en">remove_at</span><span class="pl-k">:</span> <span class="pl-k">function</span>(<span class="pl-smi">polylinePath</span>) {},</td>
-                    </tr>
-                    <tr>
-                      <td id="file-templa-js-L23" class="blob-num js-line-number" data-line-number="23"></td>
-                      <td id="file-templa-js-LC23" class="blob-code blob-code-inner js-file-line">          clickable<span class="pl-k">:</span> <span class="pl-c1">true</span>,</td>
-                    </tr>
-                    <tr>
-                      <td id="file-templa-js-L24" class="blob-num js-line-number" data-line-number="24"></td>
-                      <td id="file-templa-js-LC24" class="blob-code blob-code-inner js-file-line">          editable<span class="pl-k">:</span> <span class="pl-c1">true</span>,</td>
-                    </tr>
-                    <tr>
-                      <td id="file-templa-js-L25" class="blob-num js-line-number" data-line-number="25"></td>
-                      <td id="file-templa-js-LC25" class="blob-code blob-code-inner js-file-line">          geodesic<span class="pl-k">:</span> <span class="pl-c1">true</span>,</td>
-                    </tr>
-                    <tr>
-                      <td id="file-templa-js-L26" class="blob-num js-line-number" data-line-number="26"></td>
-                      <td id="file-templa-js-LC26" class="blob-code blob-code-inner js-file-line">          icons<span class="pl-k">:</span> [{</td>
-                    </tr>
-                    <tr>
-                      <td id="file-templa-js-L27" class="blob-num js-line-number" data-line-number="27"></td>
-                      <td id="file-templa-js-LC27" class="blob-code blob-code-inner js-file-line">            icon<span class="pl-k">:</span> { </td>
-                    </tr>
-                    <tr>
-                      <td id="file-templa-js-L28" class="blob-num js-line-number" data-line-number="28"></td>
-                      <td id="file-templa-js-LC28" class="blob-code blob-code-inner js-file-line">              path<span class="pl-k">:</span> google.maps.SymbolPath.FORWARD_CLOSED_ARROW <span class="pl-c">// BACKWARD_CLOSED_ARROW | BACKWARD_OPEN_ARROW | CIRLCE | FORWARD_OPEN_ARROW</span></td>
-                    </tr>
-                    <tr>
-                      <td id="file-templa-js-L29" class="blob-num js-line-number" data-line-number="29"></td>
-                      <td id="file-templa-js-LC29" class="blob-code blob-code-inner js-file-line">            },</td>
-                    </tr>
-                    <tr>
-                      <td id="file-templa-js-L30" class="blob-num js-line-number" data-line-number="30"></td>
-                      <td id="file-templa-js-LC30" class="blob-code blob-code-inner js-file-line">            offset<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>100%<span class="pl-pds">'</span></span></td>
-                    </tr>
-                    <tr>
-                      <td id="file-templa-js-L31" class="blob-num js-line-number" data-line-number="31"></td>
-                      <td id="file-templa-js-LC31" class="blob-code blob-code-inner js-file-line">          }],</td>
-                    </tr>
-                    <tr>
-                      <td id="file-templa-js-L32" class="blob-num js-line-number" data-line-number="32"></td>
-                      <td id="file-templa-js-LC32" class="blob-code blob-code-inner js-file-line">          strokeColor<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>blue<span class="pl-pds">'</span></span>,</td>
-                    </tr>
-                    <tr>
-                      <td id="file-templa-js-L33" class="blob-num js-line-number" data-line-number="33"></td>
-                      <td id="file-templa-js-LC33" class="blob-code blob-code-inner js-file-line">          strokeOpacity<span class="pl-k">:</span> <span class="pl-c1">0.3</span>,</td>
-                    </tr>
-                    <tr>
-                      <td id="file-templa-js-L34" class="blob-num js-line-number" data-line-number="34"></td>
-                      <td id="file-templa-js-LC34" class="blob-code blob-code-inner js-file-line">          strokeWeight<span class="pl-k">:</span> <span class="pl-c1">3</span>,</td>
-                    </tr>
-                    <tr>
-                      <td id="file-templa-js-L35" class="blob-num js-line-number" data-line-number="35"></td>
-                      <td id="file-templa-js-LC35" class="blob-code blob-code-inner js-file-line">          visible<span class="pl-k">:</span> <span class="pl-c1">true</span>,</td>
-                    </tr>
-                    <tr>
-                      <td id="file-templa-js-L36" class="blob-num js-line-number" data-line-number="36"></td>
-                      <td id="file-templa-js-LC36" class="blob-code blob-code-inner js-file-line">          zIndex<span class="pl-k">:</span> <span class="pl-c1">999</span></td>
-                    </tr>
-                    <tr>
-                      <td id="file-templa-js-L37" class="blob-num js-line-number" data-line-number="37"></td>
-                      <td id="file-templa-js-LC37" class="blob-code blob-code-inner js-file-line">        }</td>
-                    </tr>
-                    <tr>
-                      <td id="file-templa-js-L38" class="blob-num js-line-number" data-line-number="38"></td>
-                      <td id="file-templa-js-LC38" class="blob-code blob-code-inner js-file-line">      ])</td>
-                    </tr>
-                    <tr>
-                      <td id="file-templa-js-L39" class="blob-num js-line-number" data-line-number="39"></td>
-                      <td id="file-templa-js-LC39" class="blob-code blob-code-inner js-file-line">    });</td>
-                    </tr>
-                    <tr>
-                      <td id="file-templa-js-L40" class="blob-num js-line-number" data-line-number="40"></td>
-                      <td id="file-templa-js-LC40" class="blob-code blob-code-inner js-file-line">  }</td>
-                    </tr>
-                    <tr>
-                      <td id="file-templa-js-L41" class="blob-num js-line-number" data-line-number="41"></td>
-                      <td id="file-templa-js-LC41" class="blob-code blob-code-inner js-file-line">});</td>
-                    </tr>
-                  </tbody></table>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="gist-meta">
-            made with ❤ by <a href="https://github.com">GitHub</a>
-          </div>
-        </div>
-      </div>
-    </code>
-  </div>
-</article>
+<h3 class="grid-content -npl">Active Events</h3>
 
-<p class="medium-7 large-5 -npb">
-  For in depth documentation and further customization you can read more in <a href="https://developers.google.com/maps/documentation/javascript/3.exp/reference#Polyline" target="_blank">the Google Maps Polyline Docs.</a>
+<div id="g-map-event-states" class="grid-block -pb">
+  <div class="grid-content small-12 medium-4 -smb">
+    <div class="gmaps-fade-text {{if isclick '-fade'}}" data-test-updated={{if wasclick 'click'}}>click</div>
+    <div class="gmaps-fade-text {{if isdblclick '-fade'}}" data-test-updated={{if wasdblclick 'dblclick'}}>dblclick</div>
+    <div class="gmaps-fade-text {{if isdrag '-fade'}}" data-test-updated={{if wasdrag 'drag'}}>drag</div>
+    <div class="gmaps-fade-text {{if isdragend '-fade'}}" data-test-updated={{if wasdragend 'dragend'}}>dragend</div>
+    <div class="gmaps-fade-text {{if isdragstart '-fade'}}" data-test-updated={{if wasdragstart 'dragstart'}}>dragstart</div>
+  </div>
+
+  <div class="grid-content small-12 medium-4 -smb">
+    <div class="gmaps-fade-text {{if isinsert_at '-fade'}}" data-test-updated={{if wasinsert_at 'insert_at'}}>insert_at</div>
+    <div class="gmaps-fade-text {{if ismousedown '-fade'}}" data-test-updated={{if wasmousedown 'mousedown'}}>mousedown</div>
+    <div class="gmaps-fade-text {{if ismousemove '-fade'}}" data-test-updated={{if wasmousemove 'mousemove'}}>mousemove</div>
+    <div class="gmaps-fade-text {{if ismouseout '-fade'}}" data-test-updated={{if wasmouseout 'mouseout'}}>mouseout</div>
+    <div class="gmaps-fade-text {{if ismouseover '-fade'}}" data-test-updated={{if wasmouseover 'mouseover'}}>mouseover</div>
+  </div>
+
+  <div class="grid-content small-12 medium-4 -smb">
+    <div class="gmaps-fade-text {{if ismouseup '-fade'}}" data-test-updated={{if wasmouseup 'mouseup'}}>mouseup</div>
+    <div class="gmaps-fade-text {{if isremove_at '-fade'}}" data-test-updated={{if wasremove_at 'remove_at'}}>remove_at</div>
+    <div class="gmaps-fade-text {{if isrightclick '-fade'}}" data-test-updated={{if wasrightclick 'rightclick'}}>rightclick</div>
+    <div class="gmaps-fade-text {{if isset_at '-fade'}}" data-test-updated={{if wasset_at 'set_at'}}>set_at</div>
+  </div>
+</div>
+
+<div class="grid-block -lmb">
+  <div class="grid-content small-6 medium-3 -mb">
+    <small class="-db -smb">clickable</small>
+    <button
+      class="th-google-button--xsmall -ilb"
+      data-test-update="clickable"
+      {{action (route-action "toggleOption" "clickable")}}>{{if options.clickable 'Enabled' 'Disabled'}}</button>
+  </div>
+
+  <div class="grid-content small-6 medium-3 -mb">
+    <small class="-db -smb">draggable</small>
+    <button
+      class="th-google-button--xsmall -ilb"
+      data-test-update="draggable"
+      {{action (route-action "toggleOption" "draggable")}}>{{if options.draggable 'Enabled' 'Disabled'}}</button>
+  </div>
+
+  <div class="grid-content small-6 medium-3 -mb">
+    <small class="-db -smb">editable</small>
+    <button
+      class="th-google-button--xsmall -ilb"
+      data-test-update="editable"
+      {{action (route-action "toggleOption" "editable")}}>{{if options.editable 'Enabled' 'Disabled'}}</button>
+  </div>
+
+  <div class="grid-content small-6 medium-3 -mb">
+    <small class="-db -smb">icons</small>
+    <div class="th-google-button-bar">
+      <button
+        class="th-google-button--xsmall -fz-large -np"
+        {{action (route-action "unappendCustomIcon")}}>-</button>
+      <button data-test-value="path" class="th-google-button--xsmall">{{options.icons.length}}</button>
+      <button
+        class="th-google-button--xsmall -fz-large -np"
+        data-test-update="path"
+        {{action (route-action "appendCustomIcon")}}>+</button>
+    </div>
+  </div>
+
+  <div class="grid-content small-6 medium-3 -smb">
+    <small class="-db -smb">Path Length</small>
+    <div class="th-google-button-bar">
+      <button
+        class="th-google-button--xsmall -fz-large -np"
+        {{action (route-action "removeVertex")}}
+        disabled={{lte options.path.length 3}}>-</button>
+      <button data-test-value="path" class="th-google-button--xsmall">{{options.path.length}}</button>
+      <button
+        class="th-google-button--xsmall -fz-large -np"
+        data-test-update="path"
+        {{action (route-action "addVertex")}}
+        disabled={{gte options.path.length 10}}>+</button>
+    </div>
+  </div>
+
+  <div class="grid-content small-6 medium-3 -smb">
+    <small class="-db -smb">strokeColor</small>
+    <button
+      class="th-google-button--xsmall -ilb"
+      data-test-update="strokeColor"
+      {{action (route-action "toggleColor" "strokeColor")}}>{{if options.strokeColor 'Custom' 'Default'}}</button>
+  </div>
+
+  <div class="grid-content small-6 medium-3 -smb">
+    <small class="-db -smb">strokeOpacity</small>
+    <div class="th-google-button-bar">
+      <button
+        class="th-google-button--xsmall -fz-large -np"
+        {{action (route-action "decrement" "strokeOpacity" 0.1)}}
+        data-test-update="strokeOpacity"
+        disabled={{lte options.strokeOpacity 0.1}}>-</button>
+      <button data-test-value="strokeOpacity" class="th-google-button--xsmall">{{slice options.strokeOpacity 0 4}}</button>
+      <button
+        class="th-google-button--xsmall -fz-large -np"
+        {{action (route-action "increment" "strokeOpacity" 0.1)}}
+        disabled={{gte options.strokeOpacity 0.99}}>+</button>
+    </div>
+  </div>
+
+  <div class="grid-content small-6 medium-3 -smb">
+    <small class="-db -smb">strokeWeight</small>
+    <div class="th-google-button-bar">
+      <button
+        class="th-google-button--xsmall -fz-large -np"
+        {{action (route-action "decrement" "strokeWeight" 1)}}
+        data-test-update="strokeWeight"
+        disabled={{lte options.strokeWeight 1}}>-</button>
+      <button data-test-value="strokeWeight" class="th-google-button--xsmall">{{slice options.strokeWeight 0 4}}</button>
+      <button
+        class="th-google-button--xsmall -fz-large -np"
+        {{action (route-action "increment" "strokeWeight" 1)}}
+        disabled={{gte options.strokeWeight 12}}>+</button>
+    </div>
+  </div>
+
+  <div class="grid-content small-6 medium-3 -mb">
+    <small class="-db -smb">visible</small>
+    <button
+      class="th-google-button--xsmall -ilb"
+      data-test-update="visible"
+      {{action (route-action "toggleOption" "visible")}}>{{if options.visible 'Enabled' 'Disabled'}}</button>
+  </div>
+
+  <div class="grid-content small-6 medium-3 -smb">
+    <small class="-db -smb">zIndex</small>
+    <div class="th-google-button-bar">
+      <button
+        class="th-google-button--xsmall -fz-large -np"
+        {{action (route-action "decrement" "zIndex")}}
+        data-test-update="zIndex"
+        disabled={{eq options.zIndex 0}}>-</button>
+      <button data-test-value="zIndex" class="th-google-button--xsmall">{{options.zIndex}}</button>
+      <button
+        class="th-google-button--xsmall -fz-large -np"
+        {{action (route-action "increment" "zIndex")}}
+        disabled={{gte options.zIndex 100}}>+</button>
+    </div>
+  </div>
+</div>
+
+<hr>
+
+<h2>Overview</h2>
+<p class="medium-7 large-5">
+  <a href="https://developers.google.com/maps/documentation/javascript/3.exp/reference#Polyline" target="_blank">
+    Google Map Polylines
+  </a>
+
+  Polylines belong to a specific g-map instance and are given access like so:
+
+  {{#gmaps-snippet class="-mt" header="Adding a Polyline to Map"}}
+    <table class="highlight tab-size js-file-line-container" data-tab-size="8">
+      <tbody>
+        <tr>
+          <td id="file-test-hbs-L1" class="blob-num js-line-number" data-line-number="1"></td>
+          <td id="file-test-hbs-LC1" class="blob-code blob-code-inner js-file-line">  <span class="pl-c1">\{{#g-map</span> <span class="pl-v">as</span> |<span class="pl-e"><span class="pl-v">map</span></span>|<span class="pl-c1">}}</span></td>
+        </tr>
+        <tr>
+          <td id="file-test-hbs-L2" class="blob-num js-line-number" data-line-number="2"></td>
+          <td id="file-test-hbs-LC2" class="blob-code blob-code-inner js-file-line">    <span class="pl-c1">\{{</span><span class="pl-v">g-map-polygon</span> <span class="pl-e"><span class="pl-v">map</span></span><span class="pl-c1">}}</span></td>
+        </tr>
+        <tr>
+          <td id="file-test-hbs-L3" class="blob-num js-line-number" data-line-number="3"></td>
+          <td id="file-test-hbs-LC3" class="blob-code blob-code-inner js-file-line">  <span class="pl-c1">\{{/g-map}}</span></td>
+        </tr>
+      </tbody>
+    </table>
+   {{/gmaps-snippet}}
+</p>
+
+<hr>
+
+<p id="clickable" class="medium-7 large-5">
+  <h2>clickable</h2>
+  Indicates whether this instance handles mouse events.
+
+  <div class="-smt -mb">
+    <small class="-db">Type</small>
+    Boolean
+  </div>
+
+  <div class="-mb">
+    <small class="-db">Default</small>
+    <span class="gmaps-inline-code -nml">true</span>
+  </div>
+</p>
+
+<hr>
+
+<p id="draggable" class="medium-7 large-5">
+  <h2>draggable</h2>
+  If set to true, the user can initiate drag actions.
+
+  <div class="-smt -mb">
+    <small class="-db">Type</small>
+    Boolean
+  </div>
+
+  <div class="-mb">
+    <small class="-db">Default</small>
+    <span class="gmaps-inline-code -nml">false</span>
+  </div>
+</p>
+
+<hr>
+
+<p id="editable" class="medium-7 large-5">
+  <h2>editable</h2>
+  If set to true, the user can edit the geometry of this instance by dragging the control points.
+
+  <div class="-smt -mb">
+    <small class="-db">Type</small>
+    Boolean
+  </div>
+
+  <div class="-mb">
+    <small class="-db">Default</small>
+    <span class="gmaps-inline-code -nml">false</span>
+  </div>
+</p>
+
+<hr>
+
+<p id="fillColor" class="medium-7 large-5">
+  <h2>fillColor</h2>
+  The fill color. All CSS3 colors are supported except for extended named colors.
+
+  <div class="-smt -mb">
+    <small class="-db">Type</small>
+    String
+  </div>
+
+  <div class="-mb">
+    <small class="-db">Default</small>
+    <span class="gmaps-inline-code -nml">#000000</span>
+  </div>
+</p>
+
+<hr>
+
+<p id="fillOpacity" class="medium-7 large-5">
+  <h2>fillOpacity</h2>
+  The fill opacity between 0.0 and 1.0.
+
+  <div class="-smt -mb">
+    <small class="-db">Type</small>
+    Number
+  </div>
+
+  <div class="-mb">
+    <small class="-db">Default</small>
+    <span class="gmaps-inline-code -nml">1</span>
+  </div>
+</p>
+
+<hr>
+
+<p id="geodesic" class="medium-7 large-5">
+  <h2>geodesic</h2>
+  TODO
+
+  <div class="-smt -mb">
+    <small class="-db">Type</small>
+    Boolean
+  </div>
+
+  <div class="-mb">
+    <small class="-db">Default</small>
+    <span class="gmaps-inline-code -nml">false</span>
+  </div>
+</p>
+
+<hr>
+
+<p id="path" class="medium-7 large-5">
+  <h2>path</h2>
+  The ordered sequence of coordinates that designates a closed loop.
+
+  <div class="-smt -mb">
+    <small class="-db">Type</small>
+    Array
+  </div>
+
+  <div class="-mb">
+    <small class="-db">Default</small>
+    3 vertex path in center of map
+  </div>
+
+  <div class="-mb">
+    <small class="-db">Example</small>
+    {{#gmaps-snippet type="js" header="Path Configuration"}}
+      <table class="highlight tab-size js-file-line-container" data-tab-size="8">
+        <tbody><tr>
+          <td id="file-stuff-js-L1" class="blob-num js-line-number" data-line-number="1"></td>
+          <td id="file-stuff-js-LC1" class="blob-code blob-code-inner js-file-line">[{</td>
+          </tr>
+          <tr>
+            <td id="file-stuff-js-L2" class="blob-num js-line-number" data-line-number="2"></td>
+            <td id="file-stuff-js-LC2" class="blob-code blob-code-inner js-file-line">  lat<span class="pl-k">:</span> <span class="pl-c1">31.255074</span>,</td>
+          </tr>
+          <tr>
+            <td id="file-stuff-js-L3" class="blob-num js-line-number" data-line-number="3"></td>
+            <td id="file-stuff-js-LC3" class="blob-code blob-code-inner js-file-line">  lng<span class="pl-k">:</span> <span class="pl-k">-</span><span class="pl-c1">97.712402</span></td>
+          </tr>
+          <tr>
+            <td id="file-stuff-js-L4" class="blob-num js-line-number" data-line-number="4"></td>
+            <td id="file-stuff-js-LC4" class="blob-code blob-code-inner js-file-line">}]</td>
+          </tr>
+        </tbody>
+      </table>
+   {{/gmaps-snippet}}
+  </div>
+
+  <div class="-mb">
+    <small class="-db">Notes</small>
+    Path will override options.path
+  </div>
+</p>
+
+<hr>
+
+<p id="strokeColor" class="medium-7 large-5">
+  <h2>strokeColor</h2>
+  The stroke color. All CSS3 colors are supported except for extended named colors.
+
+  <div class="-smt -mb">
+    <small class="-db">Type</small>
+    String
+  </div>
+
+  <div class="-mb">
+    <small class="-db">Default</small>
+    <span class="gmaps-inline-code -nml">#000000</span>
+  </div>
+</p>
+
+<hr>
+
+<p id="strokeOpacity" class="medium-7 large-5">
+  <h2>strokeOpacity</h2>
+  The stroke opacity between 0.0 and 1.0.
+
+  <div class="-smt -mb">
+    <small class="-db">Type</small>
+    Number
+  </div>
+
+  <div class="-mb">
+    <small class="-db">Default</small>
+    <span class="gmaps-inline-code -nml">1</span>
+  </div>
+</p>
+
+<hr>
+
+<p id="strokePosition" class="medium-7 large-5">
+  <h2>strokePosition</h2>
+  The stroke position. This property is not supported on Internet Explorer 8 and earlier.
+
+  <div class="-smt -mb">
+    <small class="-db">Type</small>
+    String
+  </div>
+
+  <div class="-mb">
+    <small class="-db">Default</small>
+    <span class="gmaps-inline-code -nml">CENTER</span>
+  </div>
+
+  <div class="-mb">
+    <small class="-db">Options</small>
+    {{#each strokePositions as |position|}}<span class="gmaps-inline-code -nml">{{position}}</span>{{/each}}
+  </div>
+</p>
+
+<hr>
+
+<p id="strokeWeight" class="medium-7 large-5">
+  <h2>strokeWeight</h2>
+  The stroke width in pixels.
+
+  <div class="-smt -mb">
+    <small class="-db">Type</small>
+    Number
+  </div>
+
+  <div class="-mb">
+    <small class="-db">Default</small>
+    <span class="gmaps-inline-code -nml">3</span>
+  </div>
+</p>
+
+<hr>
+
+<p id="visible" class="medium-7 large-5">
+  <h2>visible</h2>
+  Whether this instance is visible on the map.
+
+  <div class="-smt -mb">
+    <small class="-db">Type</small>
+    Boolean
+  </div>
+
+  <div class="-mb">
+    <small class="-db">Default</small>
+    <span class="gmaps-inline-code -nml">true</span>
+  </div>
+</p>
+
+<hr>
+
+<p id="zIndex" class="medium-7 large-5">
+  <h2>zIndex</h2>
+  The zIndex compared to other map instances.
+
+  <div class="-smt -mb">
+    <small class="-db">Type</small>
+    Number
+  </div>
+</p>
+
+<hr>
+
+<p id="click" class="medium-7 large-5">
+  <h3>click</h3>
+
+  <div class="-mb">
+    <small class="-db">Arugments</small>
+    <a href="https://developers.google.com/maps/documentation/javascript/3.exp/reference#MouseEvent" target="_blank">MouseEvent</a>
+  </div>
+
+  {{#gmaps-snippet}}
+    <table class="highlight tab-size js-file-line-container" data-tab-size="8">
+      <tbody>
+        <tr>
+          <td id="file-stuff-hbs-L1" class="blob-num js-line-number" data-line-number="1"></td>
+          <td id="file-stuff-hbs-LC1" class="blob-code blob-code-inner js-file-line"><span class="pl-c1">\{{</span><span class="pl-v">g-map-polygon</span> <span class="pl-e"><span class="pl-v">map</span> </span><span class="pl-e"><span class="pl-v">click</span>=</span>(<span class="pl-e"><span class="pl-v">action</span> <span class="pl-v">"click"</span></span>)<span class="pl-c1">}}</span></td>
+        </tr>
+      </tbody>
+    </table>
+  {{/gmaps-snippet}}
+</p>
+
+<hr>
+
+<p id="dblclick" class="medium-7 large-5">
+  <h3>dblclick</h3>
+
+  <div class="-mb">
+    <small class="-db">Arugments</small>
+    <a href="https://developers.google.com/maps/documentation/javascript/3.exp/reference#MouseEvent" target="_blank">MouseEvent</a>
+  </div>
+
+  {{#gmaps-snippet}}
+    <table class="highlight tab-size js-file-line-container" data-tab-size="8">
+      <tbody>
+        <tr>
+          <td id="file-stuff-hbs-L1" class="blob-num js-line-number" data-line-number="1"></td>
+          <td id="file-stuff-hbs-LC1" class="blob-code blob-code-inner js-file-line"><span class="pl-c1">\{{</span><span class="pl-v">g-map-polygon</span> <span class="pl-e"><span class="pl-v">map</span> </span><span class="pl-e"><span class="pl-v">dblclick</span>=</span>(<span class="pl-e"><span class="pl-v">action</span> <span class="pl-v">"dblclick"</span></span>)<span class="pl-c1">}}</span></td>
+        </tr>
+      </tbody>
+    </table>
+  {{/gmaps-snippet}}
+</p>
+
+<hr>
+
+<p id="drag" class="medium-7 large-5">
+  <h3>drag</h3>
+
+  <div class="-mb">
+    <small class="-db">Arugments</small>
+    <a href="https://developers.google.com/maps/documentation/javascript/3.exp/reference#MouseEvent" target="_blank">MouseEvent</a>
+  </div>
+
+  {{#gmaps-snippet}}
+    <table class="highlight tab-size js-file-line-container" data-tab-size="8">
+      <tbody>
+        <tr>
+          <td id="file-stuff-hbs-L1" class="blob-num js-line-number" data-line-number="1"></td>
+          <td id="file-stuff-hbs-LC1" class="blob-code blob-code-inner js-file-line"><span class="pl-c1">\{{</span><span class="pl-v">g-map-polygon</span> <span class="pl-e"><span class="pl-v">map</span> </span><span class="pl-e"><span class="pl-v">drag</span>=</span>(<span class="pl-e"><span class="pl-v">action</span> <span class="pl-v">"drag"</span></span>)<span class="pl-c1">}}</span></td>
+        </tr>
+      </tbody>
+    </table>
+  {{/gmaps-snippet}}
+</p>
+
+<hr>
+
+<p id="dragend" class="medium-7 large-5">
+  <h3>dragend</h3>
+
+  <div class="-mb">
+    <small class="-db">Arugments</small>
+    <a href="https://developers.google.com/maps/documentation/javascript/3.exp/reference#MouseEvent" target="_blank">MouseEvent</a>
+  </div>
+
+  {{#gmaps-snippet}}
+    <table class="highlight tab-size js-file-line-container" data-tab-size="8">
+      <tbody>
+        <tr>
+          <td id="file-stuff-hbs-L1" class="blob-num js-line-number" data-line-number="1"></td>
+          <td id="file-stuff-hbs-LC1" class="blob-code blob-code-inner js-file-line"><span class="pl-c1">\{{</span><span class="pl-v">g-map-polygon</span> <span class="pl-e"><span class="pl-v">map</span> </span><span class="pl-e"><span class="pl-v">dragend</span>=</span>(<span class="pl-e"><span class="pl-v">action</span> <span class="pl-v">"dragend"</span></span>)<span class="pl-c1">}}</span></td>
+        </tr>
+      </tbody>
+    </table>
+  {{/gmaps-snippet}}
+</p>
+
+<hr>
+
+<p id="dragstart" class="medium-7 large-5">
+  <h3>dragstart</h3>
+
+  <div class="-mb">
+    <small class="-db">Arugments</small>
+    <a href="https://developers.google.com/maps/documentation/javascript/3.exp/reference#MouseEvent" target="_blank">MouseEvent</a>
+  </div>
+
+  {{#gmaps-snippet}}
+    <table class="highlight tab-size js-file-line-container" data-tab-size="8">
+      <tbody>
+        <tr>
+          <td id="file-stuff-hbs-L1" class="blob-num js-line-number" data-line-number="1"></td>
+          <td id="file-stuff-hbs-LC1" class="blob-code blob-code-inner js-file-line"><span class="pl-c1">\{{</span><span class="pl-v">g-map-polygon</span> <span class="pl-e"><span class="pl-v">map</span> </span><span class="pl-e"><span class="pl-v">dragstart</span>=</span>(<span class="pl-e"><span class="pl-v">action</span> <span class="pl-v">"dragstart"</span></span>)<span class="pl-c1">}}</span></td>
+        </tr>
+      </tbody>
+    </table>
+  {{/gmaps-snippet}}
+</p>
+
+<hr>
+
+<p id="insert_at" class="medium-7 large-5">
+  <h3>insert_at</h3>
+
+  <div class="-mb">
+    <small class="-db">Arugments</small>
+    <strong>index</strong> - Number - the index of vertex inserted into the path
+    <a class="-db" {{action "scrollToId" "path"}}>path</a>
+  </div>
+
+  {{#gmaps-snippet}}
+    <table class="highlight tab-size js-file-line-container" data-tab-size="8">
+      <tbody>
+        <tr>
+          <td id="file-stuff-hbs-L1" class="blob-num js-line-number" data-line-number="1"></td>
+          <td id="file-stuff-hbs-LC1" class="blob-code blob-code-inner js-file-line"><span class="pl-c1">\{{</span><span class="pl-v">g-map-polygon</span> <span class="pl-e"><span class="pl-v">map</span> </span><span class="pl-e"><span class="pl-v">insert_at</span>=</span>(<span class="pl-e"><span class="pl-v">action</span> <span class="pl-v">"insertAt"</span></span>)<span class="pl-c1">}}</span></td>
+        </tr>
+      </tbody>
+    </table>
+  {{/gmaps-snippet}}
+</p>
+
+<hr>
+
+<p id="mousedown" class="medium-7 large-5">
+  <h3>mousedown</h3>
+
+  <div class="-mb">
+    <small class="-db">Arugments</small>
+    <a href="https://developers.google.com/maps/documentation/javascript/3.exp/reference#MouseEvent" target="_blank">MouseEvent</a>
+  </div>
+
+  {{#gmaps-snippet}}
+    <table class="highlight tab-size js-file-line-container" data-tab-size="8">
+      <tbody>
+        <tr>
+          <td id="file-stuff-hbs-L1" class="blob-num js-line-number" data-line-number="1"></td>
+          <td id="file-stuff-hbs-LC1" class="blob-code blob-code-inner js-file-line"><span class="pl-c1">\{{</span><span class="pl-v">g-map-polygon</span> <span class="pl-e"><span class="pl-v">map</span> </span><span class="pl-e"><span class="pl-v">mousedown</span>=</span>(<span class="pl-e"><span class="pl-v">action</span> <span class="pl-v">"mousedown"</span></span>)<span class="pl-c1">}}</span></td>
+        </tr>
+      </tbody>
+    </table>
+  {{/gmaps-snippet}}
+</p>
+
+<hr>
+
+<p id="mousemove" class="medium-7 large-5">
+  <h3>mousemove</h3>
+
+  <div class="-mb">
+    <small class="-db">Arugments</small>
+    <a href="https://developers.google.com/maps/documentation/javascript/3.exp/reference#MouseEvent" target="_blank">MouseEvent</a>
+  </div>
+
+  {{#gmaps-snippet}}
+    <table class="highlight tab-size js-file-line-container" data-tab-size="8">
+      <tbody>
+        <tr>
+          <td id="file-stuff-hbs-L1" class="blob-num js-line-number" data-line-number="1"></td>
+          <td id="file-stuff-hbs-LC1" class="blob-code blob-code-inner js-file-line"><span class="pl-c1">\{{</span><span class="pl-v">g-map-polygon</span> <span class="pl-e"><span class="pl-v">map</span> </span><span class="pl-e"><span class="pl-v">mousemove</span>=</span>(<span class="pl-e"><span class="pl-v">action</span> <span class="pl-v">"mousemove"</span></span>)<span class="pl-c1">}}</span></td>
+        </tr>
+      </tbody>
+    </table>
+  {{/gmaps-snippet}}
+</p>
+
+<hr>
+
+<p id="mouseout" class="medium-7 large-5">
+  <h3>mouseout</h3>
+
+  <div class="-mb">
+    <small class="-db">Arugments</small>
+    <a href="https://developers.google.com/maps/documentation/javascript/3.exp/reference#MouseEvent" target="_blank">MouseEvent</a>
+  </div>
+
+  {{#gmaps-snippet}}
+    <table class="highlight tab-size js-file-line-container" data-tab-size="8">
+      <tbody>
+        <tr>
+          <td id="file-stuff-hbs-L1" class="blob-num js-line-number" data-line-number="1"></td>
+          <td id="file-stuff-hbs-LC1" class="blob-code blob-code-inner js-file-line"><span class="pl-c1">\{{</span><span class="pl-v">g-map-polygon</span> <span class="pl-e"><span class="pl-v">map</span> </span><span class="pl-e"><span class="pl-v">mouseout</span>=</span>(<span class="pl-e"><span class="pl-v">action</span> <span class="pl-v">"mouseout"</span></span>)<span class="pl-c1">}}</span></td>
+        </tr>
+      </tbody>
+    </table>
+  {{/gmaps-snippet}}
+</p>
+
+<hr>
+
+<p id="mouseover" class="medium-7 large-5">
+  <h3>mouseover</h3>
+
+  <div class="-mb">
+    <small class="-db">Arugments</small>
+    <a href="https://developers.google.com/maps/documentation/javascript/3.exp/reference#MouseEvent" target="_blank">MouseEvent</a>
+  </div>
+
+  {{#gmaps-snippet}}
+    <table class="highlight tab-size js-file-line-container" data-tab-size="8">
+      <tbody>
+        <tr>
+          <td id="file-stuff-hbs-L1" class="blob-num js-line-number" data-line-number="1"></td>
+          <td id="file-stuff-hbs-LC1" class="blob-code blob-code-inner js-file-line"><span class="pl-c1">\{{</span><span class="pl-v">g-map-polygon</span> <span class="pl-e"><span class="pl-v">map</span> </span><span class="pl-e"><span class="pl-v">mouseover</span>=</span>(<span class="pl-e"><span class="pl-v">action</span> <span class="pl-v">"mouseover"</span></span>)<span class="pl-c1">}}</span></td>
+        </tr>
+      </tbody>
+    </table>
+  {{/gmaps-snippet}}
+</p>
+
+<hr>
+
+<p id="mouseup" class="medium-7 large-5">
+  <h3>mouseup</h3>
+
+  <div class="-mb">
+    <small class="-db">Arugments</small>
+    <a href="https://developers.google.com/maps/documentation/javascript/3.exp/reference#MouseEvent" target="_blank">MouseEvent</a>
+  </div>
+
+  {{#gmaps-snippet}}
+    <table class="highlight tab-size js-file-line-container" data-tab-size="8">
+      <tbody>
+        <tr>
+          <td id="file-stuff-hbs-L1" class="blob-num js-line-number" data-line-number="1"></td>
+          <td id="file-stuff-hbs-LC1" class="blob-code blob-code-inner js-file-line"><span class="pl-c1">\{{</span><span class="pl-v">g-map-polygon</span> <span class="pl-e"><span class="pl-v">map</span> </span><span class="pl-e"><span class="pl-v">mouseup</span>=</span>(<span class="pl-e"><span class="pl-v">action</span> <span class="pl-v">"mouseup"</span></span>)<span class="pl-c1">}}</span></td>
+        </tr>
+      </tbody>
+    </table>
+  {{/gmaps-snippet}}
+</p>
+
+<hr>
+
+<p id="remove_at" class="medium-7 large-5">
+  <h3>remove_at</h3>
+
+  <div class="-mb">
+    <small class="-db">Arugments</small>
+    <strong>index</strong> - Number - the index of the updated vertex
+    <div>
+      <a href="https://developers.google.com/maps/documentation/javascript/3.exp/reference#LatLng">LatLng</a> - Removed coordinate
+    </div>
+  </div>
+
+  {{#gmaps-snippet}}
+    <table class="highlight tab-size js-file-line-container" data-tab-size="8">
+      <tbody>
+        <tr>
+          <td id="file-stuff-hbs-L1" class="blob-num js-line-number" data-line-number="1"></td>
+          <td id="file-stuff-hbs-LC1" class="blob-code blob-code-inner js-file-line"><span class="pl-c1">\{{</span><span class="pl-v">g-map-marker</span> <span class="pl-e"><span class="pl-v">map</span> </span><span class="pl-e"><span class="pl-v">remove_at</span>=</span>(<span class="pl-e"><span class="pl-v">action</span> <span class="pl-v">"removeAt"</span></span>)<span class="pl-c1">}}</span></td>
+        </tr>
+      </tbody>
+    </table>
+  {{/gmaps-snippet}}
+</p>
+
+<hr>
+
+<p id="rightclick" class="medium-7 large-5">
+  <h3>rightclick</h3>
+
+  <div class="-mb">
+    <small class="-db">Arugments</small>
+    <a href="https://developers.google.com/maps/documentation/javascript/3.exp/reference#MouseEvent" target="_blank">MouseEvent</a>
+  </div>
+
+  {{#gmaps-snippet}}
+    <table class="highlight tab-size js-file-line-container" data-tab-size="8">
+      <tbody>
+        <tr>
+          <td id="file-stuff-hbs-L1" class="blob-num js-line-number" data-line-number="1"></td>
+          <td id="file-stuff-hbs-LC1" class="blob-code blob-code-inner js-file-line"><span class="pl-c1">\{{</span><span class="pl-v">g-map-marker</span> <span class="pl-e"><span class="pl-v">map</span> </span><span class="pl-e"><span class="pl-v">rightclick</span>=</span>(<span class="pl-e"><span class="pl-v">action</span> <span class="pl-v">"rightclick"</span></span>)<span class="pl-c1">}}</span></td>
+        </tr>
+      </tbody>
+    </table>
+  {{/gmaps-snippet}}
+</p>
+
+<hr>
+
+<p id="set_at" class="medium-7 large-5">
+  <h3>set_at</h3>
+
+  <div class="-mb">
+    <small class="-db">Arugments</small>
+    <strong>index</strong> - Number - the index of the updated vertex
+    <div>
+      <a href="https://developers.google.com/maps/documentation/javascript/3.exp/reference#LatLng">LatLng</a> - Previous state of updated coordinate
+    </div>
+    <a class="-db" {{action "scrollToId" "path"}}>path</a>
+  </div>
+
+  {{#gmaps-snippet}}
+    <table class="highlight tab-size js-file-line-container" data-tab-size="8">
+      <tbody>
+        <tr>
+          <td id="file-stuff-hbs-L1" class="blob-num js-line-number" data-line-number="1"></td>
+          <td id="file-stuff-hbs-LC1" class="blob-code blob-code-inner js-file-line"><span class="pl-c1">\{{</span><span class="pl-v">g-map-marker</span> <span class="pl-e"><span class="pl-v">map</span> </span><span class="pl-e"><span class="pl-v">set_at</span>=</span>(<span class="pl-e"><span class="pl-v">action</span> <span class="pl-v">"setAt"</span></span>)<span class="pl-c1">}}</span></td>
+        </tr>
+      </tbody>
+    </table>
+  {{/gmaps-snippet}}
 </p>

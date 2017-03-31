@@ -17,20 +17,23 @@ const DEFAULTS = {
  *
  * https://developers.google.com/maps/documentation/javascript/3.exp/reference#IconSequence
  *
- * @param  {Object} config
+ * @param  {Array} config
  * @return {Object}
  */
-export default function mapIconSequence(config = {}) {
-  const instance = assign(DEFAULTS, config);
+export default function mapIconSequence(config = []) {
+  assert('Map Icon Sequence configuraton is an array', Array.isArray(config));
 
-  assert('mapIconSequence configuration icon is an object', typeof instance.icon === 'object');
-  assert('mapIconSequence configuration fixedRotation is a boolean', typeof instance.fixedRotation === 'boolean');
-  assert('mapIconSequence configuration offset is a string', typeof instance.offset === 'string');
-  assert('mapIconSequence configuration repeat is a string', typeof instance.repeat === 'string');
+  return config.map(icon => {
+    const instance = assign(DEFAULTS, icon);
 
-  instance.icon = mapSymbol(instance.icon);
+    assert('Map Icon Sequence item `icon` is an object', typeof instance.icon === 'object');
+    assert('Map Icon Sequence item `fixedRotation` is a boolean', typeof instance.fixedRotation === 'boolean');
+    assert('Map Icon Sequence item `offset` is a string', typeof instance.offset === 'string');
+    assert('Map Icon Sequence item `repeat` is a string', typeof instance.repeat === 'string');
 
-  return assign(Object.create(mapIconSequence.prototype), instance);
+    instance.icon = mapSymbol(instance.icon);
+    return assign(Object.create(mapIconSequence.prototype), instance);
+  });
 }
 
 mapIconSequence.prototype = {

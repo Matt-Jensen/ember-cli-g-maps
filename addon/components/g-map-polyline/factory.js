@@ -49,11 +49,16 @@ export const GoogleMapPolylineProxy = GoogleMapPolyProxy.extend({
       const {icons} = this.content;
 
       if (icons) {
-        return icons.toJSON();
+        return icons.map(icon => icon.toJSON());
       }
     },
 
     set(key, value) {
+      if (!value) {
+        this.content.setOptions({icons: null}); // remove icons
+        return;
+      }
+
       this.content.setOptions({
         icons: mapIconSequence(value)
       });

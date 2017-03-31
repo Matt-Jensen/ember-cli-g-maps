@@ -51,17 +51,31 @@ test('it returns undefined if icons is not explicitly set', function(assert) {
 
 test('it returns the same icons configuration from via get', function(assert) {
   const instance = googleMapPolyline(createGoogleMap(), assign({}, DEFAULTS));
-  const expected = {
+  const expected = [{
     icon: {path: SVG_NOTATION},
     fixedRotation: true,
     offset: '50%',
     repeat: '50%'
-  };
+  }];
 
   instance.set('icons', expected);
   const actual = instance.get('icons');
 
   assert.deepEqual(actual, expected);
+});
+
+test('it removes configured icons with falsey value', function(assert) {
+  const instance = googleMapPolyline(createGoogleMap(), assign({}, DEFAULTS));
+
+  instance.set('icons', [{
+    icon: {path: SVG_NOTATION},
+    fixedRotation: true,
+    offset: '50%',
+    repeat: '50%'
+  }]);
+
+  instance.set('icons', null);
+  assert.strictEqual(instance.get('icons'), undefined, 'icons is undefined');
 });
 
 test('it returns the configured path setting', function(assert) {
