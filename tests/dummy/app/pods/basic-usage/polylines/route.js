@@ -88,7 +88,9 @@ export default Route.extend(DocumentationHelpers, {
       const {controller} = this;
       const icons = get(controller, 'options.icons');
 
-      if (icons.length === 0) return;
+      if (icons.length === 0) {
+        return;
+      }
 
       icons.removeAt(icons.length - 1);
       controller.notifyPropertyChange('options');

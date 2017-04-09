@@ -5,17 +5,15 @@
     <li><a {{action "scrollToId" "clickable"}}>clickable</a></li>
     <li><a {{action "scrollToId" "draggable"}}>draggable</a></li>
     <li><a {{action "scrollToId" "editable"}}>editable</a></li>
-    <li><a {{action "scrollToId" "fillColor"}}>fillColor</a></li>
-    <li><a {{action "scrollToId" "fillOpacity"}}>fillOpacity</a></li>
+    <li><a {{action "scrollToId" "geodesic"}}>geodesic</a></li>
   </ul>
   <ul class="grid-content large-3 medium-4 small-12 -nml -nmb -lis-none">
-    <li><a {{action "scrollToId" "geodesic"}}>geodesic</a></li>
+    <li><a {{action "scrollToId" "icons"}}>icons</a></li>
     <li><a {{action "scrollToId" "path"}}>path</a></li>
     <li><a {{action "scrollToId" "strokeColor"}}>strokeColor</a></li>
     <li><a {{action "scrollToId" "strokeOpacity"}}>strokeOpacity</a></li>
   </ul>
   <ul class="grid-content large-3 medium-4 small-12 -nml -nmb -lis-none">
-    <li><a {{action "scrollToId" "strokePosition"}}>strokePosition</a></li>
     <li><a {{action "scrollToId" "strokeWeight"}}>strokeWeight</a></li>
     <li><a {{action "scrollToId" "visible"}}>visible</a></li>
     <li><a {{action "scrollToId" "zIndex"}}>zIndex</a></li>
@@ -87,7 +85,6 @@
         path=options.path
         strokeColor=options.strokeColor
         strokeOpacity=options.strokeOpacity
-        strokePosition=options.strokePosition
         strokeWeight=options.strokeWeight
         visible=options.visible
         zIndex=options.zIndex
@@ -173,7 +170,7 @@
       <button data-test-value="path" class="th-google-button--xsmall">{{options.icons.length}}</button>
       <button
         class="th-google-button--xsmall -fz-large -np"
-        data-test-update="path"
+        data-test-update="icons"
         {{action (route-action "appendCustomIcon")}}>+</button>
     </div>
   </div>
@@ -342,43 +339,9 @@
 
 <hr>
 
-<p id="fillColor" class="medium-7 large-5">
-  <h2>fillColor</h2>
-  The fill color. All CSS3 colors are supported except for extended named colors.
-
-  <div class="-smt -mb">
-    <small class="-db">Type</small>
-    String
-  </div>
-
-  <div class="-mb">
-    <small class="-db">Default</small>
-    <span class="gmaps-inline-code -nml">#000000</span>
-  </div>
-</p>
-
-<hr>
-
-<p id="fillOpacity" class="medium-7 large-5">
-  <h2>fillOpacity</h2>
-  The fill opacity between 0.0 and 1.0.
-
-  <div class="-smt -mb">
-    <small class="-db">Type</small>
-    Number
-  </div>
-
-  <div class="-mb">
-    <small class="-db">Default</small>
-    <span class="gmaps-inline-code -nml">1</span>
-  </div>
-</p>
-
-<hr>
-
 <p id="geodesic" class="medium-7 large-5">
   <h2>geodesic</h2>
-  TODO
+  When true, edges of the polyline are interpreted as geodesic and will follow the curvature of the Earth. When false, edges of the polygon are rendered as straight lines in screen space. Note that the shape of a geodesic polygon may appear to change when dragged, as the dimensions are maintained relative to the surface of the earth.
 
   <div class="-smt -mb">
     <small class="-db">Type</small>
@@ -388,6 +351,95 @@
   <div class="-mb">
     <small class="-db">Default</small>
     <span class="gmaps-inline-code -nml">false</span>
+  </div>
+</p>
+
+<hr>
+
+<p id="icons" class="medium-7 large-5">
+  <h2>icons</h2>
+  The icons to be rendered along the polyline.
+
+  <div class="-smt -mb">
+    <small class="-db">Type</small>
+    Array&#60;<a href="https://developers.google.com/maps/documentation/javascript/3.exp/reference#IconSequence" target="_blank">IconSequence</a>&#62;
+  </div>
+
+  <div class="-mb">
+    <small class="-db">Example</small>
+    {{#gmaps-snippet type="js" header="Icons Configuration"}}
+      <table class="highlight tab-size js-file-line-container" data-tab-size="8">
+        <tbody><tr>
+          <td id="file-blah-js-L1" class="blob-num js-line-number" data-line-number="1"></td>
+          <td id="file-blah-js-LC1" class="blob-code blob-code-inner js-file-line">[{</td>
+          </tr>
+          <tr>
+            <td id="file-blah-js-L2" class="blob-num js-line-number" data-line-number="2"></td>
+            <td id="file-blah-js-LC2" class="blob-code blob-code-inner js-file-line">  fixedRotation<span class="pl-k">:</span> <span class="pl-c1">false</span>, <span class="pl-c"><span class="pl-c">//</span> default true</span></td>
+          </tr>
+          <tr>
+            <td id="file-blah-js-L3" class="blob-num js-line-number" data-line-number="3"></td>
+            <td id="file-blah-js-LC3" class="blob-code blob-code-inner js-file-line">  icon<span class="pl-k">:</span> {</td>
+            </tr>
+            <tr>
+              <td id="file-blah-js-L4" class="blob-num js-line-number" data-line-number="4"></td>
+              <td id="file-blah-js-LC4" class="blob-code blob-code-inner js-file-line">    anchor<span class="pl-k">:</span> {x<span class="pl-k">:</span> <span class="pl-c1">1</span>, y<span class="pl-k">:</span> <span class="pl-c1">1</span>}, <span class="pl-c"><span class="pl-c">//</span> default {x: 0, y: 1}</span></td>
+            </tr>
+            <tr>
+              <td id="file-blah-js-L5" class="blob-num js-line-number" data-line-number="5"></td>
+              <td id="file-blah-js-LC5" class="blob-code blob-code-inner js-file-line">    fillColor<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>#000<span class="pl-pds">'</span></span>, <span class="pl-c"><span class="pl-c">//</span> optional</span></td>
+            </tr>
+            <tr>
+              <td id="file-blah-js-L6" class="blob-num js-line-number" data-line-number="6"></td>
+              <td id="file-blah-js-LC6" class="blob-code blob-code-inner js-file-line">    fillOpacity<span class="pl-k">:</span> <span class="pl-c1">0.5</span>, <span class="pl-c"><span class="pl-c">//</span> default 0</span></td>
+            </tr>
+            <tr>
+              <td id="file-blah-js-L7" class="blob-num js-line-number" data-line-number="7"></td>
+              <td id="file-blah-js-LC7" class="blob-code blob-code-inner js-file-line">    labelOrigin<span class="pl-k">:</span> {x<span class="pl-k">:</span> <span class="pl-c1">1</span>, y<span class="pl-k">:</span> <span class="pl-c1">1</span>}, <span class="pl-c"><span class="pl-c">//</span> default {x: 0, y: 1}</span></td>
+            </tr>
+            <tr>
+              <td id="file-blah-js-L8" class="blob-num js-line-number" data-line-number="8"></td>
+              <td id="file-blah-js-LC8" class="blob-code blob-code-inner js-file-line">    path<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>M10 10 H 90 V 90 H 10 L 10 10<span class="pl-pds">'</span></span>, <span class="pl-c"><span class="pl-c">//</span> Required</span></td>
+            </tr>
+            <tr>
+              <td id="file-blah-js-L9" class="blob-num js-line-number" data-line-number="9"></td>
+              <td id="file-blah-js-LC9" class="blob-code blob-code-inner js-file-line">    rotation<span class="pl-k">:</span> <span class="pl-c1">1</span>, <span class="pl-c"><span class="pl-c">//</span> default 0</span></td>
+            </tr>
+            <tr>
+              <td id="file-blah-js-L10" class="blob-num js-line-number" data-line-number="10"></td>
+              <td id="file-blah-js-LC10" class="blob-code blob-code-inner js-file-line">    scale<span class="pl-k">:</span> <span class="pl-c1">2</span>, <span class="pl-c"><span class="pl-c">//</span> default 1</span></td>
+            </tr>
+            <tr>
+              <td id="file-blah-js-L11" class="blob-num js-line-number" data-line-number="11"></td>
+              <td id="file-blah-js-LC11" class="blob-code blob-code-inner js-file-line">    strokeColor<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>#000<span class="pl-pds">'</span></span>, <span class="pl-c"><span class="pl-c">//</span> optional</span></td>
+            </tr>
+            <tr>
+              <td id="file-blah-js-L12" class="blob-num js-line-number" data-line-number="12"></td>
+              <td id="file-blah-js-LC12" class="blob-code blob-code-inner js-file-line">    strokeOpacity<span class="pl-k">:</span> <span class="pl-c1">0.75</span>, <span class="pl-c"><span class="pl-c">//</span> default 1</span></td>
+            </tr>
+            <tr>
+              <td id="file-blah-js-L13" class="blob-num js-line-number" data-line-number="13"></td>
+              <td id="file-blah-js-LC13" class="blob-code blob-code-inner js-file-line">    strokeWeight<span class="pl-k">:</span> <span class="pl-c1">3</span> <span class="pl-c"><span class="pl-c">//</span> defaults to scale</span></td>
+            </tr>
+            <tr>
+              <td id="file-blah-js-L14" class="blob-num js-line-number" data-line-number="14"></td>
+              <td id="file-blah-js-LC14" class="blob-code blob-code-inner js-file-line">  },</td>
+            </tr>
+            <tr>
+              <td id="file-blah-js-L15" class="blob-num js-line-number" data-line-number="15"></td>
+              <td id="file-blah-js-LC15" class="blob-code blob-code-inner js-file-line">  offset<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>50%<span class="pl-pds">'</span></span>, <span class="pl-c"><span class="pl-c">//</span> default '100%'</span></td>
+            </tr>
+            <tr>
+              <td id="file-blah-js-L16" class="blob-num js-line-number" data-line-number="16"></td>
+              <td id="file-blah-js-LC16" class="blob-code blob-code-inner js-file-line">  repeat<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>50px<span class="pl-pds">'</span></span> <span class="pl-c"><span class="pl-c">//</span> default '0'</span></td>
+            </tr>
+            <tr>
+              <td id="file-blah-js-L17" class="blob-num js-line-number" data-line-number="17"></td>
+              <td id="file-blah-js-LC17" class="blob-code blob-code-inner js-file-line">}]</td>
+            </tr>
+          </tbody>
+        </table>
+   {{/gmaps-snippet}}
   </div>
 </p>
 
@@ -469,28 +521,6 @@
   <div class="-mb">
     <small class="-db">Default</small>
     <span class="gmaps-inline-code -nml">1</span>
-  </div>
-</p>
-
-<hr>
-
-<p id="strokePosition" class="medium-7 large-5">
-  <h2>strokePosition</h2>
-  The stroke position. This property is not supported on Internet Explorer 8 and earlier.
-
-  <div class="-smt -mb">
-    <small class="-db">Type</small>
-    String
-  </div>
-
-  <div class="-mb">
-    <small class="-db">Default</small>
-    <span class="gmaps-inline-code -nml">CENTER</span>
-  </div>
-
-  <div class="-mb">
-    <small class="-db">Options</small>
-    {{#each strokePositions as |position|}}<span class="gmaps-inline-code -nml">{{position}}</span>{{/each}}
   </div>
 </p>
 
