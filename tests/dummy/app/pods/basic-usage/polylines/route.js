@@ -76,7 +76,9 @@ export default Route.extend(DocumentationHelpers, {
       const path = get(controller, 'options.path');
       const icons = get(controller, 'options.icons');
 
-      if (icons.length >= path.length) return;
+      if (icons.length >= path.length) {
+        return;
+      }
 
       icons.pushObject({icon: {path: 'FORWARD_OPEN_ARROW'}});
       controller.notifyPropertyChange('options');
