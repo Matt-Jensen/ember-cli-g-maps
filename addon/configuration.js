@@ -229,5 +229,38 @@ export default {
       'visible',
       'zIndex'
     ]
+  },
+
+  googleMapRectangle: {
+    scope: 'rectangle',
+
+    events: [
+      'bounds_changed',
+      'click',
+      'dblclick',
+      'drag',
+      'dragend',
+      'dragstart',
+      'mousedown',
+      'mousemove',
+      'mouseout',
+      'mouseover',
+      'mouseup',
+      'rightclick'
+    ],
+
+    boundOptions: [
+      'clickable',
+      'draggable',
+      'editable',
+      'fillColor',
+      'fillOpacity',
+      'strokeColor',
+      'strokeOpacity',
+      'strokePosition',
+      'strokeWeight',
+      'visible',
+      'zIndex'
+    ]
   }
 };

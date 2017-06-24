@@ -23,12 +23,12 @@ const prototype = {
         sizeLiteral.width = value.width;
         sizeLiteral.height = value.height;
 
-        if (value._hasConfigWidthUnit) {
-          sizeLiteral.widthUnit = value.j; // j === width unit
+        if (value._configWidthUnit) {
+          sizeLiteral.widthUnit = value._configWidthUnit;
         }
 
-        if (value._hasConfigHeightUnit) {
-          sizeLiteral.heightUnit = value.f; // f === height unit
+        if (value._configHeightUnit) {
+          sizeLiteral.heightUnit = value._configHeightUnit;
         }
 
         result[property] = sizeLiteral;
@@ -86,8 +86,8 @@ export default function mapIcon(config) {
         typeof literal.width === 'number' && typeof literal.height === 'number'
       );
       instance[property] = new google.maps.Size(literal.width, literal.height, literal.widthUnit, literal.heightUnit);
-      instance[property]._hasConfigWidthUnit = Boolean(literal.widthUnit);
-      instance[property]._hasConfigHeightUnit = Boolean(literal.heightUnit);
+      instance[property]._configWidthUnit = literal.widthUnit;
+      instance[property]._configHeightUnit = literal.heightUnit;
     }
   });
 
