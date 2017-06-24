@@ -13,7 +13,7 @@
   },
   "repository": "https://github.com/Matt-Jensen/ember-cli-g-maps",
   "engines": {
-    "node": ">= 0.12.0"
+    "node": "5.12.0"
   },
   "author": "Matt Jensen",
   "license": "MIT",
