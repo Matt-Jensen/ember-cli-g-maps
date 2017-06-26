@@ -2,11 +2,16 @@
 /* global process */
 'use strict';
 
+const path = require('path');
+const Funnel = require('broccoli-funnel');
+const MergeTrees = require('broccoli-merge-trees');
+const map = require('broccoli-stew').map;
+const debug = require('broccoli-stew').debug;
+
 module.exports = {
   name: 'ember-cli-g-maps',
 
-  // Import gmaps-for-apps
-  included: function(app) {
+  included(app) {
     this._super.included.apply(this, arguments);
 
     // see: https://github.com/ember-cli/ember-cli/issues/3718
@@ -14,17 +19,23 @@ module.exports = {
       app = app.app;
     }
 
-    if (!process.env.EMBER_CLI_FASTBOOT) {
-      if (app.env === 'production') {
-        app.import(app.bowerDirectory + '/gmaps-for-apps/gmaps.min.js');
-      } else {
-        app.import(app.bowerDirectory + '/gmaps-for-apps/gmaps.js');
-      }
-    }
+    app.import('vendor/gmaps.js');
+  },
+
+  treeForVendor(vendorNode) {
+    let gmapsNode = new Funnel(path.join(this.app.project.root, this.app.bowerDirectory, 'gmaps-for-apps'), {
+      allowEmpty: false,
+      files: ['gmaps.js']
+    });
+
+    return new MergeTrees([
+      vendorNode,
+      map(gmapsNode, (content) => `if (typeof FastBoot === 'undefined') { ${content} }`)
+    ]);
   },
 
   // Request Google Maps script in consuming app
-  contentFor: function(type, config) {
+  contentFor(type, config) {
     var googleMapConfig = config.googleMap || {};
 
     var params = [];
