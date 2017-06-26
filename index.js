@@ -23,15 +23,18 @@ module.exports = {
   },
 
   treeForVendor(vendorNode) {
+    let trees = [];
     let gmapsNode = new Funnel(path.join(this.app.project.root, this.app.bowerDirectory, 'gmaps-for-apps'), {
       allowEmpty: false,
       files: ['gmaps.js']
     });
 
-    return new MergeTrees([
-      vendorNode,
-      map(gmapsNode, (content) => `if (typeof FastBoot === 'undefined') { ${content} }`)
-    ]);
+    if (vendorNode) {
+      trees.push(vendorNode);
+    }
+
+    trees.push(map(gmapsNode, (content) => `if (typeof FastBoot === 'undefined') { ${content} }`));
+    return new MergeTrees(trees);
   },
 
   // Request Google Maps script in consuming app
