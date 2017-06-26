@@ -4,6 +4,7 @@
 
 const path = require('path');
 const Funnel = require('broccoli-funnel');
+const assert = require('assert');
 const MergeTrees = require('broccoli-merge-trees');
 const map = require('broccoli-stew').map;
 const debug = require('broccoli-stew').debug;
@@ -23,9 +24,11 @@ module.exports = {
   },
 
   treeForVendor(vendorNode) {
+    const deps = this.project.bowerDependencies();
+    assert(deps['gmaps-for-apps'], 'ember-cli-g-maps requires bower dependency `gmaps-for-apps`');
+
     let trees = [];
     let gmapsNode = new Funnel(path.join(this.app.project.root, this.app.bowerDirectory, 'gmaps-for-apps'), {
-      allowEmpty: false,
       files: ['gmaps.js']
     });
 
