@@ -1,6 +1,6 @@
 {
   "name": "ember-cli-g-maps",
-  "version": "0.5.11",
+  "version": "0.5.12",
   "description": "An Ember CLI Addon for map driven applications",
   "directories": {
     "doc": "doc",
@@ -19,6 +19,10 @@
   "license": "MIT",
   "devDependencies": {
     "broccoli-asset-rev": "^2.4.5",
+    "broccoli-funnel": "^1.2.0",
+    "broccoli-merge-trees": "^2.0.0",
+    "broccoli-stew": "^1.5.0",
+    "broccoli-templater": "^1.0.0",
     "ember-ajax": "^2.4.1",
     "ember-cli": "2.10.0",
     "ember-cli-app-version": "^2.0.0",
