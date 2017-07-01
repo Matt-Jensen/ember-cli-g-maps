@@ -14,8 +14,15 @@ const SCALE_CONTROL_STYLES = ['DEFAULT'];
 export default Mixin.create({
   model() {
     this._super(...arguments);
+    set(this, '_toggledColors', Object.create(null));
     return loadGoogleMaps();
   },
+
+  /**
+   * Cache colored options from `toggleColor`
+   * @type {Object}
+   */
+  _toggledColors: Object.create(null),
 
   actions: {
     setToNext(scope, type) {
@@ -92,6 +99,19 @@ export default Mixin.create({
       set(controller, 'lat', get(controller, 'options.lat'));
       set(controller, 'lng', get(controller, 'options.lng'));
     },
+
+    toggleColor(option) {
+      const {controller} = this;
+
+      // Cache original color
+      if (!get(this, `_toggledColors.${option}`)) {
+        set(this, `_toggledColors.${option}`, get(controller, `options.${option}`));
+      }
+
+      const hasColor = Boolean(get(controller, `options.${option}`));
+      set(controller, `options.${option}`, hasColor ? false : get(this, `_toggledColors.${option}`));
+      controller.notifyPropertyChange('options');
+    }
   },
 
   _debounceRemove(event) {

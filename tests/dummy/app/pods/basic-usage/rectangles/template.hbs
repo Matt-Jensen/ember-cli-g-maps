@@ -130,14 +130,14 @@
 </div>
 
 <div class="grid-block -lmb">
-  <div class="grid-content small-6 medium-3 -smb">
-    <small class="-db -smb">Bounds</small>
+  <div class="grid-content small-6 medium-4 -smb">
+    <small class="-db" style="margin-bottom: 5px;">Bounds</small>
     <div class="th-google-button-bar">
       <button
         class="th-google-button--xsmall -fz-large -np"
         {{action (route-action "updateFirstBound" -0.5)}}
         disabled={{lte options.path.length 3}}>-</button>
-      <button data-test-value="path" class="th-google-button--xsmall">{{slice rectLat 0 6}}, {{slice rectLng 0 6}}</button>
+      <button data-test-value="path" class="th-google-button--xsmall">{{slice rectLat 0 5}}, {{slice rectLng 0 5}}</button>
       <button
         class="th-google-button--xsmall -fz-large -np"
         data-test-update="path"
@@ -146,11 +146,132 @@
     </div>
   </div>
 
-  <div class="grid-content small-6 medium-3 -mb">
+  <div class="grid-content small-6 medium-4 -mb">
     <small class="-db -smb">clickable</small>
     <button
       class="th-google-button--xsmall -ilb"
       data-test-update="clickable"
       {{action (route-action "toggleOption" "clickable")}}>{{if options.clickable 'Enabled' 'Disabled'}}</button>
+  </div>
+
+  <div class="grid-content small-6 medium-4 -mb">
+    <small class="-db -smb">draggable</small>
+    <button
+      class="th-google-button--xsmall -ilb"
+      data-test-update="draggable"
+      {{action (route-action "toggleOption" "draggable")}}>{{if options.draggable 'Enabled' 'Disabled'}}</button>
+  </div>
+
+  <div class="grid-content small-6 medium-3 -mb">
+    <small class="-db -smb">editable</small>
+    <button
+      class="th-google-button--xsmall -ilb"
+      data-test-update="editable"
+      {{action (route-action "toggleOption" "editable")}}>{{if options.editable 'Enabled' 'Disabled'}}</button>
+  </div>
+
+  <div class="grid-content small-6 medium-3 -smb">
+    <small class="-db -smb">fillColor</small>
+    <button
+      class="th-google-button--xsmall -ilb"
+      data-test-update="fillColor"
+      {{action (route-action "toggleColor" "fillColor")}}>{{if options.fillColor 'Custom' 'Default'}}</button>
+  </div>
+
+  <div class="grid-content small-6 medium-3 -smb">
+    <small class="-db" style="margin-bottom: 5px;">fillOpacity</small>
+    <div class="th-google-button-bar">
+      <button
+      class="th-google-button--xsmall -fz-large -np"
+      {{action (route-action "decrement" "fillOpacity" 0.1)}}
+      data-test-update="fillOpacity"
+      disabled={{lte options.fillOpacity 0.1}}>-</button>
+      <button data-test-value="fillOpacity" class="th-google-button--xsmall">{{slice options.fillOpacity 0 4}}</button>
+      <button
+      class="th-google-button--xsmall -fz-large -np"
+      {{action (route-action "increment" "fillOpacity" 0.1)}}
+      disabled={{gte options.fillOpacity 0.99}}>+</button>
+    </div>
+  </div>
+
+  <div class="grid-content small-6 medium-3 -smb">
+    <small class="-db" style="margin-bottom: 5px;">strokeColor</small>
+    <button
+      class="th-google-button--xsmall -ilb"
+      data-test-update="strokeColor"
+      {{action (route-action "toggleColor" "strokeColor")}}>{{if options.strokeColor 'Custom' 'Default'}}</button>
+  </div>
+
+  <div class="grid-content small-6 medium-3 -smb">
+    <small class="-db" style="margin-bottom: 5px;">strokeOpacity</small>
+    <div class="th-google-button-bar">
+      <button
+        class="th-google-button--xsmall -fz-large -np"
+        {{action (route-action "decrement" "strokeOpacity" 0.1)}}
+        data-test-update="strokeOpacity"
+        disabled={{lte options.strokeOpacity 0.1}}>-</button>
+      <button data-test-value="strokeOpacity" class="th-google-button--xsmall">{{slice options.strokeOpacity 0 4}}</button>
+      <button
+        class="th-google-button--xsmall -fz-large -np"
+        {{action (route-action "increment" "strokeOpacity" 0.1)}}
+        disabled={{gte options.strokeOpacity 0.99}}>+</button>
+    </div>
+  </div>
+
+  <div class="grid-content small-6 medium-3 -smb">
+    <small class="-db" style="margin-bottom: 5px;">strokeWeight</small>
+    <div class="th-google-button-bar">
+      <button
+      class="th-google-button--xsmall -fz-large -np"
+      {{action (route-action "decrement" "strokeWeight" 1)}}
+      data-test-update="strokeWeight"
+      disabled={{lte options.strokeWeight 1}}>-</button>
+      <button data-test-value="strokeWeight" class="th-google-button--xsmall">{{slice options.strokeWeight 0 4}}</button>
+      <button
+      class="th-google-button--xsmall -fz-large -np"
+      {{action (route-action "increment" "strokeWeight" 1)}}
+      disabled={{gte options.strokeWeight 12}}>+</button>
+    </div>
+  </div>
+
+  <div class="grid-content small-6 medium-3 -mb">
+    <small class="-db -smb">visible</small>
+    <button
+      class="th-google-button--xsmall -ilb"
+      data-test-update="visible"
+      {{action (route-action "toggleOption" "visible")}}>{{if options.visible 'Enabled' 'Disabled'}}</button>
+  </div>
+
+  <div class="grid-content small-6 medium-3 -smb">
+    <small class="-db" style="margin-bottom: 5px;">zIndex</small>
+    <div class="th-google-button-bar">
+      <button
+      class="th-google-button--xsmall -fz-large -np"
+      {{action (route-action "decrement" "zIndex")}}
+      data-test-update="zIndex"
+      disabled={{eq options.zIndex 0}}>-</button>
+      <button data-test-value="zIndex" class="th-google-button--xsmall">{{options.zIndex}}</button>
+      <button
+      class="th-google-button--xsmall -fz-large -np"
+      {{action (route-action "increment" "zIndex")}}
+      disabled={{gte options.zIndex 100}}>+</button>
+    </div>
+  </div>
+</div>
+
+<div class="grid-block">
+  <div class="grid-content shrink -pb" style="min-height: 59px;">
+    <small class="-db -smb">strokePosition</small>
+    <div class="th-google-button-bar">
+      {{#each strokePositions as |position|}}
+        <button class="th-google-button--small
+          {{if (eq position options.strokePosition) 'active'}}"
+          {{action (route-action "setOption" "strokePosition" position)}}
+          data-test-update="strokePosition"
+          style="text-transform: none;">
+          {{position}}
+        </button>
+      {{/each}}
+    </div>
   </div>
 </div>

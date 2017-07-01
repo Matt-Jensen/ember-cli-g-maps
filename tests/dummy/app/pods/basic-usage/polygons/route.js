@@ -64,13 +64,6 @@ export default Route.extend(DocumentationHelpers, {
       get(controller, 'options.path').removeAt(0);
     },
 
-    toggleColor(option) {
-      const {controller} = this;
-      const hasColor = Boolean(get(controller, `options.${option}`));
-      set(controller, `options.${option}`, hasColor ? false : controller.polygonDefaults[option]);
-      controller.notifyPropertyChange('options');
-    },
-
     resetMapState() {
       const {controller} = this;
       set(controller, 'lat', controller.mapDefaults.lat);

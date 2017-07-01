@@ -14,13 +14,13 @@ export default Controller.extend(GoogleMapConstants, {
   useOptions: false,
 
   mapDefaults: {
-    lat: 32.75494243654723,
-    lng: -86.8359375,
+    lat: 30.2672,
+    lng: -97.74310000000003,
     zoom: 5
   },
 
   rectangleDefaults: Object.freeze({
-    bounds: A([{lat: 29.80319254629092, lng: -80.935546875}, {lat: 33.79125047210739, lng: -86.912109375}]),
+    bounds: A([{lat: 28.382, lng: -94.935}, {lat: 32.584, lng: -100.623046875}]),
     strokeColor: '#1A954A',
     strokeOpacity: 1,
     strokeWeight: 3,
@@ -28,6 +28,8 @@ export default Controller.extend(GoogleMapConstants, {
     fillOpacity: 0.2,
     draggable: true,
     editable: true,
+    visible: true,
+    zIndex: 1
   }),
 
   rectLat: computed.oneWay('options.bounds.0.lat'),
