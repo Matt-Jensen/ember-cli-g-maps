@@ -21,13 +21,15 @@ export default Controller.extend(GoogleMapConstants, {
 
   rectangleDefaults: Object.freeze({
     bounds: A([{lat: 28.382, lng: -94.935}, {lat: 32.584, lng: -100.623046875}]),
+    clickable: true,
+    draggable: true,
+    editable: true,
+    fillColor: '#1A954A',
+    fillOpacity: 0.2,
     strokeColor: '#1A954A',
     strokeOpacity: 1,
     strokeWeight: 3,
-    fillColor: '#1A954A',
-    fillOpacity: 0.2,
-    draggable: true,
-    editable: true,
+    strokePosition: 'CENTER',
     visible: true,
     zIndex: 1
   }),

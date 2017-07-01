@@ -2,7 +2,8 @@ import run from 'ember-runloop';
 import {assert} from 'ember-metal/utils';
 
 const instanceSelectors = {
-  polyline: '__GOOGLE_MAP_POLYLINES__'
+  polyline: '__GOOGLE_MAP_POLYLINES__',
+  rectangle: '__GOOGLE_MAP_RECTANGLES__'
 };
 
 const mapQuery = function mapQuery(instanceName, selector = '.ember-cli-g-map') {
@@ -20,23 +21,23 @@ const mapQuery = function mapQuery(instanceName, selector = '.ember-cli-g-map') 
 
 mapQuery.prototype = {
   /**
-   * @param  {String} eventName
    * Trigger a given event on a Google Map instance
+   * @param  {String} eventName
    */
-  trigger(eventName) {
+  trigger(eventName, ...args) {
     let target = this._instance;
 
     if (eventName === 'remove_at' || eventName === 'set_at' || eventName === 'insert_at') {
       target = target.getPath();
     }
 
-    run(() => google.maps.event.trigger(target, eventName));
+    run(() => google.maps.event.trigger(target, eventName, ...args));
   },
 
   /**
+   * Return an option value from google map instance
    * @param {String} option    Google Maps Polyline option
    * @return {any}
-   * Return an option value from google map instance
    */
   getOption(option) {
     let target = this._instance;
@@ -50,8 +51,8 @@ mapQuery.prototype = {
   },
 
   /**
+   * Return current map state of all properties
    * @return {Object} Google Map State
-    * Return current map state of all properties
    */
   getState(options = []) {
     const state = Object.create(null);

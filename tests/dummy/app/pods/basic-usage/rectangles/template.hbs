@@ -140,7 +140,7 @@
       <button data-test-value="path" class="th-google-button--xsmall">{{slice rectLat 0 5}}, {{slice rectLng 0 5}}</button>
       <button
         class="th-google-button--xsmall -fz-large -np"
-        data-test-update="path"
+        data-test-update="bounds"
         {{action (route-action "updateFirstBound")}}
         disabled={{gte options.path.length 10}}>+</button>
     </div>
