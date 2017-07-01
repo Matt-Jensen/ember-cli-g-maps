@@ -59,7 +59,7 @@
     {{#if useOptions}}
       {{g-map-rectangle map
         options=options
-        bounds_changed=(route-action "registerEvent" "bounds_changed")
+        bounds_changed=(pipe (route-action "updateBounds") (route-action "registerEvent" "bounds_changed"))
         click=(route-action "registerEvent" "click")
         dblclick=(route-action "registerEvent" "dblclick")
         drag=(route-action "registerEvent" "drag")
@@ -85,7 +85,7 @@
         strokeWeight=options.strokeWeight
         visible=options.visible
         zIndex=options.zIndex
-        bounds_changed=(route-action "registerEvent" "bounds_changed")
+        bounds_changed=(pipe (route-action "updateBounds") (route-action "registerEvent" "bounds_changed"))
         click=(route-action "registerEvent" "click")
         dblclick=(route-action "registerEvent" "dblclick")
         drag=(route-action "registerEvent" "drag")

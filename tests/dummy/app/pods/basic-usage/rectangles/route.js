@@ -17,6 +17,13 @@ export default Route.extend(DocumentationHelpers, {
       get(controller, 'options.bounds').arrayContentDidChange();
     },
 
+    updateBounds([sw, ne]) {
+      const {controller} = this;
+      set(controller, 'options.bounds.0', sw);
+      set(controller, 'options.bounds.1', ne);
+      get(controller, 'options.bounds').arrayContentDidChange();
+    },
+
     resetMapState() {
       const {controller} = this;
       set(controller, 'lat', controller.mapDefaults.lat);
