@@ -76,7 +76,6 @@ export default function mapOptions(googleMapsInstanceScope, bound, passive = [])
 /**
  * @return {Object}
  * Return all defined bound options for the Google map instance
- * NOTE this is designed to be overwritten, by user, if desired
  */
 function getMapOptions() {
   return removeUndefinedProperties(

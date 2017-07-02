@@ -74,31 +74,31 @@ export function bindGoogleMapsInstanceEvents() {
   this._googleMapInstanceEvents.forEach((event) => {
     const action = this.attrs[event];
 
-    if (action) {
-      const eventTarget = UPDATE_PATH_EVENTS.indexOf(event) !== -1 ?
-        mapObjInstance.content.getPath() : // use path MVCArray for update path event
-        mapObjInstance.content; // use Google Map instance
+    if (!action) { return; }
 
-      /*
-       * Use `run.next` to silence update path events until after setup
-       */
-      run.next(() => {
-        const closureAction = (typeof action === 'function' ? action : run.bind(this, 'sendAction', event));
+    const eventTarget = UPDATE_PATH_EVENTS.indexOf(event) !== -1 ?
+      mapObjInstance.content.getPath() : // use path MVCArray for update path event
+      mapObjInstance.content; // use Google Map instance
 
-        eventTarget.addListener(event, (...args) => {
-         /*
-          * Accept both closure and declarative actions
-          */
-          const augmentedEventProperty = this._googleMapInstanceAugmentedEvents[event];
+    /*
+     * Use `run.next` to silence update path events until after setup
+     */
+    run.next(() => {
+      const closureAction = (typeof action === 'function' ? action : run.bind(this, 'sendAction', event));
 
-          if (augmentedEventProperty) {
-            args.push(get(this, `${this.googleMapsInstanceScope}.${augmentedEventProperty}`)); // Event augmentation
-          }
+      eventTarget.addListener(event, (...args) => {
+       /*
+        * Accept both closure and declarative actions
+        */
+        const augmentedEventProperty = this._googleMapInstanceAugmentedEvents[event];
 
-          // Invoke with all arguments
-          closureAction(...args);
-        });
+        if (augmentedEventProperty) {
+          args.push(get(this, `${this.googleMapsInstanceScope}.${augmentedEventProperty}`)); // Event augmentation
+        }
+
+        // Invoke with all arguments
+        closureAction(...args);
       });
-    }
+    });
   });
 }

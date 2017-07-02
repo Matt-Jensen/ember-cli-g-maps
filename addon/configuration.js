@@ -262,5 +262,33 @@ export default {
       'visible',
       'zIndex'
     ]
+  },
+
+  googleMapOverlayView: {
+    events: [
+      'click',
+      'rightclick',
+      'dblclick',
+      'mousedown',
+      'mouseout',
+      'mouseover',
+      'mousemove',
+      'mouseup'
+    ],
+
+    staticOptions: [
+      'horizontalAlign',
+      'horizontalOffset',
+      'layer',
+      'style',
+      'verticalAlign',
+      'verticalOffset'
+    ],
+
+    boundOptions: [
+      'position',
+      'visible',
+      'zIndex'
+    ]
   }
 };
