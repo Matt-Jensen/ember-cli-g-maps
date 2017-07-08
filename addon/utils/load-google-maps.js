@@ -61,7 +61,7 @@ export default (function () {
      * Resolve available global google.maps
      */
 
-    if (typeof google === 'object' && typeof google.maps === 'object') {
+    if (typeof window.google === 'object' && typeof window.google.maps === 'object') {
       return RSVP.Promise.resolve(window.google.maps); // Google maps is loaded
     }
 

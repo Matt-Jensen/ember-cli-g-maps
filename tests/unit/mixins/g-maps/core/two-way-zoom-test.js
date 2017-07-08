@@ -3,6 +3,8 @@ import twoWayZoomMixin from 'ember-cli-g-maps/mixins/g-maps/core/two-way-zoom';
 import { module, test } from 'qunit';
 import sinon from 'sinon';
 
+const { GMaps } = window;
+
 module('Unit | Mixin | g maps/core/two way zoom');
 
 test('_addZoomChangedEvent should add map `zoom_changed` event on `ember-cli-g-map-loaded` event', function(assert) {

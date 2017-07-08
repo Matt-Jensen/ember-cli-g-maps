@@ -3,6 +3,8 @@ import twoWayLatLngMixin from 'ember-cli-g-maps/mixins/g-maps/core/two-way-lat-l
 import sinon from 'sinon';
 import { module, test } from 'qunit';
 
+const { GMaps } = window;
+
 module('Unit | Mixin | g maps/core/two way lat lng');
 
 test('_addCenterChangedEvent should add map `center_changed` event on `ember-cli-g-map-loaded` event', function(assert) {

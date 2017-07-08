@@ -1,16 +1,20 @@
-/*jshint node:true*/
-/* global require, module */
-var EmberAddon = require('ember-cli/lib/broccoli/ember-addon');
+/* eslint-env node */
+const EmberAddon = require('ember-cli/lib/broccoli/ember-addon');
 
 module.exports = function(defaults) {
-  var app = new EmberAddon(defaults, {
+  let app = new EmberAddon(defaults, {
     autoprefixer: {
       browsers: ['last 2 versions']
     },
 
     babel: {
       optional: ['es6.spec.symbols'],
-      includePolyfill: true
+    },
+
+    'ember-cli-babel': {
+      compileModules: true,
+      includePolyfill: true,
+      disableDebugTooling: true
     }
   });
 

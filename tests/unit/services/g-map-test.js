@@ -1,6 +1,7 @@
 import gMapService from 'ember-cli-g-maps/services/g-map';
 import { module, test } from 'qunit';
 import sinon from 'sinon';
+const { google } = window;
 
 const originalGoogleMap = google.maps.Map;
 

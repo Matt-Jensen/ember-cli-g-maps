@@ -3,6 +3,7 @@ import loadGoogleMaps from 'dummy/utils/load-google-maps';
 import { module, test } from 'qunit';
 
 const { RSVP } = Ember;
+const { google } = window;
 const { getLazyLoadSrc, lazyLoadGoogleMap } = loadGoogleMaps;
 
 module('Unit | Utility | load google maps');

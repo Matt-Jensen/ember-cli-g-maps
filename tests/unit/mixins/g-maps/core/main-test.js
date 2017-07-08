@@ -2,6 +2,8 @@ import Ember from 'ember';
 import coreMainMixin from 'ember-cli-g-maps/mixins/g-maps/core/main';
 import { module, test } from 'qunit';
 
+const { GMaps } = window;
+
 module('Unit | Mixin | g maps/core/main');
 
 test('_addMapEvents should not add unactive `_gmapEvents`', function(assert) {

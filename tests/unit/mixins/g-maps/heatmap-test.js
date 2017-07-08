@@ -4,6 +4,7 @@ import { module, test }  from 'qunit';
 import sinon             from 'sinon';
 
 const { merge } = Ember;
+const { google } = window;
 
 const googleMap = new google.maps.Map(document.createElement('div'), {
   center: { lat: 0, lng: 0 },

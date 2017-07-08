@@ -1,43 +1,48 @@
 /* jshint node: true */
-/* global process */
 'use strict';
 
 const path = require('path');
-const Funnel = require('broccoli-funnel');
-const assert = require('assert');
-const MergeTrees = require('broccoli-merge-trees');
-const map = require('broccoli-stew').map;
-const debug = require('broccoli-stew').debug;
+const fastbootTransform = require('fastboot-transform');
 
 module.exports = {
   name: 'ember-cli-g-maps',
 
-  included(app) {
-    this._super.included.apply(this, arguments);
-
-    // see: https://github.com/ember-cli/ember-cli/issues/3718
-    if (typeof app.import !== 'function' && app.app) {
-      app = app.app;
+  options: {
+    nodeAssets: {
+      'gmaps-for-apps': {
+        vendor: {
+          srcDir: '',
+          include: ['gmaps.js'],
+          processTree(input) {
+            return fastbootTransform(input);
+          }
+        }
+      }
     }
-
-    app.import('vendor/gmaps.js');
   },
 
-  treeForVendor(vendorNode) {
-    const deps = this.project.bowerDependencies();
-    assert(deps['gmaps-for-apps'], 'ember-cli-g-maps requires bower dependency `gmaps-for-apps`');
+  included() {
+    this._super.included.apply(this, arguments);
+    this._ensureThisImport();
 
-    let trees = [];
-    let gmapsNode = new Funnel(path.join(this.app.project.root, this.app.bowerDirectory, 'gmaps-for-apps'), {
-      files: ['gmaps.js']
-    });
+    this.import('vendor/gmaps-for-apps/gmaps.js');
+  },
+  _ensureThisImport() {
+    if (!this.import) {
+      this._findHost = function findHostShim() {
+        let current = this;
+        let app;
 
-    if (vendorNode) {
-      trees.push(vendorNode);
+        do {
+          app = current.app || app;
+        } while (current.parent.parent && (current = current.parent));
+        return app;
+      };
+      this.import = function importShim(asset, options) {
+        let app = this._findHost();
+        app.import(asset, options);
+      };
     }
-
-    trees.push(map(gmapsNode, (content) => `if (typeof FastBoot === 'undefined') { ${content} }`));
-    return new MergeTrees(trees);
   },
 
   // Request Google Maps script in consuming app
