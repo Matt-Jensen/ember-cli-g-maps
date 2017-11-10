@@ -2,8 +2,6 @@
 
 Are you in the right place?
 
-For issues or feature requests related to __the code in this repository__ file a Github issue.
-
    * If this is a __feature request__ make sure the issue title starts with "FR:".
    * If this is a __bug report__ make sure the issues title starts with "BUG:".
    * For general technical questions, please refer to the documentation site.
@@ -16,7 +14,7 @@ For issues or feature requests related to __the code in this repository__ file a
   * Operating System version: _____
   * Ember CLI version: _____
   * Ember CLI G Maps version: _____
-  * IF YOU DO NOT PROVIDE THE ABOVE YOUR ISSUE WILL BE CLOSED IMMEDIATELY!
+  * IF YOU DO NOT PROVIDE THIS INFORMATION YOUR ISSUE WILL BE CLOSED IMMEDIATELY!
 
 <!-- Step 3 -->
 
