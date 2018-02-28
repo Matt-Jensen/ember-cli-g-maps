@@ -1,5 +1,7 @@
 # Ember CLI G-Maps [![Ember Badge](https://embadge.io/b/8.svg)](https://embadge.io/badges/8) [![Build Status](https://travis-ci.org/Matt-Jensen/ember-cli-g-maps.svg)](https://travis-ci.org/Matt-Jensen/ember-cli-g-maps.svg?branch=master) [![Ember Observer Score](http://emberobserver.com/badges/ember-cli-g-maps.svg)](http://emberobserver.com/addons/ember-cli-g-maps)
 
+**DEPRECATION NOTICE**: This addon is deprecated, please use [ember-google-maps](https://github.com/sandydoo/ember-google-maps) instead.
+
 > Ember CLI G-Maps is a Google Map component for map driven applications.
 
 A map driven application responds to map interactions with fresh data. What this means for the developer is that you will need consistent access to the state of the map as well as intuitive ways to efficiently render large amounts of data.
